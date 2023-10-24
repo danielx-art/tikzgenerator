@@ -10,7 +10,7 @@ export default function Home() {
         <meta name="description" content="Generates TikZ scripts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center h-full font-jost">
         <Tabs />
       </div>
     </>

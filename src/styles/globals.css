@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+@layer components {
+  .tab {
+    @apply rounded-md bg-slate-300 p-4;
+  }
+}
+
+@layer utilities {
+  .selected-tab {
+    @apply font-bold;
+  }
+  .unselected-tab {
+    @apply bg-slate-600;
+  }
+}
