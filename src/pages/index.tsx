@@ -13,7 +13,7 @@ export default function Home() {
         <meta name="description" content="Generates TikZ scripts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col flex-wrap items-center justify-start h-full md:max-h-full font-jost bg-a_light overflow-auto">
+      <div className="no-scrollbar flex h-full flex-col flex-wrap items-center justify-start overflow-auto bg-a_light font-jost md:max-h-full">
         <EntitiesPanel />
         <CustomizationPanel />
         {/* <PreviewPanel /> */}
