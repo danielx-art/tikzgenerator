@@ -1,6 +1,6 @@
 import { Tponto } from "public/entidades";
 import useMyStore from "store";
-import { RemoveButton } from "../micro/RemoveButton";
+import { RemoveButton } from "../../../micro/RemoveButton";
 
 type PropsType = {
   point: Tponto;
@@ -8,10 +8,7 @@ type PropsType = {
 };
 
 export const PointItem: React.FC<PropsType> = ({ point, index }) => {
-  const {
-    points,
-    setPoints,
-  } = useMyStore();
+  const { points, setPoints } = useMyStore();
 
   function handlePointClick(index: number) {
     const updatedPoints = [...points];
@@ -28,7 +25,6 @@ export const PointItem: React.FC<PropsType> = ({ point, index }) => {
 
   return (
     <div
-      key={"point_" + index}
       className={`${
         point.selected
           ? "border-1 border-dashed border-a_highlight bg-white bg-opacity-20"
@@ -36,7 +32,6 @@ export const PointItem: React.FC<PropsType> = ({ point, index }) => {
       } flex w-full flex-row flex-nowrap justify-stretch text-sm text-a_highlight`}
     >
       <div className="flex w-full select-none flex-row justify-between py-1 pl-4 pr-2">
-        
         <div onClick={() => handlePointClick(index)}>
           {point.vec.x};{point.vec.y}
         </div>

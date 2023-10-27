@@ -1,9 +1,10 @@
-import PointList from "import/components/PointList";
-import EntitiesPanel from "import/components/EntitiesPanel";
+import EntitiesPanel from "import/components/panels/Entities/EntitiesPanel";
 import Head from "next/head";
-import CustomizationPanel from "import/components/CustomizationPanel";
-import PreviewPanel from "import/components/PreviewPanel";
-import CodePanel from "import/components/CodePanel";
+import CustomizationPanel from "import/components/panels/Customization/CustomizationPanel";
+import PreviewPanel from "import/components/panels/Preview/PreviewPanel";
+import CodePanel from "import/components/panels/Code/CodePanel";
+import { ErrorBanner } from "import/components/micro/ErrorBanner";
+import { Debugger } from "import/components/Debugger";
 
 export default function Home() {
   return (
@@ -13,11 +14,13 @@ export default function Home() {
         <meta name="description" content="Generates TikZ scripts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="no-scrollbar flex h-full flex-col flex-wrap items-center justify-start overflow-auto bg-a_light font-jost md:max-h-full">
+      <div className="md:no-scrollbar flex h-full flex-col flex-nowrap items-center justify-start overflow-auto bg-a_light font-jost md:max-h-full md:flex-wrap">
+        <ErrorBanner />
         <EntitiesPanel />
         <CustomizationPanel />
         {/* <PreviewPanel /> */}
         {/* <CodePanel /> */}
+        <Debugger />
       </div>
     </>
   );

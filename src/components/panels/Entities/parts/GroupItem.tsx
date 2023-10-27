@@ -1,5 +1,5 @@
 import useMyStore from "store";
-import { RemoveButton } from "../micro/RemoveButton";
+import { RemoveButton } from "../../../micro/RemoveButton";
 
 type PropsType = {
   groupId: number;
@@ -49,12 +49,12 @@ export const GroupItem: React.FC<PropsType> = ({
       <div
         className={`${
           selected ? "bg-white bg-opacity-5 font-bold" : null
-        } flex flex-row flex-nowrap justify-between px-2 py-1 text-sm text-a_highlight`}
+        } flex flex-row flex-nowrap justify-between px-2 py-1 text-xs text-a_highlight`}
       >
         <div
           onClick={() => handleGroupClick(groupId)}
         >{`Grupo ${groupId}`}</div>
-        <RemoveButton handleClick={()=>removeGroup(groupId)} />
+        <RemoveButton handleClick={() => removeGroup(groupId)} />
       </div>
       {children}
     </div>

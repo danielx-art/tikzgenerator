@@ -6,21 +6,16 @@ import { vec } from "public/vetores";
 const MAXIMUM_NUMBER_OF_POINTS = 3458;
 
 export const AddPointInput = () => {
-  const { points, setPoints, selectedGroup } = useMyStore();
+  const { points, setPoints, selectedGroup, error, setError } = useMyStore();
 
   const [input, setInput] = useState("");
 
-  const [err, setErr] = useState<string | null>(null);
-
   function addPoint() {
     if (points.length > MAXIMUM_NUMBER_OF_POINTS) {
-      setErr((prev) => {
-        let newErr = prev ? prev : "";
-        return (
-          newErr +
-          `Devido à medidas de segurança, você atingiu o limite de ${MAXIMUM_NUMBER_OF_POINTS} pontos. Remova alguns pontos para que seja possível adicionar outros. `
-        );
-      });
+      setError(
+        error +
+          `Devido à medidas de segurança, você atingiu o limite de ${MAXIMUM_NUMBER_OF_POINTS} pontos. Remova alguns pontos para que seja possível adicionar outros. `,
+      );
     }
 
     const substrings = input.split(" ");
@@ -34,13 +29,10 @@ export const AddPointInput = () => {
         const [str1, str2] = substring.split(";");
 
         if (!(str1 && str2)) {
-          setErr((prev) => {
-            let newErr = prev ? prev : "";
-            return (
-              newErr +
-              `O ponto "${substring}", da forma X;Y, não contém uma das coordenadas. `
-            );
-          });
+          setError(
+            error +
+              `O ponto "${substring}", da forma X;Y, não contém uma das coordenadas. `,
+          );
           continue;
         }
 
@@ -53,13 +45,9 @@ export const AddPointInput = () => {
           continue;
         }
 
-        setErr((prev) => {
-          let newErr = prev ? prev : "";
-          return (
-            newErr +
-            `As coordenadas do ponto "${substring}" devem ser números. `
-          );
-        });
+        setError(
+          error + `As coordenadas do ponto "${substring}" devem ser números. `,
+        );
       } else if (substring.includes(":")) {
         const selectedPoints = points.filter((point) => point.selected);
 
@@ -72,25 +60,19 @@ export const AddPointInput = () => {
           pointsInTheSameGroup[pointsInTheSameGroup.length - 1];
 
         if (referencePoint == undefined) {
-          setErr((prev) => {
-            let newErr = prev ? prev : "";
-            return (
-              newErr +
-              "Para adicionar um ponto da forma R:θ, você deve ter pelo menos outro ponto no mesmo grupo, ou um ponto selecionado. "
-            );
-          });
+          setError(
+            error +
+              "Para adicionar um ponto da forma R:θ, você deve ter pelo menos outro ponto no mesmo grupo, ou um ponto selecionado. ",
+          );
           continue;
         }
 
         const [str1, str2] = substring.split(":");
         if (!(str1 && str2)) {
-          setErr((prev) => {
-            let newErr = prev ? prev : "";
-            return (
-              newErr +
-              `O ponto "${substring}", da forma R:θ, não contém uma das coordenadas. `
-            );
-          });
+          setError(
+            error +
+              `O ponto "${substring}", da forma R:θ, não contém uma das coordenadas. `,
+          );
           continue;
         }
 
@@ -115,21 +97,14 @@ export const AddPointInput = () => {
           continue;
         }
 
-        setErr((prev) => {
-          let newErr = prev ? prev : "";
-          return (
-            newErr +
-            `As coordenadas do ponto "${substring}" devem ser números. `
-          );
-        });
+        setError(
+          error + `As coordenadas do ponto "${substring}" devem ser números. `,
+        );
       } else {
-        setErr((prev) => {
-          let newErr = prev ? prev : "";
-          return (
-            newErr +
-            `O ponto "${substring}" deve ser da forma absoluta X;Y ou da forma relativa R:θ, partindo de um ponto selecionado ou do último ponto adicionado no mesmo grupo. `
-          );
-        });
+        setError(
+          error +
+            `O ponto "${substring}" deve ser da forma absoluta X;Y ou da forma relativa R:θ, partindo de um ponto selecionado ou do último ponto adicionado no mesmo grupo. `,
+        );
       }
     }
     setPoints([...points, ...pointsToAdd]);
@@ -137,28 +112,7 @@ export const AddPointInput = () => {
   }
 
   return (
-    <div className="relative my-2 flex w-full flex-row flex-nowrap">
-      {err && (
-        <div className="absolute bottom-full m-2 mb-4 flex w-auto flex-row flex-nowrap rounded-sm bg-yellow-100 p-2 text-red-600">
-          <div>{err}</div>
-          <div className="h-6 w-6" onClick={() => setErr(null)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-        </div>
-      )}
+    <div className="my-2 flex w-full flex-row flex-nowrap">
       <input
         type="text"
         value={input}

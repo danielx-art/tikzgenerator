@@ -1,4 +1,4 @@
-import { Tponto, Tsegmento, Tangulo} from "public/entidades";
+import { Tponto, Tsegmento, Tangulo } from "public/entidades";
 import { create } from "zustand";
 
 type State = {
@@ -10,7 +10,9 @@ type State = {
   // selectedPoints: Tponto[],
   // selectedAngles: Tangulo[],
   // selectedSegments: Tsegmento[],
-  selectedGroup: number,
+  selectedGroup: number;
+  tags: string[];
+  error: string;
 };
 
 type Action = {
@@ -23,6 +25,8 @@ type Action = {
   // setSelectedAngles:(selectedAngles: State['selectedAngles']) => void;
   // setSelectedSegments:(selectedSegments: State['selectedSegments']) => void;
   setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
+  setTags: (tags: State["tags"]) => void;
+  setError: (error: State["error"]) => void;
 };
 
 const useMyStore = create<State & Action>((set) => ({
@@ -35,7 +39,7 @@ const useMyStore = create<State & Action>((set) => ({
   setPoints: (points) => set(() => ({ points: points })),
   setAngles: (angles) => set(() => ({ angles: angles })),
   setSegments: (segments) => set(() => ({ segments: segments })),
-  setGroups: (groups)=> set(()=>({groups: groups})),
+  setGroups: (groups) => set(() => ({ groups: groups })),
   // selectedPoints: [] as Tponto[],
   // selectedAngles: [] as Tangulo[],
   // selectedSegments: [] as Tsegmento[],
@@ -43,8 +47,12 @@ const useMyStore = create<State & Action>((set) => ({
   // setSelectedPoints: (selectedPoints)=>set(()=>({selectedPoints: selectedPoints})),
   // setSelectedAngles: (selectedAngles)=>set(()=>({selectedAngles: selectedAngles})),
   // setSelectedSegments: (selectedSegments)=>set(()=>({selectedSegments: selectedSegments})),
-  setSelectedGroup: (selectedGroup)=>set(()=>({selectedGroup: selectedGroup})),
-  
+  setSelectedGroup: (selectedGroup) =>
+    set(() => ({ selectedGroup: selectedGroup })),
+  tags: [] as string[],
+  setTags: (tags) => set(() => ({ tags: tags })),
+  error: "",
+  setError: (error) => set(() => ({ error: error })),
 }));
 
 export default useMyStore;

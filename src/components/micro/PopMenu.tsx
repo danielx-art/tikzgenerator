@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Switcher from "../micro/Switcher";
+import Switcher from "./Switcher";
+import { applyLatinTags, testFunction } from "import/utils/autoTags";
 
 type PropsType = {
   title: string;
@@ -91,7 +92,7 @@ export const PopMenu: React.FC<PropsType> = ({
             key={index}
             className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap bg-a_dark py-2 pl-4 pr-2 text-sm text-a_light hover:bg-a_dark_highlight hover:text-a_highlight"
             role="menuitem"
-            onClick={option.action}
+            onClick={applyLatinTags}
           >
             <div>{option.title}</div>
             <svg
