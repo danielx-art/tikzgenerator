@@ -1,5 +1,6 @@
 import useMyStore from "store";
 import { RemoveButton } from "../../../micro/RemoveButton";
+import useStore from "import/utils/useStore";
 
 type PropsType = {
   groupId: number;
@@ -12,14 +13,11 @@ export const GroupItem: React.FC<PropsType> = ({
   selected,
   children,
 }) => {
-  const {
-    points,
-    setPoints,
-    groups,
-    setGroups,
-    selectedGroup,
-    setSelectedGroup,
-  } = useMyStore();
+  const store = useStore(useMyStore, (state)=>state);
+
+  if(!store) return;
+
+  const {points, setPoints, groups, setGroups, selectedGroup, setSelectedGroup} = store;
 
   function handleGroupClick(groupId: number) {
     setSelectedGroup(groupId);

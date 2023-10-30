@@ -1,7 +1,8 @@
 import { vec, vector } from "./vetores";
 
-const ponto = function(a: vector, group: number = 1 ) {
+const ponto = function(a: vector, id: string, group: number = 1 ) {
     return ({
+        id,
         vec: a,
         etiqueta: "",
         visivel: true,
@@ -13,16 +14,17 @@ const ponto = function(a: vector, group: number = 1 ) {
 
 type Tponto = ReturnType<typeof ponto>;
 
-const segmento = function(a: Tponto, b:Tponto) {
+const segmento = function(a: Tponto, b:Tponto, id: string) {
     const comprimento = a.vec.dist(b.vec);
     const normal = vec().copy(a.vec).cross(vec(0,0,1)).setMag(1);
     return({
+        id,
         p1: a,
         p2: b,
         comprimento,
         normal,
         etiqueta: "",
-        visivel: "",
+        visivel: true,
         espessura: 1,
         estilo: "solid",
         cor: "black",
@@ -32,12 +34,13 @@ const segmento = function(a: Tponto, b:Tponto) {
 
 type Tsegmento = ReturnType<typeof segmento>;
 
-const angulo = function(a: Tponto, b: Tponto, c: Tponto) {
+const angulo = function(a: Tponto, b: Tponto, c: Tponto, id: string,) {
     const ba = vec().copy(a.vec).sub(b.vec);
     const bc = vec().copy(c.vec).sub(b.vec);
     const valor = ba.angleBetween(bc);
     const valorExt = 2*Math.PI - valor;
     return ({
+        id,
         valor,
         valorExt,
         etiqueta: "",
@@ -50,15 +53,17 @@ const angulo = function(a: Tponto, b: Tponto, c: Tponto) {
 
 type Tangulo = ReturnType<typeof angulo>;
 
-// const group = function(n = 1){
-//     return({
-//         id: n,
-//         pontos: [] as Tponto[],
-//         segmentos: [] as Tsegmento[],
-//         angulos: [] as Tangulo[]
-//     })
-// }
+type Tentity = Tponto|Tsegmento|Tangulo;
 
-// type Tgroup = ReturnType<typeof group>;
+const etiqueta = function(entity: Tentity, value:string = "", id:string, pos: vector = vec(0,0)) {
+    return {
+        id,
+        entityId: entity.id,
+        value,
+        pos,
+    }
+}  
 
-export {ponto, type Tponto, segmento, type Tsegmento, angulo, type Tangulo};
+type Tetiqueta = ReturnType<typeof etiqueta>;
+
+export {ponto, type Tponto, segmento, type Tsegmento, angulo, type Tangulo, type Tentity, etiqueta, type Tetiqueta};

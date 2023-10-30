@@ -1,6 +1,7 @@
 import { Tponto } from "public/entidades";
 import useMyStore from "store";
 import { RemoveButton } from "../../../micro/RemoveButton";
+import useStore from "import/utils/useStore";
 
 type PropsType = {
   point: Tponto;
@@ -8,7 +9,11 @@ type PropsType = {
 };
 
 export const PointItem: React.FC<PropsType> = ({ point, index }) => {
-  const { points, setPoints } = useMyStore();
+  const store = useStore(useMyStore, (state)=>state);
+
+  if(!store) return;
+
+  const {points, setPoints, tags} = store;
 
   function handlePointClick(index: number) {
     const updatedPoints = [...points];
@@ -35,7 +40,7 @@ export const PointItem: React.FC<PropsType> = ({ point, index }) => {
         <div onClick={() => handlePointClick(index)}>
           {point.vec.x};{point.vec.y}
         </div>
-        <div>{point.etiqueta}</div>
+        <div>{tags.find(tag => tag.entityId == point.id)?.value || ""}</div>
         <RemoveButton handleClick={() => removePoint(index)} />
       </div>
     </div>

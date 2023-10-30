@@ -1,5 +1,6 @@
-import { Tponto, Tsegmento, Tangulo } from "public/entidades";
+import { Tponto, Tsegmento, Tangulo, Tetiqueta } from "public/entidades";
 import { create } from "zustand";
+import { persist } from 'zustand/middleware'
 
 type State = {
   tab: string;
@@ -7,11 +8,8 @@ type State = {
   angles: Tangulo[];
   segments: Tsegmento[];
   groups: number[];
-  // selectedPoints: Tponto[],
-  // selectedAngles: Tangulo[],
-  // selectedSegments: Tsegmento[],
   selectedGroup: number;
-  tags: string[];
+  tags: Tetiqueta[];
   error: string;
 };
 
@@ -21,15 +19,13 @@ type Action = {
   setAngles: (angles: State["angles"]) => void;
   setSegments: (segments: State["segments"]) => void;
   setGroups: (groups: State["groups"]) => void;
-  // setSelectedPoints:(selectedPoints: State['selectedPoints']) => void;
-  // setSelectedAngles:(selectedAngles: State['selectedAngles']) => void;
-  // setSelectedSegments:(selectedSegments: State['selectedSegments']) => void;
   setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
   setTags: (tags: State["tags"]) => void;
   setError: (error: State["error"]) => void;
 };
 
-const useMyStore = create<State & Action>((set) => ({
+const useMyStore = create<State & Action>()(
+  persist((set, get) => ({
   tab: "points",
   setTab: (tab) => set(() => ({ tab: tab })),
   points: [] as Tponto[],
@@ -40,19 +36,18 @@ const useMyStore = create<State & Action>((set) => ({
   setAngles: (angles) => set(() => ({ angles: angles })),
   setSegments: (segments) => set(() => ({ segments: segments })),
   setGroups: (groups) => set(() => ({ groups: groups })),
-  // selectedPoints: [] as Tponto[],
-  // selectedAngles: [] as Tangulo[],
-  // selectedSegments: [] as Tsegmento[],
   selectedGroup: 1 as number,
-  // setSelectedPoints: (selectedPoints)=>set(()=>({selectedPoints: selectedPoints})),
-  // setSelectedAngles: (selectedAngles)=>set(()=>({selectedAngles: selectedAngles})),
-  // setSelectedSegments: (selectedSegments)=>set(()=>({selectedSegments: selectedSegments})),
   setSelectedGroup: (selectedGroup) =>
     set(() => ({ selectedGroup: selectedGroup })),
-  tags: [] as string[],
+  tags: [] as Tetiqueta[],
   setTags: (tags) => set(() => ({ tags: tags })),
   error: "",
   setError: (error) => set(() => ({ error: error })),
-}));
+}),
+{
+  name: "storage"
+})
+
+);
 
 export default useMyStore;

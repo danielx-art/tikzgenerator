@@ -1,5 +1,3 @@
-import useMyStore from "store";
-
 const CodePanel = () => {
 
   return (

@@ -3,9 +3,14 @@ import { PointItem } from "../parts/PointItem";
 import { GroupItem } from "../parts/GroupItem";
 import { AddPointInput } from "../parts/AddPointInput";
 import { AddAndSelectGroup } from "../parts/AddAndSelectGroup";
+import useStore from "import/utils/useStore";
 
 export default function PointsTab() {
-  const { points, groups, selectedGroup } = useMyStore();
+  const store = useStore(useMyStore, (state)=>state);
+
+  if(!store) return;
+
+  const {points, groups, selectedGroup} = store;
 
   return (
     <div className="flex h-full flex-1 flex-col flex-nowrap justify-between">
