@@ -56,6 +56,9 @@ type Tangulo = ReturnType<typeof angulo>;
 type Tentity = Tponto|Tsegmento|Tangulo;
 
 const etiqueta = function(entity: Tentity, value:string = "", id:string, pos: vector = vec(0,0)) {
+
+    entity.etiqueta =  value; //test
+
     return {
         id,
         entityId: entity.id,

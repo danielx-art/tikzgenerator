@@ -32,7 +32,8 @@ const PointItem: React.FC<PropsType> = ({ segment, index }) => {
   return (
     <Item highlight={segment.selected}>
       <div onClick={() => handleClick(index)}>
-        ({segment.p1.coords.x};{segment.p2.coords.y})--({segment.p2.coords.x};{segment.p2.coords.y})
+        
+        {segment.p1.etiqueta.length > 0 ? segment.p1.etiqueta : "(" + segment.p1.coords.x + ";" + segment.p1.coords.y + ")"}---{segment.p2.etiqueta.length > 0 ? segment.p2.etiqueta : "(" + segment.p2.coords.x + ";" + segment.p2.coords.y + ")"}
       </div>
       <div>{tags.find((tag) => tag.entityId == segment.id)?.value || ""}</div>
       <RemoveButton handleClick={() => remove(index)} />

@@ -7,7 +7,7 @@ type PropsType = {
   toggleMessages?: [string, string];
   Options: {
     title: string;
-    action?: () => void;
+    action?: [(() => void)] | [(()=>void), (()=>void)];
   }[];
 };
 
@@ -39,6 +39,22 @@ const PopMenu: React.FC<PropsType> = ({
       setIsOpen(false);
     }, 500);
   };
+
+  const processedOptions = Options.map((option)=>{
+
+    let resultOptions = []
+
+    if(option.action == undefined) {
+      resultOptions.push((()=>{}), (()=>{}));
+    } else if (option.action.length == 1) {
+      resultOptions.push(option.action[0], (()=>{}));
+    } else {
+      resultOptions.push(option.action[0], option.action[1]);
+    }
+
+    return resultOptions as [(()=>void), (()=>void)];
+
+  })
 
   return (
     <div
@@ -91,7 +107,7 @@ const PopMenu: React.FC<PropsType> = ({
             key={index}
             className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap bg-a_dark py-2 pl-4 pr-2 text-sm text-a_light hover:bg-a_dark_highlight hover:text-a_highlight"
             role="menuitem"
-            onClick={option.action}
+            onClick={isChecked ? processedOptions![index]![0] : processedOptions![index]![1]}
           >
             <div>{option.title}</div>
             <svg

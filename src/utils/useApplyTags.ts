@@ -1,11 +1,10 @@
-import myStore, { Action, State } from "import/utils/store";
-import useStore from "./useStore";
+import type { Action, State } from "import/utils/store";
 import { type Tentity, type Tetiqueta, etiqueta } from "public/entidades";
 
 const useApplyTags = (store: (State & Action)) => {
 
   const applyTags = <T extends Tentity>(
-    tagFunction: (i: number) => string,
+    tagFunction: (i: number, entity: T) => string ,
     entities: T[],
     tags: Tetiqueta[],
     setTags: (etiqueta: Tetiqueta[]) => void,
@@ -22,7 +21,7 @@ const useApplyTags = (store: (State & Action)) => {
       let tagOccupied = tags.find((tag) => tag.entityId == currentEntity.id);
 
       //2.find if this tag is already in use, to ensure unique tags
-      let newTagValue = tagFunction(i);
+      let newTagValue = tagFunction(i, currentEntity);
       const alreadyInUse = tags.find((tag) => tag.value == newTagValue) != undefined ? true : false;
 
       if (alreadyInUse) {
