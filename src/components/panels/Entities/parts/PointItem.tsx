@@ -14,7 +14,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
 
   if (!store) return;
 
-  const { points, setPoints, tags } = store;
+  const { points, setPoints, segments, setSegments, angles, setAngles, tags, setTags } = store;
 
   function handlePointClick(index: number) {
     const updatedPoints = [...points];
@@ -24,9 +24,53 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
   }
 
   function removePoint(index: number) {
-    const updatedPoints = [...points];
-    updatedPoints.splice(index, 1);
-    setPoints(updatedPoints);
+
+    const pointIdToRemove = points[index]!.id;
+
+    // Filter out the point from the points array
+    const filteredPoints = points.filter((point) => point.id !== pointIdToRemove);
+  
+    // Filter out related segments and angles, and store their IDs
+    const removedSegmentIds: string[] = [];
+    const removedAngleIds: string[] = [];
+  
+    const filteredSegments = segments.filter((segment) => {
+      if (segment.p1.id === pointIdToRemove || segment.p2.id === pointIdToRemove) {
+        removedSegmentIds.push(segment.id);
+        return false;
+      }
+      return true;
+    });
+  
+    const filteredAngles = angles.filter((angle) => {
+      if (
+        angle.a.id === pointIdToRemove ||
+        angle.b.id === pointIdToRemove ||
+        angle.c.id === pointIdToRemove
+      ) {
+        removedAngleIds.push(angle.id);
+        return false;
+      }
+      return true;
+    });
+  
+    // Filter out tags associated with the removed point, segments, and angles
+    const filteredTags = tags.filter((tag) => {
+      if (
+        tag.entityId === pointIdToRemove ||
+        removedSegmentIds.includes(tag.entityId) ||
+        removedAngleIds.includes(tag.entityId)
+      ) {
+        return false;
+      }
+      return true;
+    });
+  
+    // Update the arrays with the filtered data
+    setPoints(filteredPoints);
+    setSegments(filteredSegments);
+    setAngles(filteredAngles);
+    setTags(filteredTags);
   }
 
   return (
