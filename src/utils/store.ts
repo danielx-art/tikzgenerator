@@ -28,7 +28,7 @@ export type Action = {
   setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
   setTags: (tags: State["tags"]) => void;
   setError: (error: State["error"]) => void;
-  generateId: (type: "point"|"segment"|"angle"|"tag", skip: number) => string;
+  generateId: (type: "point"|"segment"|"angle"|"tag") => string;
 };
 
 const myStore = create<State & Action>()(
@@ -53,12 +53,12 @@ const myStore = create<State & Action>()(
   idCounters: {
     point: 0, segment: 0, angle: 0, tag: 0,
   },
-  generateId: (type, skip) => {
-    const id:string = `${type}_${myStore.getState().idCounters[type] + skip}`;
+  generateId: (type) => {
+    const id:string = `${type}_${myStore.getState().idCounters[type]}`;
     set((state) => ({
       idCounters: {
         ...state.idCounters,
-        [type]: state.idCounters[type] + skip,
+        [type]: state.idCounters[type] + 1,
       },
     }));
     return id;

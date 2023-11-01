@@ -4,7 +4,7 @@ import CustomizationPanel from "import/components/panels/Customization/Customiza
 import PreviewPanel from "import/components/panels/Preview/PreviewPanel";
 import CodePanel from "import/components/panels/Code/CodePanel";
 import { ErrorBanner } from "import/components/micro/ErrorBanner";
-import { Debugger } from "import/components/Debugger";
+import { Debugger } from "import/components/micro/Debugger";
 
 export default function Home() {
   return (

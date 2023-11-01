@@ -20,7 +20,7 @@ export default function AnglesTab() {
       const pA = selectedPoints[i] as Tponto;
       const pB = selectedPoints[i + 1] as Tponto;
       const pC = selectedPoints[i + 2] as Tponto;
-      const newAngleId = generateId("angle", anglesToAdd.length);
+      const newAngleId = generateId("angle");
       const newAngle = angulo(pA, pB, pC, newAngleId);
       anglesToAdd.push(newAngle);
     }

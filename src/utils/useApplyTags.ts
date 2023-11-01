@@ -43,7 +43,7 @@ const useApplyTags = (store: (State & Action)) => {
 
     for (let i = 0; i < recipeNewTags.length; i++) {
       const currentTag = recipeNewTags[i]!;
-      const newTagId = generateId("tag", currentTag.numId - tagsToRemove.length);
+      const newTagId = generateId("tag");
       currentTag.strId = newTagId
     }
 

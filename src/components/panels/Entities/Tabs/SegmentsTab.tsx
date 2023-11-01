@@ -21,13 +21,13 @@ export default function SegmentsTab() {
     for (let i = 0; i < selectedPoints.length - 1; i++) {
       const pA = selectedPoints[i] as Tponto;
       const pB = selectedPoints[i + 1] as Tponto;
-      const newSegId = generateId("segment", segmentsToAdd.length);
+      const newSegId = generateId("segment");
       const newSeg = segmento(pA, pB, newSegId);
       segmentsToAdd.push(newSeg);
     }
 
     if (cyclic) {
-      const closingSegId = generateId("segment", segmentsToAdd.length);
+      const closingSegId = generateId("segment");
       const lastPoint = selectedPoints[selectedPoints.length - 1] as Tponto;
       const firstPoint = selectedPoints[0] as Tponto;
       const closingSeg = segmento(lastPoint, firstPoint, closingSegId);

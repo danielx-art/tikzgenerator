@@ -46,7 +46,7 @@ const AddPointInput = () => {
         const num2 = parseFloat(str2);
 
         if (!isNaN(num1) && !isNaN(num2)) {
-          const newPointId = generateId("point", pointsToAdd.length);
+          const newPointId = generateId("point");
           const newPoint = ponto(
             vec(num1, num2),
             newPointId,
@@ -104,7 +104,7 @@ const AddPointInput = () => {
             parseFloat(preciseCoords.y.toFixed(1)),
           );
 
-          const newPointId = generateId("point", pointsToAdd.length);
+          const newPointId = generateId("point");
           const newPoint = ponto(
             roundedCoords,
             newPointId,

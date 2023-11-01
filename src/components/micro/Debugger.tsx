@@ -10,6 +10,7 @@ export const Debugger = () => {
       <button onClick={() => console.log(store?.segments)}>Segmentos</button>
       <button onClick={() => console.log(store?.angles)}>Angulos</button>
       <button onClick={() => console.log(store?.tags)}>Etiquetas</button>
+      <button onClick={() => console.log(store?.idCounters)}>idCounters</button>
     </div>
   );
 };
