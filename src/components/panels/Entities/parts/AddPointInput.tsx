@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import useMyStore from "store";
+import myStore from "import/utils/store";
 import { ponto, type Tponto } from "public/entidades";
 import { vec } from "public/vetores";
 import useStore from "import/utils/useStore";
 
 const MAXIMUM_NUMBER_OF_POINTS = 3458;
 
-export const AddPointInput = () => {
-  const store = useStore(useMyStore, (state)=>state);
+const AddPointInput = () => {
+  const store = useStore(myStore, (state)=>state);
 
   const [input, setInput] = useState("");
 
@@ -134,3 +134,5 @@ export const AddPointInput = () => {
     </div>
   );
 };
+
+export default AddPointInput;

@@ -1,8 +1,8 @@
 import useStore from "import/utils/useStore";
-import useMyStore from "store";
+import myStore from "import/utils/store";
 
 export const ErrorBanner = () => {
-  const store = useStore(useMyStore, (state)=>state);
+  const store = useStore(myStore, (state)=>state);
 
   return (
     <>

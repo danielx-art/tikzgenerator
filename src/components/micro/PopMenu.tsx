@@ -11,7 +11,7 @@ type PropsType = {
   }[];
 };
 
-export const PopMenu: React.FC<PropsType> = ({
+const PopMenu: React.FC<PropsType> = ({
   title,
   withToggle,
   toggleMessages,
@@ -50,10 +50,10 @@ export const PopMenu: React.FC<PropsType> = ({
         <button
           onClick={toggleDropdown}
           type="button"
-          className={`w-fit rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-a_aux focus:ring-offset-2 focus:ring-offset-a_aux ${
+          className={`w-fit rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-a_aux focus:ring-offset-2 focus:ring-offset-a_aux ${
             isOpen
               ? "bg-a_dark_highlight text-a_highlight"
-              : "bg-a_light  text-a_dark ring-1 ring-a_dark"
+              : "bg-a_light  text-a_dark"
           }`}
           id="options-menu"
           aria-haspopup="listbox"
@@ -114,3 +114,5 @@ export const PopMenu: React.FC<PropsType> = ({
     </div>
   );
 };
+
+export default PopMenu;

@@ -1,4 +1,4 @@
-import useMyStore from "store";
+import myStore from "import/utils/store";
 import { RemoveButton } from "../../../micro/RemoveButton";
 import useStore from "import/utils/useStore";
 
@@ -8,12 +8,12 @@ type PropsType = {
   children?: React.ReactNode;
 };
 
-export const GroupItem: React.FC<PropsType> = ({
+const GroupItem: React.FC<PropsType> = ({
   groupId,
   selected,
   children,
 }) => {
-  const store = useStore(useMyStore, (state)=>state);
+  const store = useStore(myStore, (state)=>state);
 
   if(!store) return;
 
@@ -58,3 +58,5 @@ export const GroupItem: React.FC<PropsType> = ({
     </div>
   );
 };
+
+export default GroupItem;

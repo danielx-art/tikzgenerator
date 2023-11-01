@@ -2,7 +2,7 @@ import { Tponto, Tsegmento, Tangulo, Tetiqueta } from "public/entidades";
 import { create } from "zustand";
 import { persist } from 'zustand/middleware'
 
-type State = {
+export type State = {
   tab: string;
   points: Tponto[];
   angles: Tangulo[];
@@ -13,7 +13,7 @@ type State = {
   error: string;
 };
 
-type Action = {
+export type Action = {
   setTab: (tab: State["tab"]) => void;
   setPoints: (points: State["points"]) => void;
   setAngles: (angles: State["angles"]) => void;
@@ -24,7 +24,7 @@ type Action = {
   setError: (error: State["error"]) => void;
 };
 
-const useMyStore = create<State & Action>()(
+const myStore = create<State & Action>()(
   persist((set, get) => ({
   tab: "points",
   setTab: (tab) => set(() => ({ tab: tab })),
@@ -50,4 +50,4 @@ const useMyStore = create<State & Action>()(
 
 );
 
-export default useMyStore;
+export default myStore;

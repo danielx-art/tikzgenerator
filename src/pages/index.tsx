@@ -14,10 +14,10 @@ export default function Home() {
         <meta name="description" content="Generates TikZ scripts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="md:no-scrollbar flex h-full flex-col flex-nowrap items-center justify-start overflow-auto bg-a_light font-jost md:max-h-full md:flex-wrap">
+      <div className="md:no-scrollbar flex h-full flex-col flex-nowrap items-center justify-start overflow-auto bg-a_light font-jost md:max-h-full md:flex-wrap p-4">
         <ErrorBanner />
         <EntitiesPanel />
-        <CustomizationPanel />
+        {/* <CustomizationPanel /> */}
         {/* <PreviewPanel /> */}
         {/* <CodePanel /> */}
         <Debugger />

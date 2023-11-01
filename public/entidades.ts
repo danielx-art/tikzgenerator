@@ -3,7 +3,7 @@ import { vec, vector } from "./vetores";
 const ponto = function(a: vector, id: string, group: number = 1 ) {
     return ({
         id,
-        vec: a,
+        coords: a,
         etiqueta: "",
         visivel: true,
         tamanho: 0,
@@ -15,8 +15,8 @@ const ponto = function(a: vector, id: string, group: number = 1 ) {
 type Tponto = ReturnType<typeof ponto>;
 
 const segmento = function(a: Tponto, b:Tponto, id: string) {
-    const comprimento = a.vec.dist(b.vec);
-    const normal = vec().copy(a.vec).cross(vec(0,0,1)).setMag(1);
+    const comprimento = a.coords.dist(b.coords);
+    const normal = vec().copy(a.coords).cross(vec(0,0,1)).setMag(1);
     return({
         id,
         p1: a,
@@ -35,8 +35,8 @@ const segmento = function(a: Tponto, b:Tponto, id: string) {
 type Tsegmento = ReturnType<typeof segmento>;
 
 const angulo = function(a: Tponto, b: Tponto, c: Tponto, id: string,) {
-    const ba = vec().copy(a.vec).sub(b.vec);
-    const bc = vec().copy(c.vec).sub(b.vec);
+    const ba = vec().copy(a.coords).sub(b.coords);
+    const bc = vec().copy(c.coords).sub(b.coords);
     const valor = ba.angleBetween(bc);
     const valorExt = 2*Math.PI - valor;
     return ({

@@ -8,7 +8,6 @@ export const numericalTags = (i: number) => {
   return `P${i}`;
 }
 
-
 function alphabeticalTag(i: number, alphabet: string): string {
   const len = alphabet.length;
 
@@ -17,5 +16,4 @@ function alphabeticalTag(i: number, alphabet: string): string {
     alphabet[i % len]
   );
 }
-
 

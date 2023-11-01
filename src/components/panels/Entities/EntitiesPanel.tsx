@@ -1,15 +1,15 @@
-import useMyStore from "store";
+import myStore from "import/utils/store";
 import PointsTab from "./Tabs/PointsTab";
 import SegmentsTab from "./Tabs/SegmentsTab";
 import AnglesTab from "./Tabs/AnglesTab";
 import useStore from "import/utils/useStore";
 
 const EntitiesPanel = () => {
-  const store = useStore(useMyStore, (state) => state);
+  const store = useStore(myStore, (state) => state);
 
   return (
     store && (
-      <div className="h-full w-full flex-1 self-start p-4 sm:w-1/2 md:h-1/2 md:w-1/3">
+      <div className="h-full w-full flex-1 self-start flex flex-col sm:w-1/2 md:h-1/2 md:w-1/3">
         <div className="grid h-fit w-full grid-cols-3 gap-0.5 text-sm">
           <div
             className={`${
@@ -42,7 +42,7 @@ const EntitiesPanel = () => {
             Ângulos
           </div>
         </div>
-        <div className="flex h-full w-full flex-col rounded-b-lg border-2 border-t-0 border-a_neutral bg-a_light p-2">
+        <div className="flex-1 w-full flex-col rounded-b-lg border-2 border-t-0 border-a_neutral bg-a_light p-2">
           {store.tab == "points" && <PointsTab />}
           {store.tab == "segments" && <SegmentsTab />}
           {store.tab == "angles" && <AnglesTab />}

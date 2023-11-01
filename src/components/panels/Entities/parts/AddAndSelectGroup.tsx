@@ -1,8 +1,8 @@
 import useStore from "import/utils/useStore";
-import useMyStore from "store";
+import myStore from "import/utils/store";
 
-export const AddAndSelectGroup = () => {
-  const store = useStore(useMyStore, (state) => state);
+const AddAndSelectGroup = () => {
+  const store = useStore(myStore, (state) => state);
 
   function addGroup() {
     const numGroups = store?.groups.length || 0;
@@ -47,3 +47,5 @@ export const AddAndSelectGroup = () => {
     )
   );
 };
+
+export default AddAndSelectGroup;

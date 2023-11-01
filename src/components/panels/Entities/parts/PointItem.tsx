@@ -1,19 +1,20 @@
 import { Tponto } from "public/entidades";
-import useMyStore from "store";
+import myStore from "import/utils/store";
 import { RemoveButton } from "../../../micro/RemoveButton";
 import useStore from "import/utils/useStore";
+import Item from "./Item";
 
 type PropsType = {
   point: Tponto;
   index: number;
 };
 
-export const PointItem: React.FC<PropsType> = ({ point, index }) => {
-  const store = useStore(useMyStore, (state)=>state);
+const PointItem: React.FC<PropsType> = ({ point, index }) => {
+  const store = useStore(myStore, (state) => state);
 
-  if(!store) return;
+  if (!store) return;
 
-  const {points, setPoints, tags} = store;
+  const { points, setPoints, tags } = store;
 
   function handlePointClick(index: number) {
     const updatedPoints = [...points];
@@ -29,20 +30,14 @@ export const PointItem: React.FC<PropsType> = ({ point, index }) => {
   }
 
   return (
-    <div
-      className={`${
-        point.selected
-          ? "border-1 border-dashed border-a_highlight bg-white bg-opacity-20"
-          : null
-      } flex w-full flex-row flex-nowrap justify-stretch text-sm text-a_highlight`}
-    >
-      <div className="flex w-full select-none flex-row justify-between py-1 pl-4 pr-2">
-        <div onClick={() => handlePointClick(index)}>
-          {point.vec.x};{point.vec.y}
-        </div>
-        <div>{tags.find(tag => tag.entityId == point.id)?.value || ""}</div>
-        <RemoveButton handleClick={() => removePoint(index)} />
+    <Item highlight={point.selected}>
+      <div onClick={() => handlePointClick(index)}>
+        {point.coords.x};{point.coords.y}
       </div>
-    </div>
+      <div>{tags.find((tag) => tag.entityId == point.id)?.value || ""}</div>
+      <RemoveButton handleClick={() => removePoint(index)} />
+    </Item>
   );
 };
+
+export default PointItem;

@@ -1,12 +1,15 @@
-import useMyStore from "store";
-import { PointItem } from "../parts/PointItem";
-import { GroupItem } from "../parts/GroupItem";
-import { AddPointInput } from "../parts/AddPointInput";
-import { AddAndSelectGroup } from "../parts/AddAndSelectGroup";
+import myStore from "import/utils/store";
+import PointItem from "../parts/PointItem";
+import GroupItem from "../parts/GroupItem";
+import AddPointInput from "../parts/AddPointInput";
+import AddAndSelectGroup from "../parts/AddAndSelectGroup";
 import useStore from "import/utils/useStore";
+import AutoTagPoints from "../parts/AutoTagPoints";
+import ItemsList from "../parts/ItemsList";
 
 export default function PointsTab() {
-  const store = useStore(useMyStore, (state)=>state);
+
+  const store = useStore(myStore, (state)=>state);
 
   if(!store) return;
 
@@ -14,7 +17,7 @@ export default function PointsTab() {
 
   return (
     <div className="flex h-full flex-1 flex-col flex-nowrap justify-between">
-      <div className="flex-1 rounded-md bg-a_neutral p-1 md:overflow-y-auto">
+      <ItemsList>
         {groups.map((groupId) => (
           <GroupItem
             groupId={groupId}
@@ -28,9 +31,10 @@ export default function PointsTab() {
               ))}
           </GroupItem>
         ))}
-      </div>
+      </ItemsList>
       <AddPointInput />
       <AddAndSelectGroup />
+      <AutoTagPoints />
     </div>
   );
 }
