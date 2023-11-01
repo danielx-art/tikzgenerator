@@ -24,13 +24,14 @@ export default function AutoTagAngles() {
         {
           title: "Medida (radianos)",
           action: [
-            () => applyTags(arcTags, store.angles, store.tags, store.setTags),
+            () => applyTags(arcTags, store.angles, store.tags, store.setTags, store.generateId),
             () =>
               applyTags(
                 arcTags,
                 store.angles.filter((angle) => angle.selected),
                 store.tags,
                 store.setTags,
+                store.generateId
               ),
           ],
         },
@@ -43,6 +44,7 @@ export default function AutoTagAngles() {
                 store.angles,
                 store.tags,
                 store.setTags,
+                store.generateId
               ),
             () =>
               applyTags(
@@ -50,6 +52,7 @@ export default function AutoTagAngles() {
                 store.angles.filter((angle) => angle.selected),
                 store.tags,
                 store.setTags,
+                store.generateId
               ),
           ],
         },
@@ -62,6 +65,7 @@ export default function AutoTagAngles() {
                 store.angles,
                 store.tags,
                 store.setTags,
+                store.generateId
               ),
             () =>
               applyTags(
@@ -69,6 +73,7 @@ export default function AutoTagAngles() {
                 store.angles.filter((angle) => angle.selected),
                 store.tags,
                 store.setTags,
+                store.generateId
               ),
           ],
         },

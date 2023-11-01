@@ -45,7 +45,7 @@ const Item: React.FC<PropsType> = ({ highlight, children }) => {
         highlight ? "bg-white bg-opacity-20" : null
       } flex w-full flex-row flex-nowrap justify-stretch text-sm text-a_highlight`}
     >
-      <div className="flex flex-1 select-none flex-row justify-between py-1 pl-4 pr-2">
+      <div className="flex-1 select-none py-1 pl-4 pr-2 grid grid-cols-[1fr_1fr_auto]">
         {children}
       </div>
     </div>

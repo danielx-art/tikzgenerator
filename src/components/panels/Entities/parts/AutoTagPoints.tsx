@@ -26,27 +26,29 @@ export default function AutoTagPoints() {
               store.points,
               store.tags,
               store.setTags,
+              store.generateId
             ), 
             () => applyTags(
               alphabeticalLatinTags,
               store.points.filter(point=>point.selected),
               store.tags,
               store.setTags,
+              store.generateId
             )
           ],
         },
         { 
           title: "Coordenadas (X;Y)" ,
           action: [
-            ()=>applyTags(coordTags, store.points, store.tags, store.setTags),
-            ()=>applyTags(coordTags, store.points.filter(point=>point.selected), store.tags, store.setTags),
+            ()=>applyTags(coordTags, store.points, store.tags, store.setTags, store.generateId),
+            ()=>applyTags(coordTags, store.points.filter(point=>point.selected), store.tags, store.setTags,store.generateId),
           ]
         },
         {
           title: "P1...Pn",
           action: [
-            () => applyTags(numericalTags, store.points, store.tags, store.setTags),
-            () => applyTags(numericalTags, store.points.filter(point=>point.selected), store.tags, store.setTags)
+            () => applyTags(numericalTags, store.points, store.tags, store.setTags, store.generateId),
+            () => applyTags(numericalTags, store.points.filter(point=>point.selected), store.tags, store.setTags, store.generateId)
           ],
         },
       ]}

@@ -6,10 +6,11 @@ const useApplyTags = (store: (State & Action)) => {
   const applyTags = <T extends Tentity>(
     tagFunction: (i: number, entity: T) => string ,
     entities: T[],
-    tags: Tetiqueta[],
-    setTags: (etiqueta: Tetiqueta[]) => void,
+    tags: State["tags"],
+    setTags: Action["setTags"],
+    generateId: Action["generateId"],
   ) => {
-    let tagsToAdd = [] as Tetiqueta[];
+    let recipeNewTags = [] as {entity: Tentity, value: string, numId:number, strId?: string}[];
     let tagsToRemove = [] as Tetiqueta[];
 
     let foundError = false;
@@ -34,16 +35,16 @@ const useApplyTags = (store: (State & Action)) => {
         tagsToRemove.push(tagOccupied)
       }
 
-      const newTagId = `tag-${tags.length + tagsToAdd.length}`;
-      const newTag = etiqueta(currentEntity, newTagValue, newTagId);
-      tagsToAdd.push(newTag);
+      //const newTagId = generateId("tag", tagsToAdd.length);
+      const newTagProps = {entity: currentEntity, value: newTagValue, numId: recipeNewTags.length};
+      //const newTag = etiqueta(currentEntity, newTagValue, newTagId);
+      recipeNewTags.push(newTagProps);
     }
 
-    for (let i = 0; i < tagsToAdd.length; i++) {
-      const currentTag = tagsToAdd[i] as Tetiqueta;
-      const currentTagNumberStr = currentTag.id.split("-")[1] as string;
-      const currentTagNumber = parseInt(currentTagNumberStr);
-      currentTag.id = `tag-${currentTagNumber - tagsToRemove.length}`;
+    for (let i = 0; i < recipeNewTags.length; i++) {
+      const currentTag = recipeNewTags[i]!;
+      const newTagId = generateId("tag", currentTag.numId - tagsToRemove.length);
+      currentTag.strId = newTagId
     }
 
     const updatedTags = [] as Tetiqueta[];
@@ -58,6 +59,8 @@ const useApplyTags = (store: (State & Action)) => {
       }
       updatedTags.push(currentTag);
     }
+
+    const tagsToAdd = recipeNewTags.map((recipe)=>etiqueta(recipe.entity, recipe.value, recipe.strId!))
 
     updatedTags.push(...tagsToAdd);
 

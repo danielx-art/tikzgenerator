@@ -12,7 +12,7 @@ export default function SegmentsTab() {
 
   if (!store) return;
 
-  const { points, segments, setSegments } = store;
+  const { points, segments, setSegments, generateId } = store;
 
   const conectPoints = () => {
     const selectedPoints = points.filter((point) => point.selected);
@@ -21,13 +21,13 @@ export default function SegmentsTab() {
     for (let i = 0; i < selectedPoints.length - 1; i++) {
       const pA = selectedPoints[i] as Tponto;
       const pB = selectedPoints[i + 1] as Tponto;
-      const newSegId = `segment-${segments.length + segmentsToAdd.length}`;
+      const newSegId = generateId("segment", segmentsToAdd.length);
       const newSeg = segmento(pA, pB, newSegId);
       segmentsToAdd.push(newSeg);
     }
 
     if (cyclic) {
-      const closingSegId = `segment-${segments.length + segmentsToAdd.length}`;
+      const closingSegId = generateId("segment", segmentsToAdd.length);
       const lastPoint = selectedPoints[selectedPoints.length - 1] as Tponto;
       const firstPoint = selectedPoints[0] as Tponto;
       const closingSeg = segmento(lastPoint, firstPoint, closingSegId);
