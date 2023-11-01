@@ -72,7 +72,7 @@ const etiqueta = function (
   id: string,
   pos: vector = vec(0, 0),
 ) {
-  entity.etiqueta = value; //test
+  entity.etiqueta = value; //test - it is working!
 
   return {
     id,
