@@ -4,6 +4,7 @@ import { type Tponto, type Tsegmento, segmento } from "public/entidades";
 import { useState } from "react";
 import ItemsList from "../parts/ItemsList";
 import SegmentItem from "../parts/SegmentItem";
+import AutoTagSegments from "../parts/AutoTagSegments";
 
 export default function SegmentsTab() {
   const store = useStore(myStore, (state) => state);
@@ -38,17 +39,17 @@ export default function SegmentsTab() {
   };
 
   return (
-    <div className="flex h-full flex-col flex-nowrap">
-      <div className="m-2 rounded-sm p-2 text-sm text-a_neutral ">
+    <div className="flex flex-1 flex-col flex-nowrap justify-between gap-2">
+      <div className="rounded-sm p-2 text-sm text-a_neutral ">
         Selecione dois ou mais pontos na aba "Pontos" e clique em "Conectar!".
         Múltiplos pontos serão conectados na ordem que estão na lista.
       </div>
-      <div
-        className="my-4 w-fit self-center rounded-sm bg-a_dark px-4 py-2 text-a_highlight outline-1"
+      <button
+        className="mb-2 w-fit self-center rounded-sm bg-a_dark px-4 py-2 text-a_highlight outline-1"
         onClick={conectPoints}
       >
         Conectar!
-      </div>
+      </button>
       <ItemsList>
         {segments.map((segment, index) => (
           <SegmentItem
@@ -58,6 +59,7 @@ export default function SegmentsTab() {
           />
         ))}
       </ItemsList>
+      <AutoTagSegments />
     </div>
   );
 }

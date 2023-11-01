@@ -8,15 +8,14 @@ import AutoTagPoints from "../parts/AutoTagPoints";
 import ItemsList from "../parts/ItemsList";
 
 export default function PointsTab() {
+  const store = useStore(myStore, (state) => state);
 
-  const store = useStore(myStore, (state)=>state);
+  if (!store) return;
 
-  if(!store) return;
-
-  const {points, groups, selectedGroup} = store;
+  const { points, groups, selectedGroup } = store;
 
   return (
-    <div className="flex h-full flex-1 flex-col flex-nowrap justify-between">
+    <div className="flex flex-1 flex-col flex-nowrap justify-between gap-2">
       <ItemsList>
         {groups.map((groupId) => (
           <GroupItem

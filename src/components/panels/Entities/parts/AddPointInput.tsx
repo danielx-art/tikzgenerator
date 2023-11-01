@@ -3,17 +3,15 @@ import myStore from "import/utils/store";
 import { ponto, type Tponto } from "public/entidades";
 import { vec } from "public/vetores";
 import useStore from "import/utils/useStore";
-
-const MAXIMUM_NUMBER_OF_POINTS = 3458;
+import { MAXIMUM_NUMBER_OF_POINTS } from "public/generalConfigs";
 
 const AddPointInput = () => {
-  const store = useStore(myStore, (state)=>state);
+  const store = useStore(myStore, (state) => state);
 
   const [input, setInput] = useState("");
 
   function addPoint() {
-
-    if(!store) return;
+    if (!store) return;
 
     if (store.points.length > MAXIMUM_NUMBER_OF_POINTS) {
       store.setError(
@@ -44,14 +42,21 @@ const AddPointInput = () => {
         const num2 = parseFloat(str2);
 
         if (!isNaN(num1) && !isNaN(num2)) {
-          const newPointId = `point-${store.points.length + pointsToAdd.length}`;
-          const newPoint = ponto(vec(num1, num2), newPointId, store.selectedGroup);
+          const newPointId = `point-${
+            store.points.length + pointsToAdd.length
+          }`;
+          const newPoint = ponto(
+            vec(num1, num2),
+            newPointId,
+            store.selectedGroup,
+          );
           pointsToAdd.push(newPoint);
           continue;
         }
 
         store.setError(
-          store.error + `As coordenadas do ponto "${substring}" devem ser números. `,
+          store.error +
+            `As coordenadas do ponto "${substring}" devem ser números. `,
         );
       } else if (substring.includes(":")) {
         const selectedPoints = store.points.filter((point) => point.selected);
@@ -90,21 +95,28 @@ const AddPointInput = () => {
           //new coord
           const preciseCoords = vec(num1, 0)
             .rotate(parseFloat(((num2 * Math.PI) / 180).toFixed(2)))
-            .add(referencePoint.vec);
+            .add(referencePoint.coords);
 
           const roundedCoords = vec(
             parseFloat(preciseCoords.x.toFixed(1)),
             parseFloat(preciseCoords.y.toFixed(1)),
           );
-          
-          const newPointId = `point-${store.points.length + pointsToAdd.length}`;
-          const newPoint = ponto(roundedCoords, newPointId, store.selectedGroup);
+
+          const newPointId = `point-${
+            store.points.length + pointsToAdd.length
+          }`;
+          const newPoint = ponto(
+            roundedCoords,
+            newPointId,
+            store.selectedGroup,
+          );
           pointsToAdd.push(newPoint);
           continue;
         }
 
         store.setError(
-          store.error + `As coordenadas do ponto "${substring}" devem ser números. `,
+          store.error +
+            `As coordenadas do ponto "${substring}" devem ser números. `,
         );
       } else {
         store.setError(
