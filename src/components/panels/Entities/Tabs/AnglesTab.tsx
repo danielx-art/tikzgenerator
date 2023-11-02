@@ -10,10 +10,15 @@ export default function AnglesTab() {
 
   if (!store) return;
 
-  const { points, angles, setAngles, generateId } = store;
+  const { selectedPoints, angles, setAngles, generateId, setError } = store;
 
   const makeAngles = () => {
-    const selectedPoints = points.filter((point) => point.selected);
+
+    if(selectedPoints.length < 3) {
+      setError("Você precisa selecionar no mínimo três pontos para criar um ângulo.");
+      return;
+    } 
+
     let anglesToAdd = [] as Tangulo[];
 
     for (let i = 0; i < selectedPoints.length - 2; i++) {
@@ -31,6 +36,15 @@ export default function AnglesTab() {
 
   return (
     <div className="flex flex-1 flex-col flex-nowrap justify-between gap-2">
+      <div className="rounded-sm p-2 text-sm text-a_neutral ">
+        Selecione três ou mais pontos e clique em "Conectar!".
+      </div>
+      <button
+        className="mb-2 w-fit self-center rounded-sm bg-a_dark px-4 py-2 text-a_highlight outline-1"
+        onClick={makeAngles}
+      >
+        Conectar!
+      </button>
       <ItemsList>
         {angles.map((angle, index) => (
           <AngleItem angle={angle} index={index} key={"angle_" + index} />

@@ -14,13 +14,25 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
 
   if (!store) return;
 
-  const { points, setPoints, segments, setSegments, angles, setAngles, tags, setTags } = store;
+  const { points, setPoints, segments, setSegments, angles, setAngles, tags, setTags, selectedPoints, setSelectedPoints } = store;
 
   function handlePointClick(index: number) {
+
     const updatedPoints = [...points];
     let thisPoint = updatedPoints[index] as Tponto;
+
+    const isItAlreadySelected = thisPoint.selected;
+    
+    if(isItAlreadySelected) {
+      setSelectedPoints([...selectedPoints].filter(point=>point.id != thisPoint.id))
+    } else {
+      console.log("hi"); //debugg
+      setSelectedPoints([...selectedPoints, thisPoint])
+    }
+
     thisPoint.selected = !thisPoint.selected;
     setPoints(updatedPoints);
+    
   }
 
   function removePoint(index: number) {
@@ -53,6 +65,8 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
       }
       return true;
     });
+
+    const filteredSelectedPoints = selectedPoints.filter((selectedPoint)=> selectedPoint.id != pointIdToRemove);
   
     // Filter out tags associated with the removed point, segments, and angles
     const filteredTags = tags.filter((tag) => {
@@ -71,6 +85,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
     setSegments(filteredSegments);
     setAngles(filteredAngles);
     setTags(filteredTags);
+    setSelectedPoints(filteredSelectedPoints);
   }
 
   return (
@@ -79,6 +94,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
         {point.coords.x};{point.coords.y}
       </div>
       <div>{tags.find((tag) => tag.entityId == point.id)?.value || ""}</div>
+      {point.selected && <div className="mr-2 ml-1 text-xs rounded-full bg-a_highlight text-a_dark flex justify-center items-center h-4 w-4">{selectedPoints.findIndex(selpt=>selpt.id==point.id)+1}</div>}
       <RemoveButton handleClick={() => removePoint(index)} />
     </Item>
   );

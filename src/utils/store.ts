@@ -16,7 +16,8 @@ export type State = {
     segment: number,
     angle: number,
     tag: number
-  }
+  },
+  selectedPoints: Tponto[];
 };
 
 export type Action = {
@@ -29,6 +30,7 @@ export type Action = {
   setTags: (tags: State["tags"]) => void;
   setError: (error: State["error"]) => void;
   generateId: (type: "point"|"segment"|"angle"|"tag") => string;
+  setSelectedPoints: (selectedPoints: State["selectedPoints"])=>void;
 };
 
 const myStore = create<State & Action>()(
@@ -54,7 +56,7 @@ const myStore = create<State & Action>()(
     point: 0, segment: 0, angle: 0, tag: 0,
   },
   generateId: (type) => {
-    const id:string = `${type}_${myStore.getState().idCounters[type]}`;
+    const id:string = `${type}_${get().idCounters[type]}`;
     set((state) => ({
       idCounters: {
         ...state.idCounters,
@@ -62,7 +64,9 @@ const myStore = create<State & Action>()(
       },
     }));
     return id;
-  }
+  },
+  selectedPoints: [] as Tponto[],
+  setSelectedPoints: (selectedPoints)=>set(()=>({selectedPoints: selectedPoints})),
 }),
 {
   name: "storage"

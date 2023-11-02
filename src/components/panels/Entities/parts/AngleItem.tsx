@@ -3,6 +3,7 @@ import myStore from "import/utils/store";
 import { RemoveButton } from "../../../micro/RemoveButton";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
+import { roundToDecimalPlaces } from "import/utils/misc";
 
 type PropsType = {
   angle: Tangulo;
@@ -32,7 +33,7 @@ const Angle: React.FC<PropsType> = ({ angle, index }) => {
   return (
     <Item highlight={angle.selected}>
       <div onClick={() => handleClick(index)}>
-        {angle.etiqueta.length > 0 ? angle.etiqueta : angle.valor}
+        {roundToDecimalPlaces(angle.valor*180/Math.PI)+"°"}
       </div>
       <div>{tags.find((tag) => tag.entityId == angle.id)?.value || ""}</div>
       <RemoveButton handleClick={() => remove(index)} />
