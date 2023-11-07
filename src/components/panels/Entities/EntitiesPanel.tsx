@@ -10,7 +10,7 @@ const EntitiesPanel = () => {
 
   return (
     store && (
-      <div className="flex w-full flex-1 flex-col self-start sm:w-1/2 md:h-1/2 md:w-1/3">
+      <div className="flex w-full flex-1 flex-col self-start min-h-full">
         <TabsNavigation />
         <div className="flex w-full flex-1 flex-col rounded-b-lg border-2 border-t-0 border-a_neutral bg-a_light p-2">
           {store.tab == "points" && <PointsTab />}

@@ -8,6 +8,7 @@ import PopMenu from "../../micro/PopMenu";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import useApplyTags from "import/utils/useApplyTags";
+import Slider from "import/components/micro/Slider";
 
 const CustomizationPanel = () => {
   const store = useStore(myStore, (state) => state);
@@ -15,9 +16,15 @@ const CustomizationPanel = () => {
   if (!store) return;
 
   return (
-    <div className="h-1/2 w-full self-start p-4 text-a_dark sm:w-1/2 md:w-1/3">
-      <div className="w-fit">Customização</div>
-      <div className="flex h-[calc(100%-2rem)] w-full flex-col items-start justify-start gap-4 rounded-b-lg border-2 border-t-0 border-a_neutral bg-a_light p-4"></div>
+    <div className="flex w-full flex-col min-h-full">
+      <div className="flex flex-1 w-full flex-col items-start justify-start gap-4 p-4">
+        <div>
+          <div>Inserir ponto em segmento</div>
+          <div>
+            <Slider min={0} max={1} onChange={()=>{}} getValueFromPosition={(n)=>n} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
