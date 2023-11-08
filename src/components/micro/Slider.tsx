@@ -18,8 +18,8 @@ const Slider: React.FC<SliderProps> = ({
   onChange,
   valueTextFunction = (value) => `${value}`,
   getValueFromPosition,
-}) => {
-  // Slider state
+}) => { 
+
   const [value, setValue] = useState(initialValue);
 
   // Ref for the slider track for calculating relative positions
