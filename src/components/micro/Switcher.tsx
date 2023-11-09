@@ -19,7 +19,7 @@ const Switcher: React.FC<PropsType> = ({
     <label className="isolate flex cursor-pointer select-none items-center px-2 py-2">
       <div
         className={`${
-          isChecked ? "text-a_highlight" : "text-a_light"
+          isChecked ? "text-a_highlight" : "text-a_neutral"
         } px-2 text-sm`}
       >
         {messageOne}
@@ -41,7 +41,7 @@ const Switcher: React.FC<PropsType> = ({
       </div>
       <div
         className={`${
-          !isChecked ? "text-a_highlight" : "text-a_light"
+          !isChecked ? "text-a_highlight" : "text-a_neutral"
         } whitespace-nowrap px-2 text-sm`}
       >
         {messageTwo}

@@ -44,7 +44,7 @@ export const Hyperb_Linear_Hyperb = (
   const m = (toB - toA) / (stepFromB - stepFromA);
 
   if (x > stepFromB) {
-    const K = ((topAssymptote - toB) ** 2) / m;
+    const K = (topAssymptote - toB) ** 2 / m;
     const x0 = (m * stepFromB - topAssymptote + toB) / m;
     const topHyperbola = -K / (x - x0) + topAssymptote;
     return topHyperbola;
@@ -60,7 +60,7 @@ export const Hyperb_Linear_Hyperb = (
   return ((toB - toA) / (stepFromB - stepFromA)) * (x - stepFromA) + toA;
 };
 
-export const safe_inverse_Hyperb_Linear_Hyperb = (
+export const capped_inverse_Hyperb_Linear_Hyperb = (
   x: number,
   stepFromA: number,
   toA: number,
@@ -69,25 +69,57 @@ export const safe_inverse_Hyperb_Linear_Hyperb = (
   leftAssymptote: number,
   bottomAssymptote: number,
   rightAssymptote: number,
-  topAssymptote: number
+  topAssymptote: number,
 ) => {
-  
   const m = (toB - toA) / (stepFromB - stepFromA);
   let x0, K, t;
 
-  if (x <= leftAssymptote ) return bottomAssymptote;
-  if (x >= rightAssymptote ) return topAssymptote;
+  if (x <= leftAssymptote) return bottomAssymptote;
+  if (x >= rightAssymptote) return topAssymptote;
 
   if (x > toB) {
     K = (rightAssymptote - toB) ** 2 / m;
     x0 = (m * stepFromB - rightAssymptote + toB) / m;
-    const result =  x0 - K / (x - rightAssymptote);
-    return result > topAssymptote ? topAssymptote : result
+    const result = x0 - K / (x - rightAssymptote);
+    return result > topAssymptote ? topAssymptote : result;
   } else if (x < toA) {
     K = (leftAssymptote - toA) ** 2 / m;
     x0 = (m * stepFromA - leftAssymptote + toA) / m;
     const result = x0 - K / (x - leftAssymptote);
     return result < bottomAssymptote ? bottomAssymptote : result;
+  } else {
+    return ((x - toA) * (stepFromB - stepFromA)) / (toB - toA) + stepFromA;
+  }
+};
+
+export const inverse_Hyperb_Linear_Hyperb = (
+  x: number,
+  stepFromA: number,
+  toA: number,
+  stepFromB: number,
+  toB: number,
+  leftAssymptote: number,
+  rightAssymptote: number,
+) => {
+  const m = (toB - toA) / (stepFromB - stepFromA);
+  let x0, K, t;
+
+  if (x <= leftAssymptote) {
+    return -Infinity;
+  } else if (x >= rightAssymptote) {
+    return Infinity;
+  }
+
+  if (x > toB) {
+    K = (rightAssymptote - toB) ** 2 / m;
+    x0 = (m * stepFromB - rightAssymptote + toB) / m;
+    const result = x0 - K / (x - rightAssymptote);
+    return result;
+  } else if (x < toA) {
+    K = (leftAssymptote - toA) ** 2 / m;
+    x0 = (m * stepFromA - leftAssymptote + toA) / m;
+    const result = x0 - K / (x - leftAssymptote);
+    return result;
   } else {
     return ((x - toA) * (stepFromB - stepFromA)) / (toB - toA) + stepFromA;
   }

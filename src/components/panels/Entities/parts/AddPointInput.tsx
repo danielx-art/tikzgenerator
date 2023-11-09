@@ -10,9 +10,10 @@ const AddPointInput = () => {
 
   const [input, setInput] = useState("");
 
-  if(!store) return;
+  if (!store) return;
 
-  const {points, setPoints, selectedGroup, error, setError, generateId } = store;
+  const { points, setPoints, selectedGroup, error, setError, generateId } =
+    store;
 
   function addPoint() {
     if (!store) return;
@@ -47,18 +48,13 @@ const AddPointInput = () => {
 
         if (!isNaN(num1) && !isNaN(num2)) {
           const newPointId = generateId("point");
-          const newPoint = ponto(
-            vec(num1, num2),
-            newPointId,
-            selectedGroup,
-          );
+          const newPoint = ponto(vec(num1, num2), newPointId, selectedGroup);
           pointsToAdd.push(newPoint);
           continue;
         }
 
         setError(
-          error +
-            `As coordenadas do ponto "${substring}" devem ser números. `,
+          error + `As coordenadas do ponto "${substring}" devem ser números. `,
         );
       } else if (substring.includes(":")) {
         const selectedPoints = points.filter((point) => point.selected);
@@ -105,18 +101,13 @@ const AddPointInput = () => {
           );
 
           const newPointId = generateId("point");
-          const newPoint = ponto(
-            roundedCoords,
-            newPointId,
-            selectedGroup,
-          );
+          const newPoint = ponto(roundedCoords, newPointId, selectedGroup);
           pointsToAdd.push(newPoint);
           continue;
         }
 
         setError(
-          error +
-            `As coordenadas do ponto "${substring}" devem ser números. `,
+          error + `As coordenadas do ponto "${substring}" devem ser números. `,
         );
       } else {
         setError(
@@ -135,7 +126,7 @@ const AddPointInput = () => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        className="w-full rounded-sm bg-a_highlight px-2 py-1 text-a_dark focus:outline-none"
+        className="w-full rounded-sm bg-a_highlight px-2 py-1 text-a_dark focus:outline-a_aux"
       />
       <div
         className="rounded-sm bg-a_dark p-2 text-a_highlight outline-1"
