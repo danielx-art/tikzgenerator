@@ -44,7 +44,6 @@ const useApplyTags = (store: State & Action) => {
     const updatedTags = [...tags].filter((tag)=>{
       const toBeRemoved = tagsToRemove.find(tagToRemove=>tagToRemove.id == tag.id);
       if(toBeRemoved) {
-        console.log(toBeRemoved.value)
         return false;
       } else {
         return true;

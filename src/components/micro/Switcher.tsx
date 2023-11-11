@@ -5,6 +5,7 @@ type PropsType = {
   setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
   messageOne: string;
   messageTwo: string;
+  onChange?: ()=>void;
 };
 
 const Switcher: React.FC<PropsType> = ({
@@ -12,8 +13,13 @@ const Switcher: React.FC<PropsType> = ({
   setIsChecked,
   messageOne,
   messageTwo,
+  onChange
 }) => {
-  const handleCheckboxChange = () => setIsChecked((prev) => !prev);
+  
+  const handleCheckboxChange = () => {
+    if(onChange) onChange();
+    setIsChecked((prev) => !prev);
+  }
 
   return (
     <label className="isolate flex cursor-pointer select-none items-center px-2 py-2">

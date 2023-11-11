@@ -26,7 +26,6 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
     if(isItAlreadySelected) {
       setSelectedPoints([...selectedPoints].filter(point=>point.id != thisPoint.id))
     } else {
-      console.log("hi"); //debugg
       setSelectedPoints([...selectedPoints, thisPoint])
     }
 
