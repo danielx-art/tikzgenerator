@@ -27,7 +27,7 @@ export default function Home() {
         <CustomizationPanel />
         <PreviewPanel />
         {/* <CodePanel /> */}
-        {/* <Debugger /> */}
+        <Debugger />
       </div>
     </>
   );
