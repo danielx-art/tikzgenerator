@@ -5,7 +5,7 @@ type PropsType = {
 
 const ItemsList: React.FC<PropsType> = ({children}) => {
     return (
-        <div className="flex-1 rounded-md bg-a_neutral p-1 md:overflow-y-auto">
+        <div className="flex-1 rounded-md bg-c_base border-2 border-c_faded p-1 md:overflow-y-auto">
             {children}
         </div>
     )

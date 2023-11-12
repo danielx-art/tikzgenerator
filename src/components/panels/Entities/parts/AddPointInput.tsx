@@ -126,14 +126,14 @@ const AddPointInput = () => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        className="w-full rounded-sm bg-a_highlight px-2 py-1 text-a_dark focus:outline-a_aux"
+        className="w-full rounded-sm bg-c_base px-2 py-1 text-c_disabled2 focus:outline-c_high1 ring-1 ring-c_disabled2"
       />
-      <div
-        className="rounded-sm bg-a_dark p-2 text-a_highlight outline-1"
+      <button
+        className="rounded-sm bg-c_interact p-2 text-c_base outline-1 hover:bg-c_high1"
         onClick={addPoint}
       >
         +
-      </div>
+      </button>
     </div>
   );
 };

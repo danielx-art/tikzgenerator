@@ -93,7 +93,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
         {point.coords.x};{point.coords.y}
       </div>
       <div>{tags.find((tag) => tag.entityId == point.id)?.value || ""}</div>
-      {point.selected && <div className="mr-2 ml-1 text-xs rounded-full bg-a_highlight text-a_dark flex justify-center items-center h-4 w-4">{selectedPoints.findIndex(selpt=>selpt.id==point.id)+1}</div>}
+      {point.selected && <div className="mr-2 ml-1 text-xs rounded-full ring-1 ring-c_high1 text-c_high1 flex justify-center items-center h-4 w-4">{selectedPoints.findIndex(selpt=>selpt.id==point.id)+1}</div>}
       <RemoveButton handleClick={() => removePoint(index)} />
     </Item>
   );

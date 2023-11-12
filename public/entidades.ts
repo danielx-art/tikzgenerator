@@ -20,7 +20,7 @@ const segmento = function (a: Tponto, b: Tponto, id: string) {
     p1: a,
     p2: b,
     get comprimento() {
-      return this.p1.coords.dist(this.p2.coords);
+      return vec().copy(this.p1.coords).dist(this.p2.coords);
     },
     get normal() {
       return vec()

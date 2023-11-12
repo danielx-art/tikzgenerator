@@ -67,10 +67,10 @@ const PopMenu: React.FC<PropsType> = ({
         <button
           onClick={toggleDropdown}
           type="button"
-          className={`w-fit rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-a_aux focus:ring-offset-2 focus:ring-offset-a_aux ${
+          className={`w-fit rounded-sm px-2 py-1 focus:outline-none focus:ring-2 focus:ring-c_high1 focus:ring-offset-2 focus:ring-offset-c_high1 ${
             isOpen
-              ? "bg-a_dark_highlight text-a_highlight"
-              : "bg-a_light  text-a_dark"
+              ? "bg-c_high1 text-c_base"
+              : "bg-c_interact  text-c_base"
           }`}
           id="options-menu"
           aria-haspopup="listbox"
@@ -81,7 +81,7 @@ const PopMenu: React.FC<PropsType> = ({
       </div>
 
       <div
-        className={`absolute bottom-0 left-full z-10 ml-1 rounded-sm border-2 border-a_dark_highlight shadow-md transition-all ease-in-out focus:outline-none ${
+        className={`bg-c_base absolute bottom-0 left-full z-10 ml-1 rounded-md shadow-sm shadow-c_high1 transition-all ease-in-out focus:outline-none ${
           isOpen
             ? "scale-y-100 cursor-pointer opacity-100"
             : "disabled pointer-events-none -translate-y-[50%] scale-y-0 select-none opacity-0 sm:-translate-x-[50%]"
@@ -91,8 +91,7 @@ const PopMenu: React.FC<PropsType> = ({
         aria-labelledby="options-menu"
       >
         {withToggle && (
-          <>
-            <div className="bg-a_dark hover:bg-a_dark_highlight">
+            <div className="">
               <Switcher
                 isChecked={isChecked}
                 setIsChecked={setIsChecked}
@@ -100,15 +99,11 @@ const PopMenu: React.FC<PropsType> = ({
                 messageTwo="Somente selecionados"
               />
             </div>
-            <div className="flex h-2 w-full flex-row flex-nowrap items-center justify-center bg-a_dark">
-              <div className="h-0.5 w-[90%] rounded-lg bg-a_light opacity-10"></div>
-            </div>
-          </>
         )}
         {Options.map((option, index) => (
           <div
             key={index}
-            className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap bg-a_dark py-2 pl-4 pr-2 text-sm text-a_light hover:bg-a_dark_highlight hover:text-a_highlight"
+            className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap py-2 pl-4 pr-2 text-sm text-c_scnd hover:bg-c_interact hover:text-c_base"
             role="menuitem"
             onClick={
               isChecked

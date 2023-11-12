@@ -14,7 +14,7 @@ const AddAndSelectGroup = () => {
   return (
     store && (
       <div className="flex flex-row flex-nowrap items-center justify-end">
-        <div className="p-1 text-a_neutral" onClick={addGroup}>
+        <div className="p-1 text-c_scnd2" onClick={addGroup}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -31,7 +31,7 @@ const AddAndSelectGroup = () => {
           </svg>
         </div>
         <select
-          className="w-auto bg-a_light p-1 pr-2 text-sm text-a_neutral focus:outline-none"
+          className="w-auto bg-c_base p-1 pr-2 text-sm text-c_scnd2 focus:outline-none"
           value={`Grupo ${store.selectedGroup}`}
           onChange={(e) => {
             store.setSelectedGroup(

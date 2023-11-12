@@ -12,7 +12,7 @@ const EntitiesPanel = () => {
     store && (
       <div className="flex w-full flex-1 flex-col self-start min-h-full">
         <TabsNavigation />
-        <div className="flex w-full flex-1 flex-col rounded-b-lg border-2 border-t-0 border-a_neutral bg-a_light p-2">
+        <div className="flex w-full flex-1 flex-col rounded-b-lg border-2 border-t-0 border-c_discrete bg-c_base p-2">
           {store.tab == "points" && <PointsTab />}
           {store.tab == "segments" && <SegmentsTab />}
           {store.tab == "angles" && <AnglesTab />}

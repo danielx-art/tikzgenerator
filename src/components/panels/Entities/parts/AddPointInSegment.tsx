@@ -39,9 +39,9 @@ const AddPointInSegment: React.FC = () => {
 
   if (!segPoints[0] || !segPoints[1]) {
     return (
-      <div className="w-full rounded-md border-2 border-a_neutral p-4">
-        <div>Inserir ponto em segmento</div>
-        <div className="">Selecione ao menos dois pontos.</div>
+      <div className="w-full flex flex-col items-center gap-4 border-opacity-20 border-b-2 border-b-c_discrete pb-2">
+        <div className="select-none border-b-2 border-b-c_discrete text-c_scnd">Inserir ponto em segmento</div>
+        <div className="text-c_scnd2">Selecione ao menos dois pontos.</div>
       </div>
     );
   }
@@ -205,9 +205,9 @@ const AddPointInSegment: React.FC = () => {
   };
 
   return (
-    <div className="w-full rounded-md border-2 border-a_neutral p-4">
-      <div className="select-none">Inserir ponto em segmento</div>
-      <div className="flex flex-col flex-nowrap gap-4  p-2">
+    <div className="w-full flex flex-col items-center gap-2 border-opacity-20 border-b-2 border-b-c_discrete pb-2">
+      <div className="select-none border-b-2 border-b-c_discrete text-c_scnd">Inserir ponto em segmento</div>
+      <div className="flex flex-col flex-nowrap gap-2  p-2">
         <div className="m-0 h-fit w-full p-0">
           <div
             className={"w-fit -translate-x-1/2"}
@@ -219,7 +219,7 @@ const AddPointInSegment: React.FC = () => {
             {roundToDecimalPlaces(value * dist)}
           </div>
           <div
-            className={`h-2 border-l-2 border-r-2 border-t-2 border-a_dark`}
+            className={`h-2 border-l-2 border-r-2 border-t-2 border-c_scnd`}
             style={{
               width: styles.distBarWidth + "%",
               marginLeft: styles.distBarMin + "%",
@@ -239,33 +239,33 @@ const AddPointInSegment: React.FC = () => {
             tabIndex={0}
           >
             <div
-              className={`absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full shadow ${
+              className={`absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full shadow-sm shadow-c_scnd z-10 ${
                 isOutOfBoundary
-                  ? "bg-a_neutral bg-opacity-50"
-                  : "bg-opacity-1 bg-blue-600"
+                  ? "bg-c_faded hover:ring-1 hover:ring-c_interact"
+                  : "bg-c_interact hover:z-0"
               }`}
               style={{
                 left: `${sliderPos * 100}%`,
               }}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 w-full -translate-y-1/2 select-none border-b-2 border-dashed border-a_dark`}
+              className={`pointer-events-none absolute top-1/2 w-full -translate-y-1/2 select-none border-b-2 border-dashed border-c_scnd`}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 -translate-y-1/2 select-none border-b-2 border-solid border-a_dark`}
+              className={`pointer-events-none absolute top-1/2 -translate-y-1/2 select-none border-b-2 border-solid border-c_scnd`}
               style={{
                 left: styles.leftApos + "%",
                 width: styles.middleBarWidth + "%",
               }}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-a_dark`}
+              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-c_scnd2`}
               style={{
                 left: styles.leftApos + "%",
               }}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-a_dark
+              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-c_scnd2
                 `}
               style={{
                 left: styles.leftBpos + "%",
@@ -298,7 +298,7 @@ const AddPointInSegment: React.FC = () => {
         <div className="flex flex-col items-center justify-center gap-2">
           <input
             type="text"
-            className="z-10 w-1/2 cursor-text rounded-sm bg-a_highlight px-2 py-1 text-a_dark focus:outline-a_aux"
+            className="z-10 w-1/2 cursor-text rounded-sm bg-c_base px-2 py-1 text-c_scnd focus:outline-c_high"
             value={inputVal}
             onChange={handleInput}
           />
@@ -311,7 +311,7 @@ const AddPointInSegment: React.FC = () => {
           />
           <button
             onClick={handleAddPoint}
-            className="rounded-sm bg-a_dark p-2 text-a_highlight shadow-md"
+            className="rounded-sm bg-c_interact p-2 text-c_base shadow-md"
           >
             Criar ponto
           </button>

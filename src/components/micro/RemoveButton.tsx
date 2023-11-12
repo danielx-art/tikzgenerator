@@ -5,7 +5,7 @@ type PropsType = {
 
 export const RemoveButton: React.FC<PropsType> = ({handleClick}) => {
     return (
-        <div className="text-a_hightlight" onClick={handleClick}>
+        <div className="text-c_faded" onClick={handleClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

@@ -40,12 +40,12 @@ export default function SegmentsTab() {
 
   return (
     <div className="flex flex-1 flex-col flex-nowrap justify-between gap-2">
-      <div className="rounded-sm p-2 text-sm text-a_neutral ">
+      <div className="rounded-sm p-2 text-sm text-c_scnd2 ">
         Selecione dois ou mais pontos na aba "Pontos" e clique em "Conectar!".
         Múltiplos pontos serão conectados na ordem que estão na lista.
       </div>
       <button
-        className="mb-2 w-fit self-center rounded-sm bg-a_dark px-4 py-2 text-a_highlight outline-1"
+        className="mb-2 w-fit self-center rounded-sm bg-c_interact px-4 py-2 text-c_base outline-1"
         onClick={conectPoints}
       >
         Conectar!
