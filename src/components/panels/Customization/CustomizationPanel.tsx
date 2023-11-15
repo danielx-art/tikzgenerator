@@ -7,9 +7,9 @@ import {
 import PopMenu from "../../micro/PopMenu";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
-import useApplyTags from "import/utils/useApplyTags";
-import Slider from "import/components/micro/Slider";
-import AddPointInSegment from "../Entities/parts/AddPointInSegment";
+import AddPointInSegment from "./parts/AddPointInSegment";
+import AutoTags from "./parts/AutoTags";
+import AccordionItem from "import/components/micro/AccordionItem";
 
 const CustomizationPanel = () => {
   const store = useStore(myStore, (state) => state);
@@ -17,9 +17,12 @@ const CustomizationPanel = () => {
   if (!store) return;
 
   return (
-    <div className="flex-1 flex w-full flex-col min-h-full rounded-md border-2 border-c_discrete p-4">
-      <div className="flex flex-1 w-full flex-col items-start justify-start gap-4">
-        <AddPointInSegment />
+    <div className="flex min-h-full w-full flex-1 flex-col rounded-md border-2 border-c_discrete p-4 overflow-auto">
+      <div className="flex w-full flex-1 flex-col items-start justify-start gap-2">
+        <AccordionItem title="Inserir ponto em segmento">
+          <AddPointInSegment />
+        </AccordionItem>
+        <AutoTags />
       </div>
     </div>
   );

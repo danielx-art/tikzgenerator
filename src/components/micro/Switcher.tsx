@@ -22,7 +22,7 @@ const Switcher: React.FC<PropsType> = ({
   }
 
   return (
-    <label className="isolate flex cursor-pointer select-none items-center px-2 py-2">
+    <label className="isolate flex cursor-pointer select-none items-center px-2 py-2 group justify-center">
       <div
         className={`${
           isChecked ? "text-c_scnd_int" : "text-c_faded"
@@ -37,9 +37,9 @@ const Switcher: React.FC<PropsType> = ({
           onChange={handleCheckboxChange}
           className="sr-only"
         />
-        <div className="relative h-3 w-6 rounded-full bg-c_base ring-1 ring-c_interact">
+        <div className="relative h-3 w-6 rounded-full bg-c_base ring-1 ring-c_interact group-hover:ring-c_high1">
           <div
-            className={`absolute left-0 top-0 flex h-full w-1/2 items-center justify-center rounded-full bg-c_interact hover:bg-c_high1 transition ${
+            className={`absolute left-0 top-0 flex h-full w-1/2 items-center justify-center rounded-full bg-c_interact group-hover:bg-c_high1 transition ${
               isChecked ? "translate-x-0" : "translate-x-full"
             }`}
           ></div>

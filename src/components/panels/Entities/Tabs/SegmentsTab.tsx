@@ -45,7 +45,7 @@ export default function SegmentsTab() {
         Múltiplos pontos serão conectados na ordem que estão na lista.
       </div>
       <button
-        className="mb-2 w-fit self-center rounded-sm bg-c_interact px-4 py-2 text-c_base outline-1"
+        className="mb-2 w-fit self-center rounded-sm bg-c_interact hover:bg-c_high1 px-4 py-2 text-c_base outline-1"
         onClick={conectPoints}
       >
         Conectar!

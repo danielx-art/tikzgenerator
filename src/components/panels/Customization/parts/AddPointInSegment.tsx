@@ -1,4 +1,3 @@
-import Slider from "import/components/micro/Slider";
 import Switcher from "import/components/micro/Switcher";
 import {
   Hyperb_Linear_Hyperb,
@@ -11,7 +10,7 @@ import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import { Tponto, ponto } from "public/entidades";
 import { vec } from "public/vetores";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const AddPointInSegment: React.FC = () => {
   const store = useStore(myStore, (state) => state);
@@ -39,10 +38,7 @@ const AddPointInSegment: React.FC = () => {
 
   if (!segPoints[0] || !segPoints[1]) {
     return (
-      <div className="w-full flex flex-col items-center gap-4 border-opacity-20 border-b-2 border-b-c_discrete pb-2">
-        <div className="select-none border-b-2 border-b-c_discrete text-c_scnd">Inserir ponto em segmento</div>
-        <div className="text-c_scnd2">Selecione ao menos dois pontos.</div>
-      </div>
+        <div className=" text-c_scnd2 opacity-75 italic">Selecione ao menos dois pontos.</div>
     );
   }
 
@@ -205,8 +201,7 @@ const AddPointInSegment: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center gap-2 border-opacity-20 border-b-2 border-b-c_discrete pb-2">
-      <div className="select-none border-b-2 border-b-c_discrete text-c_scnd">Inserir ponto em segmento</div>
+    <div className="w-full flex flex-col items-center gap-2">
       <div className="flex flex-col flex-nowrap gap-2  p-2">
         <div className="m-0 h-fit w-full p-0">
           <div
@@ -311,7 +306,7 @@ const AddPointInSegment: React.FC = () => {
           />
           <button
             onClick={handleAddPoint}
-            className="rounded-sm bg-c_interact p-2 text-c_base shadow-md"
+            className="rounded-sm bg-c_interact p-2 text-c_base shadow-md hover:bg-c_high1"
           >
             Criar ponto
           </button>
@@ -322,6 +317,3 @@ const AddPointInSegment: React.FC = () => {
 };
 
 export default AddPointInSegment;
-function generateId(arg0: string) {
-  throw new Error("Function not implemented.");
-}

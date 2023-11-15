@@ -48,7 +48,7 @@ const angulo = function (a: Tponto, b: Tponto, c: Tponto, id: string) {
     get valor() {
       const ba = vec().copy(this.a.coords).sub(this.b.coords);
       const bc = vec().copy(this.c.coords).sub(this.b.coords);
-      const valor = ba.angleBetween(bc);
+      const valor = Math.abs(ba.angleBetween(bc));
       return valor;
     },
     get valorExt() {
