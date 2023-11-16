@@ -1,24 +1,17 @@
-import {
-  alphabeticalGreekTags,
-  alphabeticalLatinTags,
-  numericalTags,
-  alphabeticalSmallLatinTags,
-} from "import/utils/autoTags";
-import PopMenu from "../../micro/PopMenu";
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+
 import AddPointInSegment from "./parts/AddPointInSegment";
 import AutoTags from "./parts/AutoTags";
 import AccordionItem from "import/components/micro/AccordionItem";
+import ItemCustomization from "./parts/ItemCustomization";
 
 const CustomizationPanel = () => {
-  const store = useStore(myStore, (state) => state);
-
-  if (!store) return;
 
   return (
-    <div className="flex min-h-full w-full flex-1 flex-col rounded-md border-2 border-c_discrete p-4 overflow-auto">
+    <div className="flex h-fit sm:min-h-full sm:max-h-full w-full flex-1 flex-col rounded-md border-2 border-c_discrete p-4 sm:overflow-auto">
       <div className="flex w-full flex-1 flex-col items-start justify-start gap-2">
+        <AccordionItem title="Customização">
+          <ItemCustomization />
+        </AccordionItem>
         <AccordionItem title="Inserir ponto em segmento">
           <AddPointInSegment />
         </AccordionItem>

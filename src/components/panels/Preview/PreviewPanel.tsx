@@ -70,7 +70,7 @@ const PreviewPanel = () => {
   };
 
   return (
-    <div className="flex min-h-full w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete p-4">
+    <div className="flex sm:min-h-full sm:max-h-full w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete p-4">
       <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
       <div className="w-full flex-1 overflow-auto" >
         <svg

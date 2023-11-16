@@ -64,7 +64,7 @@ const angulo = function (a: Tponto, b: Tponto, c: Tponto, id: string) {
 
 type Tangulo = ReturnType<typeof angulo>;
 
-type Tentity = Tponto | Tsegmento | Tangulo;
+type Tentity = (Tponto & {kind: "point"} )| (Tsegmento & {kind: "segment"}) | (Tangulo & {kind: "angle"});
 
 const etiqueta = function (
   entity: Tentity,
@@ -79,6 +79,7 @@ const etiqueta = function (
     entityId: entity.id,
     value,
     pos,
+    selected: false
   };
 };
 

@@ -3,6 +3,7 @@ import myStore from "import/utils/store";
 import { RemoveButton } from "../../../micro/RemoveButton";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
+import { roundAndDisplayNicely } from "import/utils/misc";
 
 type PropsType = {
   point: Tponto;
@@ -90,7 +91,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
   return (
     <Item highlight={point.selected}>
       <div onClick={() => handlePointClick(index)}>
-        {point.coords.x};{point.coords.y}
+        {roundAndDisplayNicely(point.coords.x)};{roundAndDisplayNicely(point.coords.y)}
       </div>
       <div>{tags.find((tag) => tag.entityId == point.id)?.value || ""}</div>
       {point.selected && <div className="mr-2 ml-1 text-xs rounded-full ring-1 ring-c_high1 text-c_high1 flex justify-center items-center h-4 w-4">{selectedPoints.findIndex(selpt=>selpt.id==point.id)+1}</div>}

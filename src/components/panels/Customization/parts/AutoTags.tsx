@@ -32,7 +32,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     alphabeticalLatinTags,
-                    store.points,
+                    store.points.map((point)=>{return {...point, kind: "point"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -40,7 +40,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     alphabeticalLatinTags,
-                    store.points.filter((point) => point.selected),
+                    store.points.filter((point) => point.selected).map((point)=>{return {...point, kind: "point"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -53,7 +53,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     coordTags,
-                    store.points,
+                    store.points.map((point)=>{return {...point, kind: "point"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -61,7 +61,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     coordTags,
-                    store.points.filter((point) => point.selected),
+                    store.points.filter((point) => point.selected).map((point)=>{return {...point, kind: "point"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -74,7 +74,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     numericalTags,
-                    store.points,
+                    store.points.map((point)=>{return {...point, kind: "point"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -82,7 +82,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     numericalTags,
-                    store.points.filter((point) => point.selected),
+                    store.points.filter((point) => point.selected).map((point)=>{return {...point, kind: "point"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -101,7 +101,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     lengthTags,
-                    store.segments,
+                    store.segments.map((item)=>{return{...item, kind: "segment"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -109,7 +109,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     lengthTags,
-                    store.segments.filter((segment) => segment.selected),
+                    store.segments.filter((segment) => segment.selected).map((item)=>{return{...item, kind: "segment"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -122,7 +122,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     alphabeticalSmallLatinTags,
-                    store.segments,
+                    store.segments.map((item)=>{return{...item, kind: "segment"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -130,7 +130,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     alphabeticalSmallLatinTags,
-                    store.segments.filter((segment) => segment.selected),
+                    store.segments.filter((segment) => segment.selected).map((item)=>{return{...item, kind: "segment"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -149,7 +149,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     arcTags,
-                    store.angles,
+                    store.angles.map((item)=>{return{...item, kind: "angle"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -157,7 +157,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     arcTags,
-                    store.angles.filter((angle) => angle.selected),
+                    store.angles.filter((angle) => angle.selected).map((item)=>{return{...item, kind: "angle"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -170,7 +170,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     alphabeticalSmallLatinTags,
-                    store.angles,
+                    store.angles.map((item)=>{return{...item, kind: "angle"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -178,7 +178,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     alphabeticalSmallLatinTags,
-                    store.angles.filter((angle) => angle.selected),
+                    store.angles.filter((angle) => angle.selected).map((item)=>{return{...item, kind: "angle"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -191,7 +191,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     alphabeticalGreekTags,
-                    store.angles,
+                    store.angles.map((item)=>{return{...item, kind: "angle"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
@@ -199,7 +199,7 @@ const AutoTags: React.FC = () => {
                 () =>
                   applyTags(
                     alphabeticalGreekTags,
-                    store.angles.filter((angle) => angle.selected),
+                    store.angles.filter((angle) => angle.selected).map((item)=>{return{...item, kind: "angle"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,

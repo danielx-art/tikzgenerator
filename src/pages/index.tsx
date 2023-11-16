@@ -13,7 +13,7 @@ export default function Home() {
         <meta name="description" content="Generates TikZ scripts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="md:no-scrollbar h-full overflow-auto bg-c_base p-4 font-jost md:max-h-full grid sm:grid-cols-3 md:grid-cols-[2fr_2fr_3fr] gap-4">
+      <div className="md:no-scrollbar h-full flex flex-col overflow-auto bg-c_base p-4 font-jost md:max-h-full md:grid md:grid-cols-[2fr_2fr_3fr] gap-4">
         <ErrorBanner />
         <EntitiesPanel />
         <CustomizationPanel />

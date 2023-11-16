@@ -4,7 +4,6 @@ import { type Tponto, type Tsegmento, segmento } from "public/entidades";
 import { useState } from "react";
 import ItemsList from "../parts/ItemsList";
 import SegmentItem from "../parts/SegmentItem";
-import AutoTagSegments from "../parts/AutoTagSegments";
 
 export default function SegmentsTab() {
   const store = useStore(myStore, (state) => state);
@@ -59,7 +58,7 @@ export default function SegmentsTab() {
           />
         ))}
       </ItemsList>
-      <AutoTagSegments />
+      {/* <AutoTagSegments /> */}
     </div>
   );
 }

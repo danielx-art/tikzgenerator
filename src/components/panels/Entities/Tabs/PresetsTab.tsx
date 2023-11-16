@@ -1,13 +1,10 @@
 import myStore from "import/utils/store";
 import PointItem from "../parts/PointItem";
 import GroupItem from "../parts/GroupItem";
-import AddPointInput from "../parts/AddPointInput";
-import AddAndSelectGroup from "../parts/AddAndSelectGroup";
 import useStore from "import/utils/useStore";
-import AutoTagPoints from "../parts/AutoTagPoints";
 import ItemsList from "../parts/ItemsList";
 
-export default function PointsTab() {
+export default function PresetsTab() {
   const store = useStore(myStore, (state) => state);
 
   if (!store) return;
@@ -31,9 +28,6 @@ export default function PointsTab() {
           </GroupItem>
         ))}
       </ItemsList>
-      <AddPointInput />
-      <AddAndSelectGroup />
-      {/* <AutoTagPoints /> */}
     </div>
   );
 }

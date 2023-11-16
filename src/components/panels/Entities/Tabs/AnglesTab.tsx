@@ -50,7 +50,7 @@ export default function AnglesTab() {
           <AngleItem angle={angle} index={index} key={"angle_" + index} />
         ))}
       </ItemsList>
-      <AutoTagAngles />
+      {/* <AutoTagAngles /> */}
     </div>
   );
 }
