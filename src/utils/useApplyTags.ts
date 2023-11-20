@@ -19,22 +19,18 @@ const useApplyTags = (store: State & Action) => {
     for (let i = 0; i < entities.length; i++) {
       let currentEntity = entities[i] as T;
 
-      let tagOccupied =
-        currentEntity.etiqueta.length > 0
-          ? tags.find((tag) => tag.entityId == currentEntity.id)
-          : undefined;
+      let tagEntityCurrentlyHave = tags.find((tag) => tag.entityId == currentEntity.id)
 
       let newTagValue = tagFunction(i, currentEntity);
-
       
-      if (tagOccupied) {
-        tagsToRemove.push(tagOccupied);
+      if (tagEntityCurrentlyHave) {
+        tagsToRemove.push(tagEntityCurrentlyHave);
       }
       
       const alreadyInUse = tags.find((tag) => tag.value == newTagValue);
       
       if (alreadyInUse) {
-        if(!(tagOccupied && tagOccupied.id == alreadyInUse.id)) tagsToRemove.push(alreadyInUse);
+        if(!(tagEntityCurrentlyHave && tagEntityCurrentlyHave.id == alreadyInUse.id)) tagsToRemove.push(alreadyInUse);
       }
 
       tagsToAdd.push(etiqueta(currentEntity, newTagValue, generateId("tag")));

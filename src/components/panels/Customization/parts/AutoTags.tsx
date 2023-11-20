@@ -29,14 +29,16 @@ const AutoTags: React.FC = () => {
             {
               title: "A...Z AA...ZZ",
               action: [
-                () =>
-                  applyTags(
+                () => {
+                  console.log("doing A...Z"); //debugg
+                  return applyTags(
                     alphabeticalLatinTags,
                     store.points.map((point)=>{return {...point, kind: "point"}}),
                     store.tags,
                     store.setTags,
                     store.generateId,
-                  ),
+                  )
+                },
                 () =>
                   applyTags(
                     alphabeticalLatinTags,
@@ -241,7 +243,7 @@ const AutoTagEntityMenuBody: React.FC<AutoTagEntityMenuBodyProps> = ({
     } else {
       resultOptions.push(option.action[0], option.action[1]);
     }
-
+    
     return resultOptions as [() => void, () => void];
   });
 
