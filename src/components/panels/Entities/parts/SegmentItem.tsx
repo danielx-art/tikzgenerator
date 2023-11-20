@@ -1,6 +1,5 @@
 import { Tsegmento } from "public/entidades";
 import myStore from "import/utils/store";
-import { RemoveButton } from "../../../micro/RemoveButton";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
 
@@ -23,14 +22,14 @@ const SegmentItem: React.FC<PropsType> = ({ segment, index }) => {
     setSegments(updatedSegments);
   }
 
-  function remove(index: number) {
+  function removeSegment(index: number) {
     const updatedSegments = [...segments];
     updatedSegments.splice(index, 1);
     setSegments(updatedSegments);
   }
 
   return (
-    <Item highlight={segment.selected}>
+    <Item highlight={segment.selected} removeFn={() => removeSegment(index)}>
       <div onClick={() => handleClick(index)}>
         {segment.p1.etiqueta.length > 0
           ? segment.p1.etiqueta
@@ -41,7 +40,6 @@ const SegmentItem: React.FC<PropsType> = ({ segment, index }) => {
           : "(" + segment.p2.coords.x + ";" + segment.p2.coords.y + ")"}
       </div>
       <div>{tags.find((tag) => tag.entityId == segment.id)?.value || ""}</div>
-      <RemoveButton handleClick={() => remove(index)} />
     </Item>
   );
 };

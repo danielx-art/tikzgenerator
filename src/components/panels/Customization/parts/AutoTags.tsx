@@ -92,7 +92,7 @@ const AutoTags: React.FC = () => {
           ]}
         />
       </AccordionItem>
-      <AccordionItem title="Autoetiquetar pontos">
+      <AccordionItem title="Autoetiquetar segmentos">
         <AutoTagEntityMenuBody
           Options={[
             {
@@ -140,7 +140,7 @@ const AutoTags: React.FC = () => {
           ]}
         />
       </AccordionItem>
-      <AccordionItem title="Autoetiquetar pontos">
+      <AccordionItem title="Autoetiquetar ângulos">
         <AutoTagEntityMenuBody
           Options={[
             {

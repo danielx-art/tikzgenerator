@@ -4,6 +4,7 @@ import { type Tponto, type Tsegmento, segmento } from "public/entidades";
 import { useState } from "react";
 import ItemsList from "../parts/ItemsList";
 import SegmentItem from "../parts/SegmentItem";
+import ToolTip from "import/components/micro/ToolTip";
 
 export default function SegmentsTab() {
   const store = useStore(myStore, (state) => state);
@@ -39,10 +40,11 @@ export default function SegmentsTab() {
 
   return (
     <div className="flex flex-1 flex-col flex-nowrap justify-between gap-2">
-      <div className="rounded-sm p-2 text-sm text-c_scnd2 ">
+      {/* <div className="rounded-sm p-2 text-sm text-c_scnd2 ">
         Selecione dois ou mais pontos na aba "Pontos" e clique em "Conectar!".
         Múltiplos pontos serão conectados na ordem que estão na lista.
-      </div>
+      </div> */}
+      <ToolTip message={"Selecione dois ou mais pontos na aba 'Pontos' e clique em 'Conectar!'. Múltiplos pontos serão conectados na ordem que estão na lista."} />
       <button
         className="mb-2 w-fit self-center rounded-sm bg-c_interact hover:bg-c_high1 px-4 py-2 text-c_base outline-1"
         onClick={conectPoints}

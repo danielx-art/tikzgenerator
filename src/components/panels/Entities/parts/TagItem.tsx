@@ -1,6 +1,5 @@
 import { Tangulo, Tentity, Tetiqueta, Tponto, Tsegmento } from "public/entidades";
 import myStore from "import/utils/store";
-import { RemoveButton } from "../../../micro/RemoveButton";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
 import { roundAndDisplayNicely } from "import/utils/misc";
@@ -82,13 +81,11 @@ const TagItem: React.FC<PropsType> = ({ tag, index }) => {
   }
 
   return (
-    <Item highlight={tag.selected}>
+    <Item highlight={tag.selected} removeFn={() => removeTag(index)}>
       <div onClick={() => handleClick(index)}>
         {tag.value}
       </div>
       <div>{getEntityDisplay(tag.entityId, store)}</div>
-      {tag.selected && <div className="mr-2 ml-1 text-xs rounded-full ring-1 ring-c_high1 text-c_high1 flex justify-center items-center h-4 w-4">{selectedPoints.findIndex(selpt=>selpt.id==point.id)+1}</div>}
-      <RemoveButton handleClick={() => removeTag(index)} />
     </Item>
   );
 };
