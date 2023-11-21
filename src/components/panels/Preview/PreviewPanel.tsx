@@ -1,4 +1,8 @@
-import { getAnglePath, getSegmentPath } from "import/utils/svgPaths";
+import {
+  getAnglePath,
+  getPointPath,
+  getSegmentPath,
+} from "import/utils/svgPaths";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import { Tangulo, Tsegmento } from "public/entidades";
@@ -9,7 +13,7 @@ const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
 
   const viewBox = useMemo(() => {
-    if (!store || store.points.length === 0) return '0 0 0 0';
+    if (!store || store.points.length === 0) return "0 0 0 0";
 
     // Find min and max points to define bounds
     let minX = store.points[0]!.coords.x;
@@ -32,47 +36,64 @@ const PreviewPanel = () => {
     const centroidX = pointsWidth / 2;
     const centroidY = pointsHeight / 2;
 
-    const viewBoxX = minX - pointsWidth*padding; 
-    const viewBoxY = -maxY - pointsHeight*padding; 
-    const viewBoxWidth = pointsWidth * (1+2*padding); ;
-    const viewBoxHeight = pointsHeight * (1+2*padding); ;
+    const viewBoxX = minX - pointsWidth * padding;
+    const viewBoxY = -maxY - pointsHeight * padding;
+    const viewBoxWidth = pointsWidth * (1 + 2 * padding);
+    const viewBoxHeight = pointsHeight * (1 + 2 * padding);
 
     return `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`;
   }, [store]);
 
   if (!store) return;
 
-  const { points, setPoints, segments, setSegments, angles, setAngles } = store;
+  const {
+    points,
+    setPoints,
+    segments,
+    setSegments,
+    angles,
+    setAngles,
+    selectedPoints,
+    setSelectedPoints,
+  } = store;
 
   const toggleSelected = (index: number, kind: string) => {
     switch (kind) {
+      case "point":
+        const updatedPoints = points.map((point, i) => {
+          if (i === index) {
+            return { ...point, selected: !point.selected };
+          }
+          return point;
+        });
+        setPoints(updatedPoints);
+        setSelectedPoints([...updatedPoints].filter((point) => point.selected));
+        break;
       case "segment":
-        console.log("segment", index);
-        const newSegments = segments.map((segment, i) => {
+        const updatedSegments = segments.map((segment, i) => {
           if (i === index) {
             return { ...segment, selected: !segment.selected };
           }
           return segment;
         });
-        setSegments(newSegments);
+        setSegments(updatedSegments);
         break;
       case "angle":
-        console.log("angle", index);
-        const newAngles = angles.map((angle, i) => {
+        const updatedAngles = angles.map((angle, i) => {
           if (i === index) {
             return { ...angle, selected: !angle.selected };
           }
           return angle;
         });
-        setAngles(newAngles);
+        setAngles(updatedAngles);
         break;
     }
   };
 
   return (
-    <div className="flex sm:min-h-full sm:max-h-full w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete p-4">
+    <div className="flex w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete p-4 sm:max-h-full sm:min-h-full">
       <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
-      <div className="w-full flex-1 overflow-auto" >
+      <div className="w-full flex-1 overflow-auto">
         <svg
           width="100%"
           height="100%"
@@ -104,7 +125,37 @@ const PreviewPanel = () => {
                 className="cursor-pointer"
               />
             ))}
-            
+            {points.map((point, index) => {
+              let stroke = "none";
+              let fill = "none";
+
+              if (point.destaque === 1) {
+                if (point.selected) {
+                  stroke = "#ff817a";
+                } else {
+                  stroke = "#333333";
+                }
+                fill = "#f5f5f5";
+              } else if (point.destaque === 2) {
+                if (point.selected) {
+                  fill = "#ff817a";
+                } else {
+                  fill = "#333333";
+                }
+              }
+
+              return (
+                <path
+                  key={index}
+                  d={getPointPath(point)}
+                  stroke={stroke}
+                  strokeWidth="0.05"
+                  fill={fill}
+                  onClick={() => toggleSelected(index, "point")}
+                  className="cursor-pointer"
+                />
+              );
+            })}
           </g>
         </svg>
       </div>

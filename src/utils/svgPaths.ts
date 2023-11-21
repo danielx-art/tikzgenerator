@@ -1,4 +1,4 @@
-import { Tsegmento, Tangulo } from "public/entidades";
+import { Tsegmento, Tangulo, Tponto } from "public/entidades";
 import { vec } from "public/vetores";
 
 export const getSegmentPath = (segment: Tsegmento) => {
@@ -33,7 +33,9 @@ export const getAnglePath = (angle: Tangulo) => {
   let end = vec().copy(endVector).add(angle.b.coords);
 
   if (Math.abs(endAngle - startAngle) == 90) {
-    let d = `M ${angle.b.coords.x + startVector.x} ${angle.b.coords.y + startVector.y} `;
+    let d = `M ${angle.b.coords.x + startVector.x} ${
+      angle.b.coords.y + startVector.y
+    } `;
     d += `l ${endVector.x} ${endVector.y} `;
     d += `l ${-startVector.x} ${-startVector.y} `;
 
@@ -73,4 +75,21 @@ export const getAnglePath = (angle: Tangulo) => {
 
     return d;
   }
+};
+
+export const getPointPath = (point: Tponto) => {
+  const { coords, destaque, tamanho } = point;
+
+  if (destaque === 0) {
+    return "";
+  }
+
+  // Calculate the circle path
+  const circlePath =
+    `M ${coords.x} ${coords.y} ` +
+    `m -${tamanho}, 0 ` +
+    `a ${tamanho},${tamanho} 0 1,0 ${tamanho * 2},0 ` +
+    `a ${tamanho},${tamanho} 0 1,0 -${tamanho * 2},0`;
+
+  return circlePath;
 };

@@ -26,8 +26,6 @@ const RadioGroup: React.FC<PropsType> = ({
     onChange && onChange(index);
   }
 
-  console.log(selectedIndex); //debugg
-
   return (
     <div className="flex flex-col items-center justify-center gap-2">
       {labelText && <div className="self-start text-c_scnd">{labelText}</div>}
