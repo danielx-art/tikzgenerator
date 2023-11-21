@@ -6,6 +6,7 @@ const ponto = function (a: vector, id: string, group: number = 1) {
     coords: a,
     etiqueta: "",
     visivel: true,
+    destaque: 0,
     tamanho: 0,
     group,
     selected: false,
@@ -73,18 +74,10 @@ type Tentity = Tponto | Tsegmento | Tangulo;
 
 const etiqueta = function <T extends Tentity>(
   entity: T,
-  entitiesArray: Array<T>,
-  setEntities: (updatedEntities: Array<T>) => void,
   value: string = "",
   id: string,
   pos: vector = vec(0, 0),
 ) {
-  const updatedEntities = entitiesArray.map((curr, index) =>
-    curr.id === entity.id ? { ...curr, etiqueta: value } : curr,
-  );
-
-  setEntities(updatedEntities);
-
   return {
     id,
     entityId: entity.id,

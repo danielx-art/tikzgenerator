@@ -30,10 +30,12 @@ const Angle: React.FC<PropsType> = ({ angle, index }) => {
   }
 
   return (
-    <Item highlight={angle.selected} removeFn={() => removeAngle(index)}>
-      <div onClick={() => handleClick(index)}>
-        {roundToDecimalPlaces(angle.valor*180/Math.PI, 0)+"°"}
-      </div>
+    <Item
+      highlight={angle.selected}
+      removeFn={() => removeAngle(index)}
+      handleClickFn={() => handleClick(index)}
+    >
+      <div>{roundToDecimalPlaces((angle.valor * 180) / Math.PI, 0) + "°"}</div>
       <div>{tags.find((tag) => tag.entityId == angle.id)?.value || ""}</div>
     </Item>
   );

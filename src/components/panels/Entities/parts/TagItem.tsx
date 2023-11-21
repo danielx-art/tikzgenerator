@@ -119,8 +119,12 @@ const TagItem: React.FC<PropsType> = ({ tag, index }) => {
   }
 
   return (
-    <Item highlight={tag.selected} removeFn={() => removeTag(index)}>
-      <div onClick={() => handleClick(index)}>{tag.value}</div>
+    <Item
+      highlight={tag.selected}
+      removeFn={() => removeTag(index)}
+      handleClickFn={() => handleClick(index)}
+    >
+      <div>{tag.value}</div>
       <div>{getEntityDisplay(tag.entityId, store)}</div>
     </Item>
   );

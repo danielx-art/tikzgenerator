@@ -105,18 +105,22 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
   }
 
   return (
-    <Item highlight={point.selected} removeFn={() => removePoint(index)}>
-      <div onClick={() => handlePointClick(index)}>
+    <Item
+      highlight={point.selected}
+      removeFn={() => removePoint(index)}
+      handleClickFn={() => handlePointClick(index)}
+    >
+      <div>
         {roundAndDisplayNicely(point.coords.x)};
         {roundAndDisplayNicely(point.coords.y)}
       </div>
       <div>{tags.find((tag) => tag.entityId == point.id)?.value || ""}</div>
       {point.selected ? (
-        <div className="ml-1 mr-2 flex h-4 w-4 items-center justify-center rounded-full text-xs text-c_high1 ring-1 ring-c_high1">
+        <div className="flex h-4 w-4 items-center justify-center rounded-full bg-c_base bg-opacity-60 text-xs font-bold text-c_high1 ring-1 ring-c_high1">
           {selectedPoints.findIndex((selpt) => selpt.id == point.id) + 1}
         </div>
       ) : (
-        <div></div>
+        <div className="w-4"></div>
       )}
     </Item>
   );

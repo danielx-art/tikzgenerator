@@ -15,7 +15,7 @@ const SegmentItem: React.FC<PropsType> = ({ segment, index }) => {
 
   const { segments, setSegments, tags } = store;
 
-  function handleClick(index: number) {
+  function handleSegmentClick(index: number) {
     const updatedSegments = [...segments];
     let thisSeg = updatedSegments[index] as Tsegmento;
     thisSeg.selected = !thisSeg.selected;
@@ -29,8 +29,12 @@ const SegmentItem: React.FC<PropsType> = ({ segment, index }) => {
   }
 
   return (
-    <Item highlight={segment.selected} removeFn={() => removeSegment(index)}>
-      <div onClick={() => handleClick(index)}>
+    <Item
+      highlight={segment.selected}
+      removeFn={() => removeSegment(index)}
+      handleClickFn={() => handleSegmentClick(index)}
+    >
+      <div onClick={() => handleSegmentClick(index)}>
         {segment.p1.etiqueta.length > 0
           ? segment.p1.etiqueta
           : "(" + segment.p1.coords.x + ";" + segment.p1.coords.y + ")"}

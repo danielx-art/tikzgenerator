@@ -21,6 +21,8 @@ const useApplyTags = (store: State & Action) => {
 
     let tagsToRemove = [] as Tetiqueta[];
 
+    let updatedEntities = [] as Array<T>;
+
     let foundError = false;
 
     for (let i = 0; i < entities.length; i++) {
@@ -29,7 +31,6 @@ const useApplyTags = (store: State & Action) => {
       let currentEntity = entities[i] as T;
 
       let entityTag = tags.find((tag) => tag.entityId == currentEntity.id);
-      const entityAlreadyHasTag = entityTag ? true : false;
 
       let newTagValue = tagFunction(i, currentEntity);
 
@@ -51,15 +52,11 @@ const useApplyTags = (store: State & Action) => {
           tagsToRemove.push(isThisTagAlreadyInUse);
         }
 
-        tagsToAdd.push(
-          etiqueta(
-            currentEntity,
-            entities,
-            setEntities,
-            newTagValue,
-            generateId("tag"),
-          ),
-        );
+        tagsToAdd.push(etiqueta(currentEntity, newTagValue, generateId("tag")));
+
+        updatedEntities.push({ ...currentEntity, etiqueta: newTagValue });
+      } else {
+        updatedEntities.push(currentEntity);
       }
     }
 
@@ -76,6 +73,7 @@ const useApplyTags = (store: State & Action) => {
 
     updatedTags.push(...tagsToAdd);
 
+    setEntities(updatedEntities);
     setTags(updatedTags);
 
     //this is not in use now, but maybe make it a user defined general config.

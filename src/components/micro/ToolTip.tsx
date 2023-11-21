@@ -4,9 +4,9 @@ type PropsType = {
 
 const ToolTip: React.FC<PropsType> = ({ message }) => {
   return (
-    <div className="group relative flex flex-col items-center">
+    <div className="group flex w-auto flex-col items-center">
       <svg
-        className="h-5 w-5"
+        className="h-5 w-5 transition-all ease-in-out group-hover:opacity-0"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
@@ -17,11 +17,10 @@ const ToolTip: React.FC<PropsType> = ({ message }) => {
           clipRule="evenodd"
         />
       </svg>
-      <div className="absolute bottom-0 mb-5 hidden flex-col items-center group-hover:flex">
-        <span className="whitespace-no-wrap relative z-10 rounded-md bg-black p-4 text-xs leading-none text-white shadow-lg">
+      <div className="fixed left-[50%] top-2 z-10 mx-auto hidden w-auto -translate-x-[50%] flex-row items-center group-hover:flex">
+        <div className="rounded-md bg-c_scnd_int bg-opacity-70 p-4 text-sm leading-none text-white shadow-lg">
           {message}
-        </span>
-        <div className="-mt-2 h-3 w-3 rotate-45 bg-black"></div>
+        </div>
       </div>
     </div>
   );

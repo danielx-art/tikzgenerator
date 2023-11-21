@@ -39,18 +39,24 @@ export default function SegmentsTab() {
   };
 
   return (
-    <div className="flex flex-1 flex-col flex-nowrap justify-between gap-2">
+    <div className="relative flex flex-1 flex-col flex-nowrap justify-between gap-2">
       {/* <div className="rounded-sm p-2 text-sm text-c_scnd2 ">
         Selecione dois ou mais pontos na aba "Pontos" e clique em "Conectar!".
         Múltiplos pontos serão conectados na ordem que estão na lista.
       </div> */}
-      <ToolTip message={"Selecione dois ou mais pontos na aba 'Pontos' e clique em 'Conectar!'. Múltiplos pontos serão conectados na ordem que estão na lista."} />
       <button
-        className="mb-2 w-fit self-center rounded-sm bg-c_interact hover:bg-c_high1 px-4 py-2 text-c_base outline-1"
+        className="mb-2 w-fit self-center  rounded-sm bg-c_interact px-4 py-2 text-c_base outline-1 hover:bg-c_high1"
         onClick={conectPoints}
       >
         Conectar!
       </button>
+      <div className="absolute right-0 text-c_scnd2 text-opacity-50">
+        <ToolTip
+          message={
+            "Selecione dois ou mais pontos na aba 'Pontos' e clique em 'Conectar!'. Múltiplos pontos serão conectados na ordem que estão na lista."
+          }
+        />
+      </div>
       <ItemsList>
         {segments.map((segment, index) => (
           <SegmentItem

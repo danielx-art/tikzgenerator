@@ -10,17 +10,19 @@ const AccordionItem: React.FC<PropsType> = ({ title, children }) => {
 
   return (
     <div className="w-full border-b-2 border-c_discrete border-opacity-20">
-      <div className="flex w-full flex-row text-c_scnd group select-none cursor-pointer"
-        onClick={() => setIsOpen((prev) => !prev)}>
+      <div
+        className="group flex w-full cursor-pointer select-none flex-row text-c_scnd"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
         <div className="flex-1">{title}</div>
-        <button className="w-6 h-6 flex justify-center items-center group-hover:text-c_high1 rounded-full">
+        <button className="flex h-6 w-6 items-center justify-center rounded-full group-hover:text-c_high1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.6}
             stroke="currentColor"
-            className={`h-4 w-4 ${isOpen ? "rotate-180": ""} transition-all`}
+            className={`h-4 w-4 ${isOpen ? "rotate-180" : ""} transition-all`}
           >
             <path
               strokeLinecap="round"
@@ -31,8 +33,11 @@ const AccordionItem: React.FC<PropsType> = ({ title, children }) => {
         </button>
       </div>
       <div
-        className={`w-full transition-all p-2 ease-in-out ${isOpen ? "h-auto pb-4 opacity-100"
-        : "disabled pointer-events-none h-0 overflow-hidden select-none opacity-0"}`}
+        className={`w-full p-1 transition-all ease-in-out ${
+          isOpen
+            ? "h-auto pb-4 opacity-100"
+            : "disabled pointer-events-none h-0 select-none overflow-hidden opacity-0"
+        }`}
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="options-menu"
