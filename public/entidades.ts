@@ -64,22 +64,33 @@ const angulo = function (a: Tponto, b: Tponto, c: Tponto, id: string) {
 
 type Tangulo = ReturnType<typeof angulo>;
 
-type Tentity = (Tponto & {kind: "point"} )| (Tsegmento & {kind: "segment"}) | (Tangulo & {kind: "angle"});
+type TentityWithKind =
+  | (Tponto & { kind: "point" })
+  | (Tsegmento & { kind: "segment" })
+  | (Tangulo & { kind: "angle" });
 
-const etiqueta = function (
-  entity: Tentity,
+type Tentity = Tponto | Tsegmento | Tangulo;
+
+const etiqueta = function <T extends Tentity>(
+  entity: T,
+  entitiesArray: Array<T>,
+  setEntities: (updatedEntities: Array<T>) => void,
   value: string = "",
   id: string,
   pos: vector = vec(0, 0),
 ) {
-  entity.etiqueta = value; //test - it is working!
+  const updatedEntities = entitiesArray.map((curr, index) =>
+    curr.id === entity.id ? { ...curr, etiqueta: value } : curr,
+  );
+
+  setEntities(updatedEntities);
 
   return {
     id,
     entityId: entity.id,
     value,
     pos,
-    selected: false
+    selected: false,
   };
 };
 
@@ -93,6 +104,7 @@ export {
   angulo,
   type Tangulo,
   type Tentity,
+  type TentityWithKind,
   etiqueta,
   type Tetiqueta,
 };

@@ -14,45 +14,60 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
 
   if (!store) return;
 
-  const { points, setPoints, segments, setSegments, angles, setAngles, tags, setTags, selectedPoints, setSelectedPoints } = store;
+  const {
+    points,
+    setPoints,
+    segments,
+    setSegments,
+    angles,
+    setAngles,
+    tags,
+    setTags,
+    selectedPoints,
+    setSelectedPoints,
+  } = store;
 
   function handlePointClick(index: number) {
-
     const updatedPoints = [...points];
     let thisPoint = updatedPoints[index] as Tponto;
 
     const isItAlreadySelected = thisPoint.selected;
-    
-    if(isItAlreadySelected) {
-      setSelectedPoints([...selectedPoints].filter(point=>point.id != thisPoint.id))
+
+    if (isItAlreadySelected) {
+      setSelectedPoints(
+        [...selectedPoints].filter((point) => point.id != thisPoint.id),
+      );
     } else {
-      setSelectedPoints([...selectedPoints, thisPoint])
+      setSelectedPoints([...selectedPoints, thisPoint]);
     }
 
     thisPoint.selected = !thisPoint.selected;
     setPoints(updatedPoints);
-    
   }
 
   function removePoint(index: number) {
-
     const pointIdToRemove = points[index]!.id;
 
     // Filter out the point from the points array
-    const filteredPoints = points.filter((point) => point.id !== pointIdToRemove);
-  
+    const filteredPoints = points.filter(
+      (point) => point.id !== pointIdToRemove,
+    );
+
     // Filter out related segments and angles, and store their IDs
     const removedSegmentIds: string[] = [];
     const removedAngleIds: string[] = [];
-  
+
     const filteredSegments = segments.filter((segment) => {
-      if (segment.p1.id === pointIdToRemove || segment.p2.id === pointIdToRemove) {
+      if (
+        segment.p1.id === pointIdToRemove ||
+        segment.p2.id === pointIdToRemove
+      ) {
         removedSegmentIds.push(segment.id);
         return false;
       }
       return true;
     });
-  
+
     const filteredAngles = angles.filter((angle) => {
       if (
         angle.a.id === pointIdToRemove ||
@@ -65,8 +80,10 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
       return true;
     });
 
-    const filteredSelectedPoints = selectedPoints.filter((selectedPoint)=> selectedPoint.id != pointIdToRemove);
-  
+    const filteredSelectedPoints = selectedPoints.filter(
+      (selectedPoint) => selectedPoint.id != pointIdToRemove,
+    );
+
     // Filter out tags associated with the removed point, segments, and angles
     const filteredTags = tags.filter((tag) => {
       if (
@@ -78,7 +95,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
       }
       return true;
     });
-  
+
     // Update the arrays with the filtered data
     setPoints(filteredPoints);
     setSegments(filteredSegments);
@@ -88,12 +105,19 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
   }
 
   return (
-    <Item highlight={point.selected} removeFn={()=>removePoint(index)}>
+    <Item highlight={point.selected} removeFn={() => removePoint(index)}>
       <div onClick={() => handlePointClick(index)}>
-        {roundAndDisplayNicely(point.coords.x)};{roundAndDisplayNicely(point.coords.y)}
+        {roundAndDisplayNicely(point.coords.x)};
+        {roundAndDisplayNicely(point.coords.y)}
       </div>
       <div>{tags.find((tag) => tag.entityId == point.id)?.value || ""}</div>
-      {point.selected ? <div className="mr-2 ml-1 text-xs rounded-full ring-1 ring-c_high1 text-c_high1 flex justify-center items-center h-4 w-4">{selectedPoints.findIndex(selpt=>selpt.id==point.id)+1}</div> : <div></div>}    
+      {point.selected ? (
+        <div className="ml-1 mr-2 flex h-4 w-4 items-center justify-center rounded-full text-xs text-c_high1 ring-1 ring-c_high1">
+          {selectedPoints.findIndex((selpt) => selpt.id == point.id) + 1}
+        </div>
+      ) : (
+        <div></div>
+      )}
     </Item>
   );
 };
