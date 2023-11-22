@@ -50,14 +50,14 @@ const CustomizationAccordionItem: React.FC = () => {
     <div className="w-full border-b-2 border-c_discrete border-opacity-20">
       <div className="flex w-full select-none flex-row items-center gap-2 text-c_scnd">
         <div
-          className="group flex flex-1 cursor-pointer select-none flex-row items-center gap-2"
+          className="group flex flex-1 cursor-pointer select-none flex-row items-center"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <OpenCloseAccordionButton isOpen={isOpen} />
           <div className="">Customização</div>
         </div>
         {isOpen ? (
-          <div className=" self-end place-self-end">
+          <div className=" place-self-end self-end">
             <Paginator
               curr={curr}
               setCurr={setCurr}
