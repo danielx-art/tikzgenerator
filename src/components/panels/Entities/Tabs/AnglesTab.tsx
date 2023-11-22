@@ -10,7 +10,9 @@ export default function AnglesTab() {
 
   if (!store) return;
 
-  const { selectedPoints, angles, setAngles, generateId, setError } = store;
+  const { points, angles, setAngles, generateId, setError } = store;
+
+  const selectedPoints = [...points].filter(point=>point.selected);
 
   const makeAngles = () => {
 

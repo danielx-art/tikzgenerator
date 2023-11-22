@@ -17,7 +17,6 @@ export type State = {
     angle: number,
     tag: number
   },
-  selectedPoints: Tponto[];
 };
 
 export type Action = {
@@ -30,7 +29,6 @@ export type Action = {
   setTags: (tags: State["tags"]) => void;
   setError: (error: State["error"]) => void;
   generateId: (type: "point"|"segment"|"angle"|"tag") => string;
-  setSelectedPoints: (selectedPoints: State["selectedPoints"])=>void;
 };
 
 const myStore = create<State & Action>()(
@@ -65,8 +63,6 @@ const myStore = create<State & Action>()(
     }));
     return id;
   },
-  selectedPoints: [] as Tponto[],
-  setSelectedPoints: (selectedPoints)=>set(()=>({selectedPoints: selectedPoints})),
 }),
 {
   name: "storage"

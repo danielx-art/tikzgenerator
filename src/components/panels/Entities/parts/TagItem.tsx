@@ -32,8 +32,6 @@ const TagItem: React.FC<PropsType> = ({ tag, index }) => {
     setAngles,
     tags,
     setTags,
-    selectedPoints,
-    setSelectedPoints,
   } = store;
 
   function handleClick(index: number) {

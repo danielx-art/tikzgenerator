@@ -31,8 +31,10 @@ const AddPointInSegment: React.FC = () => {
 
   if (!store) return;
 
-  const { selectedPoints, generateId, selectedGroup, points, setPoints } =
+  const { generateId, selectedGroup, points, setPoints } =
     store;
+
+  const selectedPoints = points.filter(point=>point.selected);
 
   const segPoints = [selectedPoints[0], selectedPoints[1]];
 

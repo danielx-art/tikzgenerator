@@ -23,25 +23,13 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
     setAngles,
     tags,
     setTags,
-    selectedPoints,
-    setSelectedPoints,
   } = store;
 
   function handlePointClick(index: number) {
-    const updatedPoints = [...points];
-    let thisPoint = updatedPoints[index] as Tponto;
+    let thisPoint = points[index] as Tponto;
 
-    const isItAlreadySelected = thisPoint.selected;
+    const updatedPoints = [...points].map(point=>(point.id===thisPoint.id ? {...point, selected: !point.selected} : point));
 
-    if (isItAlreadySelected) {
-      setSelectedPoints(
-        [...selectedPoints].filter((point) => point.id != thisPoint.id),
-      );
-    } else {
-      setSelectedPoints([...selectedPoints, thisPoint]);
-    }
-
-    thisPoint.selected = !thisPoint.selected;
     setPoints(updatedPoints);
   }
 
@@ -80,10 +68,6 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
       return true;
     });
 
-    const filteredSelectedPoints = selectedPoints.filter(
-      (selectedPoint) => selectedPoint.id != pointIdToRemove,
-    );
-
     // Filter out tags associated with the removed point, segments, and angles
     const filteredTags = tags.filter((tag) => {
       if (
@@ -101,7 +85,6 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
     setSegments(filteredSegments);
     setAngles(filteredAngles);
     setTags(filteredTags);
-    setSelectedPoints(filteredSelectedPoints);
   }
 
   return (
@@ -117,7 +100,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
       <div>{tags.find((tag) => tag.entityId == point.id)?.value || ""}</div>
       {point.selected ? (
         <div className="flex h-4 w-4 items-center justify-center rounded-full bg-c_base bg-opacity-60 text-xs font-bold text-c_high1 ring-1 ring-c_high1">
-          {selectedPoints.findIndex((selpt) => selpt.id == point.id) + 1}
+          {[...points].filter(point=>point.selected).findIndex((selpt) => selpt.id == point.id) + 1}
         </div>
       ) : (
         <div className="w-4"></div>

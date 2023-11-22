@@ -9,10 +9,10 @@ const ItemCustomization:React.FC = () => {
     if (!store) return;
 
     return (<div>
-        {store.tab == "points" && <PointCustomization points={store.points} setPoints={store.setPoints} />}
-        {store.tab == "segments" && <PointCustomization points={store.points} setPoints={store.setPoints} />}
-        {store.tab == "angles" && <PointCustomization points={store.points} setPoints={store.setPoints} />}
-        {store.tab == "tags" && <PointCustomization points={store.points} setPoints={store.setPoints} />}
+        {store.tab == "points" && <PointCustomization store={store} />}
+        {store.tab == "segments" && <PointCustomization store={store} />}
+        {store.tab == "angles" && <PointCustomization store={store} />}
+        {store.tab == "tags" && <PointCustomization store={store} />}
     </div>)
 }
 

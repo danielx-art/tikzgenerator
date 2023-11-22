@@ -53,8 +53,6 @@ const PreviewPanel = () => {
     setSegments,
     angles,
     setAngles,
-    selectedPoints,
-    setSelectedPoints,
   } = store;
 
   const toggleSelected = (index: number, kind: string) => {
@@ -67,7 +65,6 @@ const PreviewPanel = () => {
           return point;
         });
         setPoints(updatedPoints);
-        setSelectedPoints([...updatedPoints].filter((point) => point.selected));
         break;
       case "segment":
         const updatedSegments = segments.map((segment, i) => {
@@ -139,8 +136,10 @@ const PreviewPanel = () => {
               } else if (point.destaque === 2) {
                 if (point.selected) {
                   fill = "#ff817a";
+                  stroke = "#ff817a";
                 } else {
                   fill = "#333333";
+                  stroke = "#333333";
                 }
               }
 
