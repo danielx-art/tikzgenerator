@@ -1,4 +1,4 @@
-import { Tangulo, Tsegmento } from "public/entidades";
+import { Tangulo } from "public/entidades";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import Item from "./Item";

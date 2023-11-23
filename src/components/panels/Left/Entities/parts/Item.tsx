@@ -1,13 +1,4 @@
 import { RemoveButton } from "import/components/micro/RemoveButton";
-import { instanceOf } from "import/utils/misc";
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
-import {
-  type Tentity,
-  type Tponto,
-  type Tsegmento,
-  type Tangulo,
-} from "public/entidades";
 
 type PropsType = {
   highlight: boolean;

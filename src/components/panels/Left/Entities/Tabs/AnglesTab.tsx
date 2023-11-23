@@ -2,7 +2,6 @@ import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import ItemsList from "../parts/ItemsList";
 import AngleItem from "../parts/AngleItem";
-import AutoTagAngles from "../parts/AutoTagAngles";
 import { type Tponto, type Tangulo, angulo } from "public/entidades";
 
 export default function AnglesTab() {
@@ -12,14 +11,15 @@ export default function AnglesTab() {
 
   const { points, angles, setAngles, generateId, setError } = store;
 
-  const selectedPoints = [...points].filter(point=>point.selected);
+  const selectedPoints = [...points].filter((point) => point.selected);
 
   const makeAngles = () => {
-
-    if(selectedPoints.length < 3) {
-      setError("Você precisa selecionar no mínimo três pontos para criar um ângulo.");
+    if (selectedPoints.length < 3) {
+      setError(
+        "Você precisa selecionar no mínimo três pontos para criar um ângulo.",
+      );
       return;
-    } 
+    }
 
     let anglesToAdd = [] as Tangulo[];
 
@@ -42,7 +42,7 @@ export default function AnglesTab() {
         Selecione três ou mais pontos e clique em "Conectar!".
       </div>
       <button
-        className="mb-2 w-fit self-center rounded-sm bg-c_interact hover:bg-c_high1 px-4 py-2 text-c_base outline-1"
+        className="mb-2 w-fit self-center rounded-sm bg-c_interact px-4 py-2 text-c_base outline-1 hover:bg-c_high1"
         onClick={makeAngles}
       >
         Conectar!

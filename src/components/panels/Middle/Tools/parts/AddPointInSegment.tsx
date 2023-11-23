@@ -8,7 +8,7 @@ import {
 } from "import/utils/misc";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
-import { Tponto, ponto } from "public/entidades";
+import { ponto } from "public/entidades";
 import { vec } from "public/vetores";
 import { useRef, useState } from "react";
 
@@ -31,16 +31,17 @@ const AddPointInSegment: React.FC = () => {
 
   if (!store) return;
 
-  const { generateId, selectedGroup, points, setPoints } =
-    store;
+  const { generateId, selectedGroup, points, setPoints } = store;
 
-  const selectedPoints = points.filter(point=>point.selected);
+  const selectedPoints = points.filter((point) => point.selected);
 
   const segPoints = [selectedPoints[0], selectedPoints[1]];
 
   if (!segPoints[0] || !segPoints[1]) {
     return (
-        <div className=" text-c_scnd2 opacity-75 italic">Selecione ao menos dois pontos.</div>
+      <div className=" italic text-c_scnd2 opacity-75">
+        Selecione ao menos dois pontos.
+      </div>
     );
   }
 
@@ -203,7 +204,7 @@ const AddPointInSegment: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center gap-2">
+    <div className="flex w-full flex-col items-center gap-2">
       <div className="flex flex-col flex-nowrap gap-2  p-2">
         <div className="m-0 h-fit w-full p-0">
           <div
@@ -236,7 +237,7 @@ const AddPointInSegment: React.FC = () => {
             tabIndex={0}
           >
             <div
-              className={`absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full shadow-sm shadow-c_scnd z-10 ${
+              className={`absolute z-10 h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full shadow-sm shadow-c_scnd ${
                 isOutOfBoundary
                   ? "bg-c_faded hover:ring-1 hover:ring-c_interact"
                   : "bg-c_interact hover:z-0"
@@ -295,7 +296,7 @@ const AddPointInSegment: React.FC = () => {
         <div className="flex flex-col items-center justify-center gap-2">
           <input
             type="text"
-            className="z-10 w-1/2 cursor-text rounded-sm bg-c_base px-2 py-1 text-c_scnd focus:outline-c_high"
+            className="focus:outline-c_high z-10 w-1/2 cursor-text rounded-sm bg-c_base px-2 py-1 text-c_scnd"
             value={inputVal}
             onChange={handleInput}
           />

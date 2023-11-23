@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import myStore from "import/utils/store";
 import { ponto, type Tponto } from "public/entidades";
 import { vec } from "public/vetores";
@@ -126,7 +126,7 @@ const AddPointInput = () => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        className="w-full rounded-sm bg-c_base px-2 py-1 text-c_disabled2 focus:outline-c_high1 ring-1 ring-c_disabled2"
+        className="w-full rounded-sm bg-c_base px-2 py-1 text-c_disabled2 ring-1 ring-c_disabled2 focus:outline-c_high1"
       />
       <button
         className="rounded-sm bg-c_interact p-2 text-c_base outline-1 hover:bg-c_high1"

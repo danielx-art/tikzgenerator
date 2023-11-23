@@ -1,9 +1,9 @@
-import EntitiesPanel from "import/components/panels/Entities/EntitiesPanel";
 import Head from "next/head";
-import CustomizationPanel from "import/components/panels/Customization/CustomizationPanel";
-import PreviewPanel from "import/components/panels/Preview/PreviewPanel";
 import { ErrorBanner } from "import/components/micro/ErrorBanner";
 import { Debugger } from "import/components/micro/Debugger";
+import LeftPanel from "import/components/panels/Left/LeftPanel";
+import MiddlePanel from "import/components/panels/Middle/MIddlePanel";
+import RightPanel from "import/components/panels/Right/RightPanel";
 
 export default function Home() {
   return (
@@ -13,11 +13,11 @@ export default function Home() {
         <meta name="description" content="Generates TikZ scripts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="md:no-scrollbar h-full flex flex-col overflow-auto bg-c_base p-4 font-jost md:max-h-full md:grid md:grid-cols-[2fr_2fr_3fr] gap-4">
+      <div className="md:no-scrollbar flex h-full flex-col gap-4 overflow-auto bg-c_base p-4 font-jost md:grid md:max-h-full md:grid-cols-[2fr_2fr_3fr]">
         <ErrorBanner />
-        <EntitiesPanel />
-        <CustomizationPanel />
-        <PreviewPanel />
+        <LeftPanel />
+        <MiddlePanel />
+        <RightPanel />
         <Debugger />
       </div>
     </>

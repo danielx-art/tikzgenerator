@@ -1,19 +1,20 @@
-import Paginator from "import/components/micro/Paginator";
-import { Tentity, Tetiqueta, Tponto } from "public/entidades";
-import { useEffect, useState } from "react";
+import { type Tponto } from "public/entidades";
 import PointDisplayCustomization from "./PointDisplayCustomization";
 import { type State, type Action } from "import/utils/store";
 import TagCustomization from "./TagCustomization";
 
 type PropsType = {
-  store: State & Action
-  thisEntity: Tponto|undefined
+  store: State & Action;
+  thisEntity: Tponto | undefined;
 };
 
 const PointCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
-
   return (
-    <div className="flex flex-col gap-4 text-c_scnd">
+    <div
+      className={`mb-2 flex w-full flex-col gap-2 ${
+        thisEntity ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
+      }`}
+    >
       <PointDisplayCustomization store={store} thisEntity={thisEntity} />
       <TagCustomization store={store} thisEntity={thisEntity} />
     </div>

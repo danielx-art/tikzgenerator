@@ -5,9 +5,7 @@ import {
 } from "import/utils/svgPaths";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
-import { Tangulo, Tsegmento } from "public/entidades";
-import { vec } from "public/vetores";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
@@ -46,14 +44,7 @@ const PreviewPanel = () => {
 
   if (!store) return;
 
-  const {
-    points,
-    setPoints,
-    segments,
-    setSegments,
-    angles,
-    setAngles,
-  } = store;
+  const { points, setPoints, segments, setSegments, angles, setAngles } = store;
 
   const toggleSelected = (index: number, kind: string) => {
     switch (kind) {
@@ -88,7 +79,7 @@ const PreviewPanel = () => {
   };
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete p-4 sm:max-h-full sm:min-h-full">
+    <div className="flex w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete">
       <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
       <div className="w-full flex-1 overflow-auto">
         <svg

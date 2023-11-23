@@ -1,12 +1,6 @@
 import { type Action, type State } from "import/utils/store";
-import {
-  Tangulo,
-  Tentity,
-  Tetiqueta,
-  Tponto,
-  Tsegmento,
-} from "public/entidades";
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import { type Tentity, type Tetiqueta } from "public/entidades";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { updateTag } from "import/utils/miscEntity";
 
 type PropsType = {
@@ -42,14 +36,16 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
   };
 
   return (
-    <div className="w-full flex flex-row flex-nowrap p-2 overflow-hidden">
+    <div className="flex w-full flex-row flex-nowrap gap-2 overflow-hidden">
       <input
         type="text"
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         disabled={!editMode}
-        className=""
+        className={`${
+          editMode ? "ring-2 ring-c_high1" : "bg-c_discrete"
+        } flex-1`}
       />
       <button onClick={handleBtnPress}>
         {editMode ? (

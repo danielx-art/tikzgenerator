@@ -5,10 +5,13 @@ import { useEffect, useState } from "react";
 
 type PropsType = {
   store: State & Action;
-  thisEntity: Tponto|undefined
+  thisEntity: Tponto | undefined;
 };
 
-const PointDisplayCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
+const PointDisplayCustomization: React.FC<PropsType> = ({
+  store,
+  thisEntity,
+}) => {
   const [disableSize, setDisableSize] = useState(true);
   const [size, setSize] = useState("1");
 
@@ -47,9 +50,13 @@ const PointDisplayCustomization: React.FC<PropsType> = ({ store, thisEntity }) =
   }, [thisPoint]);
 
   return (
-    <div className="flex w-full flex-col gap-2 mb-2">
+    <div
+      className={`mb-2 flex w-full flex-col gap-2 ${
+        thisPoint ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
+      }`}
+    >
       <div>Destaque</div>
-      <div className="flex flex-row w-full">
+      <div className="flex w-full flex-row">
         <RadioGroup
           onChange={(option) => handleDisplayChange(option)}
           value={thisPoint ? thisPoint!.destaque : 0}
@@ -87,7 +94,7 @@ const PointDisplayCustomization: React.FC<PropsType> = ({ store, thisEntity }) =
             disableSize ? "text-c_disabled" : "text-c_scnd"
           }`}
         >
-          <label htmlFor="sizeInput" className="inline h-full">
+          <label htmlFor="sizeInput" className="flex h-full items-center pl-2">
             Tamanho:
           </label>
           <input
@@ -95,7 +102,7 @@ const PointDisplayCustomization: React.FC<PropsType> = ({ store, thisEntity }) =
             name="sizeInput"
             disabled={disableSize}
             onChange={handleSizeChange}
-            className="inline w-16 bg-c_base p-1 text-center focus:underline focus:outline-none"
+            className="inline w-10 bg-c_base p-1 text-center focus:underline focus:outline-none"
             value={size}
           />
         </div>
