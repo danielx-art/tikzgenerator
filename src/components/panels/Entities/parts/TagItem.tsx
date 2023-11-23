@@ -10,6 +10,7 @@ import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
 import { roundAndDisplayNicely } from "import/utils/misc";
+import { getEntityById } from "import/utils/miscEntity";
 
 type PropsType = {
   tag: Tetiqueta;
@@ -42,40 +43,6 @@ const TagItem: React.FC<PropsType> = ({ tag, index }) => {
   }
 
   function removeTag(index: number) {}
-
-  function getEntityById(
-    id: string,
-    store: Tstore,
-  ): TentityWithKind | undefined {
-    if (!store) return;
-
-    const entityKind = id.split("_")[0];
-
-    switch (entityKind) {
-      case "point":
-        const thisPoint = points.filter((point) => point.id == id)[0];
-        if (!thisPoint) {
-          return;
-        }
-        return { ...thisPoint, kind: "point" } as Tponto & { kind: "point" };
-      case "segment":
-        const thisSeg = segments.filter((seg) => seg.id == id)[0];
-        if (!thisSeg) {
-          return;
-        }
-        return { ...thisSeg, kind: "segment" } as Tsegmento & {
-          kind: "segment";
-        };
-      case "angle":
-        const thisAng = angles.filter((angle) => angle.id == id)[0];
-        if (!thisAng) {
-          return;
-        }
-        return { ...thisAng, kind: "angle" } as Tangulo & { kind: "angle" };
-      default:
-        return;
-    }
-  }
 
   function getEntityDisplay(id: string, store: Tstore) {
     const ent = getEntityById(id, store);

@@ -4,27 +4,31 @@ import useStore from "import/utils/useStore";
 import { useEffect, useState } from "react";
 import PointCustomization from "./PointCustomization";
 import OpenCloseAccordionButton from "import/components/micro/OpenCloseAccordionButton";
+import { Tentity, Tetiqueta, Tponto } from "public/entidades";
 
 const CustomizationAccordionItem: React.FC = () => {
+
   const [isOpen, setIsOpen] = useState(true);
   const [curr, setCurr] = useState(0);
   const [tabMessage, setTabMessage] = useState("");
+  const [selectedEntities, setSelectedEntities] = useState<Array<Tentity|Tetiqueta>>();
+  const [thisEntity, setThisEntity] = useState<Tentity|Tetiqueta>();
 
   const store = useStore(myStore, (state) => state);
 
-  let selectedEntities = [];
+  useEffect(()=>{
+    if(!store) return;
+    const entityType = store.tab as "points" | "segments" | "angles" | "tags";
+    setSelectedEntities(store[entityType].filter((ent) => ent.selected));
+  },[store, store?.tab]);
 
-  if (store && store.tab === "points")
-    selectedEntities = store.points.filter((point) => point.selected);
-  if (store && store.tab === "segments")
-    selectedEntities = store.segments.filter((seg) => seg.selected);
-  if (store && store.tab === "angles")
-    selectedEntities = store.angles.filter((ang) => ang.selected);
-  if (store && store.tab === "tags")
-    selectedEntities = store.tags.filter((tag) => tag.selected);
+  useEffect(()=>{
+    if (!store || !selectedEntities) return;
+    setThisEntity(selectedEntities[curr]);
+  }, [selectedEntities, curr])
 
   useEffect(() => {
-    if (!store) return;
+    if (!store || !selectedEntities) return;
     switch (store.tab) {
       case "points":
         setTabMessage(`${selectedEntities.length} ponto(s) selecionado(s)`);
@@ -41,8 +45,8 @@ const CustomizationAccordionItem: React.FC = () => {
       default:
         setTabMessage(`Onde é que você tá?`);
         break;
-    }
-  }, [store, store?.tab]);
+    } 
+  }, [selectedEntities]);
 
   if (!store) return;
 
@@ -61,7 +65,7 @@ const CustomizationAccordionItem: React.FC = () => {
             <Paginator
               curr={curr}
               setCurr={setCurr}
-              total={selectedEntities.length}
+              total={selectedEntities?.length || 0}
             />
           </div>
         ) : (
@@ -80,7 +84,7 @@ const CustomizationAccordionItem: React.FC = () => {
         aria-orientation="vertical"
         aria-labelledby="options-menu"
       >
-        {store.tab === "points" && <PointCustomization store={store} />}
+        {store.tab === "points" && <PointCustomization store={store} thisEntity={thisEntity as Tponto|undefined} />}
       </div>
     </div>
   );

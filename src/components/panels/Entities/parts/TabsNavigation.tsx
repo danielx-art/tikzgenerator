@@ -9,7 +9,7 @@ const TabsNavigation: React.FC = () => {
   const { tab, setTab } = store;
 
   return (
-    <div className="grid h-fit w-full grid-cols-4 gap-0.5 text-sm">
+    <div className="grid h-fit w-full grid-cols-3 gap-0.5 text-sm">
       {/* <TabItem
         storeTab={tab}
         thisTab="presets"
@@ -34,12 +34,12 @@ const TabsNavigation: React.FC = () => {
         action={() => setTab("angles")}
         title="Ângulos"
       />
-      <TabItem
+      {/* <TabItem
         storeTab={tab}
         thisTab="tags"
         action={() => setTab("tags")}
         title="Etiquetas"
-      />
+      /> */}
     </div>
   );
 };

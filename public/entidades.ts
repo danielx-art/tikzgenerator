@@ -76,7 +76,7 @@ const etiqueta = function <T extends Tentity>(
   entity: T,
   value: string = "",
   id: string,
-  pos: vector = vec(0, 0),
+  pos: vector = vec(0,1),
 ) {
   return {
     id,

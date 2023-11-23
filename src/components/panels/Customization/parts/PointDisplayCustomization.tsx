@@ -1,21 +1,20 @@
 import RadioGroup from "import/components/micro/RadioGroup";
 import { type Action, type State } from "import/utils/store";
+import { type Tponto } from "public/entidades";
 import { useEffect, useState } from "react";
 
 type PropsType = {
   store: State & Action;
-  curr: number;
+  thisEntity: Tponto|undefined
 };
 
-const PointDisplayCustomization: React.FC<PropsType> = ({ store, curr }) => {
+const PointDisplayCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
   const [disableSize, setDisableSize] = useState(true);
   const [size, setSize] = useState("1");
 
   const { points, setPoints } = store;
 
-  const selectedPoints = points.filter((point) => point.selected);
-
-  const thisPoint = selectedPoints[curr];
+  const thisPoint = thisEntity;
 
   const handleDisplayChange = (option: number) => {
     if (!thisPoint) return;
@@ -45,7 +44,7 @@ const PointDisplayCustomization: React.FC<PropsType> = ({ store, curr }) => {
     } else {
       setDisableSize(true);
     }
-  }, [selectedPoints]);
+  }, [thisPoint]);
 
   return (
     <div className="flex w-full flex-col gap-2 mb-2">
