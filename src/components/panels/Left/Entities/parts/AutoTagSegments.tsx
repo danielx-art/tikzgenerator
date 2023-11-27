@@ -21,11 +21,12 @@ export default function AutoTagSegments() {
           title: "Medida",
           action: [
             () =>
-              applyTags(lengthTags, store.segments, store.tags, store.setTags, store.generateId),
+              applyTags(lengthTags, store.segments, store.setSegments, store.tags, store.setTags, store.generateId),
             () =>
               applyTags(
                 lengthTags,
                 store.segments.filter((segment) => segment.selected),
+                store.setSegments,
                 store.tags,
                 store.setTags,
                 store.generateId
@@ -39,6 +40,7 @@ export default function AutoTagSegments() {
               applyTags(
                 alphabeticalSmallLatinTags,
                 store.segments,
+                store.setSegments,
                 store.tags,
                 store.setTags,
                 store.generateId
@@ -47,6 +49,7 @@ export default function AutoTagSegments() {
               applyTags(
                 alphabeticalSmallLatinTags,
                 store.segments.filter((segment) => segment.selected),
+                store.setSegments,
                 store.tags,
                 store.setTags,
                 store.generateId

@@ -1,4 +1,4 @@
-import { type Tetiqueta } from "public/entidades";
+import { type Ttag } from "public/entidades";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
@@ -6,7 +6,7 @@ import { roundAndDisplayNicely } from "import/utils/misc";
 import { getEntityById } from "import/utils/miscEntity";
 
 type PropsType = {
-  tag: Tetiqueta;
+  tag: Ttag;
   index: number;
 };
 
@@ -30,7 +30,7 @@ const TagItem: React.FC<PropsType> = ({ tag, index }) => {
 
   function handleClick(index: number) {
     const updatedTags = [...tags];
-    let thisTag = updatedTags[index] as Tetiqueta;
+    let thisTag = updatedTags[index] as Ttag;
     thisTag.selected = !thisTag.selected;
     setTags(updatedTags);
   }

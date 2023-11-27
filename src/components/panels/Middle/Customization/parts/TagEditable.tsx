@@ -1,18 +1,31 @@
 import { type Action, type State } from "import/utils/store";
-import { type Tentity, type Tetiqueta } from "public/entidades";
-import { ChangeEvent, KeyboardEvent, useState } from "react";
-import { updateTag } from "import/utils/miscEntity";
+import { type Tentity, type Ttag } from "public/entidades";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import { getEntityKind, updateTag } from "import/utils/miscEntity";
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
 type PropsType = {
   store: State & Action;
-  thisEntity: Tentity | Tetiqueta | undefined;
-  thisTag: Tetiqueta | undefined;
+  thisEntity: Tentity | Ttag | undefined;
+  thisTag: Ttag | undefined;
 };
 
 const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
+
+  useEffect(()=>{
+    if(!thisEntity) return;
+    const entityKind = getEntityKind(thisEntity);
+    if(entityKind == "tag") {
+      const thisEntTypeSure = thisEntity as Ttag;
+      setInputValue(thisEntTypeSure.value);
+    } else {
+      const thisEntTypeSure = thisEntity as Tentity;
+      setInputValue(thisEntTypeSure.etiqueta);
+    }
+
+  },[thisEntity])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -37,7 +50,7 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
   };
 
   return (
-    <div className="flex w-full flex-row flex-nowrap gap-2 overflow-hidden">
+    <div className="flex flex-1 flex-row flex-nowrap gap-2">
       <input
         type="text"
         value={inputValue}
@@ -45,8 +58,8 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
         onKeyDown={handleKeyDown}
         disabled={!editMode}
         className={`${
-          editMode ? "ring-2 ring-c_high1" : "bg-c_discrete"
-        } flex-1`}
+          editMode ? "" : "bg-c_discrete"
+        } flex-1 focus:outline-c_high1 p-2`}
       />
       <button onClick={handleBtnPress}>
         {editMode ? (

@@ -4,15 +4,15 @@ import useStore from "import/utils/useStore";
 import { useEffect, useState } from "react";
 import PointCustomization from "./parts/PointCustomization";
 import OpenCloseAccordionButton from "import/components/micro/OpenCloseAccordionButton";
-import { Tentity, Tetiqueta, Tponto } from "public/entidades";
+import { Tentity, Ttag, Tpoint } from "public/entidades";
 
 const CustomizationPanel = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [curr, setCurr] = useState(0);
   const [tabMessage, setTabMessage] = useState("");
   const [selectedEntities, setSelectedEntities] =
-    useState<Array<Tentity | Tetiqueta>>();
-  const [thisEntity, setThisEntity] = useState<Tentity | Tetiqueta>();
+    useState<Array<Tentity | Ttag>>();
+  const [thisEntity, setThisEntity] = useState<Tentity | Ttag>();
 
   const store = useStore(myStore, (state) => state);
 
@@ -88,7 +88,7 @@ const CustomizationPanel = () => {
           {store.tab === "points" && (
             <PointCustomization
               store={store}
-              thisEntity={thisEntity as Tponto | undefined}
+              thisEntity={thisEntity as Tpoint | undefined}
             />
           )}
         </div>

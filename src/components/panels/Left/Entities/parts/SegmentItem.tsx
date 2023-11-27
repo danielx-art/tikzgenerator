@@ -1,10 +1,10 @@
-import { Tsegmento } from "public/entidades";
+import { Tsegment } from "public/entidades";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
 
 type PropsType = {
-  segment: Tsegmento;
+  segment: Tsegment;
   index: number;
 };
 
@@ -17,7 +17,7 @@ const SegmentItem: React.FC<PropsType> = ({ segment, index }) => {
 
   function handleSegmentClick(index: number) {
     const updatedSegments = [...segments];
-    let thisSeg = updatedSegments[index] as Tsegmento;
+    let thisSeg = updatedSegments[index] as Tsegment;
     thisSeg.selected = !thisSeg.selected;
     setSegments(updatedSegments);
   }

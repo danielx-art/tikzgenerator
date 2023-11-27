@@ -1,11 +1,18 @@
 import {
-  Tangulo,
+  Tangle,
+  Tentity,
   TentityWithKind,
-  Tetiqueta,
-  Tponto,
-  Tsegmento,
+  Ttag,
+  Tpoint,
+  Tsegment,
 } from "public/entidades";
 import { type Action, type State } from "import/utils/store";
+
+export function getEntityKind(ent: Tentity|Ttag):"point"|"segment"|"angle"|"tag" {
+  const entityKind = ent.id.split("_")[0] as "point"|"segment"|"angle"|"tag";
+  //if(!entityKind) return "general";
+  return entityKind;
+}
 
 export function getEntityById(
   id: string,
@@ -21,13 +28,13 @@ export function getEntityById(
       if (!thisPoint) {
         return;
       }
-      return { ...thisPoint, kind: "point" } as Tponto & { kind: "point" };
+      return { ...thisPoint, kind: "point" } as Tpoint & { kind: "point" };
     case "segment":
       const thisSeg = store.segments.filter((seg) => seg.id == id)[0];
       if (!thisSeg) {
         return;
       }
-      return { ...thisSeg, kind: "segment" } as Tsegmento & {
+      return { ...thisSeg, kind: "segment" } as Tsegment & {
         kind: "segment";
       };
     case "angle":
@@ -35,7 +42,7 @@ export function getEntityById(
       if (!thisAng) {
         return;
       }
-      return { ...thisAng, kind: "angle" } as Tangulo & { kind: "angle" };
+      return { ...thisAng, kind: "angle" } as Tangle & { kind: "angle" };
     default:
       return;
   }
@@ -43,8 +50,8 @@ export function getEntityById(
 
 export function updateTag(
   store: State & Action,
-  thisTag: Tetiqueta,
-  updatedTag: Tetiqueta,
+  thisTag: Ttag,
+  updatedTag: Ttag,
 ): void {
   const updatedTags = [...store.tags].map((tag) =>
     tag.id == thisTag.id ? updatedTag : tag,
@@ -86,3 +93,26 @@ export function updateTag(
 
   return;
 }
+
+
+//DEPRECATED-THIS FUNCTION IS ON STORE NOW
+// export function toggleEntitySelection(store: State&Action, entity: Tentity|Ttag){
+
+//   const entityKind = getEntityKind(entity);
+//   const storeKey = `${entityKind}s` as "points"|"segments"|"angles"|"tags"; 
+//   const entitiesArr = store[storeKey];
+//   const storeSetterKey = "set" + storeKey[0]!.toUpperCase() + storeKey.slice(1) as "setPoints"|"setSegments"|"setAngles"|"setTags"
+//   const entitiesSetter = store[storeSetterKey];
+//   const updatedEntities = [...entitiesArr].map(ent=>ent.id===entity.id?{...ent, selected: !ent.selected}:ent);
+//   // @ts-ignore
+//   entitiesSetter(updatedEntities);
+//   const updatedSelectedEntities = [...store.selectedEntities[storeKey]];
+//   const indexToChange = updatedSelectedEntities.indexOf(parseInt(entity.id));
+//   if(indexToChange > -1){
+//     updatedSelectedEntities.splice(indexToChange, 1);
+//   } else {
+//     updatedSelectedEntities.push(parseInt(entity.id));
+//   }
+//   store.setSelectedEntities({...store.selectedEntities, [storeKey]: updatedSelectedEntities});
+
+// }

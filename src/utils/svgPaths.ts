@@ -1,11 +1,11 @@
-import { Tsegmento, Tangulo, Tponto } from "public/entidades";
+import { Tsegment, Tangle, Tpoint } from "public/entidades";
 import { vec } from "public/vetores";
 
-export const getSegmentPath = (segment: Tsegmento) => {
+export const getSegmentPath = (segment: Tsegment) => {
   return `M${segment.p1.coords.x},${segment.p1.coords.y} L${segment.p2.coords.x},${segment.p2.coords.y}`;
 };
 
-export const getAnglePath = (angle: Tangulo) => {
+export const getAnglePath = (angle: Tangle) => {
   let vectorA = vec().copy(angle.a.coords).sub(angle.b.coords);
   let vectorB = vec().copy(angle.c.coords).sub(angle.b.coords);
   vectorA.setMag(angle.tamanho);
@@ -77,7 +77,7 @@ export const getAnglePath = (angle: Tangulo) => {
   }
 };
 
-export const getPointPath = (point: Tponto) => {
+export const getPointPath = (point: Tpoint) => {
   const { coords, destaque, tamanho } = point;
 
   if (destaque === 0) {

@@ -1,11 +1,11 @@
-import { type Tponto } from "public/entidades";
+import { type Tpoint } from "public/entidades";
 import PointDisplayCustomization from "./PointDisplayCustomization";
 import { type State, type Action } from "import/utils/store";
 import TagCustomization from "./TagCustomization";
 
 type PropsType = {
   store: State & Action;
-  thisEntity: Tponto | undefined;
+  thisEntity: Tpoint | undefined;
 };
 
 const PointCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {

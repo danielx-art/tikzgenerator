@@ -1,11 +1,11 @@
 import RadioGroup from "import/components/micro/RadioGroup";
 import { type Action, type State } from "import/utils/store";
-import { type Tponto } from "public/entidades";
+import { type Tpoint } from "public/entidades";
 import { useEffect, useState } from "react";
 
 type PropsType = {
   store: State & Action;
-  thisEntity: Tponto | undefined;
+  thisEntity: Tpoint | undefined;
 };
 
 const PointDisplayCustomization: React.FC<PropsType> = ({
@@ -21,9 +21,11 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
 
   const handleDisplayChange = (option: number) => {
     if (!thisPoint) return;
-    const updatedPoints = [...points].map((point) =>
-      point.id == thisPoint.id ? { ...point, destaque: option } : point,
-    );
+    const updatedPoints = [...points].map((point) => {
+      let tamanho = size.length > 0 ? parseFloat(size)/10 : 0;
+      if (tamanho < 0) tamanho = 0;
+      return point.id == thisPoint.id ? { ...point, destaque: option, tamanho:tamanho } : point
+    });
     setPoints(updatedPoints);
   };
 
@@ -32,11 +34,11 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   };
 
   useEffect(() => {
-    let tamanho = size.length > 0 ? parseFloat(size) : 0;
+    let tamanho = size.length > 0 ? parseFloat(size)/10 : 0;
     if (tamanho < 0) tamanho = 0;
     if (!thisPoint) return;
     const updatedPoints = [...points].map((point) =>
-      point.id == thisPoint.id ? { ...point, tamanho: tamanho / 10 } : point,
+      point.id == thisPoint.id ? { ...point, tamanho: tamanho } : point,
     );
     setPoints(updatedPoints);
   }, [size]);

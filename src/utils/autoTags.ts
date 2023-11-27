@@ -1,4 +1,4 @@
-import { Tentity, Tsegmento, type Tponto, Tangulo } from "public/entidades";
+import { Tentity, Tsegment, type Tpoint, Tangle } from "public/entidades";
 import { roundAndDisplayNicely, roundToDecimalPlaces } from "./misc";
 
 const LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -22,9 +22,9 @@ export const alphabeticalGreekTags = (i: number, entity: Tentity) =>
 export const numericalTags = (i: number, entity: Tentity) => {
   return `P${i}`;
 };
-export const coordTags = (i: number, entity: Tponto) =>
+export const coordTags = (i: number, entity: Tpoint) =>
   `(${entity.coords.x};${entity.coords.y})`;
-export const lengthTags = (i: number, entity: Tsegmento) =>
+export const lengthTags = (i: number, entity: Tsegment) =>
   `${roundAndDisplayNicely(entity.comprimento)}`;
-export const arcTags = (i: number, entity: Tangulo) =>
+export const arcTags = (i: number, entity: Tangle) =>
   `${roundAndDisplayNicely(entity.valor)}`;

@@ -1,6 +1,6 @@
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
-import { type Tponto, type Tsegmento, segmento } from "public/entidades";
+import { type Tpoint, type Tsegment, segmento } from "public/entidades";
 import { useState } from "react";
 import ItemsList from "../parts/ItemsList";
 import SegmentItem from "../parts/SegmentItem";
@@ -16,11 +16,11 @@ export default function SegmentsTab() {
 
   const conectPoints = () => {
     const selectedPoints = points.filter((point) => point.selected);
-    let segmentsToAdd = [] as Tsegmento[];
+    let segmentsToAdd = [] as Tsegment[];
 
     for (let i = 0; i < selectedPoints.length - 1; i++) {
-      const pA = selectedPoints[i] as Tponto;
-      const pB = selectedPoints[i + 1] as Tponto;
+      const pA = selectedPoints[i] as Tpoint;
+      const pB = selectedPoints[i + 1] as Tpoint;
       const newSegId = generateId("segment");
       const newSeg = segmento(pA, pB, newSegId);
       segmentsToAdd.push(newSeg);
@@ -28,8 +28,8 @@ export default function SegmentsTab() {
 
     if (cyclic) {
       const closingSegId = generateId("segment");
-      const lastPoint = selectedPoints[selectedPoints.length - 1] as Tponto;
-      const firstPoint = selectedPoints[0] as Tponto;
+      const lastPoint = selectedPoints[selectedPoints.length - 1] as Tpoint;
+      const firstPoint = selectedPoints[0] as Tpoint;
       const closingSeg = segmento(lastPoint, firstPoint, closingSegId);
       segmentsToAdd.push(closingSeg);
     }

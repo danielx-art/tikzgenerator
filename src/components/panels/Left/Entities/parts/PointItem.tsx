@@ -1,11 +1,11 @@
-import { Tponto } from "public/entidades";
+import { Tpoint } from "public/entidades";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
 import { roundAndDisplayNicely } from "import/utils/misc";
 
 type PropsType = {
-  point: Tponto;
+  point: Tpoint;
   index: number;
 };
 
@@ -26,7 +26,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
   } = store;
 
   function handlePointClick(index: number) {
-    let thisPoint = points[index] as Tponto;
+    let thisPoint = points[index] as Tpoint;
 
     const updatedPoints = [...points].map(point=>(point.id===thisPoint.id ? {...point, selected: !point.selected} : point));
 

@@ -1,15 +1,15 @@
-import { Tponto, Tsegmento, Tangulo, Tetiqueta } from "public/entidades";
+import { Tpoint, Tsegment, Tangle, Ttag } from "public/entidades";
 import { create } from "zustand";
 import { persist } from 'zustand/middleware'
 
 export type State = {
   tab: string;
-  points: Tponto[];
-  angles: Tangulo[];
-  segments: Tsegmento[];
+  points: Tpoint[];
+  angles: Tangle[];
+  segments: Tsegment[];
   groups: number[];
   selectedGroup: number;
-  tags: Tetiqueta[];
+  tags: Ttag[];
   error: string;
   idCounters: {
     point: number,
@@ -17,6 +17,7 @@ export type State = {
     angle: number,
     tag: number
   },
+  selections: string[],
 };
 
 export type Action = {
@@ -29,15 +30,16 @@ export type Action = {
   setTags: (tags: State["tags"]) => void;
   setError: (error: State["error"]) => void;
   generateId: (type: "point"|"segment"|"angle"|"tag") => string;
+  toggleSelection: (id: string)=>void;
 };
 
 const myStore = create<State & Action>()(
   persist((set, get) => ({
   tab: "points",
   setTab: (tab) => set(() => ({ tab: tab })),
-  points: [] as Tponto[],
-  angles: [] as Tangulo[],
-  segments: [] as Tsegmento[],
+  points: [] as Tpoint[],
+  angles: [] as Tangle[],
+  segments: [] as Tsegment[],
   groups: [1] as number[],
   setPoints: (points) => set(() => ({ points: points })),
   setAngles: (angles) => set(() => ({ angles: angles })),
@@ -46,7 +48,7 @@ const myStore = create<State & Action>()(
   selectedGroup: 1 as number,
   setSelectedGroup: (selectedGroup) =>
     set(() => ({ selectedGroup: selectedGroup })),
-  tags: [] as Tetiqueta[],
+  tags: [] as Ttag[],
   setTags: (tags) => set(() => ({ tags: tags })),
   error: "",
   setError: (error) => set(() => ({ error: error })),
@@ -63,6 +65,27 @@ const myStore = create<State & Action>()(
     }));
     return id;
   },
+  selections: [],
+  toggleSelection: (id) => {
+    const entityKind = id.split("_")[0] as "points"|"segments"|"angles"|"tags";
+    const entitiesArray = [...get()[entityKind]];
+    const indexInArray = entitiesArray.findIndex(obj => obj.id === id);
+    
+    if (indexInArray !== -1) {
+      const isSelected = entitiesArray[indexInArray]!.selected;
+      entitiesArray[indexInArray] = { ...entitiesArray[indexInArray]!, selected: !isSelected };
+
+      const updatedSelections = [...get().selections];
+      if (isSelected) {
+        const index = updatedSelections.indexOf(id);
+        if (index > -1) updatedSelections.splice(index, 1);
+      } else {
+        updatedSelections.push(id);
+      }
+
+      set({ [entityKind]: entitiesArray, selections: updatedSelections });
+    }
+  }
 }),
 {
   name: "storage"

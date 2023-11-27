@@ -2,7 +2,7 @@ import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import ItemsList from "../parts/ItemsList";
 import AngleItem from "../parts/AngleItem";
-import { type Tponto, type Tangulo, angulo } from "public/entidades";
+import { type Tpoint, type Tangle, angulo } from "public/entidades";
 
 export default function AnglesTab() {
   const store = useStore(myStore, (state) => state);
@@ -21,12 +21,12 @@ export default function AnglesTab() {
       return;
     }
 
-    let anglesToAdd = [] as Tangulo[];
+    let anglesToAdd = [] as Tangle[];
 
     for (let i = 0; i < selectedPoints.length - 2; i++) {
-      const pA = selectedPoints[i] as Tponto;
-      const pB = selectedPoints[i + 1] as Tponto;
-      const pC = selectedPoints[i + 2] as Tponto;
+      const pA = selectedPoints[i] as Tpoint;
+      const pB = selectedPoints[i + 1] as Tpoint;
+      const pC = selectedPoints[i + 2] as Tpoint;
       const newAngleId = generateId("angle");
       const newAngle = angulo(pA, pB, pC, newAngleId);
       anglesToAdd.push(newAngle);

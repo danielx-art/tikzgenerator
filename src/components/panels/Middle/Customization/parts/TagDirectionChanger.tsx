@@ -1,12 +1,12 @@
 import { type Action, type State } from "import/utils/store";
-import { type Tentity, type Tetiqueta } from "public/entidades";
+import { type Tentity, type Ttag } from "public/entidades";
 import { vec } from "public/vetores";
 import { useEffect, useState } from "react";
 
 type PropsType = {
   store: State & Action;
-  thisEntity: Tentity | Tetiqueta | undefined;
-  thisTag: Tetiqueta | undefined;
+  thisEntity: Tentity | Ttag | undefined;
+  thisTag: Ttag | undefined;
 };
 
 const TagDirectionChanger: React.FC<PropsType> = ({
@@ -39,7 +39,7 @@ const TagDirectionChanger: React.FC<PropsType> = ({
 
   return (
     <div className="flex w-full flex-row flex-nowrap gap-2">
-      <div>Orientação: </div>
+      <div className="grid place-items-center">Orientação: </div>
       <button className={``} onClick={handleDirectionChange}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

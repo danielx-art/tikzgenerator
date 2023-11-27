@@ -3,7 +3,7 @@ import PointItem from "../parts/PointItem";
 import GroupItem from "../parts/GroupItem";
 import useStore from "import/utils/useStore";
 import ItemsList from "../parts/ItemsList";
-import { Tetiqueta } from "public/entidades";
+import { Ttag } from "public/entidades";
 import TagItem from "../parts/TagItem";
 
 export default function TagsTab() {

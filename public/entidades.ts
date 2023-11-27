@@ -13,9 +13,9 @@ const ponto = function (a: vector, id: string, group: number = 1) {
   };
 };
 
-type Tponto = ReturnType<typeof ponto>;
+type Tpoint = ReturnType<typeof ponto>;
 
-const segmento = function (a: Tponto, b: Tponto, id: string) {
+const segmento = function (a: Tpoint, b: Tpoint, id: string) {
   return {
     id,
     p1: a,
@@ -38,9 +38,9 @@ const segmento = function (a: Tponto, b: Tponto, id: string) {
   };
 };
 
-type Tsegmento = ReturnType<typeof segmento>;
+type Tsegment = ReturnType<typeof segmento>;
 
-const angulo = function (a: Tponto, b: Tponto, c: Tponto, id: string) {
+const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: string) {
   return {
     id,
     a,
@@ -63,14 +63,14 @@ const angulo = function (a: Tponto, b: Tponto, c: Tponto, id: string) {
   };
 };
 
-type Tangulo = ReturnType<typeof angulo>;
+type Tangle = ReturnType<typeof angulo>;
 
 type TentityWithKind =
-  | (Tponto & { kind: "point" })
-  | (Tsegmento & { kind: "segment" })
-  | (Tangulo & { kind: "angle" });
+  | (Tpoint & { kind: "point" })
+  | (Tsegment & { kind: "segment" })
+  | (Tangle & { kind: "angle" });
 
-type Tentity = Tponto | Tsegmento | Tangulo;
+type Tentity = Tpoint | Tsegment | Tangle;
 
 const etiqueta = function <T extends Tentity>(
   entity: T,
@@ -87,17 +87,17 @@ const etiqueta = function <T extends Tentity>(
   };
 };
 
-type Tetiqueta = ReturnType<typeof etiqueta>;
+type Ttag = ReturnType<typeof etiqueta>;
 
 export {
   ponto,
-  type Tponto,
+  type Tpoint,
   segmento,
-  type Tsegmento,
+  type Tsegment,
   angulo,
-  type Tangulo,
+  type Tangle,
   type Tentity,
   type TentityWithKind,
   etiqueta,
-  type Tetiqueta,
+  type Ttag,
 };

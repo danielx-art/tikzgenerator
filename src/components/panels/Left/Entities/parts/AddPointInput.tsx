@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import myStore from "import/utils/store";
-import { ponto, type Tponto } from "public/entidades";
+import { ponto, type Tpoint } from "public/entidades";
 import { vec } from "public/vetores";
 import useStore from "import/utils/useStore";
 import { MAXIMUM_NUMBER_OF_POINTS } from "public/generalConfigs";
@@ -27,7 +27,7 @@ const AddPointInput = () => {
 
     const substrings = input.split(" ");
 
-    let pointsToAdd = [] as Tponto[];
+    let pointsToAdd = [] as Tpoint[];
 
     for (let index = 0; index < substrings.length; index++) {
       let substring = substrings[index] as string;
@@ -119,6 +119,11 @@ const AddPointInput = () => {
     setPoints([...points, ...pointsToAdd]);
     setInput("");
   }
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      addPoint();
+    }
+  };
 
   return (
     <div className="my-2 flex w-full flex-row flex-nowrap">
@@ -126,7 +131,8 @@ const AddPointInput = () => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        className="w-full rounded-sm bg-c_base px-2 py-1 text-c_disabled2 ring-1 ring-c_disabled2 focus:outline-c_high1"
+        onKeyDown={handleKeyDown}
+        className="flex-1 focus:outline-c_high1 p-2"  
       />
       <button
         className="rounded-sm bg-c_interact p-2 text-c_base outline-1 hover:bg-c_high1"

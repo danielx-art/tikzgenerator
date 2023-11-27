@@ -1,16 +1,16 @@
 import { type Action, type State } from "import/utils/store";
-import { type Tentity, type Tetiqueta } from "public/entidades";
+import { type Tentity, type Ttag } from "public/entidades";
 import { useEffect, useState } from "react";
 import TagDirectionChanger from "./TagDirectionChanger";
 import TagEditable from "./TagEditable";
 
 type PropsType = {
   store: State & Action;
-  thisEntity: Tentity | Tetiqueta | undefined;
+  thisEntity: Tentity | Ttag | undefined;
 };
 
 const TagCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
-  const [thisTag, setThisTag] = useState<Tetiqueta>();
+  const [thisTag, setThisTag] = useState<Ttag>();
 
   useEffect(() => {
     if (!store.tab) return;
@@ -27,13 +27,14 @@ const TagCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
   return (
     <div className="mb-2 flex w-full flex-col gap-2">
       <div className="">Etiqueta</div>
-
+      <div className="flex-1 flex flex-row gap-4">
       <TagEditable store={store} thisEntity={thisEntity} thisTag={thisTag} />
       <TagDirectionChanger
         store={store}
         thisEntity={thisEntity}
         thisTag={thisTag}
       />
+      </div>
       {/*
         1.shows current selected entity tag, if none showns "Nenhuma"
         2.a button to the side, pencil, to enable edit mode
