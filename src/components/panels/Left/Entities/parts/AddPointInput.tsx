@@ -18,7 +18,7 @@ const AddPointInput = () => {
   function addPoint() {
     if (!store) return;
 
-    if (points.length > MAXIMUM_NUMBER_OF_POINTS) {
+    if (points.size > MAXIMUM_NUMBER_OF_POINTS) {
       setError(
         error +
           `Devido à medidas de segurança, você atingiu o limite de ${MAXIMUM_NUMBER_OF_POINTS} pontos. Remova alguns pontos para que seja possível adicionar outros. `,
@@ -57,9 +57,11 @@ const AddPointInput = () => {
           error + `As coordenadas do ponto "${substring}" devem ser números. `,
         );
       } else if (substring.includes(":")) {
-        const selectedPoints = points.filter((point) => point.selected);
+        const pointsArr = Array.from(points.values());
 
-        const pointsInTheSameGroup = points.filter(
+        const selectedPoints = pointsArr.filter((point) => point.selected);
+
+        const pointsInTheSameGroup = pointsArr.filter(
           (point) => point.group == selectedGroup,
         );
 
@@ -116,7 +118,12 @@ const AddPointInput = () => {
         );
       }
     }
-    setPoints([...points, ...pointsToAdd]);
+
+    const updatedPoints = new Map(points);
+
+    pointsToAdd.forEach(newPoint=>updatedPoints.set(newPoint.id, newPoint));
+
+    setPoints(updatedPoints);
     setInput("");
   }
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

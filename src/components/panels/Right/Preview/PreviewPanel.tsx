@@ -117,14 +117,14 @@ const PreviewPanel = () => {
               let stroke = "none";
               let fill = "none";
 
-              if (point.destaque === 1) {
+              if (point.dotstyle === 1) {
                 if (point.selected) {
                   stroke = "#ff817a";
                 } else {
                   stroke = "#333333";
                 }
                 fill = "#f5f5f5";
-              } else if (point.destaque === 2) {
+              } else if (point.dotstyle === 2) {
                 if (point.selected) {
                   fill = "#ff817a";
                   stroke = "#ff817a";

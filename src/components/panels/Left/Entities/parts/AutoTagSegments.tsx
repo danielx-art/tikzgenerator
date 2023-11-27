@@ -21,38 +21,27 @@ export default function AutoTagSegments() {
           title: "Medida",
           action: [
             () =>
-              applyTags(lengthTags, store.segments, store.setSegments, store.tags, store.setTags, store.generateId),
+              applyTags(lengthTags, store.segments),
             () =>
               applyTags(
                 lengthTags,
-                store.segments.filter((segment) => segment.selected),
-                store.setSegments,
-                store.tags,
-                store.setTags,
-                store.generateId
+                new Map(Array.from(store.segments).filter(([key, segment]) => segment.selected))
               ),
           ],
         },
         {
-          title: "a...z aa...zz",
+          title: "a...z aa...zz", //WARNING - THERES AN AUTO TAG ANGLES WITH THE SAME TAG VALUES
           action: [
             () =>
               applyTags(
                 alphabeticalSmallLatinTags,
                 store.segments,
-                store.setSegments,
-                store.tags,
-                store.setTags,
-                store.generateId
+
               ),
             () =>
               applyTags(
                 alphabeticalSmallLatinTags,
-                store.segments.filter((segment) => segment.selected),
-                store.setSegments,
-                store.tags,
-                store.setTags,
-                store.generateId
+                new Map(Array.from(store.segments).filter(([key, segment]) => segment.selected))
               ),
           ],
         },

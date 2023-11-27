@@ -1,4 +1,3 @@
-import { TentityWithKind } from "public/entidades";
 import { DECIMAL_POINTS } from "public/generalConfigs";
 
 export const instanceOf = <T>(value: any, fieldName: string): value is T =>

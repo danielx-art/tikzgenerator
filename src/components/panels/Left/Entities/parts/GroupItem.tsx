@@ -28,11 +28,18 @@ const GroupItem: React.FC<PropsType> = ({ groupId, selected, children }) => {
   }
 
   function removeGroup(groupId: number) {
-    const updatedPoints = [...points].filter((point) => point.group != groupId);
-    updatedPoints.forEach((point) => {
-      if (point.group > groupId) point.group--;
-    });
+    const updatedPoints = new Map();
 
+    points.forEach((point, key) => {
+      if (point.group !== groupId) {
+        const updatedPoint = { ...point };
+        if (updatedPoint.group > groupId) {
+          updatedPoint.group--;
+        }
+        updatedPoints.set(key, updatedPoint);
+      }
+    });
+    
     setPoints(updatedPoints);
 
     if (selectedGroup == groupId) setSelectedGroup(0);

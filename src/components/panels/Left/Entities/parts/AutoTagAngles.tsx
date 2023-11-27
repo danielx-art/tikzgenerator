@@ -24,15 +24,11 @@ export default function AutoTagAngles() {
         {
           title: "Medida (radianos)",
           action: [
-            () => applyTags(arcTags, store.angles, store.setAngles, store.tags, store.setTags, store.generateId),
+            () => applyTags(arcTags, store.angles),
             () =>
               applyTags(
                 arcTags,
-                store.angles.filter((angle) => angle.selected),
-                store.setAngles,
-                store.tags,
-                store.setTags,
-                store.generateId
+                new Map(Array.from(store.angles).filter(([key, angle]) => angle.selected)),
               ),
           ],
         },
@@ -43,18 +39,11 @@ export default function AutoTagAngles() {
               applyTags(
                 alphabeticalSmallLatinTags,
                 store.angles,
-                store.setAngles,
-                store.tags,
-                store.setTags,
-                store.generateId
               ),
             () =>
               applyTags(
                 alphabeticalSmallLatinTags,
-                store.angles.filter((angle) => angle.selected),
-                store.tags,
-                store.setTags,
-                store.generateId
+                new Map(Array.from(store.angles).filter(([key, angle]) => angle.selected)),
               ),
           ],
         },
@@ -65,17 +54,11 @@ export default function AutoTagAngles() {
               applyTags(
                 alphabeticalGreekTags,
                 store.angles,
-                store.tags,
-                store.setTags,
-                store.generateId
               ),
             () =>
               applyTags(
                 alphabeticalGreekTags,
-                store.angles.filter((angle) => angle.selected),
-                store.tags,
-                store.setTags,
-                store.generateId
+                new Map(Array.from(store.angles).filter(([key, angle]) => angle.selected)),
               ),
           ],
         },

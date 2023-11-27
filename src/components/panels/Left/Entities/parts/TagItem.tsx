@@ -3,7 +3,7 @@ import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import Item from "./Item";
 import { roundAndDisplayNicely } from "import/utils/misc";
-import { getEntityById } from "import/utils/miscEntity";
+import { findTagByEntityId } from "import/utils/miscEntity";
 
 type PropsType = {
   tag: Ttag;
@@ -26,64 +26,64 @@ const TagItem: React.FC<PropsType> = ({ tag, index }) => {
     setAngles,
     tags,
     setTags,
+    toggleSelection,
+    deleteTag,
   } = store;
 
-  function handleClick(index: number) {
-    const updatedTags = [...tags];
-    let thisTag = updatedTags[index] as Ttag;
-    thisTag.selected = !thisTag.selected;
-    setTags(updatedTags);
-  }
-
-  function removeTag(index: number) {}
-
-  function getEntityDisplay(id: string, store: Tstore) {
-    const ent = getEntityById(id, store);
-    if (!ent || !store) return "?";
-    let kind = ent.kind;
-    switch (ent.kind) {
-      case "point":
+  function getEntityDisplay(id: string) {
+    if (!store) return "?";
+    const entityKind = id.split("_")[0] as "point"|"segment"|"angle";
+    switch (entityKind) {
+      case "point": {
+        const ent = points.get(id);
+        if(!ent) return;
         return `Ponto (${roundAndDisplayNicely(
           ent.coords.x,
         )};${roundAndDisplayNicely(ent.coords.y)})`;
-      case "segment":
+      }
+      case "segment": {
+        const ent = segments.get(id);
+        if(!ent) return;
         return `Segmento (${roundAndDisplayNicely(
           ent.p1.coords.x,
         )};${roundAndDisplayNicely(ent.p1.coords.y)})--(${roundAndDisplayNicely(
           ent.p2.coords.x,
         )};${roundAndDisplayNicely(ent.p2.coords.y)})`;
-      case "angle":
+      }
+      case "angle": {
+        const ent = angles.get(id);
+        if(!ent) return;
         let result = "";
-        if (
-          ent.a.etiqueta.length > 0 &&
-          ent.b.etiqueta.length > 0 &&
-          ent.c.etiqueta.length > 0
-        ) {
-          result +=
-            ent.a.etiqueta + "-" + ent.b.etiqueta + "-" + ent.c.etiqueta;
-        } else {
-          result += `(${roundAndDisplayNicely(
-            ent.a.coords.x,
-          )};${roundAndDisplayNicely(ent.a.coords.y)})-(${roundAndDisplayNicely(
-            ent.b.coords.x,
-          )};${roundAndDisplayNicely(ent.b.coords.y)})-(${roundAndDisplayNicely(
-            ent.c.coords.x,
-          )};${roundAndDisplayNicely(ent.c.coords.y)})`;
-        }
+
+        const aDisplay = findTagByEntityId(ent.a.id, tags)?.value || `(${roundAndDisplayNicely(
+          ent.a.coords.x,
+        )};${roundAndDisplayNicely(ent.a.coords.y)})-`
+
+        const bDisplay = findTagByEntityId(ent.b.id, tags)?.value || `(${roundAndDisplayNicely(
+          ent.b.coords.x,
+        )};${roundAndDisplayNicely(ent.b.coords.y)})-`
+
+        const cDisplay = findTagByEntityId(ent.c.id, tags)?.value || `(${roundAndDisplayNicely(
+          ent.c.coords.x,
+        )};${roundAndDisplayNicely(ent.c.coords.y)})`
+
+        result += aDisplay + bDisplay + cDisplay;
+
         return `Ângulo ${result}`;
+      }
       default:
-        return `${kind}`;
+        return `${entityKind}`;
     }
   }
 
   return (
     <Item
       highlight={tag.selected}
-      removeFn={() => removeTag(index)}
-      handleClickFn={() => handleClick(index)}
+      removeFn={() => deleteTag(tag.id)}
+      handleClickFn={() => toggleSelection(tag.id)}
     >
       <div>{tag.value}</div>
-      <div>{getEntityDisplay(tag.entityId, store)}</div>
+      <div>{getEntityDisplay(tag.entityId)}</div>
     </Item>
   );
 };

@@ -277,8 +277,8 @@ const AddPointInSegment: React.FC = () => {
                 marginLeft: styles.leftApos + "%",
               }}
             >
-              {segPoints[0]!.etiqueta.length > 0
-                ? segPoints[0]!.etiqueta
+              {segPoints[0]!.tag.length > 0
+                ? segPoints[0]!.tag
                 : `(${segPoints[0]!.coords.x};${segPoints[0]!.coords.y})`}
             </div>
             <div
@@ -287,8 +287,8 @@ const AddPointInSegment: React.FC = () => {
                 marginLeft: (styles.leftBpos - styles.leftApos) / 2 + "%",
               }}
             >
-              {segPoints[1]!.etiqueta.length > 0
-                ? segPoints[1]!.etiqueta
+              {segPoints[1]!.tag.length > 0
+                ? segPoints[1]!.tag
                 : `(${segPoints[1]!.coords.x};${segPoints[1]!.coords.y})`}
             </div>
           </div>

@@ -8,8 +8,8 @@ export const getSegmentPath = (segment: Tsegment) => {
 export const getAnglePath = (angle: Tangle) => {
   let vectorA = vec().copy(angle.a.coords).sub(angle.b.coords);
   let vectorB = vec().copy(angle.c.coords).sub(angle.b.coords);
-  vectorA.setMag(angle.tamanho);
-  vectorB.setMag(angle.tamanho);
+  vectorA.setMag(angle.size);
+  vectorB.setMag(angle.size);
 
   let startVector;
   let endVector;
@@ -47,7 +47,7 @@ export const getAnglePath = (angle: Tangle) => {
           .add(vec().copy(endVector))
           .mult(1 / 2),
       );
-    let radius = angle.tamanho / 10;
+    let radius = angle.size / 10;
     d += `M ${circleCenter.x + radius} ${circleCenter.y} `;
     d += `A ${radius} ${radius} 0 0 1 ${circleCenter.x - radius} ${
       circleCenter.y
@@ -64,8 +64,8 @@ export const getAnglePath = (angle: Tangle) => {
       start.x,
       start.y,
       "A",
-      angle.tamanho,
-      angle.tamanho,
+      angle.size,
+      angle.size,
       0,
       largeArcFlag,
       0,
@@ -78,18 +78,18 @@ export const getAnglePath = (angle: Tangle) => {
 };
 
 export const getPointPath = (point: Tpoint) => {
-  const { coords, destaque, tamanho } = point;
+  const { coords, dotstyle, size } = point;
 
-  if (destaque === 0) {
+  if (dotstyle === 0) {
     return "";
   }
 
   // Calculate the circle path
   const circlePath =
     `M ${coords.x} ${coords.y} ` +
-    `m -${tamanho}, 0 ` +
-    `a ${tamanho},${tamanho} 0 1,0 ${tamanho * 2},0 ` +
-    `a ${tamanho},${tamanho} 0 1,0 -${tamanho * 2},0`;
+    `m -${size}, 0 ` +
+    `a ${size},${size} 0 1,0 ${size * 2},0 ` +
+    `a ${size},${size} 0 1,0 -${size * 2},0`;
 
   return circlePath;
 };

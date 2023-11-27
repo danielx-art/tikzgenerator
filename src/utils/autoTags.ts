@@ -25,6 +25,6 @@ export const numericalTags = (i: number, entity: Tentity) => {
 export const coordTags = (i: number, entity: Tpoint) =>
   `(${entity.coords.x};${entity.coords.y})`;
 export const lengthTags = (i: number, entity: Tsegment) =>
-  `${roundAndDisplayNicely(entity.comprimento)}`;
+  `${roundAndDisplayNicely(entity.length)}`;
 export const arcTags = (i: number, entity: Tangle) =>
   `${roundAndDisplayNicely(entity.valor)}`;

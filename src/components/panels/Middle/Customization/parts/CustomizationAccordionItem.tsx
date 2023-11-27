@@ -42,7 +42,7 @@
 //         setTabMessage(`${selectedEntities.length} ângulo(s) selecionado(s)`);
 //         break;
 //       case "tags":
-//         setTabMessage(`${selectedEntities.length} etiqueta(s) selecionada(s)`);
+//         setTabMessage(`${selectedEntities.length} tag(s) selecionada(s)`);
 //         break;
 //       default:
 //         setTabMessage(`Onde é que você tá?`);

@@ -4,10 +4,9 @@ const ponto = function (a: vector, id: string, group: number = 1) {
   return {
     id,
     coords: a,
-    etiqueta: "",
-    visivel: true,
-    destaque: 0,
-    tamanho: 0,
+    visible: true,
+    dotstyle: 0,
+    size: 0,
     group,
     selected: false,
   };
@@ -20,7 +19,7 @@ const segmento = function (a: Tpoint, b: Tpoint, id: string) {
     id,
     p1: a,
     p2: b,
-    get comprimento() {
+    get length() {
       return vec().copy(this.p1.coords).dist(this.p2.coords);
     },
     get normal() {
@@ -29,11 +28,10 @@ const segmento = function (a: Tpoint, b: Tpoint, id: string) {
         .cross(vec(0, 0, 1))
         .setMag(1);
     },
-    etiqueta: "",
-    visivel: true,
-    espessura: 1,
-    estilo: "solid",
-    cor: "black",
+    visible: true,
+    width: 1,
+    style: "solid",
+    color: "black",
     selected: false,
   };
 };
@@ -55,10 +53,9 @@ const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: string) {
     get valorExt() {
       return 2 * Math.PI - this.valor;
     },
-    etiqueta: "",
-    visivel: true,
-    tamanho: 0.5,
-    destaque: 0,
+    visible: true,
+    size: 0.5,
+    dotstyle: 0,
     selected: false,
   };
 };
@@ -72,22 +69,22 @@ type TentityWithKind =
 
 type Tentity = Tpoint | Tsegment | Tangle;
 
-const etiqueta = function <T extends Tentity>(
-  entity: T,
+const tag = function (
   value: string = "",
+  entityId: string,
   id: string,
   pos: vector = vec(0,1),
 ) {
   return {
     id,
-    entityId: entity.id,
+    entityId,
     value,
     pos,
     selected: false,
   };
 };
 
-type Ttag = ReturnType<typeof etiqueta>;
+type Ttag = ReturnType<typeof tag>;
 
 export {
   ponto,
@@ -98,6 +95,6 @@ export {
   type Tangle,
   type Tentity,
   type TentityWithKind,
-  etiqueta,
+  tag,
   type Ttag,
 };

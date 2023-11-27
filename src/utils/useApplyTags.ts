@@ -2,7 +2,7 @@ import type { Action, State } from "import/utils/store";
 import {
   type Tentity,
   type Ttag,
-  etiqueta,
+  tag,
   type Tpoint,
   type Tsegment,
   type Tangle,
@@ -10,92 +10,35 @@ import {
 import { getEntityKind } from "./miscEntity";
 
 const useApplyTags = (store: State & Action) => {
-  const applyTags = function <T extends Tentity>(
-    tagFunction: (i: number, entity: T) => string,
-    entities: Array<T>,
-  ) {
-
-    if(!store || !entities) return;
-
-    let tagsToAdd = [] as Ttag[];
-
-    let tagsToRemove = [] as Ttag[];
-
-    let updatedEntitiesByType = {points: [], segments: [], angles: []} as {points: Array<Tpoint>, segments: Array<Tsegment>, angles: Array<Tangle>};
-
-    let foundError = false;
-
-    if(entities.length < 1) {
+  const applyTags = <T extends Tentity>(tagFunction: (index: number, entity: T) => string, entities: Map<string, T>) => {
+    if (!store || entities.size < 1) {
       store.setError("Não foram encontrados objetos para etiquetar");
       return;
     }
 
-    for (let i = 0; i < entities.length; i++) {
-      let doNothing = false;
+    let index = 0;
+    entities.forEach((entity) => {
+      const newTagValue = tagFunction(index++, entity);
+      const existingTag = Array.from(store.tags.values()).find(tag => tag.entityId === entity.id);
 
-      let currentEntity = entities[i] as T;
-
-      let entityTag = store.tags.find((tag) => tag.entityId == currentEntity.id);
-
-      let newTagValue = tagFunction(i, currentEntity);
-
-      if (entityTag) {
-        if (entityTag.value != newTagValue) {
-          tagsToRemove.push(entityTag);
+      if (existingTag) {
+        if (existingTag.value !== newTagValue) {
+          store.deleteTag(existingTag.id);
         } else {
-          doNothing = true;
+          // If the tag value hasn't changed, do nothing.
+          return;
         }
       }
 
-      if (!doNothing) {
-        const isThisTagAlreadyInUse = store.tags.find(
-          (tag) =>
-            tag.value == newTagValue && newTagValue != currentEntity.etiqueta,
-        );
-
-        if (isThisTagAlreadyInUse) {
-          tagsToRemove.push(isThisTagAlreadyInUse);
-        }
-
-        tagsToAdd.push(etiqueta(currentEntity, newTagValue, store.generateId("tag")));
-
-        const updatedEntitiy = { ...currentEntity, etiqueta: newTagValue };
-        
-        const updatesKey = getEntityKind(updatedEntitiy) as "point"|"segment"|"angle"
-
-        //@ts-ignore
-        updatedEntitiesByType[`${updatesKey}s`].push(updatedEntitiy);
-        
-        /*debugg - not actually. This is wrong. Since 
-        updatedEntities could have points, segments or angles, meaning its not surely all the same type, and also, even if
-        given they are the same type, they are usually not ALL the entities of that type, there's no way to use
-        "setEntities(updatedEntities), I will have to split this updatedEntities into updatedPoints, updatedSegments or updatedAngles
-        and then update each one separately*/
+      const isTagInUse = Array.from(store.tags.values()).find(tag => tag.value === newTagValue && tag.entityId !== entity.id);
+      if (isTagInUse) {
+        // Handle error or duplicate tag scenario.
+        // Set an error message or take appropriate action.
+        store.deleteTag(isTagInUse.id)
+        return;
       }
-      
-      const updatedTags = [...store.tags].filter((tag) => {
-        const toBeRemoved = tagsToRemove.find(
-          (tagToRemove) => tagToRemove.id == tag.id,
-        );
-        if (toBeRemoved) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-  
-      updatedTags.push(...tagsToAdd);
-      
-      store.setTags(updatedTags);
-    }
-
-    //this is not in use now, but maybe make it a user defined general config.
-    if (foundError) {
-      store?.setError(
-        store?.error +
-          "Alguma(s) etiqueta(s) que já estão em uso não foram aplicadas, para evitar duplicatas. Caso deseje, limpe todas as etiquetas, depois selecione todos os objetos que deseja etiquetar e etiquete-os novamente. ",
-      );
-    }
+      store.addTag(newTagValue, entity.id); 
+    });
   };
 
   return applyTags;
@@ -143,16 +86,16 @@ const useApplyTags = (store: State & Action) => {
 //         if (!doNothing) {
 //           const isThisTagAlreadyInUse = store.tags.find(
 //             (tag) =>
-//               tag.value == newTagValue && newTagValue != currentEntity.etiqueta,
+//               tag.value == newTagValue && newTagValue != currentEntity.tag,
 //           );
   
 //           if (isThisTagAlreadyInUse) {
 //             tagsToRemove.push(isThisTagAlreadyInUse);
 //           }
   
-//           tagsToAdd.push(etiqueta(currentEntity, newTagValue, store.generateId("tag")));
+//           tagsToAdd.push(tag(currentEntity, newTagValue, store.generateId("tag")));
   
-//           updatedEntities.push({ ...currentEntity, etiqueta: newTagValue }); /*debugg - not actually. This is wrong. Since 
+//           updatedEntities.push({ ...currentEntity, tag: newTagValue }); /*debugg - not actually. This is wrong. Since 
 //           updatedEntities could have points, segments or angles, meaning its not surely all the same type, and also, even if
 //           given they are the same type, they are usually not ALL the entities of that type, there's no way to use
 //           "setEntities(updatedEntities), I will have to split this updatedEntities into updatedPoints, updatedSegments or updatedAngles
@@ -197,7 +140,7 @@ const useApplyTags = (store: State & Action) => {
 //     if (foundError) {
 //       store?.setError(
 //         store?.error +
-//           "Alguma(s) etiqueta(s) que já estão em uso não foram aplicadas, para evitar duplicatas. Caso deseje, limpe todas as etiquetas, depois selecione todos os objetos que deseja etiquetar e etiquete-os novamente. ",
+//           "Alguma(s) tag(s) que já estão em uso não foram aplicadas, para evitar duplicatas. Caso deseje, limpe todas as etiquetas, depois selecione todos os objetos que deseja etiquetar e etiquete-os novamente. ",
 //       );
 //     }
 //   };

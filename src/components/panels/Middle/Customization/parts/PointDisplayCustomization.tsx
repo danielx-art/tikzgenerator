@@ -22,9 +22,9 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   const handleDisplayChange = (option: number) => {
     if (!thisPoint) return;
     const updatedPoints = [...points].map((point) => {
-      let tamanho = size.length > 0 ? parseFloat(size)/10 : 0;
-      if (tamanho < 0) tamanho = 0;
-      return point.id == thisPoint.id ? { ...point, destaque: option, tamanho:tamanho } : point
+      let size = size.length > 0 ? parseFloat(size)/10 : 0;
+      if (size < 0) size = 0;
+      return point.id == thisPoint.id ? { ...point, dotstyle: option, size:size } : point
     });
     setPoints(updatedPoints);
   };
@@ -34,17 +34,17 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   };
 
   useEffect(() => {
-    let tamanho = size.length > 0 ? parseFloat(size)/10 : 0;
-    if (tamanho < 0) tamanho = 0;
+    let size = size.length > 0 ? parseFloat(size)/10 : 0;
+    if (size < 0) size = 0;
     if (!thisPoint) return;
     const updatedPoints = [...points].map((point) =>
-      point.id == thisPoint.id ? { ...point, tamanho: tamanho } : point,
+      point.id == thisPoint.id ? { ...point, size: size } : point,
     );
     setPoints(updatedPoints);
   }, [size]);
 
   useEffect(() => {
-    if (thisPoint && thisPoint.destaque != 0) {
+    if (thisPoint && thisPoint.dotstyle != 0) {
       setDisableSize(false);
     } else {
       setDisableSize(true);
@@ -61,7 +61,7 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
       <div className="flex w-full flex-row">
         <RadioGroup
           onChange={(option) => handleDisplayChange(option)}
-          value={thisPoint ? thisPoint!.destaque : 0}
+          value={thisPoint ? thisPoint!.dotstyle : 0}
           disabled={thisPoint ? false : true}
         >
           <div>Nenhum</div>

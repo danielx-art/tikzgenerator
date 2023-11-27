@@ -14,88 +14,95 @@ export function getEntityKind(ent: Tentity|Ttag):"point"|"segment"|"angle"|"tag"
   return entityKind;
 }
 
-export function getEntityById(
-  id: string,
-  store: (State & Action) | undefined,
-): TentityWithKind | undefined {
-  if (!store) return;
-
-  const entityKind = id.split("_")[0];
-
-  switch (entityKind) {
-    case "point":
-      const thisPoint = store.points.filter((point) => point.id == id)[0];
-      if (!thisPoint) {
-        return;
-      }
-      return { ...thisPoint, kind: "point" } as Tpoint & { kind: "point" };
-    case "segment":
-      const thisSeg = store.segments.filter((seg) => seg.id == id)[0];
-      if (!thisSeg) {
-        return;
-      }
-      return { ...thisSeg, kind: "segment" } as Tsegment & {
-        kind: "segment";
-      };
-    case "angle":
-      const thisAng = store.angles.filter((angle) => angle.id == id)[0];
-      if (!thisAng) {
-        return;
-      }
-      return { ...thisAng, kind: "angle" } as Tangle & { kind: "angle" };
-    default:
-      return;
-  }
-}
-
-export function updateTag(
-  store: State & Action,
-  thisTag: Ttag,
-  updatedTag: Ttag,
-): void {
-  const updatedTags = [...store.tags].map((tag) =>
-    tag.id == thisTag.id ? updatedTag : tag,
-  );
-
-  store.setTags(updatedTags);
-
-  const thisEntity = getEntityById(thisTag.entityId, store);
-
-  if (!thisEntity) return;
-
-  switch (thisEntity.kind) {
-    case "point": {
-      const updatedPoints = [...store.points].map((point) =>
-        point.id == thisEntity.id
-          ? { ...point, etiqueta: updatedTag.value }
-          : point,
-      );
-      store.setPoints(updatedPoints);
-      break;
-    }
-    case "segment": {
-      const updatedSegs = [...store.segments].map((seg) =>
-        seg.id == thisEntity.id ? { ...seg, etiqueta: updatedTag.value } : seg,
-      );
-      store.setSegments(updatedSegs);
-      break;
-    }
-    case "angle": {
-      const updatedAngles = [...store.angles].map((angle) =>
-        angle.id == thisEntity.id
-          ? { ...angle, etiqueta: updatedTag.value }
-          : angle,
-      );
-      store.setAngles(updatedAngles);
-      break;
+export function findTagByEntityId(entityId: string, tags: Map<string, Ttag>): Ttag | undefined {
+  for (let [tagId, tag] of tags) {
+    if (tag.entityId === entityId) {
+      return tag;
     }
   }
+  return undefined;
+};
 
-  return;
-}
+// export function getEntityById(
+//   id: string,
+//   store: (State & Action) | undefined,
+// ): TentityWithKind | undefined {
+//   if (!store) return;
 
+//   const entityKind = id.split("_")[0];
 
-//DEPRECATED-THIS FUNCTION IS ON STORE NOW
+//   switch (entityKind) {
+//     case "point":
+//       const thisPoint = store.points.filter((point) => point.id == id)[0];
+//       if (!thisPoint) {
+//         return;
+//       }
+//       return { ...thisPoint, kind: "point" } as Tpoint & { kind: "point" };
+//     case "segment":
+//       const thisSeg = store.segments.filter((seg) => seg.id == id)[0];
+//       if (!thisSeg) {
+//         return;
+//       }
+//       return { ...thisSeg, kind: "segment" } as Tsegment & {
+//         kind: "segment";
+//       };
+//     case "angle":
+//       const thisAng = store.angles.filter((angle) => angle.id == id)[0];
+//       if (!thisAng) {
+//         return;
+//       }
+//       return { ...thisAng, kind: "angle" } as Tangle & { kind: "angle" };
+//     default:
+//       return;
+//   }
+// }
+
+// export function updateTag(
+//   store: State & Action,
+//   thisTag: Ttag,
+//   updatedTag: Ttag,
+// ): void {
+//   const updatedTags = [...store.tags].map((tag) =>
+//     tag.id == thisTag.id ? updatedTag : tag,
+//   );
+
+//   store.setTags(updatedTags);
+
+//   const thisEntity = getEntityById(thisTag.entityId, store);
+
+//   if (!thisEntity) return;
+
+//   switch (thisEntity.kind) {
+//     case "point": {
+//       const updatedPoints = [...store.points].map((point) =>
+//         point.id == thisEntity.id
+//           ? { ...point, tag: updatedTag.value }
+//           : point,
+//       );
+//       store.setPoints(updatedPoints);
+//       break;
+//     }
+//     case "segment": {
+//       const updatedSegs = [...store.segments].map((seg) =>
+//         seg.id == thisEntity.id ? { ...seg, tag: updatedTag.value } : seg,
+//       );
+//       store.setSegments(updatedSegs);
+//       break;
+//     }
+//     case "angle": {
+//       const updatedAngles = [...store.angles].map((angle) =>
+//         angle.id == thisEntity.id
+//           ? { ...angle, tag: updatedTag.value }
+//           : angle,
+//       );
+//       store.setAngles(updatedAngles);
+//       break;
+//     }
+//   }
+
+//   return;
+// }
+
 // export function toggleEntitySelection(store: State&Action, entity: Tentity|Ttag){
 
 //   const entityKind = getEntityKind(entity);

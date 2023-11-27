@@ -22,7 +22,7 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
       setInputValue(thisEntTypeSure.value);
     } else {
       const thisEntTypeSure = thisEntity as Tentity;
-      setInputValue(thisEntTypeSure.etiqueta);
+      setInputValue(thisEntTypeSure.tag);
     }
 
   },[thisEntity])
