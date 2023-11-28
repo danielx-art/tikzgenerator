@@ -1,7 +1,7 @@
 import { type Action, type State } from "import/utils/store";
 import { type Tentity, type Ttag } from "public/entidades";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import { getEntityKind, updateTag } from "import/utils/miscEntity";
+import { findTagByEntityId, getEntityKind } from "import/utils/miscEntity";
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
 type PropsType = {
@@ -22,7 +22,7 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
       setInputValue(thisEntTypeSure.value);
     } else {
       const thisEntTypeSure = thisEntity as Tentity;
-      setInputValue(thisEntTypeSure.tag);
+      setInputValue(findTagByEntityId(thisEntity.id, store.tags)?.value || "");
     }
 
   },[thisEntity])
@@ -37,8 +37,9 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
       setEditMode(true);
     } else {
       if (inputValue.length <= 0) return;
-      const updatedTag = { ...thisTag, value: inputValue };
-      updateTag(store, thisTag, updatedTag);
+      const updatedTags = new Map(store.tags);
+      updatedTags.set(thisTag.id, {...thisTag, value: inputValue});
+      store.setTags(updatedTags);
       setEditMode(false);
     }
   };

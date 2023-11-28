@@ -6,10 +6,10 @@ import { findTagByEntityId } from "import/utils/miscEntity";
 
 type PropsType = {
   segment: Tsegment;
-  index: number;
+  index?: number;
 };
 
-const SegmentItem: React.FC<PropsType> = ({ segment, index }) => {
+const SegmentItem: React.FC<PropsType> = ({ segment }) => {
   const store = useStore(myStore, (state) => state);
 
   if (!store) return;

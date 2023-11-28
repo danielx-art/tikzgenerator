@@ -7,7 +7,7 @@ import { findTagByEntityId } from "import/utils/miscEntity";
 
 type PropsType = {
   point: Tpoint;
-  index: number;
+  index?: number;
 };
 
 const PointItem: React.FC<PropsType> = ({ point, index }) => {

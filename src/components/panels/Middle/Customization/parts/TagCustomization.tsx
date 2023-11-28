@@ -3,6 +3,7 @@ import { type Tentity, type Ttag } from "public/entidades";
 import { useEffect, useState } from "react";
 import TagDirectionChanger from "./TagDirectionChanger";
 import TagEditable from "./TagEditable";
+import { findTagByEntityId } from "import/utils/miscEntity";
 
 type PropsType = {
   store: State & Action;
@@ -17,7 +18,7 @@ const TagCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
 
     //add the fact thisEntity could also be a tag itself
     const foundTag = thisEntity
-      ? store.tags.find((tag) => tag.entityId == thisEntity.id)
+      ? findTagByEntityId(thisEntity.id, store.tags)
       : undefined;
 
     if (!foundTag) return;

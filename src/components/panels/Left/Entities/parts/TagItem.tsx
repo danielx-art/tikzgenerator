@@ -7,10 +7,10 @@ import { findTagByEntityId } from "import/utils/miscEntity";
 
 type PropsType = {
   tag: Ttag;
-  index: number;
+  index?: number;
 };
 
-const TagItem: React.FC<PropsType> = ({ tag, index }) => {
+const TagItem: React.FC<PropsType> = ({ tag }) => {
   const store = useStore(myStore, (state) => state);
 
   type Tstore = typeof store;

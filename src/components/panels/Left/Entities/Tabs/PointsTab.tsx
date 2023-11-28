@@ -22,10 +22,10 @@ export default function PointsTab() {
             selected={groupId == selectedGroup}
             key={`group-${groupId - 1}`}
           >
-            {points
+            {Array.from(points.values())
               .filter((point) => point.group == groupId)
               .map((point, index) => (
-                <PointItem point={point} index={index} key={"point_" + index} />
+                <PointItem point={point} index={index} key={"list_item_" + point.id} />
               ))}
           </GroupItem>
         ))}

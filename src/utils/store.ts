@@ -85,26 +85,38 @@ const myStore = create<State & Action>()(
       toggleSelection: <T extends Tpoint | Tsegment | Tangle | Ttag>(
         id: string,
       ) => {
-        const entityKind = id.split("_")[0] as
-          | "points"
-          | "segments"
-          | "angles"
-          | "tags";
 
-        if (!["points", "segments", "angles", "tags"].includes(entityKind)) {
+        console.log("enter toggle selection"); //debugg
+                
+        const entityKind = id.split("_")[0] as
+          | "point"
+          | "segment"
+          | "angle"
+          | "tag";
+
+        if (!["point", "segment", "angle", "tag"].includes(entityKind)) {
           return;
         }
 
+        console.log(entityKind); //debugg
+
+        const storeMapKey = entityKind+"s" as "points" | "segments" | "angles" | "tags";
+
         set((state) => {
-          const entitiesMap = state[entityKind] as Map<string, T>;
+          const entitiesMap = new Map(state[storeMapKey] as Map<string, T>);
+
+          console.log(entitiesMap);  //debugg
 
           if (!entitiesMap.has(id)) return {};
+
+          console.log("entityMap has this entity id") //debugg
 
           const entity = entitiesMap.get(id);
           if (!entity) return {};
 
-          entity.selected = !entity.selected;
-          entitiesMap.set(id, entity);
+          console.log("entityMap has this entity") //debugg
+
+          entitiesMap.set(id, {...entity, selected: !entity.selected});
 
           const updatedSelections = [...state.selections];
           const selectionIndex = updatedSelections.indexOf(id);
@@ -115,7 +127,7 @@ const myStore = create<State & Action>()(
               updatedSelections.splice(selectionIndex, 1);
           }
 
-          return { [entityKind]: entitiesMap, selections: updatedSelections };
+          return { [storeMapKey]: entitiesMap, selections: updatedSelections };
         });
       },
 

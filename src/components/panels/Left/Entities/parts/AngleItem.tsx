@@ -7,10 +7,10 @@ import { findTagByEntityId } from "import/utils/miscEntity";
 
 type PropsType = {
   angle: Tangle;
-  index: number;
+  index?: number;
 };
 
-const Angle: React.FC<PropsType> = ({ angle, index }) => {
+const Angle: React.FC<PropsType> = ({ angle }) => {
   const store = useStore(myStore, (state) => state);
 
   if (!store) return;

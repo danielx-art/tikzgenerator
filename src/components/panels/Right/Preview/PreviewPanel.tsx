@@ -11,13 +11,16 @@ const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
 
   const viewBox = useMemo(() => {
-    if (!store || store.points.length === 0) return "0 0 0 0";
+
+    if (!store || !store.points || store.points.size === 0) return "0 0 0 0";
+
+    const pointsArr = Array.from(store.points.values());
 
     // Find min and max points to define bounds
-    let minX = store.points[0]!.coords.x;
-    let maxX = store.points[0]!.coords.x;
-    let minY = store.points[0]!.coords.y;
-    let maxY = store.points[0]!.coords.y;
+    let minX = pointsArr[0]!.coords.x;
+    let maxX = pointsArr[0]!.coords.x;
+    let minY = pointsArr[0]!.coords.y;
+    let maxY = pointsArr[0]!.coords.y;
 
     store.points.forEach((point) => {
       minX = Math.min(minX, point.coords.x);
@@ -44,39 +47,7 @@ const PreviewPanel = () => {
 
   if (!store) return;
 
-  const { points, setPoints, segments, setSegments, angles, setAngles } = store;
-
-  const toggleSelected = (index: number, kind: string) => {
-    switch (kind) {
-      case "point":
-        const updatedPoints = points.map((point, i) => {
-          if (i === index) {
-            return { ...point, selected: !point.selected };
-          }
-          return point;
-        });
-        setPoints(updatedPoints);
-        break;
-      case "segment":
-        const updatedSegments = segments.map((segment, i) => {
-          if (i === index) {
-            return { ...segment, selected: !segment.selected };
-          }
-          return segment;
-        });
-        setSegments(updatedSegments);
-        break;
-      case "angle":
-        const updatedAngles = angles.map((angle, i) => {
-          if (i === index) {
-            return { ...angle, selected: !angle.selected };
-          }
-          return angle;
-        });
-        setAngles(updatedAngles);
-        break;
-    }
-  };
+  const { points, setPoints, segments, setSegments, angles, setAngles, toggleSelection } = store;
 
   return (
     <div className="flex w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete">
@@ -90,30 +61,30 @@ const PreviewPanel = () => {
           style={{ border: "1px solid black" }}
         >
           <g transform={`scale(1, -1)`}>
-            {segments.map((segment, index) => (
+            {Array.from(segments.values()).map((segment, index) => (
               <path
-                key={index}
+                key={"svg_path_"+segment.id}
                 d={getSegmentPath(segment)}
                 stroke={segment.selected ? "#ff817a" : "#333333"}
                 strokeLinecap="round"
                 strokeWidth="0.05"
                 fill="none"
-                onClick={() => toggleSelected(index, "segment")}
+                onClick={() => toggleSelection(segment.id)}
                 className="cursor-pointer"
               />
             ))}
-            {angles.map((angle, index) => (
+            {Array.from(angles.values()).map((angle, index) => (
               <path
-                key={index}
+                key={"svg_path_"+angle.id}
                 d={getAnglePath(angle)}
                 stroke={angle.selected ? "#ff817a" : "#333333"}
                 strokeWidth="0.05"
                 fill="none"
-                onClick={() => toggleSelected(index, "angle")}
+                onClick={() => toggleSelection(angle.id)}
                 className="cursor-pointer"
               />
             ))}
-            {points.map((point, index) => {
+            {Array.from(points.values()).map((point, index) => {
               let stroke = "none";
               let fill = "none";
 
@@ -136,12 +107,12 @@ const PreviewPanel = () => {
 
               return (
                 <path
-                  key={index}
+                  key={"svg_path_"+point.id}
                   d={getPointPath(point)}
                   stroke={stroke}
                   strokeWidth="0.05"
                   fill={fill}
-                  onClick={() => toggleSelected(index, "point")}
+                  onClick={() => toggleSelection(point.id)}
                   className="cursor-pointer"
                 />
               );

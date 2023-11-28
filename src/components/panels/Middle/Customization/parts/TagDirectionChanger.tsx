@@ -23,9 +23,8 @@ const TagDirectionChanger: React.FC<PropsType> = ({
     const angle =
       (foundPos.heading() * 180) / Math.PI - 90 + counterDirBtn * 45;
     const updatedDirection = vec(0, 1).rotate(angle);
-    const updatedTags = [...store.tags].map((tag) =>
-      tag.entityId == thisEntity.id ? { ...tag, pos: updatedDirection } : tag,
-    );
+    const updatedTags = new Map(store.tags);
+    updatedTags.set(thisTag.id, {...thisTag, pos: updatedDirection});
     store.setTags(updatedTags);
     setDirection(updatedDirection);
   }, [thisEntity, thisTag, counterDirBtn]);

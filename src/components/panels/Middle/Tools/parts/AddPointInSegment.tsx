@@ -6,6 +6,7 @@ import {
   lerp,
   roundToDecimalPlaces,
 } from "import/utils/misc";
+import { findTagByEntityId } from "import/utils/miscEntity";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import { ponto } from "public/entidades";
@@ -31,9 +32,12 @@ const AddPointInSegment: React.FC = () => {
 
   if (!store) return;
 
-  const { generateId, selectedGroup, points, setPoints } = store;
+  const { generateId, selectedGroup, points, setPoints, selections } = store;
 
-  const selectedPoints = points.filter((point) => point.selected);
+  //const selectedPoints = Array.from(points.values()).filter((point) => point.selected);
+  const selectedPoints = selections.flatMap(pointId => 
+    points.has(pointId) ? [points.get(pointId)] : []
+  );
 
   const segPoints = [selectedPoints[0], selectedPoints[1]];
 
@@ -192,7 +196,9 @@ const AddPointInSegment: React.FC = () => {
     const newCoords = vec().copy(segPoints[0].coords).add(ab);
     const newId = generateId("point");
     const newPoint = ponto(newCoords, newId, selectedGroup);
-    setPoints([...points, newPoint]);
+    const updatedPoints = new Map(points);
+    updatedPoints.set(newId, newPoint);
+    setPoints(updatedPoints);
   };
 
   const styles = {
@@ -277,8 +283,8 @@ const AddPointInSegment: React.FC = () => {
                 marginLeft: styles.leftApos + "%",
               }}
             >
-              {segPoints[0]!.tag.length > 0
-                ? segPoints[0]!.tag
+              {(findTagByEntityId(segPoints[0].id, store.tags)?.value && findTagByEntityId(segPoints[0].id, store.tags)?.value  !== "")
+                ? findTagByEntityId(segPoints[0].id, store.tags)?.value
                 : `(${segPoints[0]!.coords.x};${segPoints[0]!.coords.y})`}
             </div>
             <div
@@ -287,8 +293,8 @@ const AddPointInSegment: React.FC = () => {
                 marginLeft: (styles.leftBpos - styles.leftApos) / 2 + "%",
               }}
             >
-              {segPoints[1]!.tag.length > 0
-                ? segPoints[1]!.tag
+              {(findTagByEntityId(segPoints[1].id, store.tags)?.value && findTagByEntityId(segPoints[1].id, store.tags)?.value  !== "")
+                ? findTagByEntityId(segPoints[1].id, store.tags)?.value
                 : `(${segPoints[1]!.coords.x};${segPoints[1]!.coords.y})`}
             </div>
           </div>

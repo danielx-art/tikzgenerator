@@ -5,27 +5,23 @@ import { useEffect, useState } from "react";
 
 type PropsType = {
   store: State & Action;
-  thisEntity: Tpoint | undefined;
+  point: Tpoint | undefined;
 };
 
 const PointDisplayCustomization: React.FC<PropsType> = ({
   store,
-  thisEntity,
+  point,
 }) => {
   const [disableSize, setDisableSize] = useState(true);
   const [size, setSize] = useState("1");
 
   const { points, setPoints } = store;
 
-  const thisPoint = thisEntity;
-
   const handleDisplayChange = (option: number) => {
-    if (!thisPoint) return;
-    const updatedPoints = [...points].map((point) => {
-      let size = size.length > 0 ? parseFloat(size)/10 : 0;
-      if (size < 0) size = 0;
-      return point.id == thisPoint.id ? { ...point, dotstyle: option, size:size } : point
-    });
+    if (!point) return;
+    const updatedPoints = new Map(store.points);
+    const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size)/10 : 0):0
+    updatedPoints.set(point.id, {...point, dotstyle: option, size: newSize });
     setPoints(updatedPoints);
   };
 
@@ -34,35 +30,33 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   };
 
   useEffect(() => {
-    let size = size.length > 0 ? parseFloat(size)/10 : 0;
-    if (size < 0) size = 0;
-    if (!thisPoint) return;
-    const updatedPoints = [...points].map((point) =>
-      point.id == thisPoint.id ? { ...point, size: size } : point,
-    );
+    if (!point) return;
+    const updatedPoints = new Map(store.points);
+    const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size)/10 : 0):0
+    updatedPoints.set(point.id, {...point, size: newSize });
     setPoints(updatedPoints);
   }, [size]);
 
   useEffect(() => {
-    if (thisPoint && thisPoint.dotstyle != 0) {
+    if (point && point.dotstyle != 0) {
       setDisableSize(false);
     } else {
       setDisableSize(true);
     }
-  }, [thisPoint]);
+  }, [point]);
 
   return (
     <div
       className={`mb-2 flex w-full flex-col gap-2 ${
-        thisPoint ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
+        point ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
       <div>Destaque</div>
       <div className="flex w-full flex-row">
         <RadioGroup
           onChange={(option) => handleDisplayChange(option)}
-          value={thisPoint ? thisPoint!.dotstyle : 0}
-          disabled={thisPoint ? false : true}
+          value={point ? point!.dotstyle : 0}
+          disabled={point ? false : true}
         >
           <div>Nenhum</div>
           <div className="h-4 w-4">

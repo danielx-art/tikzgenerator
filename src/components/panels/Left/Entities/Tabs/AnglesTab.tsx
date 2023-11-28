@@ -11,7 +11,9 @@ export default function AnglesTab() {
 
   const { points, angles, setAngles, generateId, setError } = store;
 
-  const selectedPoints = [...points].filter((point) => point.selected);
+  const selectedPoints = Array.from(store.points.values()).filter(
+    (point) => point.selected,
+  );
 
   const makeAngles = () => {
     if (selectedPoints.length < 3) {
@@ -21,7 +23,7 @@ export default function AnglesTab() {
       return;
     }
 
-    let anglesToAdd = [] as Tangle[];
+    const updatedAngles = new Map(store.angles);
 
     for (let i = 0; i < selectedPoints.length - 2; i++) {
       const pA = selectedPoints[i] as Tpoint;
@@ -29,10 +31,9 @@ export default function AnglesTab() {
       const pC = selectedPoints[i + 2] as Tpoint;
       const newAngleId = generateId("angle");
       const newAngle = angulo(pA, pB, pC, newAngleId);
-      anglesToAdd.push(newAngle);
+      updatedAngles.set(newAngleId, newAngle);
     }
 
-    const updatedAngles = [...angles, ...anglesToAdd];
     setAngles(updatedAngles);
   };
 
@@ -48,8 +49,8 @@ export default function AnglesTab() {
         Conectar!
       </button>
       <ItemsList>
-        {angles.map((angle, index) => (
-          <AngleItem angle={angle} index={index} key={"angle_" + index} />
+        {Array.from(angles).map(([key, angle], index) => (
+          <AngleItem angle={angle} index={index} key={"list_item_" + key} />
         ))}
       </ItemsList>
       {/* <AutoTagAngles /> */}

@@ -18,7 +18,7 @@ export default function TagsTab() {
   return (
     <div className="flex flex-1 flex-col flex-nowrap justify-between gap-2">
       <ItemsList>
-        {tags.map((tag, index)=>(<TagItem tag={tag} index={index} key={"tag_" + index} />))}
+        {Array.from(tags.values()).map((tag, index)=>(<TagItem tag={tag} index={index} key={"list_item_" + tag.id} />))}
       </ItemsList>
     </div>
   );

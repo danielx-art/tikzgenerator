@@ -15,15 +15,15 @@ export default function SegmentsTab() {
   const { points, segments, setSegments, generateId } = store;
 
   const conectPoints = () => {
-    const selectedPoints = points.filter((point) => point.selected);
-    let segmentsToAdd = [] as Tsegment[];
+    const selectedPoints = Array.from(points.values()).filter((point) => point.selected);
+    const updatedSegments = new Map(segments);
 
     for (let i = 0; i < selectedPoints.length - 1; i++) {
       const pA = selectedPoints[i] as Tpoint;
       const pB = selectedPoints[i + 1] as Tpoint;
       const newSegId = generateId("segment");
       const newSeg = segmento(pA, pB, newSegId);
-      segmentsToAdd.push(newSeg);
+      updatedSegments.set(newSegId, newSeg);
     }
 
     if (cyclic) {
@@ -31,10 +31,9 @@ export default function SegmentsTab() {
       const lastPoint = selectedPoints[selectedPoints.length - 1] as Tpoint;
       const firstPoint = selectedPoints[0] as Tpoint;
       const closingSeg = segmento(lastPoint, firstPoint, closingSegId);
-      segmentsToAdd.push(closingSeg);
+      updatedSegments.set(closingSegId, closingSeg);
     }
 
-    const updatedSegments = [...segments, ...segmentsToAdd];
     setSegments(updatedSegments);
   };
 
@@ -58,11 +57,11 @@ export default function SegmentsTab() {
         />
       </div>
       <ItemsList>
-        {segments.map((segment, index) => (
+        {Array.from(segments.values()).map((segment, index) => (
           <SegmentItem
             segment={segment}
             index={index}
-            key={"segment_" + index}
+            key={"list_item_" + segment.id}
           />
         ))}
       </ItemsList>

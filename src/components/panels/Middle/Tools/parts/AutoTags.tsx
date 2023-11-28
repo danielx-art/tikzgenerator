@@ -29,87 +29,45 @@ const AutoTags: React.FC = () => {
             {
               title: "A...Z AA...ZZ",
               action: [
+                () => applyTags(alphabeticalLatinTags, store.points),
                 () =>
                   applyTags(
                     alphabeticalLatinTags,
-                    store.points.map((point) => {
-                      return { ...point };
-                    }),
-                    store.setPoints,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
-                  ),
-                () =>
-                  applyTags(
-                    alphabeticalLatinTags,
-                    store.points
-                      .filter((point) => point.selected)
-                      .map((point) => {
-                        return { ...point };
-                      }),
-                    store.setPoints,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
+                    new Map(
+                      Array.from(store.points).filter(
+                        ([key, point]) => point.selected,
+                      ),
+                    ),
                   ),
               ],
             },
             {
               title: "Coordenadas (X;Y)",
               action: [
+                () => applyTags(coordTags, store.points),
                 () =>
                   applyTags(
                     coordTags,
-                    store.points.map((point) => {
-                      return { ...point };
-                    }),
-                    store.setPoints,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
-                  ),
-                () =>
-                  applyTags(
-                    coordTags,
-                    store.points
-                      .filter((point) => point.selected)
-                      .map((point) => {
-                        return { ...point };
-                      }),
-                    store.setPoints,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
+                    new Map(
+                      Array.from(store.points).filter(
+                        ([key, point]) => point.selected,
+                      ),
+                    ),
                   ),
               ],
             },
             {
               title: "P1...Pn",
               action: [
+                () => applyTags(numericalTags, store.points),
                 () =>
                   applyTags(
                     numericalTags,
-                    store.points.map((point) => {
-                      return { ...point };
-                    }),
-                    store.setPoints,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
-                  ),
-                () =>
-                  applyTags(
-                    numericalTags,
-                    store.points
-                      .filter((point) => point.selected)
-                      .map((point) => {
-                        return { ...point };
-                      }),
-                    store.setPoints,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
+                    new Map(
+                      Array.from(store.points).filter(
+                        ([key, point]) => point.selected,
+                      ),
+                    ),
                   ),
               ],
             },
@@ -122,58 +80,30 @@ const AutoTags: React.FC = () => {
             {
               title: "Medida",
               action: [
+                () => applyTags(lengthTags, store.segments),
                 () =>
                   applyTags(
                     lengthTags,
-                    store.segments.map((item) => {
-                      return { ...item };
-                    }),
-                    store.setSegments,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
-                  ),
-                () =>
-                  applyTags(
-                    lengthTags,
-                    store.segments
-                      .filter((segment) => segment.selected)
-                      .map((item) => {
-                        return { ...item };
-                      }),
-                    store.setSegments,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
+                    new Map(
+                      Array.from(store.segments).filter(
+                        ([key, segment]) => segment.selected,
+                      ),
+                    ),
                   ),
               ],
             },
             {
-              title: "a...z aa...zz",
+              title: "a...z aa...zz", //WARNING - THERES AN AUTO TAG ANGLES WITH THE SAME TAG VALUES
               action: [
+                () => applyTags(alphabeticalSmallLatinTags, store.segments),
                 () =>
                   applyTags(
                     alphabeticalSmallLatinTags,
-                    store.segments.map((item) => {
-                      return { ...item };
-                    }),
-                    store.setSegments,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
-                  ),
-                () =>
-                  applyTags(
-                    alphabeticalSmallLatinTags,
-                    store.segments
-                      .filter((segment) => segment.selected)
-                      .map((item) => {
-                        return { ...item };
-                      }),
-                    store.setSegments,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
+                    new Map(
+                      Array.from(store.segments).filter(
+                        ([key, segment]) => segment.selected,
+                      ),
+                    ),
                   ),
               ],
             },
@@ -186,87 +116,45 @@ const AutoTags: React.FC = () => {
             {
               title: "Medida (radianos)",
               action: [
+                () => applyTags(arcTags, store.angles),
                 () =>
                   applyTags(
                     arcTags,
-                    store.angles.map((item) => {
-                      return { ...item };
-                    }),
-                    store.setAngles,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
-                  ),
-                () =>
-                  applyTags(
-                    arcTags,
-                    store.angles
-                      .filter((angle) => angle.selected)
-                      .map((item) => {
-                        return { ...item };
-                      }),
-                    store.setAngles,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
+                    new Map(
+                      Array.from(store.angles).filter(
+                        ([key, angle]) => angle.selected,
+                      ),
+                    ),
                   ),
               ],
             },
             {
               title: "a...z aa...zz",
               action: [
+                () => applyTags(alphabeticalSmallLatinTags, store.angles),
                 () =>
                   applyTags(
                     alphabeticalSmallLatinTags,
-                    store.angles.map((item) => {
-                      return { ...item };
-                    }),
-                    store.setAngles,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
-                  ),
-                () =>
-                  applyTags(
-                    alphabeticalSmallLatinTags,
-                    store.angles
-                      .filter((angle) => angle.selected)
-                      .map((item) => {
-                        return { ...item };
-                      }),
-                    store.setAngles,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
+                    new Map(
+                      Array.from(store.angles).filter(
+                        ([key, angle]) => angle.selected,
+                      ),
+                    ),
                   ),
               ],
             },
             {
               title: `𝜶...𝝎`,
               action: [
+                () => applyTags(alphabeticalGreekTags, store.angles),
                 () =>
                   applyTags(
                     alphabeticalGreekTags,
-                    store.angles.map((item) => {
-                      return { ...item };
-                    }),
-                    store.setAngles,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
-                  ),
-                () =>
-                  applyTags(
-                    alphabeticalGreekTags,
-                    store.angles
-                      .filter((angle) => angle.selected)
-                      .map((item) => {
-                        return { ...item };
-                      }),
-                    store.setAngles,
-                    store.tags,
-                    store.setTags,
-                    store.generateId,
+                    new Map(
+                      Array.from(store.angles).filter(
+                        ([key, angle]) => angle.selected,
+                      ),
+                    ),
                   ),
               ],
             },

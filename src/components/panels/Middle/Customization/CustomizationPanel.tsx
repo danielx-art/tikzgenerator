@@ -19,7 +19,8 @@ const CustomizationPanel = () => {
   useEffect(() => {
     if (!store) return;
     const entityType = store.tab as "points" | "segments" | "angles" | "tags";
-    setSelectedEntities(store[entityType].filter((ent) => ent.selected));
+    const entitiesMap = store[entityType] as Map<string, Tentity>;
+    setSelectedEntities(Array.from(entitiesMap.values()).filter(ent=>ent.selected));
   }, [store, store?.tab]);
 
   useEffect(() => {
