@@ -20,13 +20,11 @@ const CustomizationPanel = () => {
     if (!store) return;
     const entityType = store.tab as "points" | "segments" | "angles" | "tags";
     const entitiesMap = store[entityType] as Map<string, Tentity>;
-    setSelectedEntities(Array.from(entitiesMap.values()).filter(ent=>ent.selected));
-  }, [store, store?.tab]);
-
-  useEffect(() => {
-    if (!store || !selectedEntities) return;
-    setThisEntity(selectedEntities[curr]);
-  }, [selectedEntities, curr]);
+    const updatedSelectedEntities = Array.from(entitiesMap.values()).filter(ent=>ent.selected);
+    const updatedEntity = updatedSelectedEntities[curr];
+    setThisEntity(updatedEntity);
+    setSelectedEntities(updatedSelectedEntities);
+  }, [store, store?.tab, curr]);
 
   useEffect(() => {
     if (!store || !selectedEntities) return;

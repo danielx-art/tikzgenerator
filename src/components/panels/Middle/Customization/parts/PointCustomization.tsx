@@ -15,7 +15,7 @@ const PointCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
         thisEntity ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
-      <PointDisplayCustomization store={store} thisEntity={thisEntity} />
+      <PointDisplayCustomization store={store} point={thisEntity} />
       <TagCustomization store={store} thisEntity={thisEntity} />
     </div>
   );

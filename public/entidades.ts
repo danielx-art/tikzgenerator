@@ -1,3 +1,4 @@
+import { DEFAULT_ANGLE_SIZE, DEFAULT_ANGLE_STYLE, DEFAULT_COLOR, DEFAULT_LINE_STYLE, DEFAULT_LINE_WIDTH, DEFAULT_POINT_SIZE, DEFAULT_POINT_STYLE } from "./generalConfigs";
 import { vec, vector } from "./vetores";
 
 const ponto = function (a: vector, id: string, group: number = 1) {
@@ -5,8 +6,9 @@ const ponto = function (a: vector, id: string, group: number = 1) {
     id,
     coords: a,
     visible: true,
-    dotstyle: 0,
-    size: 0,
+    dotstyle: DEFAULT_POINT_STYLE,
+    size: DEFAULT_POINT_SIZE,
+    color: DEFAULT_COLOR,
     group,
     selected: false,
   };
@@ -29,9 +31,9 @@ const segmento = function (a: Tpoint, b: Tpoint, id: string) {
         .setMag(1);
     },
     visible: true,
-    width: 1,
-    style: "solid",
-    color: "black",
+    width: DEFAULT_LINE_WIDTH,
+    style: DEFAULT_LINE_STYLE,
+    color: DEFAULT_COLOR,
     selected: false,
   };
 };
@@ -54,8 +56,9 @@ const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: string) {
       return 2 * Math.PI - this.valor;
     },
     visible: true,
-    size: 0.5,
-    dotstyle: 0,
+    size: DEFAULT_ANGLE_SIZE,
+    dotstyle: DEFAULT_ANGLE_STYLE,
+    color: DEFAULT_COLOR,
     selected: false,
   };
 };

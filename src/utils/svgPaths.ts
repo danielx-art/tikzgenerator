@@ -84,6 +84,8 @@ export const getPointPath = (point: Tpoint) => {
     return "";
   }
 
+  //console.log(point); //debugg
+
   // Calculate the circle path
   const circlePath =
     `M ${coords.x} ${coords.y} ` +

@@ -1,6 +1,8 @@
+import { Enriqueta } from "next/font/google";
 import { Tpoint, Tsegment, Tangle, Ttag, Tentity, tag } from "public/entidades";
+import { vec } from "public/vetores";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { StorageValue, persist } from "zustand/middleware";
 
 export type State = {
   tab: string;
@@ -85,9 +87,6 @@ const myStore = create<State & Action>()(
       toggleSelection: <T extends Tpoint | Tsegment | Tangle | Ttag>(
         id: string,
       ) => {
-
-        console.log("enter toggle selection"); //debugg
-                
         const entityKind = id.split("_")[0] as
           | "point"
           | "segment"
@@ -98,29 +97,26 @@ const myStore = create<State & Action>()(
           return;
         }
 
-        console.log(entityKind); //debugg
-
-        const storeMapKey = entityKind+"s" as "points" | "segments" | "angles" | "tags";
+        const storeMapKey = (entityKind + "s") as
+          | "points"
+          | "segments"
+          | "angles"
+          | "tags";
 
         set((state) => {
           const entitiesMap = new Map(state[storeMapKey] as Map<string, T>);
 
-          console.log(entitiesMap);  //debugg
-
           if (!entitiesMap.has(id)) return {};
-
-          console.log("entityMap has this entity id") //debugg
 
           const entity = entitiesMap.get(id);
           if (!entity) return {};
+          const isSelected = entity.selected;
 
-          console.log("entityMap has this entity") //debugg
-
-          entitiesMap.set(id, {...entity, selected: !entity.selected});
+          entitiesMap.set(id, { ...entity, selected: !isSelected });
 
           const updatedSelections = [...state.selections];
           const selectionIndex = updatedSelections.indexOf(id);
-          if (entity.selected) {
+          if (!isSelected) {
             if (selectionIndex === -1) updatedSelections.push(id);
           } else {
             if (selectionIndex > -1)
@@ -172,6 +168,10 @@ const myStore = create<State & Action>()(
             const updatedAngles = new Map(state.angles);
             const updatedTags = new Map(state.tags);
             const removedIds = [] as string[];
+            const updatedSelections = [...state.selections];
+            const indexOnSelections = updatedSelections.indexOf(id);
+            if(indexOnSelections > -1) updatedSelections.splice(indexOnSelections,1);
+
 
             removedIds.push(id);
             updatedPoints.delete(id);
@@ -187,7 +187,7 @@ const myStore = create<State & Action>()(
             // Check and delete any angles that reference the point
             updatedAngles.forEach((angle, angleId) => {
               if (angle.a.id === id || angle.b.id === id || angle.c.id === id) {
-                removedIds.push(angle.id)
+                removedIds.push(angle.id);
                 updatedAngles.delete(angleId);
               }
             });
@@ -202,6 +202,7 @@ const myStore = create<State & Action>()(
               points: updatedPoints,
               segments: updatedSegments,
               angles: updatedAngles,
+              selections: updatedSelections,
             };
           });
         } else {
@@ -210,6 +211,10 @@ const myStore = create<State & Action>()(
               state[stateMapKey] as Map<string, Tentity>,
             );
             updatedMap.delete(id);
+            
+            const updatedSelections = [...state.selections];
+            const indexOnSelections = updatedSelections.indexOf(id);
+            if(indexOnSelections > -1) updatedSelections.splice(indexOnSelections,1);
 
             const updatedTags = new Map(state.tags);
 
@@ -219,7 +224,7 @@ const myStore = create<State & Action>()(
               }
             });
 
-            return { [stateMapKey]: updatedMap, tags: updatedTags };
+            return { [stateMapKey]: updatedMap, tags: updatedTags, selections: updatedSelections };
           });
         }
       },
@@ -248,6 +253,39 @@ const myStore = create<State & Action>()(
     }),
     {
       name: "storage",
+      storage: {
+        getItem: (name) => {
+          const str = localStorage.getItem(name);
+          if (!str) return null;
+          const { state } = JSON.parse(str);
+          
+          return {
+            state: {
+              ...state,
+              points: new Map(state.points),
+              segments: new Map(state.segments),
+              angles: new Map(state.angles),
+              tags: new Map(state.tags),
+            },
+          }
+        },
+        setItem: (name, newValue: StorageValue<State & Action>) => {
+          // functions cannot be JSON encoded
+          const str = JSON.stringify({
+            state: {
+              ...newValue.state,
+              points: Array.from(newValue.state.points.entries()),
+              segments: Array.from(newValue.state.segments.entries()),
+
+              angles: Array.from(newValue.state.angles.entries()),
+              tags: Array.from(newValue.state.tags.entries()),
+
+            },
+          })
+          localStorage.setItem(name, str)
+        },
+        removeItem: (name) => localStorage.removeItem(name),
+      },
     },
   ),
 );

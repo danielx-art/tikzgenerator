@@ -1,4 +1,5 @@
 import RadioGroup from "import/components/micro/RadioGroup";
+import { getEntityKind } from "import/utils/miscEntity";
 import { type Action, type State } from "import/utils/store";
 import { type Tpoint } from "public/entidades";
 import { useEffect, useState } from "react";
@@ -18,8 +19,8 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   const { points, setPoints } = store;
 
   const handleDisplayChange = (option: number) => {
-    if (!point) return;
-    const updatedPoints = new Map(store.points);
+    if (!point || getEntityKind(point) != "point") return;
+    const updatedPoints = new Map(points);
     const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size)/10 : 0):0
     updatedPoints.set(point.id, {...point, dotstyle: option, size: newSize });
     setPoints(updatedPoints);
@@ -30,8 +31,8 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   };
 
   useEffect(() => {
-    if (!point) return;
-    const updatedPoints = new Map(store.points);
+    if (!point || getEntityKind(point) != "point") return;
+    const updatedPoints = new Map(points);
     const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size)/10 : 0):0
     updatedPoints.set(point.id, {...point, size: newSize });
     setPoints(updatedPoints);

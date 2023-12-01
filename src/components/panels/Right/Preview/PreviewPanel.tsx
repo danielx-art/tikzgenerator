@@ -5,18 +5,27 @@ import {
 } from "import/utils/svgPaths";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import useDimensions from "import/utils/useDimensions";
+import DownloadSVGBtn from "./parts/DownloadSVGBtn";
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
 
-  const viewBox = useMemo(() => {
+  const [ref, dimensions] = useDimensions();
 
-    if (!store || !store.points || store.points.size === 0) return "0 0 0 0";
+  const svgRef = useRef<SVGSVGElement>(null);
 
+  const [viewBox, setViewBox] = useState("0 0 100 100");
+  const [svgDim, setSvgDim] = useState({width: 0, height: 0});
+
+  useEffect(() => {
+
+    if (!store || !store.points || store.points.size === 0) return;
+    
     const pointsArr = Array.from(store.points.values());
 
-    // Find min and max points to define bounds
+    //Find min and max points to define bounds
     let minX = pointsArr[0]!.coords.x;
     let maxX = pointsArr[0]!.coords.x;
     let minY = pointsArr[0]!.coords.y;
@@ -32,33 +41,55 @@ const PreviewPanel = () => {
     const pointsWidth = maxX - minX;
     const pointsHeight = maxY - minY;
 
-    const padding = 0.1;
+    let padding = 0.1; //of the maximum dimension
 
-    const centroidX = pointsWidth / 2;
-    const centroidY = pointsHeight / 2;
+    const viewAR = pointsWidth / pointsHeight;
 
-    const viewBoxX = minX - pointsWidth * padding;
-    const viewBoxY = -maxY - pointsHeight * padding;
-    const viewBoxWidth = pointsWidth * (1 + 2 * padding);
-    const viewBoxHeight = pointsHeight * (1 + 2 * padding);
+    padding = viewAR >= 1 ? padding *= pointsWidth : padding *= pointsHeight;
+    
+    const viewBoxX = +(minX - padding);
+    const viewBoxY = -(maxY + padding);
+    const viewBoxWidth = pointsWidth + 2*padding;
+    const viewBoxHeight = pointsHeight + 2*padding;
+    
+    const pixelAR = dimensions.width / dimensions.height;
 
-    return `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`;
-  }, [store]);
+    if(viewAR >= pixelAR) {
+      //image is fatter than container, so image width needs to be cap set to the container width
+      //and the image height should be set to keep viewAR
+      setSvgDim({
+        width: dimensions.width,
+        height: dimensions.width/viewAR
+      })
+    } else {
+      //image is taller than container, so image height should be cap set to container height
+      //and image width should be set to keep viewAR
+      setSvgDim({
+        width: viewAR*dimensions.height,
+        height: dimensions.height
+      })
+    }
+
+    setViewBox(`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+
+  }, [store, store?.points, ref, svgRef, dimensions.width, dimensions.height]);
 
   if (!store) return;
 
   const { points, setPoints, segments, setSegments, angles, setAngles, toggleSelection } = store;
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete">
-      <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
-      <div className="w-full flex-1 overflow-auto">
+    <div className="flex w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete sm:h-full sm:max-h-full sm:min-h-full p-2 pb-3 gap-2">
+      <div className="border-b-2 border-b-c_discrete">Prévia (SVG) {dimensions.width} {dimensions.height}</div>
+      <div ref={ref} className="grid w-full h-full max-h-full flex-1 overflow-auto place-items-center relative">
+        <div className="absolute w-6 h-6 left-0 top-0"><DownloadSVGBtn  svgRef={svgRef}/></div>
         <svg
-          width="100%"
-          height="100%"
+          width={svgDim.width > 0 ?  svgDim.width : "100%"}
+          height={svgDim.height > 0 ? svgDim.height : "100%"}
           viewBox={viewBox}
           preserveAspectRatio="xMidYMid"
-          style={{ border: "1px solid black" }}
+          className="border-2 border-c_disabled2 border-opacity-10"
+          ref={svgRef}
         >
           <g transform={`scale(1, -1)`}>
             {Array.from(segments.values()).map((segment, index) => (
