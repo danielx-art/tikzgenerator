@@ -20,8 +20,9 @@ const TagDirectionChanger: React.FC<PropsType> = ({
   useEffect(() => {
     if (!store || !thisEntity || !thisTag) return;
     const foundPos = vec(thisTag.pos.x, thisTag.pos.y); //have to re-create the vec here, for some reason I think zustand vanished with the vector methods, and it goes without typescript noticing.
+    //console.log(foundPos.heading()*180/Math.PI);
     const angle =
-      (foundPos.heading() * 180) / Math.PI - 90 + counterDirBtn * 45;
+      (foundPos.heading() * 180 / Math.PI) + 180 + counterDirBtn * 45;
     const updatedDirection = vec(0, 1).rotate(angle);
     const updatedTags = new Map(store.tags);
     updatedTags.set(thisTag.id, {...thisTag, pos: updatedDirection});
@@ -30,7 +31,8 @@ const TagDirectionChanger: React.FC<PropsType> = ({
   }, [thisEntity, thisTag, counterDirBtn]);
 
   const handleDirectionChange = () => {
-    const newCounter = (counterDirBtn + 1) % 8;
+    const newCounter = (counterDirBtn + 1)%9;
+    //console.log(newCounter); //debugg
     const updatedDir = vec(0, 1).rotate((newCounter * Math.PI) / 4);
     setDirection(updatedDir);
     setCounterDirBtn(newCounter);

@@ -23,39 +23,27 @@ export function findTagByEntityId(entityId: string, tags: Map<string, Ttag>): Tt
   return undefined;
 };
 
-// export function getEntityById(
-//   id: string,
-//   store: (State & Action) | undefined,
-// ): TentityWithKind | undefined {
-//   if (!store) return;
+export function getEntityById(
+  id: string,
+  store: (State & Action) | undefined,
+) {
+  if (!store) return;
 
-//   const entityKind = id.split("_")[0];
+  const entityKind = id.split("_")[0];
 
-//   switch (entityKind) {
-//     case "point":
-//       const thisPoint = store.points.filter((point) => point.id == id)[0];
-//       if (!thisPoint) {
-//         return;
-//       }
-//       return { ...thisPoint, kind: "point" } as Tpoint & { kind: "point" };
-//     case "segment":
-//       const thisSeg = store.segments.filter((seg) => seg.id == id)[0];
-//       if (!thisSeg) {
-//         return;
-//       }
-//       return { ...thisSeg, kind: "segment" } as Tsegment & {
-//         kind: "segment";
-//       };
-//     case "angle":
-//       const thisAng = store.angles.filter((angle) => angle.id == id)[0];
-//       if (!thisAng) {
-//         return;
-//       }
-//       return { ...thisAng, kind: "angle" } as Tangle & { kind: "angle" };
-//     default:
-//       return;
-//   }
-// }
+  switch (entityKind) {
+    case "point":
+      return store.points.get(id);
+    case "segment":
+      return store.segments.get(id);
+    case "angle":
+      return store.angles.get(id);
+    case "tag":
+      return store.tags.get(id);
+    default:
+      return;
+  }
+}
 
 // export function updateTag(
 //   store: State & Action,

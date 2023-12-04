@@ -8,6 +8,8 @@ import useStore from "import/utils/useStore";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useDimensions from "import/utils/useDimensions";
 import DownloadSVGBtn from "./parts/DownloadSVGBtn";
+import { getEntityById, getEntityKind } from "import/utils/miscEntity";
+import { Tangle, Tpoint, Tsegment } from "public/entidades";
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
@@ -17,7 +19,7 @@ const PreviewPanel = () => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const [viewBox, setViewBox] = useState("0 0 100 100");
-  const [svgDim, setSvgDim] = useState({width: 0, height: 0});
+  const [svgDim, setSvgDim] = useState({width: 200, height: 200});
 
   useEffect(() => {
 
@@ -38,19 +40,25 @@ const PreviewPanel = () => {
       maxY = Math.max(maxY, point.coords.y);
     });
 
-    const pointsWidth = maxX - minX;
-    const pointsHeight = maxY - minY;
+    let pointsWidth = maxX - minX;
+    let pointsHeight = maxY - minY;
 
     let padding = 0.1; //of the maximum dimension
+
+    if(pointsArr.length == 1 && pointsArr[0]) {
+      pointsWidth = pointsArr[0].size*2;
+      pointsHeight = pointsWidth;
+      padding = 10;
+    }
 
     const viewAR = pointsWidth / pointsHeight;
 
     padding = viewAR >= 1 ? padding *= pointsWidth : padding *= pointsHeight;
     
-    const viewBoxX = +(minX - padding);
-    const viewBoxY = -(maxY + padding);
-    const viewBoxWidth = pointsWidth + 2*padding;
-    const viewBoxHeight = pointsHeight + 2*padding;
+    let viewBoxX = +(minX - padding);
+    let viewBoxY = -(maxY + padding);
+    let viewBoxWidth = pointsWidth + 2*padding;
+    let viewBoxHeight = pointsHeight + 2*padding;
     
     const pixelAR = dimensions.width / dimensions.height;
 
@@ -76,7 +84,7 @@ const PreviewPanel = () => {
 
   if (!store) return;
 
-  const { points, setPoints, segments, setSegments, angles, setAngles, toggleSelection } = store;
+  const { points, setPoints, segments, setSegments, angles, setAngles, toggleSelection, tags } = store;
 
   return (
     <div className="flex w-full flex-1 flex-col items-center rounded-md border-2 border-c_discrete sm:h-full sm:max-h-full sm:min-h-full p-2 pb-3 gap-2">
@@ -147,6 +155,48 @@ const PreviewPanel = () => {
                   className="cursor-pointer"
                 />
               );
+            })}
+            {Array.from(tags.values()).map((tag)=>{
+              const ent = getEntityById(tag.entityId, store);
+              if(!ent) return;
+              const entityKind = getEntityKind(ent) as "point"|"segment"|"angle";
+              let x = 0;
+              let y = 0;
+              switch(entityKind){
+                case "point":{
+                  const point = ent as Tpoint;
+                  x = point.coords.x + tag.pos.x;
+                  y = point.coords.y + tag.pos.y;
+                  y*=-1;
+                  break;
+                }
+                case "segment":{
+                  const seg = ent as Tsegment;
+                  x = (seg.p1.coords.x + seg.p2.coords.x)/2 + tag.pos.x;
+                  y = (seg.p1.coords.y + seg.p2.coords.y)/2 + tag.pos.y;
+                  y*=-1;
+                  break;
+                }
+                case "angle":{
+                  const ang = ent as Tangle;
+                  x = ang.b.coords.x + tag.pos.x;
+                  y = ang.b.coords.y + tag.pos.y;
+                  y*=-1;
+                  break;
+                }
+                default: {
+                  console.log("this aint no point, segment or angle!");
+                  break;
+                }
+              }
+
+              return (
+                <g key={"svg_path_"+tag.id} transform={`scale(1, -1)`}>
+                <text x={x} y={y} className=" text-[0.3px]">
+                  {tag.value}
+                </text>
+                </g>
+              )
             })}
           </g>
         </svg>
