@@ -19,20 +19,20 @@ const TagDirectionChanger: React.FC<PropsType> = ({
 
   useEffect(() => {
     if (!store || !thisEntity || !thisTag) return;
-    const foundPos = vec(thisTag.pos.x, thisTag.pos.y); //have to re-create the vec here, for some reason I think zustand vanished with the vector methods, and it goes without typescript noticing.
-    //console.log(foundPos.heading()*180/Math.PI);
-    const angle =
-      (foundPos.heading() * 180 / Math.PI) + 180 + counterDirBtn * 45;
-    const updatedDirection = vec(0, 1).rotate(angle);
+    const foundPos = vec(thisTag.pos.x, thisTag.pos.y); //have to re-create the vec here, zustand can't save functions on localStorage, so the vec methods vanish, and it goes without typescript noticing.
+
+    const updatedDirection = vec(0, 1).rotate(
+      (counterDirBtn * 45 * Math.PI) / 180,
+    );
+    if (counterDirBtn == 8) updatedDirection.mult(0);
     const updatedTags = new Map(store.tags);
-    updatedTags.set(thisTag.id, {...thisTag, pos: updatedDirection});
+    updatedTags.set(thisTag.id, { ...thisTag, pos: updatedDirection });
     store.setTags(updatedTags);
     setDirection(updatedDirection);
   }, [thisEntity, thisTag, counterDirBtn]);
 
   const handleDirectionChange = () => {
-    const newCounter = (counterDirBtn + 1)%9;
-    //console.log(newCounter); //debugg
+    const newCounter = (counterDirBtn + 1) % 9;
     const updatedDir = vec(0, 1).rotate((newCounter * Math.PI) / 4);
     setDirection(updatedDir);
     setCounterDirBtn(newCounter);
@@ -49,13 +49,20 @@ const TagDirectionChanger: React.FC<PropsType> = ({
           strokeWidth="1.5"
           stroke="currentColor"
           className={`h-6 w-6`}
-          style={{ rotate: `${45 * counterDirBtn}deg` }}
+          style={{ rotate: `${-45 * counterDirBtn + 180}deg` }}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 17.25L12 21m0 0l-3.75-3.75M12 21V3"
-          />
+          {counterDirBtn != 8 ? (
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 17.25L12 21m0 0l-3.75-3.75M12 21V3"
+            />
+          ) : (
+            <>
+              <circle cx={12} cy={12} r={6} />
+              <circle cx={12} cy={12} r={2} fill="black" />
+            </>
+          )}
         </svg>
       </button>
     </div>
