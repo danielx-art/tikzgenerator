@@ -123,7 +123,7 @@ const myStore = create<State & Action>()(
               updatedSelections.splice(selectionIndex, 1);
           }
 
-          return { [storeMapKey]: entitiesMap, selections: updatedSelections };
+          return { [storeMapKey]: entitiesMap, selections: [...updatedSelections] };
         });
       },
 

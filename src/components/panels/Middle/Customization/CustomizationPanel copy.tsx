@@ -5,67 +5,48 @@ import { useEffect, useState } from "react";
 import PointCustomization from "./parts/PointCustomization";
 import OpenCloseAccordionButton from "import/components/micro/OpenCloseAccordionButton";
 import { Tentity, Ttag, Tpoint } from "public/entidades";
-import { getEntityKind } from "import/utils/miscEntity";
 
 const CustomizationPanel = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [curr, setCurr] = useState(0);
-  const [selectedEntities, setSelectedEntities] = useState<Array<Tentity> |undefined>()
   const [tabMessage, setTabMessage] = useState("");
+  const [selectedEntities, setSelectedEntities] =
+    useState<Array<Tentity | Ttag>>();
   const [thisEntity, setThisEntity] = useState<Tentity | Ttag>();
 
   const store = useStore(myStore, (state) => state);
 
-  useEffect(()=>{
+  
+
+  useEffect(() => {
     if (!store) return;
-    const tab = store.tab as "points" | "segments" | "angles" | "tags";
-    const entitiesMap = store[tab] as Map<string, Tentity>;
-
-    let updatedEntities = [] as Array<Tentity>;
-
-    for(let entId of store.selections){
-      const entityKindPlural = entId.split("_")[0]+"s" as "points" | "segments" | "angles" | "tags";
-      if(entityKindPlural === tab) {
-        const ent = entitiesMap.get(entId);
-        if(ent) updatedEntities.push(ent);
-      }
-    }
-
+    const entityType = store.tab as "points" | "segments" | "angles" | "tags";
+    const entitiesMap = store[entityType] as Map<string, Tentity>;
+    const updatedSelectedEntities = Array.from(entitiesMap.values()).filter(ent=>ent.selected);
+    const updatedEntity = updatedSelectedEntities[curr];
     switch (store.tab) {
       case "points":
-        setTabMessage(`${updatedEntities.length} ponto(s) selecionado(s)`);
+        setTabMessage(`${updatedSelectedEntities.length} ponto(s) selecionado(s)`);
         break;
       case "segments":
-        setTabMessage(`${updatedEntities.length} segmento(s) selecionado(s)`);
+        setTabMessage(`${updatedSelectedEntities.length} segmento(s) selecionado(s)`);
         break;
       case "angles":
-        setTabMessage(`${updatedEntities.length} ângulo(s) selecionado(s)`);
+        setTabMessage(`${updatedSelectedEntities.length} ângulo(s) selecionado(s)`);
         break;
       case "tags":
-        setTabMessage(`${updatedEntities.length} tag(s) selecionada(s)`);
+        setTabMessage(`${updatedSelectedEntities.length} tag(s) selecionada(s)`);
         break;
       default:
         setTabMessage(`Onde é que você tá?`);
         break;
     }
-    let count = curr;
-    while(count > updatedEntities.length-1){
-      count --;
-    }
-    count < 0 ? count = 0 : null;
-    setCurr(count);
-    setSelectedEntities(updatedEntities);
-    console.log("updating selected Entities"); //debugg
-  },[store, store?.tab, store?.selections])
+    
+    setThisEntity(updatedEntity);
+    setSelectedEntities(updatedSelectedEntities);
+  }, [store, store?.tab, store?.selections, curr]);
 
-  useEffect(()=>{
-    if(selectedEntities) {
-      console.log("updating this entitity to: "+selectedEntities[curr]?.id); //debugg
-      setThisEntity(selectedEntities[curr])
-    } else {
-      setThisEntity(undefined);
-    }
-  },[curr, selectedEntities]);
+  if (!store) return;
 
   return (
     <div className="flex w-full flex-col items-start justify-start gap-2 rounded-md border-2 border-c_discrete p-4 pb-2">
@@ -102,7 +83,7 @@ const CustomizationPanel = () => {
           aria-orientation="vertical"
           aria-labelledby="options-menu"
         >
-          {store && store.tab === "points" && (
+          {store.tab === "points" && (
             <PointCustomization
               store={store}
               thisEntity={thisEntity as Tpoint | undefined}

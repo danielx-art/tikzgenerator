@@ -9,6 +9,7 @@ type PropsType = {
 };
 
 const PointCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
+
   return (
     <div
       className={`mb-2 flex w-full flex-col gap-2 ${

@@ -46,7 +46,7 @@ const PreviewPanel = () => {
     let pointsWidth = maxX - minX;
     let pointsHeight = maxY - minY;
 
-    let padding = 0.1; //of the maximum dimension
+    let padding = 0.5; //of the maximum dimension
 
     if (pointsArr.length == 1 && pointsArr[0]) {
       pointsWidth = pointsArr[0].size * 2;
@@ -101,7 +101,7 @@ const PreviewPanel = () => {
   return (
     <div className="flex w-full flex-1 flex-col items-center gap-2 rounded-md border-2 border-c_discrete p-2 pb-3 sm:h-full sm:max-h-full sm:min-h-full">
       <div className="border-b-2 border-b-c_discrete">
-        Prévia (SVG) {dimensions.width} {dimensions.height}
+        Prévia (SVG)
       </div>
       <div
         ref={ref}
