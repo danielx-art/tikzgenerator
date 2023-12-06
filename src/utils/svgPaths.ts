@@ -32,6 +32,7 @@ export const getAnglePath = (angle: Tangle) => {
   let start = vec().copy(startVector).add(angle.b.coords);
   let end = vec().copy(endVector).add(angle.b.coords);
 
+  console.log("angle is 90?: "+Math.abs(endAngle-startAngle) ); //debugg
   if (Math.abs(endAngle - startAngle) == 90) {
     let d = `M ${angle.b.coords.x + startVector.x} ${
       angle.b.coords.y + startVector.y
@@ -84,14 +85,12 @@ export const getPointPath = (point: Tpoint) => {
     return "";
   }
 
-  //console.log(point); //debugg
-
   // Calculate the circle path
   const circlePath =
     `M ${coords.x} ${coords.y} ` +
-    `m -${size}, 0 ` +
-    `a ${size},${size} 0 1,0 ${size * 2},0 ` +
-    `a ${size},${size} 0 1,0 -${size * 2},0`;
+    `m -${size*0.1}, 0 ` +
+    `a ${size*0.1},${size*0.1} 0 1,0 ${size*0.1 * 2},0 ` +
+    `a ${size*0.1},${size*0.1} 0 1,0 -${size*0.1 * 2},0`;
 
   return circlePath;
 };

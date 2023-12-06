@@ -55,12 +55,10 @@ const CustomizationPanel = () => {
     count < 0 ? count = 0 : null;
     setCurr(count);
     setSelectedEntities(updatedEntities);
-    console.log("updating selected Entities"); //debugg
   },[store, store?.tab, store?.selections])
 
   useEffect(()=>{
     if(selectedEntities) {
-      console.log("updating this entitity to: "+selectedEntities[curr]?.id); //debugg
       setThisEntity(selectedEntities[curr])
     } else {
       setThisEntity(undefined);

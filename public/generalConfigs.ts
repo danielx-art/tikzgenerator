@@ -1,7 +1,7 @@
 export const MAXIMUM_NUMBER_OF_POINTS = 3458;
 export const DECIMAL_POINTS = 2;
 export const DEFAULT_COLOR = "black";
-export const DEFAULT_POINT_STYLE = 3;
+export const DEFAULT_POINT_STYLE = 2;
 export const DEFAULT_POINT_SIZE = 1;
 export const DEFAULT_LINE_STYLE = "solid";
 export const DEFAULT_LINE_WIDTH = 5;

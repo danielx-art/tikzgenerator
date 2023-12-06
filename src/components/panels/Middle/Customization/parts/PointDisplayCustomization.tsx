@@ -2,6 +2,7 @@ import RadioGroup from "import/components/micro/RadioGroup";
 import { getEntityKind } from "import/utils/miscEntity";
 import { type Action, type State } from "import/utils/store";
 import { type Tpoint } from "public/entidades";
+import { DEFAULT_POINT_SIZE } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
@@ -13,15 +14,17 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   store,
   point,
 }) => {
-  const [disableSize, setDisableSize] = useState(true);
-  const [size, setSize] = useState("1");
+  const [is_size_disabled, setIs_size_disabled] = useState(true);
+  const [size, setSize] = useState(`${DEFAULT_POINT_SIZE}`);
+
+  //console.log(point); //debugg
 
   const { points, setPoints } = store;
 
   const handleDisplayChange = (option: number) => {
     if (!point || getEntityKind(point) != "point") return;
     const updatedPoints = new Map(points);
-    const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size)/10 : 0):0
+    const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size) : 0):0
     updatedPoints.set(point.id, {...point, dotstyle: option, size: newSize });
     setPoints(updatedPoints);
   };
@@ -33,16 +36,16 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   useEffect(() => {
     if (!point || getEntityKind(point) != "point") return;
     const updatedPoints = new Map(points);
-    const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size)/10 : 0):0
+    const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size) : 0):0
     updatedPoints.set(point.id, {...point, size: newSize });
     setPoints(updatedPoints);
   }, [size]);
 
   useEffect(() => {
     if (point && point.dotstyle != 0) {
-      setDisableSize(false);
+      setIs_size_disabled(false);
     } else {
-      setDisableSize(true);
+      setIs_size_disabled(true);
     }
   }, [point]);
 
@@ -88,7 +91,7 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
 
         <div
           className={`flex w-full flex-row items-center justify-center gap-2 overflow-hidden p-1 ${
-            disableSize ? "text-c_disabled" : "text-c_scnd"
+            is_size_disabled ? "text-c_disabled" : "text-c_scnd"
           }`}
         >
           <label htmlFor="sizeInput" className="flex h-full items-center pl-2">
@@ -97,7 +100,7 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
           <input
             type="number"
             name="sizeInput"
-            disabled={disableSize}
+            disabled={is_size_disabled}
             onChange={handleSizeChange}
             className="inline w-10 bg-c_base p-1 text-center focus:underline focus:outline-none"
             value={size}

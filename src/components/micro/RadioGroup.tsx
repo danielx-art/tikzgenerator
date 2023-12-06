@@ -21,9 +21,11 @@ const RadioGroup: React.FC<PropsType> = ({
     setSelectedIndex(value);
   }, [value]);
 
+  console.log("value: "+value);
+
   function onSelect(index: number) {
-    setSelectedIndex(index);
     onChange && onChange(index);
+    setSelectedIndex(index);
   }
 
   return (
@@ -64,22 +66,18 @@ const Option: React.FC<TOptionProps> = ({
   disabled,
 }) => {
   const isSelected = index === selectedIndex;
+  //console.log(index, selectedIndex); //debugg
   return (
     <div
       className={`flex h-fit flex-1 cursor-pointer select-none items-center rounded-full bg-c_base px-2 py-1 text-sm shadow transition duration-300 ${
-        isSelected
-          ? disabled
-            ? " text-c_scnd2"
-            : " text-c_scnd_int"
-          : " text-c_scnd text-opacity-30"
+        disabled
+          ? "text-c_scnd2 text-opacity-50"
+          : isSelected
+          ? " text-c_scnd_int"
+          : " text-c_scnd2"
       }`}
       onClick={disabled ? () => {} : () => onSelect(index)}
     >
-      {/* <div
-        className={`h-4 w-4 rounded-full border transition ${
-          isSelected && "border-4 border-c_high1 bg-c_high1"
-        } `}
-      ></div> */}
       {children}
     </div>
   );
