@@ -34,11 +34,19 @@ const TagCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
     <div className="mb-2 flex w-full flex-col gap-2">
       <div className="">Etiqueta</div>
       <div className="flex flex-1 flex-row gap-4">
-        <TagEditable store={store} thisEntity={thisEntity} thisTag={thisTag} />
+        <TagEditable
+          store={store}
+          thisEntity={thisEntity}
+          thisTag={thisTag}
+          key={`tagEditable_${thisEntity?.id || "_e"}_${thisTag?.id || "_t"}`}
+        />
         <TagDirectionChanger
           store={store}
           thisEntity={thisEntity}
           thisTag={thisTag}
+          key={`tagDirectionChanger_${thisEntity?.id || "_e"}_${
+            thisTag?.id || "_t"
+          }`}
         />
       </div>
     </div>
