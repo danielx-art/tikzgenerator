@@ -1,7 +1,46 @@
-import { DEFAULT_ANGLE_SIZE, DEFAULT_ANGLE_STYLE, DEFAULT_COLOR, DEFAULT_LINE_STYLE, DEFAULT_LINE_WIDTH, DEFAULT_POINT_SIZE, DEFAULT_POINT_STYLE } from "./generalConfigs";
+import {
+  DEFAULT_ANGLE_SIZE,
+  DEFAULT_ANGLE_STYLE,
+  DEFAULT_COLOR,
+  DEFAULT_LINE_STYLE,
+  DEFAULT_LINE_WIDTH,
+  DEFAULT_POINT_SIZE,
+  DEFAULT_POINT_STYLE,
+} from "./generalConfigs";
 import { vec, vector } from "./vetores";
 
-const ponto = function (a: vector, id: string, group: number = 1) {
+export type Tkind = "point" | "segment" | "angle";
+export type TallKind = Tkind | "tag";
+export type TkindPlural = "points" | "segments" | "angles";
+export type TallKindPlural = TkindPlural | "tags";
+export type TpointId = `point_${number}`;
+export type TsegId = `segment_${number}`;
+export type TangId = `angle_${number}`;
+export type TcircleId = `circle_${number}`;
+export type TtagId = `tag_${number}`;
+//export type TentId = `${Tkind}_${number}`;
+export type TentId = TpointId | TsegId | TangId;
+export type TallId = TentId | TtagId;
+export type TbodyFromKind<TypeKind> = 
+    TypeKind extends 'point' ? Tpoint :
+    TypeKind extends 'segment' ? Tsegment :
+    TypeKind extends 'angle' ? Tangle :
+    TypeKind extends 'tag' ? Ttag :
+    never;
+export type TidFromKind<TypeKind> = 
+    TypeKind extends 'point' ? TpointId :
+    TypeKind extends 'segment' ? TsegId :
+    TypeKind extends 'angle' ? TangId :
+    TypeKind extends 'tag' ? TtagId :
+    never;
+export type TkindPluralFrom<TypeKind> = 
+    TypeKind extends 'point' ? 'points' :
+    TypeKind extends 'segment' ? 'segments' :
+    TypeKind extends 'angle' ? 'angles' :
+    TypeKind extends 'tag' ? 'tags' :
+    never;
+
+export const ponto = function (a: vector, id: TpointId, group: number = 1) {
   return {
     id,
     coords: a,
@@ -14,9 +53,9 @@ const ponto = function (a: vector, id: string, group: number = 1) {
   };
 };
 
-type Tpoint = ReturnType<typeof ponto>;
+export type Tpoint = ReturnType<typeof ponto>;
 
-const segmento = function (a: Tpoint, b: Tpoint, id: string) {
+export const segmento = function (a: Tpoint, b: Tpoint, id: TsegId) {
   return {
     id,
     p1: a,
@@ -38,9 +77,9 @@ const segmento = function (a: Tpoint, b: Tpoint, id: string) {
   };
 };
 
-type Tsegment = ReturnType<typeof segmento>;
+export type Tsegment = ReturnType<typeof segmento>;
 
-const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: string) {
+export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
   return {
     id,
     a,
@@ -63,20 +102,20 @@ const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: string) {
   };
 };
 
-type Tangle = ReturnType<typeof angulo>;
+export type Tangle = ReturnType<typeof angulo>;
 
-type TentityWithKind =
-  | (Tpoint & { kind: "point" })
-  | (Tsegment & { kind: "segment" })
-  | (Tangle & { kind: "angle" });
+// export type TentityWithKind =
+//   | (Tpoint & { kind: "point" })
+//   | (Tsegment & { kind: "segment" })
+//   | (Tangle & { kind: "angle" });
 
-type Tentity = Tpoint | Tsegment | Tangle;
+export type Tentity = Tpoint | Tsegment | Tangle;
 
-const tag = function (
+export const tag = function (
   value: string = "",
-  entityId: string,
-  id: string,
-  pos: vector = vec(0,1),
+  entityId: TentId,
+  id: TtagId,
+  pos: vector = vec(0, 1),
 ) {
   return {
     id,
@@ -87,17 +126,4 @@ const tag = function (
   };
 };
 
-type Ttag = ReturnType<typeof tag>;
-
-export {
-  ponto,
-  type Tpoint,
-  segmento,
-  type Tsegment,
-  angulo,
-  type Tangle,
-  type Tentity,
-  type TentityWithKind,
-  tag,
-  type Ttag,
-};
+export type Ttag = ReturnType<typeof tag>;

@@ -1,20 +1,21 @@
 import {
-  Tangle,
   Tentity,
-  TentityWithKind,
   Ttag,
+  TentId,
+  Tkind,
+  TallId,
+  TallKind,
+  TpointId,
+  TsegId,
+  TangId,
+  TtagId,
   Tpoint,
   Tsegment,
+  Tangle,
 } from "public/entidades";
 import { type Action, type State } from "import/utils/store";
 
-export function getEntityKind(ent: Tentity|Ttag):"point"|"segment"|"angle"|"tag" {
-  const entityKind = ent.id.split("_")[0] as "point"|"segment"|"angle"|"tag";
-  //if(!entityKind) return "general";
-  return entityKind;
-}
-
-export function findTagByEntityId(entityId: string, tags: Map<string, Ttag>): Ttag | undefined {
+export function findTagByEntityId(entityId: TentId, tags: Map<TtagId, Ttag>): Ttag | undefined {
   for (let [tagId, tag] of tags) {
     if (tag.entityId === entityId) {
       return tag;
@@ -24,90 +25,91 @@ export function findTagByEntityId(entityId: string, tags: Map<string, Ttag>): Tt
 };
 
 export function getEntityById(
-  id: string,
+  id: TallId,
   store: (State & Action) | undefined,
 ) {
   if (!store) return;
 
-  const entityKind = id.split("_")[0];
+  const entityKind = getKindById(id);
 
   switch (entityKind) {
     case "point":
-      return store.points.get(id);
+      return store.points.get(id as TpointId);
     case "segment":
-      return store.segments.get(id);
+      return store.segments.get(id as TsegId);
     case "angle":
-      return store.angles.get(id);
+      return store.angles.get(id as TangId);
     case "tag":
-      return store.tags.get(id);
+      return store.tags.get(id as TtagId);
     default:
       return;
   }
 }
 
-// export function updateTag(
-//   store: State & Action,
-//   thisTag: Ttag,
-//   updatedTag: Ttag,
-// ): void {
-//   const updatedTags = [...store.tags].map((tag) =>
-//     tag.id == thisTag.id ? updatedTag : tag,
-//   );
+export function getKindById(id: TallId) {
+  return id.split("_")[0] as TallKind;
+}
 
-//   store.setTags(updatedTags);
+export function getEntityKind(ent: Tentity|Ttag) {
+  const entityKind = ent.id.split("_")[0] as TallKind;
+  return entityKind;
+}
 
-//   const thisEntity = getEntityById(thisTag.entityId, store);
+export function fromSelectionsGet<T extends TallKind>(kind: T, selections: Array<TallId>){
+  const result = [...selections].filter((selId)=>{
+    const selKind = getKindById(selId);
+    if(selKind == kind) {
+      return true;
+    }
+    return false;
+  }) as T extends "point" ? Array<TpointId> : T extends "segment" ? Array<TsegId> : T extends "angle" ? Array<TangId> : Array<TtagId>;
 
-//   if (!thisEntity) return;
+  return result;
+}
 
-//   switch (thisEntity.kind) {
-//     case "point": {
-//       const updatedPoints = [...store.points].map((point) =>
-//         point.id == thisEntity.id
-//           ? { ...point, tag: updatedTag.value }
-//           : point,
-//       );
-//       store.setPoints(updatedPoints);
-//       break;
-//     }
-//     case "segment": {
-//       const updatedSegs = [...store.segments].map((seg) =>
-//         seg.id == thisEntity.id ? { ...seg, tag: updatedTag.value } : seg,
-//       );
-//       store.setSegments(updatedSegs);
-//       break;
-//     }
-//     case "angle": {
-//       const updatedAngles = [...store.angles].map((angle) =>
-//         angle.id == thisEntity.id
-//           ? { ...angle, tag: updatedTag.value }
-//           : angle,
-//       );
-//       store.setAngles(updatedAngles);
-//       break;
-//     }
-//   }
+export type TArrAllId = ReturnType<typeof fromSelectionsGet>;
 
-//   return;
-// }
+export function getSelected<T extends TallKind>(kind: T, store: State&Action):(T extends "point" ? Array<Tpoint> :
+T extends "segment" ? Array<Tsegment> :
+T extends "angle" ? Array<Tangle> : T extends TangId ? Array<Ttag> : undefined) | [] {
 
-// export function toggleEntitySelection(store: State&Action, entity: Tentity|Ttag){
+  if(store.selections.length<1) return [] as any;
 
-//   const entityKind = getEntityKind(entity);
-//   const storeKey = `${entityKind}s` as "points"|"segments"|"angles"|"tags"; 
-//   const entitiesArr = store[storeKey];
-//   const storeSetterKey = "set" + storeKey[0]!.toUpperCase() + storeKey.slice(1) as "setPoints"|"setSegments"|"setAngles"|"setTags"
-//   const entitiesSetter = store[storeSetterKey];
-//   const updatedEntities = [...entitiesArr].map(ent=>ent.id===entity.id?{...ent, selected: !ent.selected}:ent);
-//   // @ts-ignore
-//   entitiesSetter(updatedEntities);
-//   const updatedSelectedEntities = [...store.selectedEntities[storeKey]];
-//   const indexToChange = updatedSelectedEntities.indexOf(parseInt(entity.id));
-//   if(indexToChange > -1){
-//     updatedSelectedEntities.splice(indexToChange, 1);
-//   } else {
-//     updatedSelectedEntities.push(parseInt(entity.id));
-//   }
-//   store.setSelectedEntities({...store.selectedEntities, [storeKey]: updatedSelectedEntities});
+  const selections = fromSelectionsGet(kind, store.selections);
+  
+  if(selections.length < 1) return [] as any;
 
-// }
+  const firstKind = getKindById(selections[0]!);
+
+  switch(firstKind){
+    case "point": {
+      let selected = [] as Array<Tpoint>;
+      for(let sel of selections){
+        selected.push(store.points.get(sel as TpointId)!);
+      }
+      return selected as any;
+    }
+    case "segment":{
+      let selected = [] as Array<Tsegment>;
+      for(let sel of selections){
+        selected.push(store.segments.get(sel as TsegId)!);
+      }
+      return selected as any;
+    }
+    case "angle":{
+      let selected = [] as Array<Tangle>;
+      for(let sel of selections){
+        selected.push(store.angles.get(sel as TangId)!);
+      }
+      return selected as any;
+    }
+    case "tag":{
+      let selected = [] as Array<Ttag>;
+      for(let sel of selections){
+        selected.push(store.tags.get(sel as TtagId)!);
+      }
+      return selected as any;
+    }
+  }
+  return [] as any;
+}

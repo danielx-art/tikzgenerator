@@ -1,15 +1,16 @@
 import { Enriqueta } from "next/font/google";
-import { Tpoint, Tsegment, Tangle, Ttag, Tentity, tag } from "public/entidades";
+import { Tpoint, Tsegment, Tangle, Ttag, Tentity, tag, TkindPlural, TpointId, TangId, TsegId, TtagId, TentId, Tkind, TallId, TallKind, TallKindPlural, TcircleId, TbodyFromKind, TidFromKind, TkindPluralFrom } from "public/entidades";
 import { vec } from "public/vetores";
 import { create } from "zustand";
 import { StorageValue, persist } from "zustand/middleware";
+import { getKindById } from "./miscEntity";
 
 export type State = {
-  tab: string;
-  points: Map<string, Tpoint>;
-  angles: Map<string, Tangle>;
-  segments: Map<string, Tsegment>;
-  tags: Map<string, Ttag>;
+  tab: TallKindPlural;
+  points: Map<TpointId, Tpoint>;
+  angles: Map<TangId, Tangle>;
+  segments: Map<TsegId, Tsegment>;
+  tags: Map<TtagId, Ttag>;
   groups: number[];
   selectedGroup: number;
   error: string;
@@ -19,7 +20,7 @@ export type State = {
     angle: number;
     tag: number;
   };
-  selections: Array<string>;
+  selections: Array<TallId>;
 };
 
 export type Action = {
@@ -31,27 +32,27 @@ export type Action = {
   setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
   setTags: (tags: State["tags"]) => void;
   setError: (error: State["error"]) => void;
-  generateId: (type: "point" | "segment" | "angle" | "tag") => string;
-  toggleSelection: (id: string) => void;
+  generateId: <T extends TallKind>(type:T) => T extends "point" ? TpointId : T extends "segment" ? TsegId : T extends "angle" ? TangId : T extends "tag" ? TtagId : TcircleId;
+  toggleSelection: (id: TallId) => void;
   addEntity: (
-    entityKind: "point" | "segment" | "angle",
-    elementBody: Tpoint | Tsegment | Tangle,
+    entityKind: Tkind,
+    elementBody: Tentity,
   ) => void;
-  deleteEntity: (id: string) => void;
-  addTag: (value: string, entityId: string) => void;
-  deleteTag: (id: string) => void;
+  deleteEntity: (id: TentId) => void;
+  addTag: (value: string, entityId: TentId) => void;
+  deleteTag: (id: TtagId) => void;
 };
 
 const myStore = create<State & Action>()(
   persist(
     (set, get) => ({
-      tab: "points",
+      tab: "points" as TallKindPlural,
       setTab: (tab) => set(() => ({ tab: tab })),
 
-      points: new Map<string, Tpoint>(),
-      angles: new Map<string, Tangle>(),
-      segments: new Map<string, Tsegment>(),
-      tags: new Map<string, Ttag>(),
+      points: new Map<TpointId, Tpoint>(),
+      angles: new Map<TangId, Tangle>(),
+      segments: new Map<TsegId, Tsegment>(),
+      tags: new Map<TtagId, Ttag>(),
       setPoints: (points) => set(() => ({ points: points })),
       setAngles: (angles) => set(() => ({ angles: angles })),
       setSegments: (segments) => set(() => ({ segments: segments })),
@@ -72,39 +73,27 @@ const myStore = create<State & Action>()(
         tag: 0,
       },
 
-      generateId: (type) => {
-        const id: string = `${type}_${get().idCounters[type]}`;
+      generateId: <T extends TallKind>(type: T):T extends "point" ? TpointId : T extends "segment" ? TsegId : T extends "angle" ? TangId : T extends "tag" ? TtagId : TcircleId => {
+        const id = `${type}_${get().idCounters[type]}`;
         set((state) => ({
           idCounters: {
             ...state.idCounters,
             [type]: state.idCounters[type] + 1,
           },
         }));
-        return id;
+        return id as any;
       },
 
-      selections: [] as Array<string>,
-      toggleSelection: <T extends Tpoint | Tsegment | Tangle | Ttag>(
-        id: string,
+      selections: [] as Array<TallId>,
+      toggleSelection: <T extends Tentity| Ttag>(
+        id: TallId,
       ) => {
-        const entityKind = id.split("_")[0] as
-          | "point"
-          | "segment"
-          | "angle"
-          | "tag";
+        const entityKind = getKindById(id) as TallKind;
 
-        if (!["point", "segment", "angle", "tag"].includes(entityKind)) {
-          return;
-        }
-
-        const storeMapKey = (entityKind + "s") as
-          | "points"
-          | "segments"
-          | "angles"
-          | "tags";
+        const storeMapKey = (entityKind + "s") as TallKindPlural;
 
         set((state) => {
-          const entitiesMap = new Map(state[storeMapKey] as Map<string, T>);
+          const entitiesMap = new Map(state[storeMapKey] as Map<TallId, T>);
 
           if (!entitiesMap.has(id)) return {};
 
@@ -127,19 +116,16 @@ const myStore = create<State & Action>()(
         });
       },
 
-      addEntity: (
-        entityKind: "point" | "segment" | "angle",
-        elementBody: Tpoint | Tsegment | Tangle,
+      addEntity: <T extends Tkind>(
+        entityKind: T,
+        elementBody: TbodyFromKind<T>,
       ) => {
-        const id = get().generateId(entityKind);
-        const stateMapKey = (entityKind + "s") as
-          | "points"
-          | "segments"
-          | "angles";
+        const id = get().generateId(entityKind) as TidFromKind<T>;
+        const stateMapKey = (entityKind + "s") as TkindPluralFrom<T>
 
         set((state) => {
           const existingMap = state[stateMapKey] as Map<
-            string,
+            TentId,
             typeof elementBody
           >;
           const updatedMap = new Map(existingMap);
@@ -149,17 +135,10 @@ const myStore = create<State & Action>()(
         });
       },
 
-      deleteEntity: (id: string) => {
-        const entityKind = id.split("_")[0] as "point" | "segment" | "angle";
+      deleteEntity: (id: TentId) => {
+        const entityKind = getKindById(id) as Tkind;
 
-        if (!["point", "segment", "angle", "tag"].includes(entityKind)) {
-          return;
-        }
-
-        const stateMapKey = (entityKind + "s") as
-          | "points"
-          | "segments"
-          | "angles";
+        const stateMapKey = (entityKind + "s") as TkindPlural;
 
         if (entityKind == "point") {
           set((state) => {
@@ -174,7 +153,7 @@ const myStore = create<State & Action>()(
 
 
             removedIds.push(id);
-            updatedPoints.delete(id);
+            updatedPoints.delete(id as TpointId);
 
             // Check and delete any segments that reference the point
             updatedSegments.forEach((segment, segmentId) => {
@@ -208,7 +187,7 @@ const myStore = create<State & Action>()(
         } else {
           set((state) => {
             const updatedMap = new Map(
-              state[stateMapKey] as Map<string, Tentity>,
+              state[stateMapKey] as Map<TentId, Tentity>,
             );
             updatedMap.delete(id);
             
@@ -229,8 +208,8 @@ const myStore = create<State & Action>()(
         }
       },
 
-      addTag: (value: string, entityId: string) => {
-        const tagId = get().generateId("tag");
+      addTag: (value: string, entityId: TentId) => {
+        const tagId = get().generateId("tag") as TtagId;
 
         const newTag = tag(value, entityId, tagId);
 
@@ -242,7 +221,7 @@ const myStore = create<State & Action>()(
         });
       },
 
-      deleteTag: (id: string) => {
+      deleteTag: (id: TtagId) => {
         set((state) => {
           const updatedTags = new Map(state.tags);
           updatedTags.delete(id);

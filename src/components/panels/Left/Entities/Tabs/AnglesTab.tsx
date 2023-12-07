@@ -3,17 +3,16 @@ import useStore from "import/utils/useStore";
 import ItemsList from "../parts/ItemsList";
 import AngleItem from "../parts/AngleItem";
 import { type Tpoint, type Tangle, angulo } from "public/entidades";
+import { fromSelectionsGet, getSelected } from "import/utils/miscEntity";
 
 export default function AnglesTab() {
   const store = useStore(myStore, (state) => state);
 
   if (!store) return;
 
-  const { points, angles, setAngles, generateId, setError } = store;
+  const { points, angles, setAngles, generateId, setError, selections } = store;
 
-  const selectedPoints = Array.from(store.points.values()).filter(
-    (point) => point.selected,
-  );
+  const selectedPoints = getSelected("point", store);
 
   const makeAngles = () => {
     if (selectedPoints.length < 3) {
