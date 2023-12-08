@@ -88,7 +88,7 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
     get valor() {
       const ba = vec().copy(this.a.coords).sub(this.b.coords);
       const bc = vec().copy(this.c.coords).sub(this.b.coords);
-      const valor = Math.abs(ba.angleBetween(bc));
+      const valor = Math.min(Math.abs(ba.angleBetween(bc)),Math.abs(bc.angleBetween(ba)));
       return valor;
     },
     get valorExt() {

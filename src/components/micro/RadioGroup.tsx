@@ -21,8 +21,6 @@ const RadioGroup: React.FC<PropsType> = ({
     setSelectedIndex(value);
   }, [value]);
 
-  console.log("value: "+value);
-
   function onSelect(index: number) {
     onChange && onChange(index);
     setSelectedIndex(index);

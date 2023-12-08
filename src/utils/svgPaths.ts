@@ -13,26 +13,33 @@ export const getAnglePath = (angle: Tangle) => {
 
   let startVector;
   let endVector;
+  let startAngle;
+  let endAngle;
 
-  if (vectorA.heading() >= vectorB.heading()) {
+  let angA = (vectorA.heading()*180/Math.PI + 360)%360; //in degrees and first positive arc
+  let angB = (vectorB.heading()*180/Math.PI + 360)%360;
+  let angleDifference = angB - angA;
+  let sweepFlag = 1;
+
+  if(angleDifference >= 0) {
     startVector = vectorA;
+    startAngle = angA;
     endVector = vectorB;
+    endAngle = angB;
   } else {
     startVector = vectorB;
+    startAngle = angB;
     endVector = vectorA;
+    endAngle = angA;
   }
 
-  let startAngle = startVector.heading() * (180 / Math.PI);
-  let endAngle = endVector.heading() * (180 / Math.PI);
-
-  // Normalize angles to positive range (0 to 360 degrees)
-  startAngle = (startAngle + 360) % 360;
-  endAngle = (endAngle + 360) % 360;
+  if(Math.abs(angleDifference) > 180) {
+    sweepFlag = 0;
+  }
 
   let start = vec().copy(startVector).add(angle.b.coords);
   let end = vec().copy(endVector).add(angle.b.coords);
 
-  console.log("angle is 90?: "+Math.abs(endAngle-startAngle) ); //debugg
   if (Math.abs(endAngle - startAngle) == 90) {
     let d = `M ${angle.b.coords.x + startVector.x} ${
       angle.b.coords.y + startVector.y
@@ -59,7 +66,6 @@ export const getAnglePath = (angle: Tangle) => {
 
     return d;
   } else {
-    let largeArcFlag = Math.abs(endAngle - startAngle) <= 180 ? 0 : 1;
     let d = [
       "M",
       start.x,
@@ -68,8 +74,8 @@ export const getAnglePath = (angle: Tangle) => {
       angle.size,
       angle.size,
       0,
-      largeArcFlag,
       0,
+      sweepFlag,
       end.x,
       end.y,
     ].join(" ");
