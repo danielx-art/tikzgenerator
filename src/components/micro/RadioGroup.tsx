@@ -64,7 +64,6 @@ const Option: React.FC<TOptionProps> = ({
   disabled,
 }) => {
   const isSelected = index === selectedIndex;
-  //console.log(index, selectedIndex); //debugg
   return (
     <div
       className={`flex h-fit flex-1 cursor-pointer select-none items-center rounded-full bg-c_base px-2 py-1 text-sm shadow transition duration-300 ${

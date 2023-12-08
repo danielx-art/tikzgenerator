@@ -6,7 +6,7 @@ import {
   lerp,
   roundToDecimalPlaces,
 } from "import/utils/misc";
-import { findTagByEntityId } from "import/utils/miscEntity";
+import { findTagByEntityId, getSelected } from "import/utils/miscEntity";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import { ponto } from "public/entidades";
@@ -35,9 +35,7 @@ const AddPointInSegment: React.FC = () => {
   const { generateId, selectedGroup, points, setPoints, selections } = store;
 
   //const selectedPoints = Array.from(points.values()).filter((point) => point.selected);
-  const selectedPoints = selections.flatMap(pointId => 
-    points.has(pointId) ? [points.get(pointId)] : []
-  );
+  const selectedPoints = getSelected("point", store);
 
   const segPoints = [selectedPoints[0], selectedPoints[1]];
 
@@ -283,7 +281,8 @@ const AddPointInSegment: React.FC = () => {
                 marginLeft: styles.leftApos + "%",
               }}
             >
-              {(findTagByEntityId(segPoints[0].id, store.tags)?.value && findTagByEntityId(segPoints[0].id, store.tags)?.value  !== "")
+              {findTagByEntityId(segPoints[0].id, store.tags)?.value &&
+              findTagByEntityId(segPoints[0].id, store.tags)?.value !== ""
                 ? findTagByEntityId(segPoints[0].id, store.tags)?.value
                 : `(${segPoints[0]!.coords.x};${segPoints[0]!.coords.y})`}
             </div>
@@ -293,7 +292,8 @@ const AddPointInSegment: React.FC = () => {
                 marginLeft: (styles.leftBpos - styles.leftApos) / 2 + "%",
               }}
             >
-              {(findTagByEntityId(segPoints[1].id, store.tags)?.value && findTagByEntityId(segPoints[1].id, store.tags)?.value  !== "")
+              {findTagByEntityId(segPoints[1].id, store.tags)?.value &&
+              findTagByEntityId(segPoints[1].id, store.tags)?.value !== ""
                 ? findTagByEntityId(segPoints[1].id, store.tags)?.value
                 : `(${segPoints[1]!.coords.x};${segPoints[1]!.coords.y})`}
             </div>

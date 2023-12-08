@@ -15,11 +15,15 @@ const TagDirectionChanger: React.FC<PropsType> = ({
   thisTag,
 }) => {
   const [counterDirBtn, setCounterDirBtn] = useState(0);
-  const [direction, setDirection] = useState(vec(0, 0));
+  const [direction, setDirection] = useState(vec(0, 1));
 
   useEffect(() => {
     if (!store || !thisEntity || !thisTag) return;
     const foundPos = vec(thisTag.pos.x, thisTag.pos.y); //have to re-create the vec here, zustand can't save functions on localStorage, so the vec methods vanish, and it goes without typescript noticing.
+
+    //Here from the found pos I have to calculate the "foundDirectionCounter" to them set the counterDirBtn to this initial value
+
+    console.log(thisEntity.id, counterDirBtn); //debugg
 
     const updatedDirection = vec(0, 1).rotate(
       (counterDirBtn * 45 * Math.PI) / 180,
