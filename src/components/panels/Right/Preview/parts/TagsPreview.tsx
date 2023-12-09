@@ -2,13 +2,18 @@ import { getEntityById, getEntityKind } from "import/utils/miscEntity";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import { Tangle, Tpoint, Tsegment } from "public/entidades";
+import { useState } from "react";
 
 const TagsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
 
+  const [textSize, setTextSize] = useState(0.3);
+
   if (!store) return;
 
   const { tags } = store;
+
+  const textSizeStyle = `text-[${textSize}px]`;
 
   return (
     <>
@@ -18,7 +23,7 @@ const TagsPreview: React.FC = () => {
         const entityKind = getEntityKind(ent) as "point" | "segment" | "angle";
         let x = 0;
         let y = 0;
-        const DISTANCE_FACTOR = 0.2;
+        const DISTANCE_FACTOR = 0.35;
         switch (entityKind) {
           case "point": {
             const point = ent as Tpoint;
@@ -53,7 +58,7 @@ const TagsPreview: React.FC = () => {
 
         return (
           <g key={"svg_path_" + tag.id} transform={`scale(1, -1)`}>
-            <text x={x} y={y} className=" text-[0.3px]">
+            <text x={x} y={y} className={textSizeStyle} dominant-baseline="middle" text-anchor="middle">
               {tag.value}
             </text>
           </g>
@@ -64,3 +69,4 @@ const TagsPreview: React.FC = () => {
 };
 
 export default TagsPreview;
+
