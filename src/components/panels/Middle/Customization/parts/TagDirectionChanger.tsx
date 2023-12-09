@@ -19,11 +19,31 @@ const TagDirectionChanger: React.FC<PropsType> = ({
 
   useEffect(() => {
     if (!store || !thisEntity || !thisTag) return;
+
     const foundPos = vec(thisTag.pos.x, thisTag.pos.y); //have to re-create the vec here, zustand can't save functions on localStorage, so the vec methods vanish, and it goes without typescript noticing.
 
-    //Here from the found pos I have to calculate the "foundDirectionCounter" to them set the counterDirBtn to this initial value
+    if (foundPos.mag() == 0) {
+      setCounterDirBtn(8);
+      return;
+    }
 
-    console.log(thisEntity.id, counterDirBtn); //debugg
+    let foundPosHeading = Math.round((foundPos.heading() * 180) / Math.PI);
+    foundPosHeading < 0 ? (foundPosHeading += 360) : null;
+
+    let updatedCounter = foundPosHeading / 45 - 2;
+    updatedCounter < 0 ? (updatedCounter += 8) : null;
+
+    const updatedDirection = vec(0, 1).rotate(
+      (updatedCounter * 45 * Math.PI) / 180,
+    );
+
+    setDirection(updatedDirection);
+
+    setCounterDirBtn(updatedCounter);
+  }, [thisEntity]);
+
+  useEffect(() => {
+    if (!store || !thisEntity || !thisTag) return;
 
     const updatedDirection = vec(0, 1).rotate(
       (counterDirBtn * 45 * Math.PI) / 180,
@@ -33,7 +53,7 @@ const TagDirectionChanger: React.FC<PropsType> = ({
     updatedTags.set(thisTag.id, { ...thisTag, pos: updatedDirection });
     store.setTags(updatedTags);
     setDirection(updatedDirection);
-  }, [thisEntity, thisTag, counterDirBtn]);
+  }, [counterDirBtn]);
 
   const handleDirectionChange = () => {
     const newCounter = (counterDirBtn + 1) % 9;
