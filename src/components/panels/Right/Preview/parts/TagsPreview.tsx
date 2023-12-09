@@ -2,18 +2,15 @@ import { getEntityById, getEntityKind } from "import/utils/miscEntity";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import { Tangle, Tpoint, Tsegment } from "public/entidades";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const TagsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
-
-  const [textSize, setTextSize] = useState(0.3);
 
   if (!store) return;
 
   const { tags } = store;
 
-  const textSizeStyle = `text-[${textSize}px]`;
 
   return (
     <>
@@ -58,7 +55,7 @@ const TagsPreview: React.FC = () => {
 
         return (
           <g key={"svg_path_" + tag.id} transform={`scale(1, -1)`}>
-            <text x={x} y={y} className={textSizeStyle} dominant-baseline="middle" text-anchor="middle">
+            <text x={x} y={y} className={`cursor-pointer`} dominant-baseline="middle" text-anchor="middle">
               {tag.value}
             </text>
           </g>

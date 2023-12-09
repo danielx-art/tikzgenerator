@@ -1,15 +1,8 @@
-import {
-  getAnglePath,
-  getPointPath,
-  getSegmentPath,
-} from "import/utils/svgPaths";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useDimensions from "import/utils/useDimensions";
 import DownloadSVGBtn from "./parts/DownloadSVGBtn";
-import { getEntityById, getEntityKind } from "import/utils/miscEntity";
-import { Tangle, Tpoint, Tsegment } from "public/entidades";
 import PointsPreview from "./parts/PointsPreview";
 import AnglesPreview from "./parts/AnglesPreview";
 import SegmentsPreview from "./parts/SegmentsPreview";
@@ -86,17 +79,6 @@ const PreviewPanel = () => {
   }, [store, store?.points, ref, svgRef, dimensions.width, dimensions.height]);
 
   if (!store) return;
-
-  const {
-    points,
-    setPoints,
-    segments,
-    setSegments,
-    angles,
-    setAngles,
-    toggleSelection,
-    tags,
-  } = store;
 
   return (
     <div className="flex w-full flex-1 flex-col items-center gap-2 rounded-md border-2 border-c_discrete p-2 pb-3 sm:h-full sm:max-h-full sm:min-h-full">

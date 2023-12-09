@@ -4,8 +4,10 @@ import useStore from "import/utils/useStore";
 import { useEffect, useState } from "react";
 import PointCustomization from "./parts/PointCustomization";
 import OpenCloseAccordionButton from "import/components/micro/OpenCloseAccordionButton";
-import { Tentity, Ttag, Tpoint } from "public/entidades";
+import { Tentity, Ttag, Tpoint, Tsegment, Tangle } from "public/entidades";
 import { getEntityKind } from "import/utils/miscEntity";
+import SegmentCustomization from "./parts/SegmentCustomization";
+import AngleCustomization from "./parts/AngleCustomization";
 
 const CustomizationPanel = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -104,6 +106,18 @@ const CustomizationPanel = () => {
             <PointCustomization
               store={store}
               thisEntity={thisEntity as Tpoint | undefined}
+            />
+          )}
+          {store && store.tab === "segments" && (
+            <SegmentCustomization
+              store={store}
+              thisEntity={thisEntity as Tsegment | undefined}
+            />
+          )}
+          {store && store.tab === "angles" && (
+            <AngleCustomization
+              store={store}
+              thisEntity={thisEntity as Tangle | undefined}
             />
           )}
         </div>
