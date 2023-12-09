@@ -129,21 +129,6 @@ const AutoTags: React.FC = () => {
               ],
             },
             {
-              title: "a...z aa...zz",
-              action: [
-                () => applyTags(alphabeticalSmallLatinTags, store.angles),
-                () =>
-                  applyTags(
-                    alphabeticalSmallLatinTags,
-                    new Map(
-                      Array.from(store.angles).filter(
-                        ([key, angle]) => angle.selected,
-                      ),
-                    ),
-                  ),
-              ],
-            },
-            {
               title: `𝜶...𝝎`,
               action: [
                 () => applyTags(alphabeticalGreekTags, store.angles),

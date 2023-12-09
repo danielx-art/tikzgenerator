@@ -2,7 +2,7 @@ import { Tentity, Tsegment, type Tpoint, Tangle } from "public/entidades";
 import { roundAndDisplayNicely, roundToDecimalPlaces } from "./misc";
 
 const LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const GREEK_ALPHABET = "𝜶𝜷𝜸𝜹𝜺𝜻𝜼𝜽𝜾𝜿𝝀𝝁𝝂𝝃𝝄𝝅𝝆𝝇𝝈𝝉𝝊𝝋𝝌𝝍𝝎";
+const GREEK_ALPHABET = "αβγδεζηθικλμνξοπρστυφχψω";
 
 function alphabeticalTag(i: number, alphabet: string): string {
   const len = alphabet.length;
