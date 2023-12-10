@@ -53,9 +53,11 @@ const TagsPreview: React.FC = () => {
           }
         }
 
+        const textSize = ` ${tag.size}px `
+
         return (
           <g key={"svg_path_" + tag.id} transform={`scale(1, -1)`}>
-            <text x={x} y={y} className={`cursor-pointer`} dominant-baseline="middle" text-anchor="middle">
+            <text x={x} y={y} className={`cursor-pointer`} fontSize={textSize} color={tag.color} dominant-baseline="middle" text-anchor="middle">
               {tag.value}
             </text>
           </g>

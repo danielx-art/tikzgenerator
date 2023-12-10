@@ -7,4 +7,6 @@ export const DEFAULT_LINE_STYLE = "solid";
 export const DEFAULT_LINE_WIDTH = 5;
 export const DEFAULT_ANGLE_STYLE = 0;
 export const DEFAULT_ANGLE_SIZE = 0.5;
+export const DEFAULT_TAG_SIZE = 0.3;
+export const DEFAULT_TAG_COLOR = "black";
 export const LATEX_COLORS = ["red", "green", "blue", "cyan", "magenta", "yellow", "gray", "black", "white"] as const;

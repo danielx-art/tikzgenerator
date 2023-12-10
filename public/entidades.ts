@@ -6,6 +6,8 @@ import {
   DEFAULT_LINE_WIDTH,
   DEFAULT_POINT_SIZE,
   DEFAULT_POINT_STYLE,
+  DEFAULT_TAG_COLOR,
+  DEFAULT_TAG_SIZE,
 } from "./generalConfigs";
 import { vec, vector } from "./vetores";
 
@@ -121,6 +123,8 @@ export const tag = function (
     id,
     entityId,
     value,
+    size: DEFAULT_TAG_SIZE,
+    color: DEFAULT_TAG_COLOR,
     pos,
     selected: false,
   };
