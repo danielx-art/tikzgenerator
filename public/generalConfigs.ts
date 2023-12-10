@@ -10,3 +10,4 @@ export const DEFAULT_ANGLE_SIZE = 0.5;
 export const DEFAULT_TAG_SIZE = 0.3;
 export const DEFAULT_TAG_COLOR = "black";
 export const LATEX_COLORS = ["red", "green", "blue", "cyan", "magenta", "yellow", "gray", "black", "white"] as const;
+export type LATEX_COLOR = typeof LATEX_COLORS[number];
