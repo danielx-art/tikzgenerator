@@ -1,34 +1,46 @@
+import myStore from "import/utils/store";
+import useStore from "import/utils/useStore";
 import ColorSelect from "import/components/micro/ColorSelect";
-import { type Action, type State } from "import/utils/store";
-import { type Ttag } from "public/entidades";
+import type { TtagId } from "public/entidades";
 import { LATEX_COLOR } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
-  store: State & Action;
-  thisTag: Ttag | undefined;
+  thisTagId: TtagId | undefined;
 };
 
+const TagColorChanger: React.FC<PropsType> = ({ thisTagId }) => {
+  const [selectedColor, setSelectedColor] = useState<LATEX_COLOR>("black");
 
-const TagColorChanger: React.FC<PropsType> = ({ store, thisTag }) => {
-  const [selectedColor, setSelectedColor] = useState<LATEX_COLOR>(thisTag?.color as LATEX_COLOR|| "black");
+  const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    if (!thisTag) return;
+    if (!thisTagId || !store) return;
+    const thisTag = store.tags.get(thisTagId)!;
+    setSelectedColor(thisTag.color as LATEX_COLOR);
+  }, []);
+
+  useEffect(() => {
+    if (!thisTagId || !store) return;
     const updatedTags = store.tags;
-    updatedTags.set(thisTag.id, { ...thisTag, color: selectedColor });
+    const thisTag = store.tags.get(thisTagId)!;
+    updatedTags.set(thisTagId, { ...thisTag, color: selectedColor });
     store.setTags(updatedTags);
-  }, [selectedColor, thisTag]);
+  }, [selectedColor]);
 
   return (
-      <div className="flex flex-row flex-nowrap gap-2">
-        <div className="grid items-center">Cor:</div>
-        <div>
-          {
-            <ColorSelect selectedColor={selectedColor} setSelectedColor={setSelectedColor} key={`ColorSelect_${thisTag? thisTag.id : "empty"}`}/>
-          }
-        </div>
+    <div className="flex flex-row flex-nowrap gap-2">
+      <div className="grid items-center">Cor:</div>
+      <div>
+        {
+          <ColorSelect
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+            key={`ColorSelect_${thisTagId ? thisTagId : "empty"}`}
+          />
+        }
       </div>
+    </div>
   );
 };
 

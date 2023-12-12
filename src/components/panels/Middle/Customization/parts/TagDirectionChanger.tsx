@@ -1,24 +1,26 @@
-import { type Action, type State } from "import/utils/store";
-import { type Tentity, type Ttag } from "public/entidades";
+import myStore from "import/utils/store";
+import useStore from "import/utils/useStore";
+import type { TallId, TtagId } from "public/entidades";
 import { vec } from "public/vetores";
 import { useEffect, useState } from "react";
 
 type PropsType = {
-  store: State & Action;
-  thisEntity: Tentity | Ttag | undefined;
-  thisTag: Ttag | undefined;
+  thisEntityId: TallId | undefined;
+  thisTagId: TtagId | undefined;
 };
 
 const TagDirectionChanger: React.FC<PropsType> = ({
-  store,
-  thisEntity,
-  thisTag,
+  thisEntityId,
+  thisTagId,
 }) => {
   const [counterDirBtn, setCounterDirBtn] = useState(0);
   const [direction, setDirection] = useState(vec(0, 1));
 
+  const store = useStore(myStore, (state) => state);
+
   useEffect(() => {
-    if (!store || !thisEntity || !thisTag) return;
+    if (!store || !thisEntityId || !thisTagId) return;
+    const thisTag = store.tags.get(thisTagId)!;
 
     const foundPos = vec(thisTag.pos.x, thisTag.pos.y); //have to re-create the vec here, zustand can't save functions on localStorage, so the vec methods vanish, and it goes without typescript noticing.
 
@@ -40,17 +42,19 @@ const TagDirectionChanger: React.FC<PropsType> = ({
     setDirection(updatedDirection);
 
     setCounterDirBtn(updatedCounter);
-  }, [thisEntity, thisTag]);
+  }, [thisEntityId, thisTagId]);
 
   useEffect(() => {
-    if (!store || !thisEntity || !thisTag) return;
+    console.log(thisEntityId, thisTagId); //debugg
+    if (!store || !thisEntityId || !thisTagId) return;
+    const thisTag = store.tags.get(thisTagId)!;
 
     const updatedDirection = vec(0, 1).rotate(
       (counterDirBtn * 45 * Math.PI) / 180,
     );
     if (counterDirBtn == 8) updatedDirection.mult(0);
     const updatedTags = new Map(store.tags);
-    updatedTags.set(thisTag.id, { ...thisTag, pos: updatedDirection });
+    updatedTags.set(thisTagId, { ...thisTag, pos: updatedDirection });
     store.setTags(updatedTags);
     setDirection(updatedDirection);
   }, [counterDirBtn]);

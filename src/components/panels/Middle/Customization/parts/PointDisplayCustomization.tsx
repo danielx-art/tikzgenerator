@@ -1,30 +1,43 @@
+import myStore from "import/utils/store";
+import useStore from "import/utils/useStore";
 import RadioGroup from "import/components/micro/RadioGroup";
-import { getEntityKind } from "import/utils/miscEntity";
-import { type Action, type State } from "import/utils/store";
-import { type Tpoint } from "public/entidades";
+import { getEntityKind, getKindById } from "import/utils/miscEntity";
+import { Tpoint, type TpointId } from "public/entidades";
 import { DEFAULT_POINT_SIZE } from "public/generalConfigs";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 type PropsType = {
-  store: State & Action;
-  point: Tpoint | undefined;
+  pointId: TpointId | undefined;
 };
 
-const PointDisplayCustomization: React.FC<PropsType> = ({
-  store,
-  point,
-}) => {
+const PointDisplayCustomization: React.FC<PropsType> = ({ pointId }) => {
   const [is_size_disabled, setIs_size_disabled] = useState(true);
-  const [size, setSize] = useState(`${point?.size || DEFAULT_POINT_SIZE}`);
+  const [size, setSize] = useState(`${DEFAULT_POINT_SIZE}`);
 
-  const { points, setPoints } = store;
+  const store = useStore(myStore, (state) => state);
+
+  useEffect(() => {
+    if (!store || !pointId) {
+      setIs_size_disabled(true);
+      return;
+    }
+    const point = store.points.get(pointId) as Tpoint;
+    if (point.dotstyle !== 0) {
+      setIs_size_disabled(false);
+    } else {
+      setIs_size_disabled(true);
+    }
+    setSize(`${point.size}`);
+  }, []);
 
   const handleDisplayChange = (option: number) => {
-    if (!point || getEntityKind(point) != "point") return;
-    const updatedPoints = new Map(points);
-    const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size) : 0):0
-    updatedPoints.set(point.id, {...point, dotstyle: option, size: newSize });
-    setPoints(updatedPoints);
+    if (!pointId || getKindById(pointId) != "point" || !store) return;
+    const updatedPoints = new Map(store.points);
+    const newSize =
+      size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
+    const point = store.points.get(pointId) as Tpoint;
+    updatedPoints.set(pointId, { ...point, dotstyle: option, size: newSize });
+    store.setPoints(updatedPoints);
   };
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,33 +45,31 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   };
 
   useEffect(() => {
-    if (!point || getEntityKind(point) != "point") return;
-    const updatedPoints = new Map(points);
-    const newSize = size.length>0? (parseFloat(size) > 0 ? parseFloat(size) : 0):0
-    updatedPoints.set(point.id, {...point, size: newSize });
-    setPoints(updatedPoints);
+    if (!pointId || getKindById(pointId) != "point" || !store) return;
+    const updatedPoints = new Map(store.points);
+    const newSize =
+      size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
+    const point = store.points.get(pointId) as Tpoint;
+    updatedPoints.set(pointId, { ...point, size: newSize });
+    store.setPoints(updatedPoints);
   }, [size]);
-
-  useEffect(() => {
-    if (point && point.dotstyle != 0) {
-      setIs_size_disabled(false);
-    } else {
-      setIs_size_disabled(true);
-    }
-  }, [point]);
 
   return (
     <div
       className={`mb-2 flex w-full flex-col gap-2 ${
-        point ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
+        pointId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
       <div>Destaque</div>
       <div className="flex w-full flex-row">
         <RadioGroup
           onChange={(option) => handleDisplayChange(option)}
-          value={point ? point!.dotstyle : 0}
-          disabled={point ? false : true}
+          value={
+            pointId && store && store.points.get(pointId)
+              ? store.points.get(pointId)!.dotstyle
+              : 0
+          }
+          disabled={pointId ? false : true}
         >
           <div>Nenhum</div>
           <div className="h-4 w-4">

@@ -1,35 +1,45 @@
-import Paginator from "import/components/micro/Paginator";
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import { useEffect, useState } from "react";
+import type {
+  Tentity,
+  TallKindPlural,
+  TallId,
+  TpointId,
+  TsegId,
+  TangId,
+} from "public/entidades";
+import Paginator from "import/components/micro/Paginator";
 import PointCustomization from "./parts/PointCustomization";
 import OpenCloseAccordionButton from "import/components/micro/OpenCloseAccordionButton";
-import { Tentity, Ttag, Tpoint, Tsegment, Tangle } from "public/entidades";
-import { getEntityKind } from "import/utils/miscEntity";
 import SegmentCustomization from "./parts/SegmentCustomization";
 import AngleCustomization from "./parts/AngleCustomization";
 
 const CustomizationPanel = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [curr, setCurr] = useState(0);
-  const [selectedEntities, setSelectedEntities] = useState<Array<Tentity> |undefined>()
+  const [selectedEntities, setSelectedEntities] = useState<
+    Array<Tentity> | undefined
+  >();
   const [tabMessage, setTabMessage] = useState("");
-  const [thisEntity, setThisEntity] = useState<Tentity | Ttag>();
+  const [thisEntityId, setThisEntityId] = useState<TallId | undefined>(
+    undefined,
+  );
 
   const store = useStore(myStore, (state) => state);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!store) return;
-    const tab = store.tab as "points" | "segments" | "angles" | "tags";
-    const entitiesMap = store[tab] as Map<string, Tentity>;
+    const tab = store.tab as TallKindPlural;
+    const entitiesMap = store[tab] as Map<TallId, Tentity>;
 
     let updatedEntities = [] as Array<Tentity>;
 
-    for(let entId of store.selections){
-      const entityKindPlural = entId.split("_")[0]+"s" as "points" | "segments" | "angles" | "tags";
-      if(entityKindPlural === tab) {
+    for (let entId of store.selections) {
+      const entityKindPlural = (entId.split("_")[0] + "s") as TallKindPlural;
+      if (entityKindPlural === tab) {
         const ent = entitiesMap.get(entId);
-        if(ent) updatedEntities.push(ent);
+        if (ent) updatedEntities.push(ent);
       }
     }
 
@@ -51,21 +61,21 @@ const CustomizationPanel = () => {
         break;
     }
     let count = curr;
-    while(count > updatedEntities.length-1){
-      count --;
+    while (count > updatedEntities.length - 1) {
+      count--;
     }
-    count < 0 ? count = 0 : null;
+    count < 0 ? (count = 0) : null;
     setCurr(count);
     setSelectedEntities(updatedEntities);
-  },[store, store?.tab, store?.selections])
+  }, [store, store?.tab, store?.selections]);
 
-  useEffect(()=>{
-    if(selectedEntities) {
-      setThisEntity(selectedEntities[curr])
+  useEffect(() => {
+    if (selectedEntities && selectedEntities[curr]) {
+      setThisEntityId(selectedEntities[curr]?.id);
     } else {
-      setThisEntity(undefined);
+      setThisEntityId(undefined);
     }
-  },[curr, selectedEntities]);
+  }, [curr, selectedEntities]);
 
   return (
     <div className="flex w-full flex-col items-start justify-start gap-2 rounded-md border-2 border-c_discrete p-4 pb-2">
@@ -104,20 +114,17 @@ const CustomizationPanel = () => {
         >
           {store && store.tab === "points" && (
             <PointCustomization
-              store={store}
-              thisEntity={thisEntity as Tpoint | undefined}
+              thisEntityId={thisEntityId as TpointId | undefined}
             />
           )}
           {store && store.tab === "segments" && (
             <SegmentCustomization
-              store={store}
-              thisEntity={thisEntity as Tsegment | undefined}
+              thisEntityId={thisEntityId as TsegId | undefined}
             />
           )}
           {store && store.tab === "angles" && (
             <AngleCustomization
-              store={store}
-              thisEntity={thisEntity as Tangle | undefined}
+              thisEntityId={thisEntityId as TangId | undefined}
             />
           )}
         </div>

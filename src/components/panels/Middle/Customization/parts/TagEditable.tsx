@@ -1,48 +1,57 @@
-import { type Action, type State } from "import/utils/store";
-import { type Tentity, type Ttag } from "public/entidades";
+import useStore from "import/utils/useStore";
+import myStore from "import/utils/store";
+import type { TallId, TtagId, Tentity, Ttag, TentId } from "public/entidades";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import { findTagByEntityId, getEntityKind } from "import/utils/miscEntity";
+import {
+  findTagByEntityId,
+  getEntityKind,
+  getKindById,
+} from "import/utils/miscEntity";
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
 type PropsType = {
-  store: State & Action;
-  thisEntity: Tentity | Ttag | undefined;
-  thisTag: Ttag | undefined;
+  thisEntityId: TallId | undefined;
+  thisTagId: TtagId | undefined;
 };
 
-const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
+const TagEditable: React.FC<PropsType> = ({ thisEntityId, thisTagId }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
 
+  const store = useStore(myStore, (state) => state);
+
   useEffect(() => {
-    if (!thisEntity) {
+    if (!thisEntityId || !store) {
       setEditMode(false);
       return;
     }
-    const entityKind = getEntityKind(thisEntity);
+    const entityKind = getKindById(thisEntityId);
     if (entityKind === "tag") {
-      const thisEntityWithKind = thisEntity as Ttag;
-      setInputValue(thisEntityWithKind.value);
+      const thisEntityWithKind = thisEntityId as TtagId;
+      const tagValue = store.tags.get(thisEntityWithKind)?.value || "";
+      setInputValue(tagValue);
     } else {
-      const thisEntityWithKind = thisEntity as Tentity;
+      const thisEntityWithKind = thisEntityId as TentId;
+
       setInputValue(
-        findTagByEntityId(thisEntityWithKind.id, store.tags)?.value || "",
+        findTagByEntityId(thisEntityWithKind, store.tags)?.value || "",
       );
     }
-  }, [thisEntity, editMode]);
+  }, [thisEntityId, editMode]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
   const handleBtnPress = () => {
-    if (!store || !thisEntity || !thisTag) return;
+    if (!store || !thisEntityId || !thisTagId) return;
     if (!editMode) {
       setEditMode(true);
     } else {
       if (inputValue.length <= 0) return;
       const updatedTags = new Map(store.tags);
-      updatedTags.set(thisTag.id, { ...thisTag, value: inputValue });
+      const thisTag = store.tags.get(thisTagId)!;
+      updatedTags.set(thisTagId, { ...thisTag, value: inputValue });
       store.setTags(updatedTags);
       setEditMode(false);
     }
@@ -64,7 +73,7 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
         disabled={!editMode}
         className={`${
           editMode ? "" : "bg-c_discrete"
-        } p-2 focus:outline-c_high1 w-10`}
+        } w-10 p-2 focus:outline-c_high1`}
       />
       <button onClick={handleBtnPress}>
         {editMode ? (
