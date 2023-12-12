@@ -55,7 +55,7 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
   };
 
   return (
-    <div className="flex flex-1 flex-row flex-nowrap gap-2">
+    <div className="flex flex-row flex-nowrap gap-2">
       <input
         type="text"
         value={inputValue}
@@ -64,7 +64,7 @@ const TagEditable: React.FC<PropsType> = ({ store, thisEntity, thisTag }) => {
         disabled={!editMode}
         className={`${
           editMode ? "" : "bg-c_discrete"
-        } flex-1 p-2 focus:outline-c_high1`}
+        } p-2 focus:outline-c_high1 w-10`}
       />
       <button onClick={handleBtnPress}>
         {editMode ? (

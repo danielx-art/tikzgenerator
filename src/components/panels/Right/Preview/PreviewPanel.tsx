@@ -44,7 +44,7 @@ const PreviewPanel = () => {
     if (pointsArr.length == 1 && pointsArr[0]) {
       pointsWidth = pointsArr[0].size * 2;
       pointsHeight = pointsWidth;
-      padding = 10;
+      padding = 2;
     }
 
     const viewAR = pointsWidth / pointsHeight;

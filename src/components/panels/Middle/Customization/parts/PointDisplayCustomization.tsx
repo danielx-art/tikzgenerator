@@ -15,9 +15,7 @@ const PointDisplayCustomization: React.FC<PropsType> = ({
   point,
 }) => {
   const [is_size_disabled, setIs_size_disabled] = useState(true);
-  const [size, setSize] = useState(`${DEFAULT_POINT_SIZE}`);
-
-  //console.log(point); //debugg
+  const [size, setSize] = useState(`${point?.size || DEFAULT_POINT_SIZE}`);
 
   const { points, setPoints } = store;
 

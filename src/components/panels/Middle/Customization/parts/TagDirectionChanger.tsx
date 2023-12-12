@@ -40,7 +40,7 @@ const TagDirectionChanger: React.FC<PropsType> = ({
     setDirection(updatedDirection);
 
     setCounterDirBtn(updatedCounter);
-  }, [thisEntity]);
+  }, [thisEntity, thisTag]);
 
   useEffect(() => {
     if (!store || !thisEntity || !thisTag) return;
@@ -63,7 +63,7 @@ const TagDirectionChanger: React.FC<PropsType> = ({
   };
 
   return (
-    <div className="flex w-full flex-row flex-nowrap gap-2">
+    <div className="flex flex-row flex-nowrap gap-2">
       <div className="grid place-items-center">Orientação: </div>
       <button className={``} onClick={handleDirectionChange}>
         <svg

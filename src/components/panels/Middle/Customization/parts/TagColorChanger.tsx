@@ -18,26 +18,17 @@ const TagColorChanger: React.FC<PropsType> = ({ store, thisTag }) => {
     const updatedTags = store.tags;
     updatedTags.set(thisTag.id, { ...thisTag, color: selectedColor });
     store.setTags(updatedTags);
-  }, [selectedColor]);
-
-  const handleColorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedColor(event.target.value as LATEX_COLOR);
-  };
+  }, [selectedColor, thisTag]);
 
   return (
-    <div className="flex w-full flex-1 flex-col gap-2">
-      <div className="flex w-full flex-row flex-nowrap gap-2">
-        <div>Tamanho:</div>
-      </div>
-      <div className="flex w-full flex-row flex-nowrap gap-2">
+      <div className="flex flex-row flex-nowrap gap-2">
         <div className="grid items-center">Cor:</div>
         <div>
-          {thisTag && (
-            <ColorSelect selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
-          )}
+          {
+            <ColorSelect selectedColor={selectedColor} setSelectedColor={setSelectedColor} key={`ColorSelect_${thisTag? thisTag.id : "empty"}`}/>
+          }
         </div>
       </div>
-    </div>
   );
 };
 

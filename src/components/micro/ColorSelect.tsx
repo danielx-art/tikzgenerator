@@ -43,7 +43,7 @@ const ColorSelect: React.FC<PropsType> = ({selectedColor, setSelectedColor}) => 
           onClick={() => setIsOpen(!isOpen)}
         >
           {selectedColor ? (
-            <span className="flex items-center">
+            <span className="flex items-center w-24">
               <span
                 className="mr-2 inline-block h-4 w-4 rounded-full"
                 style={{ backgroundColor: selectedColor }}

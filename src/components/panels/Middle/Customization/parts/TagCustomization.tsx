@@ -5,6 +5,7 @@ import TagDirectionChanger from "./TagDirectionChanger";
 import TagEditable from "./TagEditable";
 import { findTagByEntityId, getEntityKind } from "import/utils/miscEntity";
 import TagColorChanger from "./TagColorChanger";
+import TagSizeChanger from "./TagSizeChanger";
 
 type PropsType = {
   store: State & Action;
@@ -34,7 +35,7 @@ const TagCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
   return (
     <div className="mb-2 flex w-full flex-col gap-2">
       <div className="">Etiqueta</div>
-      <div className="flex flex-1 flex-row gap-4">
+      <div className="flex flex-1 flex-row flex-wrap gap-6 justify-evenly">
         <TagEditable
           store={store}
           thisEntity={thisEntity}
@@ -49,12 +50,17 @@ const TagCustomization: React.FC<PropsType> = ({ store, thisEntity }) => {
             thisTag?.id || "_t"
           }`}
         />
-      </div>
-      <div className="flex flex-1 flex-col gap-2">
         <TagColorChanger
           store={store}
           thisTag={thisTag}
           key={`tagColorChanger_${thisEntity?.id || "_e"}_${
+            thisTag?.id || "_t"
+          }`}
+        />
+        <TagSizeChanger
+          store={store}
+          thisTag={thisTag}
+          key={`tagSizeChanger_${thisEntity?.id || "_e"}_${
             thisTag?.id || "_t"
           }`}
         />
