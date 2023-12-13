@@ -2,7 +2,7 @@ import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
 import type { TtagId } from "public/entidades";
 import { DEFAULT_TAG_SIZE } from "public/generalConfigs";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 type PropsType = {
   thisTagId: TtagId | undefined;
@@ -13,7 +13,7 @@ const TagSizeChanger: React.FC<PropsType> = ({ thisTagId }) => {
 
   const store = useStore(myStore, (state) => state);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!thisTagId || !store) return;
     const thisTag = store.tags.get(thisTagId)!;
     setSize(`${thisTag.size}`);

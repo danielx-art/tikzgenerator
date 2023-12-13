@@ -23,25 +23,15 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
   } = store;
 
   const getSelectionOrder = () => {
-    //console.log("selection order") //debugg
     if(!point.selected) return
-    //console.log("points are selected") //debugg
-
-    //console.log(selections) //debugg
-
     
     const pointsSelected = selections.filter((sel)=>{
-      
-
       const entityKind = sel.split("_")[0];
       if(entityKind === "point") return true;
       return false;
     });
 
-    //console.log(pointsSelected) //debugg
-
     const order = pointsSelected.indexOf(point.id);
-    //console.log(order) //debugg
 
     if(order === -1) return
     return order+1;

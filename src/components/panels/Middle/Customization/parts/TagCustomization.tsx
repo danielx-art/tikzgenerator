@@ -17,12 +17,13 @@ type PropsType = {
 };
 
 const TagCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
+  
   const [thisTagId, setThisTagId] = useState<TtagId>();
 
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    if (!store || !store.tab || !thisEntityId) return;
+    if (!store || !thisEntityId) return;
 
     const thisEntityKind = getKindById(thisEntityId);
 
@@ -49,7 +50,6 @@ const TagCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
           key={`tagEditable_${thisEntityId || "_e"}_${thisTagId || "_t"}`}
         />
         <TagDirectionChanger
-          thisEntityId={thisEntityId}
           thisTagId={thisTagId}
           key={`tagDirectionChanger_${thisEntityId || "_e"}_${
             thisTagId || "_t"

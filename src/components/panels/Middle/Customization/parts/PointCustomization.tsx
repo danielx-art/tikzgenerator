@@ -7,6 +7,7 @@ type PropsType = {
 };
 
 const PointCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
+
   return (
     <div
       className={`mb-2 flex w-full flex-col gap-2 ${
@@ -15,11 +16,9 @@ const PointCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
     >
       <PointDisplayCustomization
         pointId={thisEntityId}
-        key={`pointDisplayCustomization_${thisEntityId || "_"}`}
       />
       <TagCustomization
         thisEntityId={thisEntityId}
-        key={`tagCustomization_${thisEntityId || "_"}`}
       />
     </div>
   );

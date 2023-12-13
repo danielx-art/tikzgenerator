@@ -1,69 +1,52 @@
 import myStore from "import/utils/store";
 import useStore from "import/utils/useStore";
-import type { TallId, TtagId } from "public/entidades";
-import { vec } from "public/vetores";
+import type { TallId, Ttag, TtagId } from "public/entidades";
+import { vec, vector } from "public/vetores";
 import { useEffect, useState } from "react";
 
 type PropsType = {
-  thisEntityId: TallId | undefined;
   thisTagId: TtagId | undefined;
 };
 
 const TagDirectionChanger: React.FC<PropsType> = ({
-  thisEntityId,
   thisTagId,
 }) => {
-  const [counterDirBtn, setCounterDirBtn] = useState(0);
   const [direction, setDirection] = useState(vec(0, 1));
-
+  
   const store = useStore(myStore, (state) => state);
 
-  useEffect(() => {
-    if (!store || !thisEntityId || !thisTagId) return;
-    const thisTag = store.tags.get(thisTagId)!;
+  function getRoundedCounterFromTag(atag: Ttag) {
+    const foundPos = vec(atag.pos.x, atag.pos.y);
+    return getRoundedCounterFromDir(foundPos);
+  }
 
-    const foundPos = vec(thisTag.pos.x, thisTag.pos.y); //have to re-create the vec here, zustand can't save functions on localStorage, so the vec methods vanish, and it goes without typescript noticing.
-
-    if (foundPos.mag() == 0) {
-      setCounterDirBtn(8);
-      return;
+  function getRoundedCounterFromDir(apos: vector) {
+    if (apos.mag() == 0) {
+      return 8;
     }
-
-    let foundPosHeading = Math.round((foundPos.heading() * 180) / Math.PI);
-    foundPosHeading < 0 ? (foundPosHeading += 360) : null;
-
-    let updatedCounter = foundPosHeading / 45 - 2;
-    updatedCounter < 0 ? (updatedCounter += 8) : null;
-
-    const updatedDirection = vec(0, 1).rotate(
-      (updatedCounter * 45 * Math.PI) / 180,
-    );
-
-    setDirection(updatedDirection);
-
-    setCounterDirBtn(updatedCounter);
-  }, [thisEntityId, thisTagId]);
+    let aposHeading = Math.round((apos.heading() * 180) / Math.PI);
+    aposHeading < 0 ? (aposHeading += 360) : null;
+    let updatedCounter = aposHeading / 45 - 2;
+    if(updatedCounter < 0) updatedCounter += 8;
+    return updatedCounter
+  }
 
   useEffect(() => {
-    console.log(thisEntityId, thisTagId); //debugg
-    if (!store || !thisEntityId || !thisTagId) return;
+    if (!store || !thisTagId) return;
     const thisTag = store.tags.get(thisTagId)!;
-
-    const updatedDirection = vec(0, 1).rotate(
-      (counterDirBtn * 45 * Math.PI) / 180,
-    );
-    if (counterDirBtn == 8) updatedDirection.mult(0);
-    const updatedTags = new Map(store.tags);
-    updatedTags.set(thisTagId, { ...thisTag, pos: updatedDirection });
-    store.setTags(updatedTags);
-    setDirection(updatedDirection);
-  }, [counterDirBtn]);
+    //recreate the vector from zustand:
+    setDirection(vec(thisTag.pos.x, thisTag.pos.y));    
+  }, [store, thisTagId]);
 
   const handleDirectionChange = () => {
-    const newCounter = (counterDirBtn + 1) % 9;
+    if (!store || !thisTagId) return;
+    const thisTag = store.tags.get(thisTagId)!;
+    const newCounter = (getRoundedCounterFromTag(thisTag) + 1) % 9;
     const updatedDir = vec(0, 1).rotate((newCounter * Math.PI) / 4);
+    const updatedTags = new Map(store.tags);
+    updatedTags.set(thisTagId, {...thisTag, pos: updatedDir});
+    store.setTags(updatedTags);
     setDirection(updatedDir);
-    setCounterDirBtn(newCounter);
   };
 
   return (
@@ -77,9 +60,9 @@ const TagDirectionChanger: React.FC<PropsType> = ({
           strokeWidth="1.5"
           stroke="currentColor"
           className={`h-6 w-6`}
-          style={{ rotate: `${-45 * counterDirBtn + 180}deg` }}
+          style={{ rotate: `${-45 * getRoundedCounterFromDir(direction) + 180}deg` }}
         >
-          {counterDirBtn != 8 ? (
+          {getRoundedCounterFromDir(direction) != 8 ? (
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
