@@ -22,7 +22,6 @@ const EntityColorChanger: React.FC<PropsType> = ({ entityId }) => {
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    console.log(entityId); //debugg
     if (!store || !entityId) {
       setSelectedColor("black");
       setDisabled(true);
