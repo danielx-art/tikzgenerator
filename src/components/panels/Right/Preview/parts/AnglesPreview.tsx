@@ -1,6 +1,6 @@
-import myStore from "import/utils/store";
-import { getAnglePath } from "import/utils/svgPaths";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import { getAnglePath } from "import/utils/svg/svgPaths";
+import useStore from "import/utils/store/useStore";
 
 const AnglesPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);

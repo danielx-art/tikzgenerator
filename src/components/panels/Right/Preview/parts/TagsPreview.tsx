@@ -1,10 +1,12 @@
-import { getEntityById, getEntityKind } from "import/utils/miscEntity";
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import {
+  getEntityById,
+  getEntityKind,
+} from "import/utils/storeHelpers/miscEntity";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import { Tangle, Tpoint, Tsegment, Ttag, TtagId } from "public/entidades";
 
 const TagsPreview: React.FC = () => {
-
   const store = useStore(myStore, (state) => state);
 
   if (!store || !store.tags) return;

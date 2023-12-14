@@ -1,8 +1,8 @@
 import { useState, type KeyboardEvent } from "react";
-import myStore from "import/utils/store";
+import myStore from "import/utils/store/store";
 import { ponto, type Tpoint } from "public/entidades";
-import { vec } from "public/vetores";
-import useStore from "import/utils/useStore";
+import { vec } from "import/utils/math/vetores";
+import useStore from "import/utils/store/useStore";
 import { MAXIMUM_NUMBER_OF_POINTS } from "public/generalConfigs";
 
 const AddPointInput = () => {
@@ -121,7 +121,7 @@ const AddPointInput = () => {
 
     const updatedPoints = new Map(points);
 
-    pointsToAdd.forEach(newPoint=>updatedPoints.set(newPoint.id, newPoint));
+    pointsToAdd.forEach((newPoint) => updatedPoints.set(newPoint.id, newPoint));
 
     setPoints(updatedPoints);
     setInput("");
@@ -139,7 +139,7 @@ const AddPointInput = () => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="flex-1 focus:outline-c_high1 p-2"  
+        className="flex-1 p-2 focus:outline-c_high1"
       />
       <button
         className="rounded-sm bg-c_interact p-2 text-c_base outline-1 hover:bg-c_high1"

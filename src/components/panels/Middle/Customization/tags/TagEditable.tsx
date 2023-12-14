@@ -1,12 +1,12 @@
-import useStore from "import/utils/useStore";
-import myStore from "import/utils/store";
+import useStore from "import/utils/store/useStore";
+import myStore from "import/utils/store/store";
 import type { TallId, TtagId, Tentity, Ttag, TentId } from "public/entidades";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import {
   findTagByEntityId,
   getEntityKind,
   getKindById,
-} from "import/utils/miscEntity";
+} from "import/utils/storeHelpers/miscEntity";
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
 type PropsType = {

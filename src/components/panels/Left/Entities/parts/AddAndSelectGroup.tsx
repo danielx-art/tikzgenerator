@@ -1,5 +1,5 @@
-import useStore from "import/utils/useStore";
-import myStore from "import/utils/store";
+import useStore from "import/utils/store/useStore";
+import myStore from "import/utils/store/store";
 
 const AddAndSelectGroup = () => {
   const store = useStore(myStore, (state) => state);

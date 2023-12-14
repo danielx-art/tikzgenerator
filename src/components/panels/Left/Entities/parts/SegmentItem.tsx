@@ -1,8 +1,8 @@
 import { Tsegment } from "public/entidades";
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import Item from "./Item";
-import { findTagByEntityId } from "import/utils/miscEntity";
+import { findTagByEntityId } from "import/utils/storeHelpers/miscEntity";
 
 type PropsType = {
   segment: Tsegment;
@@ -23,9 +23,11 @@ const SegmentItem: React.FC<PropsType> = ({ segment }) => {
       handleClickFn={() => toggleSelection(segment.id)}
     >
       <div>
-        {findTagByEntityId(segment.p1.id, tags)?.value || "(" + segment.p1.coords.x + ";" + segment.p1.coords.y + ")"}
+        {findTagByEntityId(segment.p1.id, tags)?.value ||
+          "(" + segment.p1.coords.x + ";" + segment.p1.coords.y + ")"}
         ---
-        {findTagByEntityId(segment.p2.id, tags)?.value || "(" + segment.p2.coords.x + ";" + segment.p2.coords.y + ")"}
+        {findTagByEntityId(segment.p2.id, tags)?.value ||
+          "(" + segment.p2.coords.x + ";" + segment.p2.coords.y + ")"}
       </div>
       <div>{findTagByEntityId(segment.id, tags)?.value || ""}</div>
     </Item>

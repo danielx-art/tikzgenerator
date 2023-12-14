@@ -1,5 +1,5 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import ColorSelect from "import/components/micro/ColorSelect";
 import type { TtagId } from "public/entidades";
 import { LATEX_COLOR } from "public/generalConfigs";
@@ -16,12 +16,12 @@ const TagColorChanger: React.FC<PropsType> = ({ thisTagId }) => {
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    if (!store || !thisTagId){
+    if (!store || !thisTagId) {
       setDisabled(true);
       return;
     }
     const thisTag = store.tags.get(thisTagId);
-    if(!thisTag || !store.selections.includes(thisTag.entityId)){
+    if (!thisTag || !store.selections.includes(thisTag.entityId)) {
       setDisabled(true);
       return;
     }

@@ -1,6 +1,6 @@
-import myStore from "import/utils/store";
-import { getSegmentPath } from "import/utils/svgPaths";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import { getSegmentPath } from "import/utils/svg/svgPaths";
+import useStore from "import/utils/store/useStore";
 
 const SegmentsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);

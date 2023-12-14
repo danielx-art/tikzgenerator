@@ -1,5 +1,5 @@
 import { Tsegment, Tangle, Tpoint } from "public/entidades";
-import { vec } from "public/vetores";
+import { vec } from "import/utils/math/vetores";
 
 export const getSegmentPath = (segment: Tsegment) => {
   return `M${segment.p1.coords.x},${segment.p1.coords.y} L${segment.p2.coords.x},${segment.p2.coords.y}`;
@@ -16,12 +16,12 @@ export const getAnglePath = (angle: Tangle) => {
   let startAngle;
   let endAngle;
 
-  let angA = (vectorA.heading()*180/Math.PI + 360)%360; //in degrees and first positive arc
-  let angB = (vectorB.heading()*180/Math.PI + 360)%360;
+  let angA = ((vectorA.heading() * 180) / Math.PI + 360) % 360; //in degrees and first positive arc
+  let angB = ((vectorB.heading() * 180) / Math.PI + 360) % 360;
   let angleDifference = angB - angA;
   let sweepFlag = 1;
 
-  if(angleDifference >= 0) {
+  if (angleDifference >= 0) {
     startVector = vectorA;
     startAngle = angA;
     endVector = vectorB;
@@ -33,7 +33,7 @@ export const getAnglePath = (angle: Tangle) => {
     endAngle = angA;
   }
 
-  if(Math.abs(angleDifference) > 180) {
+  if (Math.abs(angleDifference) > 180) {
     sweepFlag = 0;
   }
 

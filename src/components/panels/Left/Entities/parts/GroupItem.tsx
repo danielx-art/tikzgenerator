@@ -1,7 +1,7 @@
 import { RemoveButton } from "import/components/micro/RemoveButton";
-import myStore from "import/utils/store";
+import myStore from "import/utils/store/store";
 
-import useStore from "import/utils/useStore";
+import useStore from "import/utils/store/useStore";
 
 type PropsType = {
   groupId: number;
@@ -39,7 +39,7 @@ const GroupItem: React.FC<PropsType> = ({ groupId, selected, children }) => {
         updatedPoints.set(key, updatedPoint);
       }
     });
-    
+
     setPoints(updatedPoints);
 
     if (selectedGroup == groupId) setSelectedGroup(0);

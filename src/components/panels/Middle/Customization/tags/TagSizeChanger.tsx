@@ -1,5 +1,5 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import type { TtagId } from "public/entidades";
 import { DEFAULT_TAG_SIZE } from "public/generalConfigs";
 import { useEffect, useState } from "react";
@@ -15,12 +15,12 @@ const TagSizeChanger: React.FC<PropsType> = ({ thisTagId }) => {
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    if (!store || !thisTagId){
+    if (!store || !thisTagId) {
       setDisabled(true);
       return;
     }
     const thisTag = store.tags.get(thisTagId);
-    if(!thisTag || !store.selections.includes(thisTag.entityId)){
+    if (!thisTag || !store.selections.includes(thisTag.entityId)) {
       setDisabled(true);
       return;
     }
@@ -28,7 +28,7 @@ const TagSizeChanger: React.FC<PropsType> = ({ thisTagId }) => {
     setSize(`${thisTag.size}`);
   }, [thisTagId, store]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!thisTagId || !store || disabled) return;
     const updatedTags = store.tags;
     const newSize =
@@ -36,7 +36,7 @@ const TagSizeChanger: React.FC<PropsType> = ({ thisTagId }) => {
     const thisTag = store.tags.get(thisTagId)!;
     updatedTags.set(thisTagId, { ...thisTag, size: newSize });
     store.setTags(updatedTags);
-  },[size])
+  }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!thisTagId || !store || disabled) return;

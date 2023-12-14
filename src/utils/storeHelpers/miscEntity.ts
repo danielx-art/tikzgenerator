@@ -2,7 +2,6 @@ import {
   Tentity,
   Ttag,
   TentId,
-  Tkind,
   TallId,
   TallKind,
   TpointId,
@@ -13,7 +12,7 @@ import {
   Tsegment,
   Tangle,
 } from "public/entidades";
-import { type Action, type State } from "import/utils/store";
+import { type Action, type State } from "import/utils/store/store";
 
 export function findTagByEntityId(
   entityId: TentId,

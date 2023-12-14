@@ -1,5 +1,5 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 
 const TabsNavigation: React.FC = () => {
   const store = useStore(myStore, (state) => state);

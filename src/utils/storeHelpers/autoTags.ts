@@ -1,5 +1,5 @@
 import { Tentity, Tsegment, type Tpoint, Tangle } from "public/entidades";
-import { roundAndDisplayNicely, roundToDecimalPlaces } from "./misc";
+import { roundAndDisplayNicely, roundToDecimalPlaces } from "../math/misc";
 
 const LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const GREEK_ALPHABET = "αβγδεζηθικλμνξοπρστυφχψω";

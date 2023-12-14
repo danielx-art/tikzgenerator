@@ -1,5 +1,5 @@
 import type { TsegId } from "public/entidades";
-import TagCustomization from "./TagCustomization";
+import TagCustomization from "../tags/TagCustomization";
 
 type PropsType = {
   thisEntityId: TsegId | undefined;
@@ -17,10 +17,7 @@ const SegmentCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
         point={thisEntity}
         key={`pointDisplayCustomization_${thisEntity?.id || "_"}`}
       /> */}
-      <TagCustomization
-        thisEntityId={thisEntityId}
-        key={`tagCustomization_${thisEntityId || "_"}`}
-      />
+      <TagCustomization thisEntityId={thisEntityId} />
     </div>
   );
 };

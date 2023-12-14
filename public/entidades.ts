@@ -9,7 +9,7 @@ import {
   DEFAULT_TAG_COLOR,
   DEFAULT_TAG_SIZE,
 } from "./generalConfigs";
-import { vec, vector } from "./vetores";
+import { vec, vector } from "../src/utils/math/vetores";
 
 export type Tkind = "point" | "segment" | "angle";
 export type TallKind = Tkind | "tag";
@@ -23,24 +23,33 @@ export type TtagId = `tag_${number}`;
 //export type TentId = `${Tkind}_${number}`;
 export type TentId = TpointId | TsegId | TangId;
 export type TallId = TentId | TtagId;
-export type TbodyFromKind<TypeKind> = 
-    TypeKind extends 'point' ? Tpoint :
-    TypeKind extends 'segment' ? Tsegment :
-    TypeKind extends 'angle' ? Tangle :
-    TypeKind extends 'tag' ? Ttag :
-    never;
-export type TidFromKind<TypeKind> = 
-    TypeKind extends 'point' ? TpointId :
-    TypeKind extends 'segment' ? TsegId :
-    TypeKind extends 'angle' ? TangId :
-    TypeKind extends 'tag' ? TtagId :
-    never;
-export type TkindPluralFrom<TypeKind> = 
-    TypeKind extends 'point' ? 'points' :
-    TypeKind extends 'segment' ? 'segments' :
-    TypeKind extends 'angle' ? 'angles' :
-    TypeKind extends 'tag' ? 'tags' :
-    never;
+export type TbodyFromKind<TypeKind> = TypeKind extends "point"
+  ? Tpoint
+  : TypeKind extends "segment"
+  ? Tsegment
+  : TypeKind extends "angle"
+  ? Tangle
+  : TypeKind extends "tag"
+  ? Ttag
+  : never;
+export type TidFromKind<TypeKind> = TypeKind extends "point"
+  ? TpointId
+  : TypeKind extends "segment"
+  ? TsegId
+  : TypeKind extends "angle"
+  ? TangId
+  : TypeKind extends "tag"
+  ? TtagId
+  : never;
+export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
+  ? "points"
+  : TypeKind extends "segment"
+  ? "segments"
+  : TypeKind extends "angle"
+  ? "angles"
+  : TypeKind extends "tag"
+  ? "tags"
+  : never;
 
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
   return {
@@ -90,7 +99,10 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
     get valor() {
       const ba = vec().copy(this.a.coords).sub(this.b.coords);
       const bc = vec().copy(this.c.coords).sub(this.b.coords);
-      const valor = Math.min(Math.abs(ba.angleBetween(bc)),Math.abs(bc.angleBetween(ba)));
+      const valor = Math.min(
+        Math.abs(ba.angleBetween(bc)),
+        Math.abs(bc.angleBetween(ba)),
+      );
       return valor;
     },
     get valorExt() {

@@ -1,9 +1,9 @@
 import { Tpoint } from "public/entidades";
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import Item from "./Item";
-import { roundAndDisplayNicely } from "import/utils/misc";
-import { findTagByEntityId } from "import/utils/miscEntity";
+import { roundAndDisplayNicely } from "import/utils/math/misc";
+import { findTagByEntityId } from "import/utils/storeHelpers/miscEntity";
 
 type PropsType = {
   point: Tpoint;
@@ -15,27 +15,22 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
 
   if (!store) return;
 
-  const {
-    tags,
-    deleteEntity,
-    toggleSelection,
-    selections
-  } = store;
+  const { tags, deleteEntity, toggleSelection, selections } = store;
 
   const getSelectionOrder = () => {
-    if(!point.selected) return
-    
-    const pointsSelected = selections.filter((sel)=>{
+    if (!point.selected) return;
+
+    const pointsSelected = selections.filter((sel) => {
       const entityKind = sel.split("_")[0];
-      if(entityKind === "point") return true;
+      if (entityKind === "point") return true;
       return false;
     });
 
     const order = pointsSelected.indexOf(point.id);
 
-    if(order === -1) return
-    return order+1;
-  }
+    if (order === -1) return;
+    return order + 1;
+  };
 
   return (
     <Item

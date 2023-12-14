@@ -1,9 +1,30 @@
 import { Enriqueta } from "next/font/google";
-import { Tpoint, Tsegment, Tangle, Ttag, Tentity, tag, TkindPlural, TpointId, TangId, TsegId, TtagId, TentId, Tkind, TallId, TallKind, TallKindPlural, TcircleId, TbodyFromKind, TidFromKind, TkindPluralFrom } from "public/entidades";
-import { vec } from "public/vetores";
+import {
+  Tpoint,
+  Tsegment,
+  Tangle,
+  Ttag,
+  Tentity,
+  tag,
+  TkindPlural,
+  TpointId,
+  TangId,
+  TsegId,
+  TtagId,
+  TentId,
+  Tkind,
+  TallId,
+  TallKind,
+  TallKindPlural,
+  TcircleId,
+  TbodyFromKind,
+  TidFromKind,
+  TkindPluralFrom,
+} from "public/entidades";
+import { vec } from "import/utils/math/vetores";
 import { create } from "zustand";
 import { StorageValue, persist } from "zustand/middleware";
-import { getKindById } from "./miscEntity";
+import { getKindById } from "../storeHelpers/miscEntity";
 
 export type State = {
   tab: TallKindPlural;
@@ -32,12 +53,19 @@ export type Action = {
   setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
   setTags: (tags: State["tags"]) => void;
   setError: (error: State["error"]) => void;
-  generateId: <T extends TallKind>(type:T) => T extends "point" ? TpointId : T extends "segment" ? TsegId : T extends "angle" ? TangId : T extends "tag" ? TtagId : TcircleId;
+  generateId: <T extends TallKind>(
+    type: T,
+  ) => T extends "point"
+    ? TpointId
+    : T extends "segment"
+    ? TsegId
+    : T extends "angle"
+    ? TangId
+    : T extends "tag"
+    ? TtagId
+    : TcircleId;
   toggleSelection: (id: TallId) => void;
-  addEntity: (
-    entityKind: Tkind,
-    elementBody: Tentity,
-  ) => void;
+  addEntity: (entityKind: Tkind, elementBody: Tentity) => void;
   deleteEntity: (id: TentId) => void;
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
@@ -73,7 +101,17 @@ const myStore = create<State & Action>()(
         tag: 0,
       },
 
-      generateId: <T extends TallKind>(type: T):T extends "point" ? TpointId : T extends "segment" ? TsegId : T extends "angle" ? TangId : T extends "tag" ? TtagId : TcircleId => {
+      generateId: <T extends TallKind>(
+        type: T,
+      ): T extends "point"
+        ? TpointId
+        : T extends "segment"
+        ? TsegId
+        : T extends "angle"
+        ? TangId
+        : T extends "tag"
+        ? TtagId
+        : TcircleId => {
         const id = `${type}_${get().idCounters[type]}`;
         set((state) => ({
           idCounters: {
@@ -85,9 +123,7 @@ const myStore = create<State & Action>()(
       },
 
       selections: [] as Array<TallId>,
-      toggleSelection: <T extends Tentity| Ttag>(
-        id: TallId,
-      ) => {
+      toggleSelection: <T extends Tentity | Ttag>(id: TallId) => {
         const entityKind = getKindById(id) as TallKind;
 
         const storeMapKey = (entityKind + "s") as TallKindPlural;
@@ -112,7 +148,10 @@ const myStore = create<State & Action>()(
               updatedSelections.splice(selectionIndex, 1);
           }
 
-          return { [storeMapKey]: entitiesMap, selections: [...updatedSelections] };
+          return {
+            [storeMapKey]: entitiesMap,
+            selections: [...updatedSelections],
+          };
         });
       },
 
@@ -121,7 +160,7 @@ const myStore = create<State & Action>()(
         elementBody: TbodyFromKind<T>,
       ) => {
         const id = get().generateId(entityKind) as TidFromKind<T>;
-        const stateMapKey = (entityKind + "s") as TkindPluralFrom<T>
+        const stateMapKey = (entityKind + "s") as TkindPluralFrom<T>;
 
         set((state) => {
           const existingMap = state[stateMapKey] as Map<
@@ -149,8 +188,8 @@ const myStore = create<State & Action>()(
             const removedIds = [] as string[];
             const updatedSelections = [...state.selections];
             const indexOnSelections = updatedSelections.indexOf(id);
-            if(indexOnSelections > -1) updatedSelections.splice(indexOnSelections,1);
-
+            if (indexOnSelections > -1)
+              updatedSelections.splice(indexOnSelections, 1);
 
             removedIds.push(id);
             updatedPoints.delete(id as TpointId);
@@ -190,10 +229,11 @@ const myStore = create<State & Action>()(
               state[stateMapKey] as Map<TentId, Tentity>,
             );
             updatedMap.delete(id);
-            
+
             const updatedSelections = [...state.selections];
             const indexOnSelections = updatedSelections.indexOf(id);
-            if(indexOnSelections > -1) updatedSelections.splice(indexOnSelections,1);
+            if (indexOnSelections > -1)
+              updatedSelections.splice(indexOnSelections, 1);
 
             const updatedTags = new Map(state.tags);
 
@@ -203,7 +243,11 @@ const myStore = create<State & Action>()(
               }
             });
 
-            return { [stateMapKey]: updatedMap, tags: updatedTags, selections: updatedSelections };
+            return {
+              [stateMapKey]: updatedMap,
+              tags: updatedTags,
+              selections: updatedSelections,
+            };
           });
         }
       },
@@ -237,7 +281,7 @@ const myStore = create<State & Action>()(
           const str = localStorage.getItem(name);
           if (!str) return null;
           const { state } = JSON.parse(str);
-          
+
           return {
             state: {
               ...state,
@@ -246,7 +290,7 @@ const myStore = create<State & Action>()(
               angles: new Map(state.angles),
               tags: new Map(state.tags),
             },
-          }
+          };
         },
         setItem: (name, newValue: StorageValue<State & Action>) => {
           // functions cannot be JSON encoded
@@ -258,10 +302,9 @@ const myStore = create<State & Action>()(
 
               angles: Array.from(newValue.state.angles.entries()),
               tags: Array.from(newValue.state.tags.entries()),
-
             },
-          })
-          localStorage.setItem(name, str)
+          });
+          localStorage.setItem(name, str);
         },
         removeItem: (name) => localStorage.removeItem(name),
       },

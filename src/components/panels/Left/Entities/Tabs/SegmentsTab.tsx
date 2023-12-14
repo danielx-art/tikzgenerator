@@ -1,5 +1,5 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import { type Tpoint, type Tsegment, segmento } from "public/entidades";
 import { useState } from "react";
 import ItemsList from "../parts/ItemsList";
@@ -15,7 +15,9 @@ export default function SegmentsTab() {
   const { points, segments, setSegments, generateId } = store;
 
   const conectPoints = () => {
-    const selectedPoints = Array.from(points.values()).filter((point) => point.selected);
+    const selectedPoints = Array.from(points.values()).filter(
+      (point) => point.selected,
+    );
     const updatedSegments = new Map(segments);
 
     for (let i = 0; i < selectedPoints.length - 1; i++) {

@@ -1,5 +1,5 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import type { TallId, TentId, Ttag, TtagId } from "public/entidades";
 import { useEffect, useState } from "react";
 import TagDirectionChanger from "./TagDirectionChanger";
@@ -8,7 +8,7 @@ import {
   findTagByEntityId,
   getEntityKind,
   getKindById,
-} from "import/utils/miscEntity";
+} from "import/utils/storeHelpers/miscEntity";
 import TagColorChanger from "./TagColorChanger";
 import TagSizeChanger from "./TagSizeChanger";
 
@@ -17,7 +17,6 @@ type PropsType = {
 };
 
 const TagCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
-  
   const [thisTagId, setThisTagId] = useState<TtagId>();
 
   const store = useStore(myStore, (state) => state);

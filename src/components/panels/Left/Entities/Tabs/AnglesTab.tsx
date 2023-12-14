@@ -1,9 +1,12 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import ItemsList from "../parts/ItemsList";
 import AngleItem from "../parts/AngleItem";
 import { type Tpoint, type Tangle, angulo } from "public/entidades";
-import { fromSelectionsGet, getSelected } from "import/utils/miscEntity";
+import {
+  fromSelectionsGet,
+  getSelected,
+} from "import/utils/storeHelpers/miscEntity";
 
 export default function AnglesTab() {
   const store = useStore(myStore, (state) => state);

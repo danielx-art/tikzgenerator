@@ -1,5 +1,5 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import { useEffect, useState } from "react";
 import type {
   Tentity,
@@ -10,10 +10,10 @@ import type {
   TangId,
 } from "public/entidades";
 import Paginator from "import/components/micro/Paginator";
-import PointCustomization from "./parts/PointCustomization";
+import PointCustomization from "./points/PointCustomization";
 import OpenCloseAccordionButton from "import/components/micro/OpenCloseAccordionButton";
-import SegmentCustomization from "./parts/SegmentCustomization";
-import AngleCustomization from "./parts/AngleCustomization";
+import SegmentCustomization from "./segments/SegmentCustomization";
+import AngleCustomization from "./angles/AngleCustomization";
 
 const CustomizationPanel = () => {
   const [isOpen, setIsOpen] = useState(true);

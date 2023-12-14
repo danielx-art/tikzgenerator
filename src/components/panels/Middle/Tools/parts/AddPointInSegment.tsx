@@ -5,12 +5,15 @@ import {
   inverse_Hyperb_Linear_Hyperb,
   lerp,
   roundToDecimalPlaces,
-} from "import/utils/misc";
-import { findTagByEntityId, getSelected } from "import/utils/miscEntity";
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+} from "import/utils/math/misc";
+import {
+  findTagByEntityId,
+  getSelected,
+} from "import/utils/storeHelpers/miscEntity";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import { ponto } from "public/entidades";
-import { vec } from "public/vetores";
+import { vec } from "import/utils/math/vetores";
 import { useRef, useState } from "react";
 
 const AddPointInSegment: React.FC = () => {

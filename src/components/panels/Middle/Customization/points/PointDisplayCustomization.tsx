@@ -1,7 +1,10 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import RadioGroup from "import/components/micro/RadioGroup";
-import { getEntityKind, getKindById } from "import/utils/miscEntity";
+import {
+  getEntityKind,
+  getKindById,
+} from "import/utils/storeHelpers/miscEntity";
 import { Tpoint, type TpointId } from "public/entidades";
 import { DEFAULT_POINT_SIZE } from "public/generalConfigs";
 import { useEffect, useLayoutEffect, useState } from "react";

@@ -1,7 +1,7 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import { useEffect, useRef, useState } from "react";
-import useDimensions from "import/utils/useDimensions";
+import useDimensions from "import/utils/generalHooks/useDimensions";
 import DownloadSVGBtn from "./parts/DownloadSVGBtn";
 import PointsPreview from "./parts/PointsPreview";
 import AnglesPreview from "./parts/AnglesPreview";
@@ -82,9 +82,7 @@ const PreviewPanel = () => {
 
   return (
     <div className="flex w-full flex-1 flex-col items-center gap-2 rounded-md border-2 border-c_discrete p-2 pb-3 sm:h-full sm:max-h-full sm:min-h-full">
-      <div className="border-b-2 border-b-c_discrete">
-        Prévia (SVG)
-      </div>
+      <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
       <div
         ref={ref}
         className="relative grid h-full max-h-full w-full flex-1 place-items-center overflow-auto"

@@ -1,4 +1,4 @@
-import type { Action, State } from "import/utils/store";
+import type { Action, State } from "import/utils/store/store";
 import {
   type Tentity,
   type Ttag,
@@ -10,7 +10,10 @@ import {
 import { getEntityKind } from "./miscEntity";
 
 const useApplyTags = (store: State & Action) => {
-  const applyTags = <T extends Tentity>(tagFunction: (index: number, entity: T) => string, entities: Map<string, T>) => {
+  const applyTags = <T extends Tentity>(
+    tagFunction: (index: number, entity: T) => string,
+    entities: Map<string, T>,
+  ) => {
     if (!store || entities.size < 1) {
       store.setError("Não foram encontrados objetos para etiquetar");
       return;
@@ -19,7 +22,9 @@ const useApplyTags = (store: State & Action) => {
     let index = 0;
     entities.forEach((entity) => {
       const newTagValue = tagFunction(index++, entity);
-      const existingTag = Array.from(store.tags.values()).find(tag => tag.entityId === entity.id);
+      const existingTag = Array.from(store.tags.values()).find(
+        (tag) => tag.entityId === entity.id,
+      );
 
       if (existingTag) {
         if (existingTag.value !== newTagValue) {
@@ -30,11 +35,13 @@ const useApplyTags = (store: State & Action) => {
         }
       }
 
-      const isTagInUse = Array.from(store.tags.values()).find(tag => tag.value === newTagValue && tag.entityId !== entity.id);
+      const isTagInUse = Array.from(store.tags.values()).find(
+        (tag) => tag.value === newTagValue && tag.entityId !== entity.id,
+      );
       if (isTagInUse) {
-        store.deleteTag(isTagInUse.id)
+        store.deleteTag(isTagInUse.id);
       }
-      store.addTag(newTagValue, entity.id); 
+      store.addTag(newTagValue, entity.id);
     });
   };
 

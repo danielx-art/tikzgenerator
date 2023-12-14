@@ -1,19 +1,17 @@
-import myStore from "import/utils/store";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import type { TallId, Ttag, TtagId } from "public/entidades";
-import { vec, vector } from "public/vetores";
+import { vec, vector } from "import/utils/math/vetores";
 import { useEffect, useState } from "react";
 
 type PropsType = {
   thisTagId: TtagId | undefined;
 };
 
-const TagDirectionChanger: React.FC<PropsType> = ({
-  thisTagId,
-}) => {
+const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
   const [direction, setDirection] = useState(vec(0, 1));
   const [disabled, setDisabled] = useState(true);
-  
+
   const store = useStore(myStore, (state) => state);
 
   function getRoundedCounterFromTag(atag: Ttag) {
@@ -28,23 +26,23 @@ const TagDirectionChanger: React.FC<PropsType> = ({
     let aposHeading = Math.round((apos.heading() * 180) / Math.PI);
     aposHeading < 0 ? (aposHeading += 360) : null;
     let updatedCounter = aposHeading / 45 - 2;
-    if(updatedCounter < 0) updatedCounter += 8;
-    return updatedCounter
+    if (updatedCounter < 0) updatedCounter += 8;
+    return updatedCounter;
   }
 
   useEffect(() => {
-    if (!store || !thisTagId){
+    if (!store || !thisTagId) {
       setDisabled(true);
       return;
     }
     const thisTag = store.tags.get(thisTagId);
-    if(!thisTag || !store.selections.includes(thisTag.entityId)){
+    if (!thisTag || !store.selections.includes(thisTag.entityId)) {
       setDisabled(true);
       return;
     }
     setDisabled(false);
     //recreate the vector from zustand:
-    setDirection(vec(thisTag.pos.x, thisTag.pos.y));    
+    setDirection(vec(thisTag.pos.x, thisTag.pos.y));
   }, [thisTagId, store]);
 
   const handleDirectionChange = () => {
@@ -53,7 +51,7 @@ const TagDirectionChanger: React.FC<PropsType> = ({
     const newCounter = (getRoundedCounterFromTag(thisTag) + 1) % 9;
     const updatedDir = vec(0, 1).rotate((newCounter * Math.PI) / 4);
     const updatedTags = new Map(store.tags);
-    updatedTags.set(thisTagId, {...thisTag, pos: updatedDir});
+    updatedTags.set(thisTagId, { ...thisTag, pos: updatedDir });
     store.setTags(updatedTags);
     setDirection(updatedDir);
   };
@@ -61,7 +59,11 @@ const TagDirectionChanger: React.FC<PropsType> = ({
   return (
     <div className="flex flex-row flex-nowrap gap-2">
       <div className="grid place-items-center">Orientação: </div>
-      <button className={``} onClick={handleDirectionChange} disabled={disabled}>
+      <button
+        className={``}
+        onClick={handleDirectionChange}
+        disabled={disabled}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -69,7 +71,9 @@ const TagDirectionChanger: React.FC<PropsType> = ({
           strokeWidth="1.5"
           stroke="currentColor"
           className={`h-6 w-6`}
-          style={{ rotate: `${-45 * getRoundedCounterFromDir(direction) + 180}deg` }}
+          style={{
+            rotate: `${-45 * getRoundedCounterFromDir(direction) + 180}deg`,
+          }}
         >
           {getRoundedCounterFromDir(direction) != 8 ? (
             <path

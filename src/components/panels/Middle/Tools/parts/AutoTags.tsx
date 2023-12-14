@@ -1,9 +1,9 @@
 import AccordionItem from "import/components/micro/AccordionItem";
 import { useState } from "react";
 import Switcher from "import/components/micro/Switcher";
-import useStore from "import/utils/useStore";
-import myStore from "import/utils/store";
-import useApplyTags from "import/utils/useApplyTags";
+import useStore from "import/utils/store/useStore";
+import myStore from "import/utils/store/store";
+import useApplyTags from "import/utils/storeHelpers/useApplyTags";
 import {
   alphabeticalGreekTags,
   alphabeticalLatinTags,
@@ -12,7 +12,7 @@ import {
   coordTags,
   lengthTags,
   numericalTags,
-} from "import/utils/autoTags";
+} from "import/utils/storeHelpers/autoTags";
 
 const AutoTags: React.FC = () => {
   const store = useStore(myStore, (state) => state);

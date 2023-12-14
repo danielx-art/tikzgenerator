@@ -1,9 +1,9 @@
-import myStore from "import/utils/store";
+import myStore from "import/utils/store/store";
 import PointItem from "../parts/PointItem";
 import GroupItem from "../parts/GroupItem";
 import AddPointInput from "../parts/AddPointInput";
 import AddAndSelectGroup from "../parts/AddAndSelectGroup";
-import useStore from "import/utils/useStore";
+import useStore from "import/utils/store/useStore";
 import ItemsList from "../parts/ItemsList";
 
 export default function PointsTab() {
@@ -25,7 +25,11 @@ export default function PointsTab() {
             {Array.from(points.values())
               .filter((point) => point.group == groupId)
               .map((point, index) => (
-                <PointItem point={point} index={index} key={"list_item_" + point.id} />
+                <PointItem
+                  point={point}
+                  index={index}
+                  key={"list_item_" + point.id}
+                />
               ))}
           </GroupItem>
         ))}

@@ -1,8 +1,8 @@
-import myStore from "import/utils/store";
+import myStore from "import/utils/store/store";
 import PointsTab from "./Tabs/PointsTab";
 import SegmentsTab from "./Tabs/SegmentsTab";
 import AnglesTab from "./Tabs/AnglesTab";
-import useStore from "import/utils/useStore";
+import useStore from "import/utils/store/useStore";
 import TabsNavigation from "./parts/TabsNavigation";
 import TagsTab from "./Tabs/TagsTab";
 

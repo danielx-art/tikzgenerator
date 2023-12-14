@@ -1,6 +1,6 @@
-import myStore from "import/utils/store";
-import { getPointPath } from "import/utils/svgPaths";
-import useStore from "import/utils/useStore";
+import myStore from "import/utils/store/store";
+import { getPointPath } from "import/utils/svg/svgPaths";
+import useStore from "import/utils/store/useStore";
 
 const PointsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
