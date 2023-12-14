@@ -65,7 +65,7 @@ const TabItem: React.FC<TabItemProps> = ({
         storeTab == thisTab
           ? "border-2 border-b-0 border-c_discrete bg-c_base font-bold text-c_scnd_int"
           : "border-2 border-c_discrete bg-c_base text-c_disabled2"
-      } overflow-hidden rounded-t-lg px-2 py-1`}
+      } cursor-pointer overflow-hidden rounded-t-lg px-2 py-1`}
       onClick={action}
     >
       <div className="overflow-hidden">{title}</div>
