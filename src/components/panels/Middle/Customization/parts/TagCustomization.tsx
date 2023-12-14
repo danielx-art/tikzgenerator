@@ -45,7 +45,6 @@ const TagCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
       <div className="">Etiqueta</div>
       <div className="flex flex-1 flex-row flex-wrap justify-evenly gap-6">
         <TagEditable
-          thisEntityId={thisEntityId}
           thisTagId={thisTagId}
           key={`tagEditable_${thisEntityId || "_e"}_${thisTagId || "_t"}`}
         />

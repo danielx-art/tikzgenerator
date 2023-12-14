@@ -10,41 +10,40 @@ import {
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
 type PropsType = {
-  thisEntityId: TallId | undefined;
   thisTagId: TtagId | undefined;
 };
 
-const TagEditable: React.FC<PropsType> = ({ thisEntityId, thisTagId }) => {
+const TagEditable: React.FC<PropsType> = ({ thisTagId }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);
 
-  useEffect(() => {
-    if (!thisEntityId || !store) {
-      setEditMode(false);
+  useEffect(()=>{
+    if(!store || !thisTagId) {
+      setDisabled(true);
+      setInputValue("");
       return;
     }
-    const entityKind = getKindById(thisEntityId);
-    if (entityKind === "tag") {
-      const thisEntityWithKind = thisEntityId as TtagId;
-      const tagValue = store.tags.get(thisEntityWithKind)?.value || "";
-      setInputValue(tagValue);
-    } else {
-      const thisEntityWithKind = thisEntityId as TentId;
+    const thisTag = store.tags.get(thisTagId);
 
-      setInputValue(
-        findTagByEntityId(thisEntityWithKind, store.tags)?.value || "",
-      );
+    if(!thisTag || !store.selections.includes(thisTag.entityId)){
+      setDisabled(true);
+      setInputValue("");
+      return;
     }
-  }, [thisEntityId, editMode]);
+    setDisabled(false);
+    const firstValue = thisTag.value;
+    setInputValue(firstValue);
+  },[thisTagId, store])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
   const handleBtnPress = () => {
-    if (!store || !thisEntityId || !thisTagId) return;
+    if (!store || !thisTagId || disabled) return;
     if (!editMode) {
       setEditMode(true);
     } else {
@@ -70,7 +69,7 @@ const TagEditable: React.FC<PropsType> = ({ thisEntityId, thisTagId }) => {
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        disabled={!editMode}
+        disabled={disabled}
         className={`${
           editMode ? "" : "bg-c_discrete"
         } w-10 p-2 focus:outline-c_high1`}

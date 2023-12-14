@@ -12,6 +12,7 @@ const TagDirectionChanger: React.FC<PropsType> = ({
   thisTagId,
 }) => {
   const [direction, setDirection] = useState(vec(0, 1));
+  const [disabled, setDisabled] = useState(true);
   
   const store = useStore(myStore, (state) => state);
 
@@ -32,14 +33,22 @@ const TagDirectionChanger: React.FC<PropsType> = ({
   }
 
   useEffect(() => {
-    if (!store || !thisTagId) return;
-    const thisTag = store.tags.get(thisTagId)!;
+    if (!store || !thisTagId){
+      setDisabled(true);
+      return;
+    }
+    const thisTag = store.tags.get(thisTagId);
+    if(!thisTag || !store.selections.includes(thisTag.entityId)){
+      setDisabled(true);
+      return;
+    }
+    setDisabled(false);
     //recreate the vector from zustand:
     setDirection(vec(thisTag.pos.x, thisTag.pos.y));    
-  }, [store, thisTagId]);
+  }, [thisTagId, store]);
 
   const handleDirectionChange = () => {
-    if (!store || !thisTagId) return;
+    if (!store || !thisTagId || disabled) return;
     const thisTag = store.tags.get(thisTagId)!;
     const newCounter = (getRoundedCounterFromTag(thisTag) + 1) % 9;
     const updatedDir = vec(0, 1).rotate((newCounter * Math.PI) / 4);
@@ -52,7 +61,7 @@ const TagDirectionChanger: React.FC<PropsType> = ({
   return (
     <div className="flex flex-row flex-nowrap gap-2">
       <div className="grid place-items-center">Orientação: </div>
-      <button className={``} onClick={handleDirectionChange}>
+      <button className={``} onClick={handleDirectionChange} disabled={disabled}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

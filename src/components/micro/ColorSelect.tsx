@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 type PropsType = {
     selectedColor: string;
     setSelectedColor: React.Dispatch<React.SetStateAction<LATEX_COLOR>>;
+    disabled: boolean
 }
 
 const DicionarioCor = {
@@ -18,7 +19,7 @@ const DicionarioCor = {
     "white": "branco",
 }
 
-const ColorSelect: React.FC<PropsType> = ({selectedColor, setSelectedColor}) => {
+const ColorSelect: React.FC<PropsType> = ({selectedColor, setSelectedColor, disabled}) => {
   
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -34,13 +35,18 @@ const ColorSelect: React.FC<PropsType> = ({selectedColor, setSelectedColor}) => 
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [dropdownRef]);
 
+  function handleClickOpen() {
+    if(disabled) return;
+    setIsOpen(!isOpen)
+  }
+
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <div>
         <button
           type="button"
-          className="inline-flex justify-center w-full rounded-md border border-c_discrete shadow-sm px-4 py-2 bg-c_base text-sm font-medium text-c_scnd hover:bg-c_disabled focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
+          className={`inline-flex justify-center w-full rounded-md border border-c_discrete shadow-sm px-4 py-2 bg-c_base text-sm font-medium focus:outline-none ${disabled ? "text-c_disabled":"text-c_scnd hover:bg-c_disabled"}`}
+          onClick={handleClickOpen}
         >
           {selectedColor ? (
             <span className="flex items-center w-24">
@@ -59,7 +65,7 @@ const ColorSelect: React.FC<PropsType> = ({selectedColor, setSelectedColor}) => 
         </button>
       </div>
 
-      {isOpen && (
+      {isOpen && !disabled && (
         <div className="origin-top-right absolute right-0 mt-2 w-fit rounded-md shadow-lg bg-c_base ring-1 ring-c_scnd ring-opacity-5 focus:outline-none">
           <div className="py-1">
             {LATEX_COLORS.map((color) => (
@@ -67,6 +73,7 @@ const ColorSelect: React.FC<PropsType> = ({selectedColor, setSelectedColor}) => 
                 key={color}
                 className="text-c_scnd2 px-4 py-2 text-sm hover:bg-c_discrete cursor-pointer flex items-center"
                 onClick={() => {
+                  if(disabled) return;
                   setSelectedColor(color);
                   setIsOpen(false);
                 }}
