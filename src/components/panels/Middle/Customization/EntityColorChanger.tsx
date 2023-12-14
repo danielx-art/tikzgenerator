@@ -22,14 +22,14 @@ const EntityColorChanger: React.FC<PropsType> = ({ entityId }) => {
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
+    console.log(entityId); //debugg
     if (!store || !entityId) {
+      setSelectedColor("black");
       setDisabled(true);
       return;
     }
-
     const thisEntity = getEntityById(entityId, store);
-
-    if (!thisEntity || !store.selections.includes(thisEntity.id)) {
+    if (!thisEntity || !store.selections.includes(entityId)) {
       setDisabled(true);
       return;
     }

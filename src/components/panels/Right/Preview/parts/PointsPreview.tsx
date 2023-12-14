@@ -21,7 +21,7 @@ const PointsPreview: React.FC = () => {
           } else {
             stroke = point.color;
           }
-          fill = "none";
+          fill = "#f5f5f5";
         } else if (point.dotstyle === 2) {
           if (point.selected) {
             fill = "#ff817a";
