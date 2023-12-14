@@ -1,6 +1,8 @@
 import { type TpointId } from "public/entidades";
-import PointDisplayCustomization from "./PointDisplayCustomization";
+import PointDisplayChanger from "./PointDisplayChanger";
 import TagCustomization from "../tags/TagCustomization";
+import PointSizeChanger from "./PointSizeChanger";
+import EntityColorChanger from "../EntityColorChanger";
 
 type PropsType = {
   thisEntityId: TpointId | undefined;
@@ -13,7 +15,9 @@ const PointCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
         thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
-      <PointDisplayCustomization pointId={thisEntityId} />
+      <PointDisplayChanger pointId={thisEntityId} />
+      <PointSizeChanger pointId={thisEntityId} />
+      <EntityColorChanger entityId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
     </div>
   );

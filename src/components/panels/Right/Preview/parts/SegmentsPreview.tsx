@@ -15,7 +15,7 @@ const SegmentsPreview: React.FC = () => {
         <path
           key={"svg_path_" + segment.id}
           d={getSegmentPath(segment)}
-          stroke={segment.selected ? "#ff817a" : "#333333"}
+          stroke={segment.selected ? "#ff817a" : segment.color}
           strokeLinecap="round"
           strokeWidth="0.05"
           fill="none"

@@ -23,6 +23,7 @@ export type TtagId = `tag_${number}`;
 //export type TentId = `${Tkind}_${number}`;
 export type TentId = TpointId | TsegId | TangId;
 export type TallId = TentId | TtagId;
+
 export type TbodyFromKind<TypeKind> = TypeKind extends "point"
   ? Tpoint
   : TypeKind extends "segment"

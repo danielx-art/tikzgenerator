@@ -15,7 +15,7 @@ const AnglesPreview: React.FC = () => {
         <path
           key={"svg_path_" + angle.id}
           d={getAnglePath(angle)}
-          stroke={angle.selected ? "#ff817a" : "#333333"}
+          stroke={angle.selected ? "#ff817a" : angle.color}
           strokeWidth="0.05"
           fill="none"
           onClick={() => toggleSelection(angle.id)}

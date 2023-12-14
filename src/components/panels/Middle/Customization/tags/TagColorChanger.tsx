@@ -30,8 +30,8 @@ const TagColorChanger: React.FC<PropsType> = ({ thisTagId }) => {
   }, [thisTagId, store]);
 
   useEffect(() => {
-    if (!thisTagId || !store) return;
-    const updatedTags = store.tags;
+    if (!thisTagId || !store || disabled) return;
+    const updatedTags = new Map(store.tags);
     const thisTag = store.tags.get(thisTagId)!;
     updatedTags.set(thisTagId, { ...thisTag, color: selectedColor });
     store.setTags(updatedTags);

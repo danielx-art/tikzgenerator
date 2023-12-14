@@ -1,45 +1,45 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import type { TtagId } from "public/entidades";
-import { DEFAULT_TAG_SIZE } from "public/generalConfigs";
+import type { Tpoint, TpointId } from "public/entidades";
+import { DEFAULT_POINT_SIZE } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
-  thisTagId: TtagId | undefined;
+  pointId: TpointId | undefined;
 };
 
-const TagSizeChanger: React.FC<PropsType> = ({ thisTagId }) => {
-  const [size, setSize] = useState(`${DEFAULT_TAG_SIZE}`);
+const PointSizeChanger: React.FC<PropsType> = ({ pointId }) => {
+  const [size, setSize] = useState(`${DEFAULT_POINT_SIZE}`);
   const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    if (!store || !thisTagId) {
+    if (!store || !pointId) {
       setDisabled(true);
       return;
     }
-    const thisTag = store.tags.get(thisTagId);
-    if (!thisTag || !store.selections.includes(thisTag.entityId)) {
+    const point = store.points.get(pointId) as Tpoint;
+    if (point.dotstyle !== 0) {
+      setDisabled(false);
+    } else {
       setDisabled(true);
-      return;
     }
-    setDisabled(false);
-    setSize(`${thisTag.size}`);
-  }, [thisTagId, store]);
+    setSize(`${point.size}`);
+  }, [pointId, store]);
 
   useEffect(() => {
-    if (!thisTagId || !store || disabled) return;
-    const updatedTags = new Map(store.tags);
+    if (!pointId || !store || disabled) return;
+    const updatedPoints = new Map(store.points);
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
-    const thisTag = store.tags.get(thisTagId)!;
-    updatedTags.set(thisTagId, { ...thisTag, size: newSize });
-    store.setTags(updatedTags);
+    const point = store.points.get(pointId)!;
+    updatedPoints.set(pointId, { ...point, size: newSize });
+    store.setPoints(updatedPoints);
   }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!thisTagId || !store || disabled) return;
+    if (!pointId || !store || disabled) return;
     setSize(event.target.value);
   };
 
@@ -59,4 +59,4 @@ const TagSizeChanger: React.FC<PropsType> = ({ thisTagId }) => {
   );
 };
 
-export default TagSizeChanger;
+export default PointSizeChanger;

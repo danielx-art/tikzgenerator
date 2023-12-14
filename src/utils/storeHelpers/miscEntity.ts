@@ -45,6 +45,62 @@ export function getEntityById(id: TallId, store: (State & Action) | undefined) {
   }
 }
 
+export function getMapByKind<T extends TallKind>(
+  kind: T,
+  store: (State & Action) | undefined,
+):
+  | (T extends "point"
+      ? Map<TpointId, Tpoint>
+      : T extends "segment"
+      ? Map<TsegId, Tsegment>
+      : T extends "angle"
+      ? Map<TangId, Tangle>
+      : T extends "tag"
+      ? Map<TtagId, Ttag>
+      : never)
+  | undefined {
+  if (!store) return;
+
+  switch (kind) {
+    case "point":
+      return store.points as any;
+    case "segment":
+      return store.segments as any;
+    case "angle":
+      return store.angles as any;
+    case "tag":
+      return store.tags as any;
+  }
+}
+
+export function getMapSetterKind<T extends TallKind>(
+  kind: T,
+  store: (State & Action) | undefined,
+):
+  | (T extends "point"
+      ? Action["setPoints"]
+      : T extends "segment"
+      ? Action["setSegments"]
+      : T extends "angle"
+      ? Action["setAngles"]
+      : T extends "tag"
+      ? Action["setTags"]
+      : never)
+  | undefined {
+  if (!store) return;
+
+  switch (kind) {
+    case "point":
+      return store.setPoints as any;
+    case "segment":
+      return store.setSegments as any;
+    case "angle":
+      return store.setAngles as any;
+    case "tag":
+      return store.setTags as any;
+  }
+}
+
 export function getKindById(id: TallId) {
   return id.split("_")[0] as TallKind;
 }
