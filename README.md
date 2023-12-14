@@ -1,11 +1,13 @@
-# Criador de Figuras Geométricas
+# GeoSimples: Criador de Figuras Geométricas
 
-Essa é uma ferramenta pensada principalmente para o uso por educadores, facilitando a criação imagens de figuras geométricas.
+Simplicidade na criação de figuras geométricas. Desenhada para educadores (e por um educador), especialmente os criadores de conteúdo educativo, como materiais didáticos e testes.
 
-- ## Facilidade
-- ## Padronização
-- ## Eficiência
-- ## Abrangência
+## Fundamentos
+
+- ### Facilidade e eficiência:
+  Fácil e rápido de usar. Possui apenas as ferramentas essenciais de forma clara e intuitiva mas poderosas para a criação de uma ampla quantidade de ilustrações geométricas.
+- ### Padronização e precisão visual:
+  O uso de diferentes ferramentas para criação de figuras geométricas introduz ao estudante e ao criador de conteúdo uma complexidade extra, onde diferentes problemas ficam com identidades visuais dissonantes. Cada figura geométrica criada aqui é nítida e precisa, proporcionando aos leitores uma compreensão consistente de conceitos fundamentais da geometria.
 
 ---
 
