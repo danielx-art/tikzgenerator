@@ -20,15 +20,15 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId }) => {
 
   const store = useStore(myStore, (state) => state);
 
-  useEffect(()=>{
-    if(!store || !thisTagId) {
+  useEffect(() => {
+    if (!store || !thisTagId) {
       setDisabled(true);
       setInputValue("");
       return;
     }
     const thisTag = store.tags.get(thisTagId);
 
-    if(!thisTag || !store.selections.includes(thisTag.entityId)){
+    if (!thisTag || !store.selections.includes(thisTag.entityId)) {
       setDisabled(true);
       setInputValue("");
       return;
@@ -36,7 +36,7 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId }) => {
     setDisabled(false);
     const firstValue = thisTag.value;
     setInputValue(firstValue);
-  },[thisTagId, store])
+  }, [thisTagId, store]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -69,12 +69,12 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId }) => {
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        disabled={disabled}
+        disabled={disabled || !editMode}
         className={`${
           editMode ? "" : "bg-c_discrete"
         } w-10 p-2 focus:outline-c_high1`}
       />
-      <button onClick={handleBtnPress}>
+      <button onClick={handleBtnPress} disabled={disabled}>
         {editMode ? (
           <div className="h-4 w-4">
             <EnterIconSvg />
