@@ -11,9 +11,9 @@ import {
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
 
-export type Tkind = "point" | "segment" | "angle";
+export type Tkind = "point" | "segment" | "angle" | "circle";
 export type TallKind = Tkind | "tag";
-export type TkindPlural = "points" | "segments" | "angles";
+export type TkindPlural = "points" | "segments" | "angles" | "circles";
 export type TallKindPlural = TkindPlural | "tags";
 export type TpointId = `point_${number}`;
 export type TsegId = `segment_${number}`;
@@ -21,7 +21,7 @@ export type TangId = `angle_${number}`;
 export type TcircleId = `circle_${number}`;
 export type TtagId = `tag_${number}`;
 //export type TentId = `${Tkind}_${number}`;
-export type TentId = TpointId | TsegId | TangId;
+export type TentId = TpointId | TsegId | TangId | TcircleId;
 export type TallId = TentId | TtagId;
 
 export type TbodyFromKind<TypeKind> = TypeKind extends "point"
@@ -32,6 +32,8 @@ export type TbodyFromKind<TypeKind> = TypeKind extends "point"
   ? Tangle
   : TypeKind extends "tag"
   ? Ttag
+  : TypeKind extends "circle"
+  ? Tcircle
   : never;
 export type TidFromKind<TypeKind> = TypeKind extends "point"
   ? TpointId
@@ -41,6 +43,8 @@ export type TidFromKind<TypeKind> = TypeKind extends "point"
   ? TangId
   : TypeKind extends "tag"
   ? TtagId
+  : TypeKind extends "circle"
+  ? TcircleId
   : never;
 export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
   ? "points"
@@ -50,9 +54,11 @@ export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
   ? "angles"
   : TypeKind extends "tag"
   ? "tags"
+  : TypeKind extends "circle"
+  ? "circles"
   : never;
 
-export type Tentity = Tpoint | Tsegment | Tangle;
+export type Tentity = Tpoint | Tsegment | Tangle | Tcircle;
 
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
   return {

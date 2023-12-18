@@ -20,6 +20,7 @@ import {
   TbodyFromKind,
   TidFromKind,
   TkindPluralFrom,
+  Tcircle,
 } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
 import { create } from "zustand";
@@ -29,41 +30,28 @@ import { getKindById } from "../storeHelpers/miscEntity";
 export type State = {
   tab: TallKindPlural;
   points: Map<TpointId, Tpoint>;
-  angles: Map<TangId, Tangle>;
   segments: Map<TsegId, Tsegment>;
+  angles: Map<TangId, Tangle>;
+  circles: Map<TcircleId, Tcircle>;
   tags: Map<TtagId, Ttag>;
   groups: number[];
   selectedGroup: number;
   error: string;
-  idCounters: {
-    point: number;
-    segment: number;
-    angle: number;
-    tag: number;
-  };
+  idCounters: Record<TallKind, number>;
   selections: Array<TallId>;
 };
 
 export type Action = {
   setTab: (tab: State["tab"]) => void;
   setPoints: (points: State["points"]) => void;
-  setAngles: (angles: State["angles"]) => void;
   setSegments: (segments: State["segments"]) => void;
+  setAngles: (angles: State["angles"]) => void;
+  setCircles: (circles: State["circles"]) => void;
   setGroups: (groups: State["groups"]) => void;
   setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
   setTags: (tags: State["tags"]) => void;
   setError: (error: State["error"]) => void;
-  generateId: <T extends TallKind>(
-    type: T,
-  ) => T extends "point"
-    ? TpointId
-    : T extends "segment"
-    ? TsegId
-    : T extends "angle"
-    ? TangId
-    : T extends "tag"
-    ? TtagId
-    : TcircleId;
+  generateId: <T extends TallKind>(type: T) => TidFromKind<T>;
   toggleSelection: (id: TallId) => void;
   addEntity: (entityKind: Tkind, elementBody: Tentity) => void;
   deleteEntity: (id: TentId) => void;
@@ -76,14 +64,15 @@ const myStore = create<State & Action>()(
     (set, get) => ({
       tab: "points" as TallKindPlural,
       setTab: (tab) => set(() => ({ tab: tab })),
-
       points: new Map<TpointId, Tpoint>(),
-      angles: new Map<TangId, Tangle>(),
       segments: new Map<TsegId, Tsegment>(),
+      angles: new Map<TangId, Tangle>(),
+      circles: new Map<TcircleId, Tcircle>(),
       tags: new Map<TtagId, Ttag>(),
       setPoints: (points) => set(() => ({ points: points })),
-      setAngles: (angles) => set(() => ({ angles: angles })),
       setSegments: (segments) => set(() => ({ segments: segments })),
+      setAngles: (angles) => set(() => ({ angles: angles })),
+      setCircles: (circles) => set(() => ({ circles: circles })),
       setTags: (tags) => set(() => ({ tags: tags })),
 
       groups: [1] as number[],
@@ -98,20 +87,11 @@ const myStore = create<State & Action>()(
         point: 0,
         segment: 0,
         angle: 0,
+        circle: 0,
         tag: 0,
       },
 
-      generateId: <T extends TallKind>(
-        type: T,
-      ): T extends "point"
-        ? TpointId
-        : T extends "segment"
-        ? TsegId
-        : T extends "angle"
-        ? TangId
-        : T extends "tag"
-        ? TtagId
-        : TcircleId => {
+      generateId: <T extends TallKind>(type: T): TidFromKind<T> => {
         const id = `${type}_${get().idCounters[type]}`;
         set((state) => ({
           idCounters: {
