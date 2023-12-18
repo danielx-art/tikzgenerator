@@ -18,11 +18,11 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
   2.  Cor do traço
   3.  [ ângulos ] preenchimento
   4.  [ ângulos ] refinar posicionamento da etiqueta
-- Customização de cor para ponto
+- ~~Customização de cor para ponto~~
 - Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana
 - Selecionado um ângulo: criar bissetriz
 - Selecionado um segmento: criar mediatriz
-- Criar nova entidade: círculo
+- ~~Criar nova entidade: círculo~~
 - Selecionados três pontos: criar círculo
 - Selecionado círculo: inserir ponto no círculo
 - Selecionados dois pontos e uma reta: Criar círculo tangente a essa reta que passa pelo ponto
