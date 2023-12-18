@@ -112,21 +112,39 @@ const CustomizationPanel = () => {
           aria-orientation="vertical"
           aria-labelledby="options-menu"
         >
-          {store && store.tab === "points" && (
-            <PointCustomization
-              thisEntityId={thisEntityId as TpointId | undefined}
-            />
-          )}
-          {store && store.tab === "segments" && (
-            <SegmentCustomization
-              thisEntityId={thisEntityId as TsegId | undefined}
-            />
-          )}
-          {store && store.tab === "angles" && (
-            <AngleCustomization
-              thisEntityId={thisEntityId as TangId | undefined}
-            />
-          )}
+          {store &&
+            store.tab === "points" &&
+            (thisEntityId ? (
+              <PointCustomization
+                thisEntityId={thisEntityId as TpointId | undefined}
+              />
+            ) : (
+              <div className="px-4 py-1 text-sm text-c_scnd">
+                Selecione um ponto para customizá-lo
+              </div>
+            ))}
+          {store &&
+            store.tab === "segments" &&
+            (thisEntityId ? (
+              <SegmentCustomization
+                thisEntityId={thisEntityId as TsegId | undefined}
+              />
+            ) : (
+              <div className="px-4 py-1 text-sm text-c_scnd">
+                Selecione um segmento de reta para customizá-la
+              </div>
+            ))}
+          {store &&
+            store.tab === "angles" &&
+            (thisEntityId ? (
+              <AngleCustomization
+                thisEntityId={thisEntityId as TangId | undefined}
+              />
+            ) : (
+              <div className="px-4 py-1 text-sm text-c_scnd">
+                Selecione um ângulo de reta para customizá-lo
+              </div>
+            ))}
         </div>
       </div>
     </div>
