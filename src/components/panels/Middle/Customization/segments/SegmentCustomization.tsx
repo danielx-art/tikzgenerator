@@ -1,5 +1,6 @@
 import type { TsegId } from "public/entidades";
 import TagCustomization from "../tags/TagCustomization";
+import SegmentDisplayChanger from "./SegmentDisplayChanger";
 
 type PropsType = {
   thisEntityId: TsegId | undefined;
@@ -12,11 +13,7 @@ const SegmentCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
         thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
-      {/* <PointDisplayCustomization
-        store={store}
-        point={thisEntity}
-        key={`pointDisplayCustomization_${thisEntity?.id || "_"}`}
-      /> */}
+      <SegmentDisplayChanger segId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
     </div>
   );
