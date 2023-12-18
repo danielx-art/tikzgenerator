@@ -52,6 +52,8 @@ export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
   ? "tags"
   : never;
 
+export type Tentity = Tpoint | Tsegment | Tangle;
+
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
   return {
     id,
@@ -119,12 +121,20 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
 
 export type Tangle = ReturnType<typeof angulo>;
 
-// export type TentityWithKind =
-//   | (Tpoint & { kind: "point" })
-//   | (Tsegment & { kind: "segment" })
-//   | (Tangle & { kind: "angle" });
+export const circle = function (center: vector, radius: number, id: TcircleId) {
+  return {
+    id,
+    center,
+    radius,
+    visible: true,
+    width: DEFAULT_LINE_WIDTH,
+    style: DEFAULT_LINE_STYLE,
+    color: DEFAULT_COLOR,
+    selected: false,
+  };
+};
 
-export type Tentity = Tpoint | Tsegment | Tangle;
+export type Tcircle = ReturnType<typeof circle>;
 
 export const tag = function (
   value: string = "",
