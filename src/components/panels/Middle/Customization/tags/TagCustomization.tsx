@@ -1,16 +1,15 @@
-import myStore from "import/utils/store/store";
-import useStore from "import/utils/store/useStore";
-import type { TallId, TentId, Ttag, TtagId } from "public/entidades";
+import type { TallId, TentId, TtagId } from "public/entidades";
 import { useEffect, useState } from "react";
 import TagDirectionChanger from "./TagDirectionChanger";
 import TagEditable from "./TagEditable";
 import {
   findTagByEntityId,
-  getEntityKind,
   getKindById,
 } from "import/utils/storeHelpers/miscEntity";
 import TagColorChanger from "./TagColorChanger";
 import TagSizeChanger from "./TagSizeChanger";
+import useStore from "import/utils/store/useStore";
+import myStore from "import/utils/store/store";
 
 type PropsType = {
   thisEntityId: TallId | undefined;
@@ -37,7 +36,7 @@ const TagCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
 
     if (!foundTagId) return;
     setThisTagId(foundTagId);
-  }, [thisEntityId]);
+  }, [store, thisEntityId]);
 
   return (
     <div className="mb-2 flex w-full flex-col gap-2">
