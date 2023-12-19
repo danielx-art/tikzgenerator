@@ -30,7 +30,7 @@ const SegmentsPreview: React.FC = () => {
           d={getSegmentPath(segment)}
           stroke={segment.selected ? "#ff817a" : segment.color}
           strokeLinecap="round"
-          strokeWidth="0.05"
+          strokeWidth={segment.width / 100}
           fill="none"
           onClick={() => toggleSelection(segment.id)}
           className="cursor-pointer"

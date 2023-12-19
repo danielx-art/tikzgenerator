@@ -1,6 +1,8 @@
 import type { TsegId } from "public/entidades";
 import TagCustomization from "../tags/TagCustomization";
 import SegmentDisplayChanger from "./SegmentDisplayChanger";
+import EntityColorChanger from "../EntityColorChanger";
+import SegmentSizeChanger from "./SegmentSizeChanger";
 
 type PropsType = {
   thisEntityId: TsegId | undefined;
@@ -14,6 +16,8 @@ const SegmentCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
       }`}
     >
       <SegmentDisplayChanger segId={thisEntityId} />
+      <SegmentSizeChanger segId={thisEntityId} />
+      <EntityColorChanger entityId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
     </div>
   );
