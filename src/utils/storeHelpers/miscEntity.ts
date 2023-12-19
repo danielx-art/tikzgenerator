@@ -11,6 +11,8 @@ import {
   Tpoint,
   Tsegment,
   Tangle,
+  TcircleId,
+  Tcircle,
 } from "public/entidades";
 import { type Action, type State } from "import/utils/store/store";
 
@@ -38,6 +40,8 @@ export function getEntityById(id: TallId, store: (State & Action) | undefined) {
       return store.segments.get(id as TsegId);
     case "angle":
       return store.angles.get(id as TangId);
+    case "circle":
+      return store.circles.get(id as TcircleId);
     case "tag":
       return store.tags.get(id as TtagId);
     default:
@@ -55,6 +59,8 @@ export function getMapByKind<T extends TallKind>(
       ? Map<TsegId, Tsegment>
       : T extends "angle"
       ? Map<TangId, Tangle>
+      : T extends "circle"
+      ? Map<TcircleId, Tcircle>
       : T extends "tag"
       ? Map<TtagId, Ttag>
       : never)
@@ -68,6 +74,8 @@ export function getMapByKind<T extends TallKind>(
       return store.segments as any;
     case "angle":
       return store.angles as any;
+    case "circle":
+      return store.circles as any;
     case "tag":
       return store.tags as any;
   }
@@ -83,6 +91,8 @@ export function getMapSetterKind<T extends TallKind>(
       ? Action["setSegments"]
       : T extends "angle"
       ? Action["setAngles"]
+      : T extends "circle"
+      ? Action["setCircles"]
       : T extends "tag"
       ? Action["setTags"]
       : never)
@@ -96,6 +106,8 @@ export function getMapSetterKind<T extends TallKind>(
       return store.setSegments as any;
     case "angle":
       return store.setAngles as any;
+    case "circle":
+      return store.setCircles as any;
     case "tag":
       return store.setTags as any;
   }
@@ -126,6 +138,8 @@ export function fromSelectionsGet<T extends TallKind>(
     ? Array<TsegId>
     : T extends "angle"
     ? Array<TangId>
+    : T extends "circle"
+    ? Array<TcircleId>
     : Array<TtagId>;
 
   return result;
@@ -143,6 +157,8 @@ export function getSelected<T extends TallKind>(
       ? Array<Tsegment>
       : T extends "angle"
       ? Array<Tangle>
+      : T extends TcircleId
+      ? Array<Tcircle>
       : T extends TangId
       ? Array<Ttag>
       : undefined)
@@ -174,6 +190,13 @@ export function getSelected<T extends TallKind>(
       let selected = [] as Array<Tangle>;
       for (let sel of selections) {
         selected.push(store.angles.get(sel as TangId)!);
+      }
+      return selected as any;
+    }
+    case "circle": {
+      let selected = [] as Array<Tcircle>;
+      for (let sel of selections) {
+        selected.push(store.circles.get(sel as TcircleId)!);
       }
       return selected as any;
     }

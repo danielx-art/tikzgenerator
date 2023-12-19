@@ -9,6 +9,19 @@ const SegmentsPreview: React.FC = () => {
 
   const { segments, toggleSelection } = store;
 
+  const getStrokeDasharray = (style: string) => {
+    switch (style) {
+      case "solid":
+        return "";
+      case "dashed":
+        return "0.05, 0.1";
+      case "dotted":
+        return "0.001, 0.1";
+      default:
+        return "";
+    }
+  };
+
   return (
     <>
       {Array.from(segments.values()).map((segment, index) => (
@@ -21,6 +34,7 @@ const SegmentsPreview: React.FC = () => {
           fill="none"
           onClick={() => toggleSelection(segment.id)}
           className="cursor-pointer"
+          strokeDasharray={getStrokeDasharray(segment.style)}
         />
       ))}
     </>

@@ -8,17 +8,13 @@ import type {
   TpointId,
   TsegId,
   TangId,
-  TcircleId,
 } from "public/entidades";
 import Paginator from "import/components/micro/Paginator";
 import PointCustomization from "./points/PointCustomization";
 import OpenCloseAccordionButton from "import/components/micro/OpenCloseAccordionButton";
 import SegmentCustomization from "./segments/SegmentCustomization";
 import AngleCustomization from "./angles/AngleCustomization";
-import {
-  getEntityById,
-  getKindById,
-} from "import/utils/storeHelpers/miscEntity";
+import { getEntityById } from "import/utils/storeHelpers/miscEntity";
 
 const CustomizationPanel = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -32,26 +28,59 @@ const CustomizationPanel = () => {
   );
 
   const store = useStore(myStore, (state) => state);
-  //const selections = useStore(myStore, (state) => state.selections);
 
   useEffect(() => {
-    if (!store || !store.selections) return;
+    if (!store) return;
     const selectedFromStore = store.selections;
     const updatedSelectedEntities: Array<Tentity> = [];
-    for (let entId of selectedFromStore) {
+    for (let entId in selectedFromStore) {
       const thisEntityBody = getEntityById(entId as TallId, store);
-      if (thisEntityBody) {
+      if (thisEntityBody)
         updatedSelectedEntities.push(thisEntityBody as Tentity);
-      }
     }
     setSelectedEntities(updatedSelectedEntities);
-    let count = curr;
-    while (count > updatedSelectedEntities.length - 1) {
-      count--;
-    }
-    count < 0 ? (count = 0) : null;
-    setCurr(count);
   }, [store, store?.selections]);
+
+  // useEffect(() => {
+  //   if (!store) return;
+  //   const tab = store.tab as TallKindPlural;
+  //   const entitiesMap = store[tab] as Map<TallId, Tentity>;
+
+  //   let updatedEntities = [] as Array<Tentity>;
+
+  //   for (let entId of store.selections) {
+  //     const entityKindPlural = (entId.split("_")[0] + "s") as TallKindPlural;
+  //     if (entityKindPlural === tab) {
+  //       const ent = entitiesMap.get(entId);
+  //       if (ent) updatedEntities.push(ent);
+  //     }
+  //   }
+
+  //   switch (store.tab) {
+  //     case "points":
+  //       setTabMessage(`${updatedEntities.length} ponto(s) selecionado(s)`);
+  //       break;
+  //     case "segments":
+  //       setTabMessage(`${updatedEntities.length} segmento(s) selecionado(s)`);
+  //       break;
+  //     case "angles":
+  //       setTabMessage(`${updatedEntities.length} ângulo(s) selecionado(s)`);
+  //       break;
+  //     case "tags":
+  //       setTabMessage(`${updatedEntities.length} tag(s) selecionada(s)`);
+  //       break;
+  //     default:
+  //       setTabMessage(`Onde é que você tá?`);
+  //       break;
+  //   }
+  //   let count = curr;
+  //   while (count > updatedEntities.length - 1) {
+  //     count--;
+  //   }
+  //   count < 0 ? (count = 0) : null;
+  //   setCurr(count);
+  //   setSelectedEntities(updatedEntities);
+  // }, [store, store?.tab, store?.selections]);
 
   useEffect(() => {
     if (selectedEntities && selectedEntities[curr]) {
@@ -96,36 +125,39 @@ const CustomizationPanel = () => {
           aria-orientation="vertical"
           aria-labelledby="options-menu"
         >
-          {thisEntityId && getKindById(thisEntityId) === "point" ? (
-            <PointCustomization
-              thisEntityId={thisEntityId as TpointId | undefined}
-            />
-          ) : null}
-          {thisEntityId && getKindById(thisEntityId) === "segment" ? (
-            <SegmentCustomization
-              thisEntityId={thisEntityId as TsegId | undefined}
-            />
-          ) : null}
-          {thisEntityId && getKindById(thisEntityId) === "angle" ? (
-            <AngleCustomization
-              thisEntityId={thisEntityId as TangId | undefined}
-            />
-          ) : null}
-          {/* {
-            ((thisEntityId && getKindById(thisEntityId) === "circle") ? (
-              <CircleCustomization
-                thisEntityId={thisEntityId as TcircleId | undefined}
+          {store &&
+            store.tab === "points" &&
+            (thisEntityId ? (
+              <PointCustomization
+                thisEntityId={thisEntityId as TpointId | undefined}
               />
             ) : (
               <div className="px-4 py-1 text-sm text-c_scnd">
-                Selecione uma circunferência para customizá-la
+                Selecione um ponto para customizá-lo
               </div>
-            ))} */}
-          {!thisEntityId && (
-            <div className="px-4 py-1 text-sm text-c_scnd">
-              Selecione um objeto para customizá-lo
-            </div>
-          )}
+            ))}
+          {store &&
+            store.tab === "segments" &&
+            (thisEntityId ? (
+              <SegmentCustomization
+                thisEntityId={thisEntityId as TsegId | undefined}
+              />
+            ) : (
+              <div className="px-4 py-1 text-sm text-c_scnd">
+                Selecione um segmento de reta para customizá-la
+              </div>
+            ))}
+          {store &&
+            store.tab === "angles" &&
+            (thisEntityId ? (
+              <AngleCustomization
+                thisEntityId={thisEntityId as TangId | undefined}
+              />
+            ) : (
+              <div className="px-4 py-1 text-sm text-c_scnd">
+                Selecione um ângulo de reta para customizá-lo
+              </div>
+            ))}
         </div>
       </div>
     </div>

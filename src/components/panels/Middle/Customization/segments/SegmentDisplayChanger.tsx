@@ -37,40 +37,43 @@ const SegmentDisplayChanger: React.FC<PropsType> = ({ segId }) => {
           }
           disabled={segId ? false : true}
         >
-          <div className="h-4 w-4">
+          <div className="h-4 w-8">
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
               <line
-                x1="0"
-                y1="2"
-                x2="4"
-                y2="2"
+                x1="10%"
+                y1="50%"
+                x2="90%"
+                y2="50%"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="3"
+                strokeLinecap="round"
               />
             </svg>
           </div>
-          <div className="h-4 w-4">
+          <div className="h-4 w-8">
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
               <line
-                x1="0"
-                y1="2"
-                x2="4"
-                y2="2"
+                x1="10%"
+                y1="50%"
+                x2="90%"
+                y2="50%"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="3"
+                strokeLinecap="round"
                 strokeDasharray="5, 5"
               />
             </svg>
           </div>
-          <div className="h-4 w-4">
+          <div className="h-4 w-8">
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
               <line
-                x1="0"
-                y1="2"
-                x2="4"
-                y2="2"
+                x1="10%"
+                y1="50%"
+                x2="90%"
+                y2="50%"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="3"
+                strokeLinecap="round"
                 strokeDasharray="1, 5"
               />
             </svg>
