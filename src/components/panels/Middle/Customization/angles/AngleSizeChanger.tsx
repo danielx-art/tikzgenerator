@@ -8,7 +8,7 @@ type PropsType = {
   segId: TsegId | undefined;
 };
 
-const SegmentSizeChanger: React.FC<PropsType> = ({ segId }) => {
+const AngleSizeChanger: React.FC<PropsType> = ({ segId }) => {
   const [size, setSize] = useState(`${DEFAULT_LINE_WIDTH}`);
   const [disabled, setDisabled] = useState(true);
 
@@ -55,4 +55,4 @@ const SegmentSizeChanger: React.FC<PropsType> = ({ segId }) => {
   );
 };
 
-export default SegmentSizeChanger;
+export default AngleSizeChanger;

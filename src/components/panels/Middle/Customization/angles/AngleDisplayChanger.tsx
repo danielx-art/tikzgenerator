@@ -1,87 +1,113 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import RadioGroup from "import/components/micro/RadioGroup";
 import { getKindById } from "import/utils/storeHelpers/miscEntity";
-import { Tsegment, type TsegId } from "public/entidades";
+import { TangId, Tangle } from "public/entidades";
+import MultipleRadioGroup from "import/components/micro/MultipleRadioGroup";
+import { vec } from "import/utils/math/vetores";
 
 type PropsType = {
-  segId: TsegId | undefined;
+  angId: TangId | undefined;
 };
 
-const OptionsMap = ["solid", "dashed", "dotted"];
+const Options = { marks: [0, 1, 2, 3], lines: [0, 1, 2, 3] };
 
-const SegmentDisplayChanger: React.FC<PropsType> = ({ segId }) => {
+const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
   const store = useStore(myStore, (state) => state);
 
+  const [selectedOption, setSelectedOption] = useState();
+
   const handleDisplayChange = (option: number) => {
-    if (!segId || getKindById(segId) != "segment" || !store) return;
-    const updatedSegments = new Map(store.segments);
-    const segment = store.segments.get(segId) as Tsegment;
-    updatedSegments.set(segId, {
-      ...segment,
+    if (!angId || getKindById(angId) != "angle" || !store) return;
+    const updatedAngles = new Map(store.angles);
+    const angle = store.angles.get(angId) as Tangle;
+    updatedAngles.set(angId, {
+      ...angle,
       style: OptionsMap[option] || "solid",
     });
-    store.setSegments(updatedSegments);
+    store.setSegments(updatedAngles);
   };
 
   return (
     <div className={`flex flex-row flex-nowrap gap-2`}>
       <div className="grid items-center">Estilo: </div>
       <div className="flex w-full flex-row">
-        <RadioGroup
+        <MultipleRadioGroup
           onChange={(option) => handleDisplayChange(option)}
           value={
-            segId && store && store.segments.get(segId)
-              ? OptionsMap.indexOf(store.segments.get(segId)!.style)
+            angId && store && store.segments.get(angId)
+              ? OptionsMap.indexOf(store.segments.get(angId)!.style)
               : 0
           }
-          disabled={segId ? false : true}
-        >
-          <div className="h-4 w-8">
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <line
-                x1="10%"
-                y1="50%"
-                x2="90%"
-                y2="50%"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-          <div className="h-4 w-8">
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <line
-                x1="10%"
-                y1="50%"
-                x2="90%"
-                y2="50%"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray="5, 5"
-              />
-            </svg>
-          </div>
-          <div className="h-4 w-8">
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <line
-                x1="10%"
-                y1="50%"
-                x2="90%"
-                y2="50%"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray="1, 5"
-              />
-            </svg>
-          </div>
-        </RadioGroup>
+          disabled={angId ? false : true}
+        ></MultipleRadioGroup>
       </div>
     </div>
   );
 };
 
-export default SegmentDisplayChanger;
+export default AngleDisplayChanger;
+
+type AngDisplayProps = {
+  r?: number;
+  ang?: number;
+  numMarks?: number;
+  numDoubles?: number;
+  markLen?: number;
+  doubleDist?: number;
+};
+
+const AngDisplay: React.FC<AngDisplayProps> = ({
+  r = 3,
+  ang = (45 * Math.PI) / 180,
+  numMarks = 0,
+  numDoubles = 0,
+  markLen = 2,
+  doubleDist = 2,
+}) => {
+  const start = vec(r, 0);
+  const end = vec().copy(start).rotate(ang);
+  let marks;
+  let doubles;
+
+  if (numMarks > 0) {
+    const numDiv = numMarks + 1;
+    let dMarks = ``;
+    for (let i = 0; i < numMarks; i++) {
+      const initialPoint = vec()
+        .copy(start)
+        .setMag(r - markLen / 2)
+        .rotate((ang * (i + 1)) / numDiv);
+      const finalPoint = vec()
+        .copy(start)
+        .setMag(r + markLen / 2)
+        .rotate((ang * (i + 1)) / numDiv);
+      dMarks += ` M ${initialPoint.x} ${initialPoint.y} L ${finalPoint.x} ${finalPoint.y} `;
+    }
+    marks = <path strokeWidth="0.05" fill="none" d={dMarks} />;
+  }
+
+  if (numDoubles > 0) {
+    let dDoubles = ``;
+    for (let i = 0; i < numDoubles; i++) {
+      const thisRad = r - doubleDist * (i + 1);
+      const initialPoint = vec().copy(start).setMag(thisRad);
+      const finalPoint = vec().copy(start).setMag(thisRad).rotate(ang);
+      dDoubles += ` M ${initialPoint.x} ${initialPoint.y} A ${r} ${r} 0 0 1 ${finalPoint.x} ${finalPoint.y}  `;
+    }
+    doubles = <path strokeWidth="0.05" fill="none" d={dDoubles} />;
+  }
+
+  return (
+    <div className="h-6 w-6">
+      <svg>
+        <path
+          strokeWidth="0.05"
+          fill="none"
+          d={`M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${end.x} ${end.y} `}
+        />
+        {marks && marks}
+        {doubles && doubles}
+      </svg>
+    </div>
+  );
+};
