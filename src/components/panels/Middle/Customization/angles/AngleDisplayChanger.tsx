@@ -4,42 +4,60 @@ import { getKindById } from "import/utils/storeHelpers/miscEntity";
 import { TangId, Tangle } from "public/entidades";
 import MultipleRadioGroup from "import/components/micro/MultipleRadioGroup";
 import { vec } from "import/utils/math/vetores";
+import { ANGLE_MARKS, ANGLE_MARKS_TYPE } from "public/generalConfigs";
 
 type PropsType = {
   angId: TangId | undefined;
 };
 
-const Options = { marks: [0, 1, 2, 3], lines: [0, 1, 2, 3] };
-
 const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
   const store = useStore(myStore, (state) => state);
 
-  const [selectedOption, setSelectedOption] = useState();
-
-  const handleDisplayChange = (option: number) => {
+  const handleDisplayChange = (btnIndex: number, optionSel: number) => {
     if (!angId || getKindById(angId) != "angle" || !store) return;
     const updatedAngles = new Map(store.angles);
     const angle = store.angles.get(angId) as Tangle;
+    const possibleMarks = ["marks", "doubles"];
+    const newMark = possibleMarks[btnIndex] ? `${possibleMarks[btnIndex]}-${optionSel}` : "marks-0";
     updatedAngles.set(angId, {
       ...angle,
-      style: OptionsMap[option] || "solid",
+      marks: newMark as ANGLE_MARKS_TYPE,
     });
-    store.setSegments(updatedAngles);
+    store.setAngles(updatedAngles);
   };
+
+  const findInitButtonSelected = (angleMarks: ANGLE_MARKS_TYPE): 0 | 1 => {
+    if(angleMarks.includes("marks")) return 0;
+    if(angleMarks.includes("doubles")) return 1;
+    return 0;
+  }
 
   return (
     <div className={`flex flex-row flex-nowrap gap-2`}>
-      <div className="grid items-center">Estilo: </div>
+      <div className="grid items-center">Destaques: </div>
       <div className="flex w-full flex-row">
         <MultipleRadioGroup
-          onChange={(option) => handleDisplayChange(option)}
-          value={
-            angId && store && store.segments.get(angId)
-              ? OptionsMap.indexOf(store.segments.get(angId)!.style)
+          onChange={(btnIndex, optionSel) => handleDisplayChange(btnIndex, optionSel)}
+          initBtnSelected={
+            angId && store && store.angles.get(angId)
+              ? findInitButtonSelected(store.angles.get(angId)!.marks)
               : 0
           }
           disabled={angId ? false : true}
-        ></MultipleRadioGroup>
+        >
+          <div key="angle_marks_changer_0">
+            <AngDisplay numMarks={0} />
+            <AngDisplay numMarks={1} />
+            <AngDisplay numMarks={2} />
+            <AngDisplay numMarks={3} />
+          </div>
+          <div key="angle_marks_changer_1">
+            <AngDisplay numDoubles={0} />
+            <AngDisplay numDoubles={1} />
+            <AngDisplay numDoubles={2} />
+            <AngDisplay numDoubles={3} />
+          </div>
+        </MultipleRadioGroup>
       </div>
     </div>
   );
@@ -54,15 +72,17 @@ type AngDisplayProps = {
   numDoubles?: number;
   markLen?: number;
   doubleDist?: number;
+  strokeWidth?: number;
 };
 
 const AngDisplay: React.FC<AngDisplayProps> = ({
-  r = 3,
-  ang = (45 * Math.PI) / 180,
+  r = 16,
+  ang = (60 * Math.PI) / 180,
   numMarks = 0,
   numDoubles = 0,
-  markLen = 2,
-  doubleDist = 2,
+  markLen = 10,
+  doubleDist = 3,
+  strokeWidth = 2,
 }) => {
   const start = vec(r, 0);
   const end = vec().copy(start).rotate(ang);
@@ -83,7 +103,7 @@ const AngDisplay: React.FC<AngDisplayProps> = ({
         .rotate((ang * (i + 1)) / numDiv);
       dMarks += ` M ${initialPoint.x} ${initialPoint.y} L ${finalPoint.x} ${finalPoint.y} `;
     }
-    marks = <path strokeWidth="0.05" fill="none" d={dMarks} />;
+    marks = <path stroke="currentColor" strokeWidth={strokeWidth} fill="none" d={dMarks} />;
   }
 
   if (numDoubles > 0) {
@@ -94,19 +114,22 @@ const AngDisplay: React.FC<AngDisplayProps> = ({
       const finalPoint = vec().copy(start).setMag(thisRad).rotate(ang);
       dDoubles += ` M ${initialPoint.x} ${initialPoint.y} A ${r} ${r} 0 0 1 ${finalPoint.x} ${finalPoint.y}  `;
     }
-    doubles = <path strokeWidth="0.05" fill="none" d={dDoubles} />;
+    doubles = <path stroke="currentColor" strokeWidth={strokeWidth} fill="none" d={dDoubles} />;
   }
 
   return (
     <div className="h-6 w-6">
-      <svg>
-        <path
-          strokeWidth="0.05"
-          fill="none"
-          d={`M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${end.x} ${end.y} `}
-        />
-        {marks && marks}
-        {doubles && doubles}
+      <svg className="w-full h-full overflow-visible grid items-center">
+        <g className="scale-y-[-1] translate-y-[75%]">
+          <path
+            stroke="currentColor"
+            strokeWidth={strokeWidth}
+            fill="none"
+            d={`M 0 0 L ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${end.x} ${end.y} Z`}
+          />
+          {marks && marks}
+          {doubles && doubles}
+        </g>
       </svg>
     </div>
   );

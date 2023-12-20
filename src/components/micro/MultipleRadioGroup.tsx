@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 
 type PropsType = {
-  children: Array<Array<React.ReactElement>>;
-  onChange?: (selectedIndex: number) => void;
-  selBtnIndex: number;
-  multSelectedIndex: number;
+  children: Array<React.ReactElement<{ children: Array<React.ReactElement> }>>;
+  onChange?: (selectedIndex: number, optionSelected: number) => void;
+  initBtnSelected: number;
   labelText?: string;
   disabled: boolean;
 };
@@ -12,20 +11,18 @@ type PropsType = {
 const MultipleRadioGroup: React.FC<PropsType> = ({
   children,
   onChange,
-  selBtnIndex,
-  multSelectedIndex,
+  initBtnSelected,
   labelText,
   disabled,
 }) => {
-  //   const [selectedIndex, setSelectedIndex] = useState<number>(selBtnIndex);
+  const [selectedIndex, setSelectedIndex] = useState<number>(initBtnSelected);
 
-  //   useEffect(() => {
-  //     setSelectedIndex(selBtnIndex);
-  //   }, [selBtnIndex]);
+  useEffect(() => {
+    setSelectedIndex(initBtnSelected);
+  }, [initBtnSelected]);
 
-  function onClick(index: number) {
-    onChange && onChange(index);
-    setSelectedIndex(index);
+  function onSelect(btnIndex: number) {
+    setSelectedIndex(btnIndex);
   }
 
   return (
@@ -37,11 +34,11 @@ const MultipleRadioGroup: React.FC<PropsType> = ({
             key={index}
             buttonIndex={index}
             selBtnIndex={selectedIndex}
-            multSelectedIndex={multSelectedIndex}
-            onClick={(index) => onClick(index)}
+            onSelect={() => onSelect(index)}
+            onChange={onChange}
             disabled={disabled}
           >
-            {btn}
+            {btn.props.children}
           </MultOption>
         ))}
       </div>
@@ -54,27 +51,34 @@ export default MultipleRadioGroup;
 type TMultOptionProps = {
   buttonIndex: number;
   selBtnIndex: number;
-  multSelectedIndex: number;
-  onClick: (btnIndex: number, multSelIndex: number) => void;
-  children: Array<React.ReactNode>;
+  initMultSelected?: number;
+  onSelect: (btnIndex: number) => void;
+  onChange?: (selectedIndex: number, optionSelected: number) => void;
+  children: Array<React.ReactElement>;
   disabled: boolean;
 };
 
 const MultOption: React.FC<TMultOptionProps> = ({
   buttonIndex,
   selBtnIndex,
-  multSelectedIndex,
-  onClick,
+  initMultSelected,
+  onSelect,
+  onChange,
   children,
   disabled,
 }) => {
-  const isSelected = buttonIndex === selBtnIndex;
+  const [isSelected, setIsSelected] = useState(buttonIndex === selBtnIndex);
 
-  let safeMultIndex = multSelectedIndex;
+  const [optionSelIndex, setOptionSelIndex] = useState(initMultSelected || 0);
 
-  if (safeMultIndex > children.length - 1)
-    safeMultIndex = safeMultIndex % children.length;
-  if (safeMultIndex < 0) safeMultIndex = 0;
+  useEffect(() => {
+    setIsSelected(buttonIndex === selBtnIndex);
+  }, [selBtnIndex]);
+
+  useEffect(() => {
+    console.log(onChange);
+    onChange && onChange(buttonIndex, optionSelIndex);
+  }, [selBtnIndex, optionSelIndex]);
 
   return (
     <div
@@ -85,9 +89,18 @@ const MultOption: React.FC<TMultOptionProps> = ({
           ? " text-c_scnd_int"
           : " text-c_scnd2"
       }`}
-      onClick={disabled ? () => {} : () => onClick(buttonIndex, safeMultIndex)}
+      onClick={
+        disabled
+          ? () => {}
+          : isSelected
+          ? () =>
+              setOptionSelIndex(
+                (multIndex) => (multIndex + 1) % children.length,
+              )
+          : () => onSelect(buttonIndex)
+      }
     >
-      {children[safeMultIndex]}
+      {children[optionSelIndex]}
     </div>
   );
 };

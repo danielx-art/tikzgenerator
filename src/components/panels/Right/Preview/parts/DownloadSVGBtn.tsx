@@ -49,8 +49,8 @@ async function downloadSvgAsPng(svgRef: React.RefObject<SVGSVGElement>, fileName
     return new Promise((resolve, reject) => {
         image.onload = () => {
             const canvas = document.createElement("canvas");
-            canvas.width = image.width;
-            canvas.height = image.height;
+            canvas.width = image.width*2;
+            canvas.height = image.height*2;
 
             const ctx = canvas.getContext("2d");
             if (!ctx) {
@@ -59,7 +59,7 @@ async function downloadSvgAsPng(svgRef: React.RefObject<SVGSVGElement>, fileName
                 return;
             }
 
-            ctx.drawImage(image, 0, 0);
+            ctx.drawImage(image, 0, 0, image.width*2, image.height*2);
             URL.revokeObjectURL(url);
 
             // Using toDataURL as a fallback method

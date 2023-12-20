@@ -39,7 +39,7 @@ const PreviewPanel = () => {
     let pointsWidth = maxX - minX;
     let pointsHeight = maxY - minY;
 
-    let padding = 0.5; //of the maximum dimension
+    let padding = 0.2; //of the maximum dimension
 
     if (pointsArr.length == 1 && pointsArr[0]) {
       pointsWidth = pointsArr[0].size * 2;

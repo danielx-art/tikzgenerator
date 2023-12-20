@@ -1,4 +1,6 @@
 import {
+  ANGLE_MARKS_TYPE,
+  DEFAULT_ANGLE_MARKS,
   DEFAULT_ANGLE_SIZE,
   DEFAULT_ANGLE_STYLE,
   DEFAULT_COLOR,
@@ -120,6 +122,7 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
     visible: true,
     size: DEFAULT_ANGLE_SIZE,
     dotstyle: DEFAULT_ANGLE_STYLE,
+    marks: DEFAULT_ANGLE_MARKS as ANGLE_MARKS_TYPE,
     color: DEFAULT_COLOR,
     selected: false,
   };
