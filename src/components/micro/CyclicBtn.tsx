@@ -21,7 +21,6 @@ const CyclicBtn: React.FC<PropsType> = ({
 
   const handleClick = () => {
     const newOption = Math.floor((optionSelected + 1) % children.length);
-    console.log(newOption); //debugg
     onChange && onChange(newOption);
     setOptionSelected(newOption);
   };
@@ -30,7 +29,7 @@ const CyclicBtn: React.FC<PropsType> = ({
     <>
       {
         <div
-          className={`flex h-fit flex-1 cursor-pointer select-none items-center rounded-full bg-c_base px-2 py-1 text-sm shadow transition duration-300 ${
+          className={`flex h-fit flex-1 cursor-pointer select-none flex-row items-center justify-center rounded-full bg-c_base px-2 py-1 text-sm shadow transition duration-300 ${
             disabled ? "text-c_scnd2 text-opacity-50" : " text-c_scnd2"
           } hover:text-c_scnd_int`}
           onClick={disabled ? () => {} : handleClick}

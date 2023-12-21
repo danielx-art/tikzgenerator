@@ -75,8 +75,8 @@ const AngDisplay: React.FC<AngDisplayProps> = ({
 
   return (
     <div className="h-6 w-6">
-      <svg className="grid h-full w-full items-center overflow-visible">
-        <g className="translate-y-[75%] scale-y-[-1]">
+      <svg className="grid h-full w-full items-center overflow-hidden">
+        <g className="translate-x-[10%] translate-y-[75%] scale-y-[-1]">
           <path
             stroke="currentColor"
             strokeWidth={strokeWidth}

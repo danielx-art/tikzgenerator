@@ -42,7 +42,7 @@ const AngleColorAndFill: React.FC<PropsType> = ({ angId }) => {
   };
 
   return (
-    <div className="flex flex-1 flex-row">
+    <div className="flex flex-1 flex-row gap-2">
       <EntityColorChanger entityId={angId} />
       <div>
         <CyclicBtn
