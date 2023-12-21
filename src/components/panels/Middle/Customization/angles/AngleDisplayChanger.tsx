@@ -13,7 +13,10 @@ type PropsType = {
 
 const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
   const store = useStore(myStore, (state) => state);
-  const thisAngle = useStore(myStore, (state) => angId && state.angles.get(angId));
+  const thisAngle = useStore(
+    myStore,
+    (state) => angId && state.angles.get(angId),
+  );
 
   const [selectedButton, setSelectedButton] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<number>(0);
@@ -28,9 +31,10 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
       setSelectedButton(0);
       setSelectedOption(0);
     }
-  }, [angId, store, store?.angles]);
+  }, [store, store?.angles, thisAngle]);
 
-  const parseMarks = (marks: ANGLE_MARKS_TYPE): [number, number] => {
+  const parseMarks = (marks?: ANGLE_MARKS_TYPE): [number, number] => {
+    if (!marks) return [0, 0];
     const parts = marks.split("-");
     const btnIndex = parts[0] === "marks" ? 0 : 1;
     const optionIndex = parseInt(parts[1]!, 10);
@@ -40,8 +44,8 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
   const handleDisplayChange = (btnIndex: number, optionSel: number) => {
     if (!angId || getKindById(angId) != "angle" || !store) return;
     const updatedAngles = new Map(store.angles);
-    thisAngle
-    if(!thisAngle) return;
+    thisAngle;
+    if (!thisAngle) return;
     const possibleMarks = ["marks", "doubles"];
     const newMark = possibleMarks[btnIndex]
       ? `${possibleMarks[btnIndex]}-${optionSel}`
@@ -53,29 +57,17 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
     store.setAngles(updatedAngles);
   };
 
-  const initialButtonAndOption = (
-    angleMarks?: ANGLE_MARKS_TYPE,
-  ): [number, number] => {
-    if(!angleMarks) return [0,0];
-    const parts = angleMarks.split("-");
-    const btnIndex = parts[0] === "marks" ? 0 : 1;
-    const optionIndex = parseInt(parts[1]!, 10);
-    return [btnIndex, optionIndex];
-  };
-
-  angId ? console.log("AngleDisplayChager going initial: "+initialButtonAndOption(store?.angles?.get(angId)?.marks)) : null; //debugg
-
   return (
     <div className={`flex flex-row flex-nowrap gap-2`}>
       <div className="grid items-center">Destaques: </div>
       <div className="flex w-full flex-row">
         {angId && store && store.angles.get(angId) && (
-           <MultipleRadioGroup
-           onChange={handleDisplayChange}
-           initBtnSelected={selectedButton}
-           initOptionSelected={selectedOption}
-           disabled={!angId}
-         >
+          <MultipleRadioGroup
+            onChange={handleDisplayChange}
+            initBtnSelected={selectedButton}
+            initOptionSelected={selectedOption}
+            disabled={!angId}
+          >
             <div key="angle_marks_changer_0">
               <AngDisplay numMarks={0} />
               <AngDisplay numMarks={1} />
