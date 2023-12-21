@@ -5,6 +5,7 @@ import { TangId, Tangle } from "public/entidades";
 import MultipleRadioGroup from "import/components/micro/MultipleRadioGroup";
 import { vec } from "import/utils/math/vetores";
 import { ANGLE_MARKS, ANGLE_MARKS_TYPE } from "public/generalConfigs";
+import { useEffect, useState } from "react";
 
 type PropsType = {
   angId: TangId | undefined;
@@ -12,52 +13,83 @@ type PropsType = {
 
 const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
   const store = useStore(myStore, (state) => state);
+  const thisAngle = useStore(myStore, (state) => angId && state.angles.get(angId));
+
+  const [selectedButton, setSelectedButton] = useState<number>(0);
+  const [selectedOption, setSelectedOption] = useState<number>(0);
+
+  useEffect(() => {
+    if (angId && store && thisAngle) {
+      const angleMarks = thisAngle.marks;
+      const [btnIndex, optionIndex] = parseMarks(angleMarks);
+      setSelectedButton(btnIndex);
+      setSelectedOption(optionIndex);
+    } else {
+      setSelectedButton(0);
+      setSelectedOption(0);
+    }
+  }, [angId, store, store?.angles]);
+
+  const parseMarks = (marks: ANGLE_MARKS_TYPE): [number, number] => {
+    const parts = marks.split("-");
+    const btnIndex = parts[0] === "marks" ? 0 : 1;
+    const optionIndex = parseInt(parts[1]!, 10);
+    return [btnIndex, optionIndex];
+  };
 
   const handleDisplayChange = (btnIndex: number, optionSel: number) => {
     if (!angId || getKindById(angId) != "angle" || !store) return;
     const updatedAngles = new Map(store.angles);
-    const angle = store.angles.get(angId) as Tangle;
+    thisAngle
+    if(!thisAngle) return;
     const possibleMarks = ["marks", "doubles"];
-    const newMark = possibleMarks[btnIndex] ? `${possibleMarks[btnIndex]}-${optionSel}` : "marks-0";
+    const newMark = possibleMarks[btnIndex]
+      ? `${possibleMarks[btnIndex]}-${optionSel}`
+      : "marks-0";
     updatedAngles.set(angId, {
-      ...angle,
+      ...thisAngle,
       marks: newMark as ANGLE_MARKS_TYPE,
     });
     store.setAngles(updatedAngles);
   };
 
-  const findInitButtonSelected = (angleMarks: ANGLE_MARKS_TYPE): 0 | 1 => {
-    if(angleMarks.includes("marks")) return 0;
-    if(angleMarks.includes("doubles")) return 1;
-    return 0;
-  }
+  const initialButtonAndOption = (
+    angleMarks?: ANGLE_MARKS_TYPE,
+  ): [number, number] => {
+    if(!angleMarks) return [0,0];
+    const parts = angleMarks.split("-");
+    const btnIndex = parts[0] === "marks" ? 0 : 1;
+    const optionIndex = parseInt(parts[1]!, 10);
+    return [btnIndex, optionIndex];
+  };
+
+  angId ? console.log("AngleDisplayChager going initial: "+initialButtonAndOption(store?.angles?.get(angId)?.marks)) : null; //debugg
 
   return (
     <div className={`flex flex-row flex-nowrap gap-2`}>
       <div className="grid items-center">Destaques: </div>
       <div className="flex w-full flex-row">
-        <MultipleRadioGroup
-          onChange={(btnIndex, optionSel) => handleDisplayChange(btnIndex, optionSel)}
-          initBtnSelected={
-            angId && store && store.angles.get(angId)
-              ? findInitButtonSelected(store.angles.get(angId)!.marks)
-              : 0
-          }
-          disabled={angId ? false : true}
-        >
-          <div key="angle_marks_changer_0">
-            <AngDisplay numMarks={0} />
-            <AngDisplay numMarks={1} />
-            <AngDisplay numMarks={2} />
-            <AngDisplay numMarks={3} />
-          </div>
-          <div key="angle_marks_changer_1">
-            <AngDisplay numDoubles={0} />
-            <AngDisplay numDoubles={1} />
-            <AngDisplay numDoubles={2} />
-            <AngDisplay numDoubles={3} />
-          </div>
-        </MultipleRadioGroup>
+        {angId && store && store.angles.get(angId) && (
+           <MultipleRadioGroup
+           onChange={handleDisplayChange}
+           initBtnSelected={selectedButton}
+           initOptionSelected={selectedOption}
+           disabled={!angId}
+         >
+            <div key="angle_marks_changer_0">
+              <AngDisplay numMarks={0} />
+              <AngDisplay numMarks={1} />
+              <AngDisplay numMarks={2} />
+              <AngDisplay numMarks={3} />
+            </div>
+            <div key="angle_marks_changer_1">
+              <AngDisplay numDoubles={0} />
+              <AngDisplay numDoubles={1} />
+              <AngDisplay numDoubles={2} />
+              <AngDisplay numDoubles={3} />
+            </div>
+          </MultipleRadioGroup>
+        )}
       </div>
     </div>
   );
@@ -103,7 +135,15 @@ const AngDisplay: React.FC<AngDisplayProps> = ({
         .rotate((ang * (i + 1)) / numDiv);
       dMarks += ` M ${initialPoint.x} ${initialPoint.y} L ${finalPoint.x} ${finalPoint.y} `;
     }
-    marks = <path stroke="currentColor" strokeWidth={strokeWidth} fill="none" d={dMarks} />;
+    marks = (
+      <path
+        stroke="currentColor"
+        strokeWidth={strokeWidth}
+        fill="none"
+        d={dMarks}
+        key={`angdisplaymarks`}
+      />
+    );
   }
 
   if (numDoubles > 0) {
@@ -114,13 +154,21 @@ const AngDisplay: React.FC<AngDisplayProps> = ({
       const finalPoint = vec().copy(start).setMag(thisRad).rotate(ang);
       dDoubles += ` M ${initialPoint.x} ${initialPoint.y} A ${r} ${r} 0 0 1 ${finalPoint.x} ${finalPoint.y}  `;
     }
-    doubles = <path stroke="currentColor" strokeWidth={strokeWidth} fill="none" d={dDoubles} />;
+    doubles = (
+      <path
+        stroke="currentColor"
+        strokeWidth={strokeWidth}
+        fill="none"
+        d={dDoubles}
+        key={`angdisplaydoubles`}
+      />
+    );
   }
 
   return (
     <div className="h-6 w-6">
-      <svg className="w-full h-full overflow-visible grid items-center">
-        <g className="scale-y-[-1] translate-y-[75%]">
+      <svg className="grid h-full w-full items-center overflow-visible">
+        <g className="translate-y-[75%] scale-y-[-1]">
           <path
             stroke="currentColor"
             strokeWidth={strokeWidth}

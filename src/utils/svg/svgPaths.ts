@@ -66,7 +66,7 @@ export const getAnglePath = (angle: Tangle) => {
 
     return d;
   } else {
-    let d = ` M 0 0 L ${start.x} ${start.y} A ${angle.size} ${angle.size} 0 0 ${sweepFlag} ${end.x} ${end.y} Z `;
+    let d = ` M ${angle.b.coords.x} ${angle.b.coords.y} L ${start.x} ${start.y} A ${angle.size} ${angle.size} 0 0 ${sweepFlag} ${end.x} ${end.y} Z `;
 
     const angleMark = angle.marks
 
@@ -80,13 +80,13 @@ export const getAnglePath = (angle: Tangle) => {
         const numDiv = numMarks + 1;
         for (let i = 0; i < numMarks; i++) {
           const initialPoint = vec()
-            .copy(start)
+            .copy(startVector)
             .setMag(r - markLen / 2)
-            .rotate((ang * (i + 1)) / numDiv);
+            .rotate((ang * (i + 1)) / numDiv).add(angle.b.coords);
           const finalPoint = vec()
-            .copy(start)
+            .copy(startVector)
             .setMag(r + markLen / 2)
-            .rotate((ang * (i + 1)) / numDiv);
+            .rotate((ang * (i + 1)) / numDiv).add(angle.b.coords);
           dMarks += ` M ${initialPoint.x} ${initialPoint.y} L ${finalPoint.x} ${finalPoint.y} `;
         }
         d += dMarks;
@@ -98,8 +98,8 @@ export const getAnglePath = (angle: Tangle) => {
         const ang = angle.valor;
         for (let i = 0; i < numDoubles; i++) {
           const thisRad = r - doubleDist * (i + 1);
-          const initialPoint = vec().copy(start).setMag(thisRad);
-          const finalPoint = vec().copy(start).setMag(thisRad).rotate(ang);
+          const initialPoint = vec().copy(startVector).setMag(thisRad).add(angle.b.coords);
+          const finalPoint = vec().copy(startVector).setMag(thisRad).rotate(ang).add(angle.b.coords);
           dDoubles += ` M ${initialPoint.x} ${initialPoint.y} A ${r} ${r} 0 0 1 ${finalPoint.x} ${finalPoint.y}  `;
         }
         d += dDoubles;
