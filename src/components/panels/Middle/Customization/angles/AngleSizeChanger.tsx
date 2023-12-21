@@ -1,47 +1,49 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import type { TsegId, Tsegment } from "public/entidades";
+import type { TangId, Tangle } from "public/entidades";
 import { DEFAULT_LINE_WIDTH } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
-  segId: TsegId | undefined;
+  angId: TangId | undefined;
 };
 
-const AngleSizeChanger: React.FC<PropsType> = ({ segId }) => {
+const AngleSizeChanger: React.FC<PropsType> = ({ angId }) => {
   const [size, setSize] = useState(`${DEFAULT_LINE_WIDTH}`);
   const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    if (!store || !segId) {
+    if (!store || !angId) {
       setDisabled(true);
       return;
     }
-    const seg = store.segments.get(segId) as Tsegment;
-    setSize(`${seg.width}`);
+    const ang = store.angles.get(angId);
+    if (!ang) return;
+    setSize(`${ang.size}`);
     setDisabled(false);
-  }, [segId, store]);
+  }, [angId, store]);
 
   useEffect(() => {
-    if (!segId || !store || disabled) return;
-    const updatedSegments = new Map(store.segments);
+    if (!angId || !store || disabled) return;
+    const updatedAngles = new Map(store.angles);
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
-    const seg = store.segments.get(segId)!;
-    updatedSegments.set(segId, { ...seg, width: newSize });
-    store.setSegments(updatedSegments);
+    const ang = store.angles.get(angId);
+    if (!ang) return;
+    updatedAngles.set(angId, { ...ang, size: newSize });
+    store.setAngles(updatedAngles);
   }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!segId || !store || disabled) return;
+    if (!angId || !store || disabled) return;
     setSize(event.target.value);
   };
 
   return (
     <div className={`flex flex-row flex-nowrap gap-2`}>
-      <div className="grid items-center">Espessura:</div>
+      <div className="grid items-center">Tamanho:</div>
       <input
         type="number"
         name="sizeInput"

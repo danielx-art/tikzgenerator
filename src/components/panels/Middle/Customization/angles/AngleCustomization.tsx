@@ -16,7 +16,7 @@ const AngleCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
       }`}
     >
       <AngleDisplayChanger angId={thisEntityId} />
-      {/* <AngleSizeChanger angId={thisEntityId} /> */}
+      <AngleSizeChanger angId={thisEntityId} />
       <EntityColorChanger entityId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
     </div>
