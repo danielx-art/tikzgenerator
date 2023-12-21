@@ -97,7 +97,102 @@ const PreviewPanel = () => {
           preserveAspectRatio="xMidYMid"
           className="border-2 border-c_disabled2 border-opacity-10"
           ref={svgRef}
+          xmlns="http://www.w3.org/2000/svg"
         >
+          <defs>
+            <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+              <feOffset dx="4" dy="4" result="offsetblur" />
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.5" />
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            <filter id="shadow" width="1.5" height="1.5" x="-.25" y="-.25">
+              <feGaussianBlur
+                in="SourceAlpha"
+                stdDeviation="2.5"
+                result="blur"
+              />
+              <feColorMatrix
+                result="bluralpha"
+                type="matrix"
+                values="1 0 0 0   0  0 1 0 0   0  0 0 1 0   0  0 0 0 1 0 "
+              />
+              <feOffset in="bluralpha" dx="0.1" dy="0.1" result="offsetBlur" />
+              <feMerge>
+                <feMergeNode in="offsetBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            <filter
+              id="purple-glow"
+              x="-50%"
+              y="-50%"
+              width="200%"
+              height="200%"
+            >
+              <feFlood
+                result="flood"
+                flood-color="#7d26cd"
+                flood-opacity="1"
+              ></feFlood>
+              <feComposite
+                in="flood"
+                result="mask"
+                in2="SourceGraphic"
+                operator="in"
+              ></feComposite>
+              <feMorphology
+                in="mask"
+                result="dilated"
+                operator="dilate"
+                radius="2"
+              ></feMorphology>
+              <feGaussianBlur
+                in="dilated"
+                result="blurred"
+                stdDeviation="5"
+              ></feGaussianBlur>
+              <feComposite
+                in="blurred"
+                in2="SourceGraphic"
+                operator="arithmetic"
+                k2="1"
+                k3="-1"
+                result="nocombine"
+              ></feComposite>
+              <feMerge>
+                <feMergeNode in="nocombine"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+              </feMerge>
+            </filter>
+
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="0.2" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            <filter id="black-glow">
+              <feColorMatrix
+                type="matrix"
+                values="0 0 0 0   0  0 0 0 0   0  0 0 0 0   0  0 0 0 1 0"
+              />
+              <feGaussianBlur stdDeviation="1" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
           <g transform={`scale(1, -1)`}>
             <SegmentsPreview />
             <AnglesPreview />

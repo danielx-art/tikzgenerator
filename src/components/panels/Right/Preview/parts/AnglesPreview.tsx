@@ -16,11 +16,13 @@ const AnglesPreview: React.FC = () => {
           key={"svg_path_" + angle.id}
           d={getAnglePath(angle)}
           stroke={angle.selected ? "#ff817a" : angle.color}
-          strokeWidth="0.05"
+          strokeWidth="0.1"
           fill={angle.dotstyle === 0 ? "none" : angle.color}
           fillOpacity={0.5}
           onClick={() => toggleSelection(angle.id)}
           className="cursor-pointer"
+          filter={angle.selected ? "url(#purple-glow)" : "none"}
+          //filter="url(#shadow2)"
         />
       ))}
     </>
