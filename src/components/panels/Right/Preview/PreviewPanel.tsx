@@ -139,7 +139,7 @@ const PreviewPanel = () => {
             >
               <feFlood
                 result="flood"
-                flood-color="#7d26cd"
+                flood-color="#ff817a"
                 flood-opacity="1"
               ></feFlood>
               <feComposite
@@ -152,12 +152,12 @@ const PreviewPanel = () => {
                 in="mask"
                 result="dilated"
                 operator="dilate"
-                radius="2"
+                radius="0.02"
               ></feMorphology>
               <feGaussianBlur
                 in="dilated"
                 result="blurred"
-                stdDeviation="5"
+                stdDeviation="0.05"
               ></feGaussianBlur>
               <feComposite
                 in="blurred"
@@ -173,8 +173,8 @@ const PreviewPanel = () => {
               </feMerge>
             </filter>
 
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="0.2" result="coloredBlur" />
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="0.05" result="coloredBlur" />
               <feMerge>
                 <feMergeNode in="coloredBlur" />
                 <feMergeNode in="SourceGraphic" />
@@ -192,10 +192,14 @@ const PreviewPanel = () => {
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
+
+            <filter id="fatten" x="-10%" y="-10%" width="120%" height="120%">
+              <feMorphology operator="dilate" radius="0.02" />
+            </filter>
           </defs>
           <g transform={`scale(1, -1)`}>
-            <SegmentsPreview />
             <AnglesPreview />
+            <SegmentsPreview />
             <PointsPreview />
             <TagsPreview />
           </g>
