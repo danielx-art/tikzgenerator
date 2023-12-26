@@ -13,11 +13,11 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 
 # Trabalho em progresso:
 
-- Criação de customização para segmentos e ângulos:
-  1.  Estilo de traço
-  2.  Cor do traço
-  3.  [ ângulos ] preenchimento
-  4.  [ ângulos ] refinar posicionamento da etiqueta
+~~- Criação de customização para segmentos e ângulos:~~
+  1. ~~ Estilo de traço ~~
+  2. ~~ Cor do traço ~~
+  3. ~~ [ ângulos ] preenchimento ~~
+  4. ~~ [ ângulos ] refinar posicionamento da etiqueta ~~
 - ~~Customização de cor para ponto~~
 - Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana
 - Selecionado um ângulo: criar bissetriz

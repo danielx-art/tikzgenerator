@@ -1,7 +1,9 @@
+import Switcher from "import/components/micro/Switcher";
+import { roundAndDisplayNicely } from "import/utils/math/misc";
 import { vec } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { getSelected } from "import/utils/storeHelpers/miscEntity";
+import { findTagByEntityId, getSelected } from "import/utils/storeHelpers/miscEntity";
 import { Tpoint, angulo, ponto, segmento } from "public/entidades";
 import { useEffect, useState } from "react";
 
@@ -56,13 +58,22 @@ const PointOrthoProjection: React.FC = () => {
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
+      {!thisPoints && <div>Selecione so menos três pontos (os três primeiros seráo usados)</div>}
       <button
         onClick={handleClick}
         className="rounded-sm bg-c_interact p-2 text-c_base shadow-md hover:bg-c_high1"
         disabled={thisPoints ? false : true}
       >
-        Criar ponto
+        Projetar ponto 
+        {store && thisPoints && 
+        <>{findTagByEntityId(thisPoints[0].id, store.tags) ? findTagByEntityId(thisPoints[0].id, store.tags)?.value : `(${roundAndDisplayNicely(thisPoints[0].coords.x)};${roundAndDisplayNicely(thisPoints[0].coords.y)})`} 
+        na direção 
+        {findTagByEntityId(thisPoints[1].id, store.tags) ? findTagByEntityId(thisPoints[1].id, store.tags)?.value : `(${roundAndDisplayNicely(thisPoints[1].coords.x)};${roundAndDisplayNicely(thisPoints[1].coords.y)})`}
+        --
+        {findTagByEntityId(thisPoints[2].id, store.tags) ? findTagByEntityId(thisPoints[2].id, store.tags)?.value : `(${roundAndDisplayNicely(thisPoints[2].coords.x)};${roundAndDisplayNicely(thisPoints[2].coords.y)})`}
+        </>}
       </button>
+      <Switcher isChecked={makeHeight} setIsChecked={setMakeHeight} messageOne="Criar altura" />
     </div>
   );
 };

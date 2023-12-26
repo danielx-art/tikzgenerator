@@ -4,7 +4,7 @@ type PropsType = {
   isChecked: boolean;
   setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
   messageOne: string;
-  messageTwo: string;
+  messageTwo?: string;
   onChange?: () => void;
 };
 
@@ -44,13 +44,13 @@ const Switcher: React.FC<PropsType> = ({
           ></div>
         </div>
       </div>
-      <div
+      {messageTwo && <div
         className={`${
           !isChecked ? "text-c_scnd_int" : "text-c_faded"
         } whitespace-nowrap px-2 text-sm`}
       >
         {messageTwo}
-      </div>
+      </div>}
     </label>
   );
 };
