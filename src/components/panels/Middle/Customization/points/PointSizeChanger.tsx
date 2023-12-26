@@ -19,7 +19,8 @@ const PointSizeChanger: React.FC<PropsType> = ({ pointId }) => {
       setDisabled(true);
       return;
     }
-    const point = store.points.get(pointId) as Tpoint;
+    const point = store.points.get(pointId)
+    if(!point) return;
     if (point.dotstyle !== 0) {
       setDisabled(false);
     } else {
