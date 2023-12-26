@@ -8,8 +8,11 @@ type PropsType = {
   thisTagId: TtagId | undefined;
 };
 
+const PRESET_DIRECTIONS  = 12;
+
 const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
   const [direction, setDirection] = useState(vec(0, 1));
+  const [size, setSize] = useState(1);
   const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);
@@ -21,12 +24,12 @@ const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
 
   function getRoundedCounterFromDir(apos: vector) {
     if (apos.mag() == 0) {
-      return 8;
+      return PRESET_DIRECTIONS;
     }
     let aposHeading = Math.round((apos.heading() * 180) / Math.PI);
     aposHeading < 0 ? (aposHeading += 360) : null;
-    let updatedCounter = aposHeading / 45 - 2;
-    if (updatedCounter < 0) updatedCounter += 8;
+    let updatedCounter = aposHeading / (360/PRESET_DIRECTIONS) - (90/(360/PRESET_DIRECTIONS));
+    if (updatedCounter < 0) updatedCounter += PRESET_DIRECTIONS;
     return updatedCounter;
   }
 
@@ -43,17 +46,31 @@ const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
     setDisabled(false);
     //recreate the vector from zustand:
     setDirection(vec(thisTag.pos.x, thisTag.pos.y));
+    setSize(vec(thisTag.pos.x, thisTag.pos.y).mag())
   }, [thisTagId, store]);
 
   const handleDirectionChange = () => {
     if (!store || !thisTagId || disabled) return;
-    const thisTag = store.tags.get(thisTagId)!;
-    const newCounter = (getRoundedCounterFromTag(thisTag) + 1) % 9;
-    const updatedDir = vec(0, 1).rotate((newCounter * Math.PI) / 4);
+    const thisTag = store.tags.get(thisTagId);
+    if(!thisTag) return;
+    const newCounter = (getRoundedCounterFromTag(thisTag) + 1) % (PRESET_DIRECTIONS+1);
+    const updatedDir = vec(0, 1).rotate((newCounter * 2*Math.PI) / PRESET_DIRECTIONS).setMag(size);
     const updatedTags = new Map(store.tags);
     updatedTags.set(thisTagId, { ...thisTag, pos: updatedDir });
     store.setTags(updatedTags);
     setDirection(updatedDir);
+  };
+
+  const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!store || !thisTagId || disabled) return;
+    const thisTag = store.tags.get(thisTagId);
+    if(!thisTag) return;
+    const updatedSize = event.target.value ? parseFloat(event.target.value) : size;
+    const updatedDir = vec().copy(vec(thisTag.pos.x, thisTag.pos.y)).setMag(updatedSize);
+    const updatedTags = new Map(store.tags);
+    updatedTags.set(thisTagId, { ...thisTag, pos: updatedDir });
+    store.setTags(updatedTags);
+    setSize(updatedSize);
   };
 
   return (
@@ -72,7 +89,7 @@ const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
           stroke="currentColor"
           className={`h-6 w-6`}
           style={{
-            rotate: `${-45 * getRoundedCounterFromDir(direction) + 180}deg`,
+            rotate: `${-(360/PRESET_DIRECTIONS) * getRoundedCounterFromDir(direction) + 180}deg`,
           }}
         >
           {getRoundedCounterFromDir(direction) != 8 ? (
@@ -89,6 +106,16 @@ const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
           )}
         </svg>
       </button>
+      <div className="grid items-center">Distância:</div>
+      <input
+        type="number"
+        name="sizeInput"
+        step={0.1}
+        onChange={handleSizeChange}
+        disabled={disabled}
+        className="inline w-16 bg-c_base p-1 text-center focus:underline focus:outline-none"
+        value={size}
+      />
     </div>
   );
 };

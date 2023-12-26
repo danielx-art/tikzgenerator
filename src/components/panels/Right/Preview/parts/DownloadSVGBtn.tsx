@@ -1,3 +1,5 @@
+import { RES_SVG_FACTOR } from "public/generalConfigs";
+
 type PropsType = {
   svgRef: React.RefObject<SVGSVGElement>;
 };
@@ -49,8 +51,8 @@ async function downloadSvgAsPng(svgRef: React.RefObject<SVGSVGElement>, fileName
     return new Promise((resolve, reject) => {
         image.onload = () => {
             const canvas = document.createElement("canvas");
-            canvas.width = image.width*2;
-            canvas.height = image.height*2;
+            canvas.width = image.width*RES_SVG_FACTOR;
+            canvas.height = image.height*RES_SVG_FACTOR;
 
             const ctx = canvas.getContext("2d");
             if (!ctx) {
@@ -59,7 +61,7 @@ async function downloadSvgAsPng(svgRef: React.RefObject<SVGSVGElement>, fileName
                 return;
             }
 
-            ctx.drawImage(image, 0, 0, image.width*2, image.height*2);
+            ctx.drawImage(image, 0, 0, image.width*RES_SVG_FACTOR, image.height*RES_SVG_FACTOR);
             URL.revokeObjectURL(url);
 
             // Using toDataURL as a fallback method

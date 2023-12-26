@@ -16,6 +16,7 @@ export type ANGLE_MARKS_TYPE = | 'marks-0' | 'marks-1' | 'marks-2' | 'marks-3'
 | 'doubles-0' | 'doubles-1' | 'doubles-2' | 'doubles-3';
 export const ANGLE_MARKS = ["marks", "doubles"].flatMap(word => 
     Array.from({ length: 4 }, (_, i) => `${word}-${i}`)) as ANGLE_MARKS_TYPE[];
+export const RES_SVG_FACTOR = 10;
 
 
 
