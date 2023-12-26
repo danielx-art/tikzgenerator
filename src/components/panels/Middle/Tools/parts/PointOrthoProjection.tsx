@@ -36,7 +36,7 @@ const PointOrthoProjection: React.FC = () => {
     const bc = vec().copy(c.coords).sub(vec().copy(b.coords));
     const bcversor = vec().copy(bc).setMag(1);
     const baprojmag = vec().copy(ba).dot(bcversor);
-    const baproj = vec().copy(ba).setMag(baprojmag);
+    const baproj = vec().copy(bc).setMag(baprojmag);
     const newPointCoords = vec().copy(baproj).add(vec().copy(b.coords));
     const newId = store.generateId("point");
     const newPoint = ponto(newPointCoords, newId, store.selectedGroup);
@@ -66,11 +66,11 @@ const PointOrthoProjection: React.FC = () => {
       >
         Projetar ponto 
         {store && thisPoints && 
-        <>{findTagByEntityId(thisPoints[0].id, store.tags) ? findTagByEntityId(thisPoints[0].id, store.tags)?.value : `(${roundAndDisplayNicely(thisPoints[0].coords.x)};${roundAndDisplayNicely(thisPoints[0].coords.y)})`} 
-        na direção 
-        {findTagByEntityId(thisPoints[1].id, store.tags) ? findTagByEntityId(thisPoints[1].id, store.tags)?.value : `(${roundAndDisplayNicely(thisPoints[1].coords.x)};${roundAndDisplayNicely(thisPoints[1].coords.y)})`}
+        <>{findTagByEntityId(thisPoints[0].id, store.tags) ? ` ${findTagByEntityId(thisPoints[0].id, store.tags)?.value} ` : ` (${roundAndDisplayNicely(thisPoints[0].coords.x)};${roundAndDisplayNicely(thisPoints[0].coords.y)}) `} 
+         na direção 
+        {findTagByEntityId(thisPoints[1].id, store.tags) ? ` ${findTagByEntityId(thisPoints[1].id, store.tags)?.value} ` : ` (${roundAndDisplayNicely(thisPoints[1].coords.x)};${roundAndDisplayNicely(thisPoints[1].coords.y)}) `}
         --
-        {findTagByEntityId(thisPoints[2].id, store.tags) ? findTagByEntityId(thisPoints[2].id, store.tags)?.value : `(${roundAndDisplayNicely(thisPoints[2].coords.x)};${roundAndDisplayNicely(thisPoints[2].coords.y)})`}
+        {findTagByEntityId(thisPoints[2].id, store.tags) ? ` ${findTagByEntityId(thisPoints[2].id, store.tags)?.value} `  : ` (${roundAndDisplayNicely(thisPoints[2].coords.x)};${roundAndDisplayNicely(thisPoints[2].coords.y)}) `}
         </>}
       </button>
       <Switcher isChecked={makeHeight} setIsChecked={setMakeHeight} messageOne="Criar altura" />
