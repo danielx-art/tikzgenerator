@@ -3,6 +3,7 @@ import TagCustomization from "../tags/TagCustomization";
 import EntityColorChanger from "../EntityColorChanger";
 import AngleDisplayChanger from "./AngleDisplayChanger";
 import AngleSizeChanger from "./AngleSizeChanger";
+import AngleColorAndFill from "./AngleColorAndFill";
 
 type PropsType = {
   thisEntityId: TangId | undefined;
@@ -16,8 +17,8 @@ const AngleCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
       }`}
     >
       <AngleDisplayChanger angId={thisEntityId} />
-      {/* <AngleSizeChanger angId={thisEntityId} /> */}
-      <EntityColorChanger entityId={thisEntityId} />
+      <AngleSizeChanger angId={thisEntityId} />
+      <AngleColorAndFill angId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
     </div>
   );

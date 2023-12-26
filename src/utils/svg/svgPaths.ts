@@ -68,39 +68,53 @@ export const getAnglePath = (angle: Tangle) => {
   } else {
     let d = ` M ${angle.b.coords.x} ${angle.b.coords.y} L ${start.x} ${start.y} A ${angle.size} ${angle.size} 0 0 ${sweepFlag} ${end.x} ${end.y} Z `;
 
-    const angleMark = angle.marks
+    const angleMark = angle.marks;
 
-    if(angle.marks.split("-")[1] !== "0") {
-      if(angle.marks.includes("marks")){
+    if (angle.marks.split("-")[1] !== "0") {
+      if (angle.marks.includes("marks")) {
         let dMarks = ``;
         const numMarks = parseInt(angle.marks.split("-")[1] as `${number}`);
-        const markLen = angle.size/2;
+        const markLen = angle.size / 2;
         const r = angle.size;
         const ang = angle.valor;
         const numDiv = numMarks + 1;
         for (let i = 0; i < numMarks; i++) {
+          const rotateWise = sweepFlag === 0 ? -1 : 1;
+          const toRotate = (rotateWise * ang * (i + 1)) / numDiv;
+
           const initialPoint = vec()
             .copy(startVector)
+            .rotate(toRotate)
             .setMag(r - markLen / 2)
-            .rotate((ang * (i + 1)) / numDiv).add(angle.b.coords);
+            .add(angle.b.coords);
           const finalPoint = vec()
             .copy(startVector)
             .setMag(r + markLen / 2)
-            .rotate((ang * (i + 1)) / numDiv).add(angle.b.coords);
+            .rotate(toRotate)
+            .add(angle.b.coords);
           dMarks += ` M ${initialPoint.x} ${initialPoint.y} L ${finalPoint.x} ${finalPoint.y} `;
         }
         d += dMarks;
       } else if (angle.marks.includes("doubles")) {
         let dDoubles = ``;
         const numDoubles = parseInt(angle.marks.split("-")[1] as `${number}`);
-        const doubleDist = angle.size/5;
+        const doubleDist = angle.size / 5;
         const r = angle.size;
         const ang = angle.valor;
+        const rotateWise = sweepFlag === 0 ? -1 : 1;
+        const toRotate = rotateWise * ang;
         for (let i = 0; i < numDoubles; i++) {
           const thisRad = r - doubleDist * (i + 1);
-          const initialPoint = vec().copy(startVector).setMag(thisRad).add(angle.b.coords);
-          const finalPoint = vec().copy(startVector).setMag(thisRad).rotate(ang).add(angle.b.coords);
-          dDoubles += ` M ${initialPoint.x} ${initialPoint.y} A ${r} ${r} 0 0 1 ${finalPoint.x} ${finalPoint.y}  `;
+          const initialPoint = vec()
+            .copy(startVector)
+            .setMag(thisRad)
+            .add(angle.b.coords);
+          const finalPoint = vec()
+            .copy(startVector)
+            .setMag(thisRad)
+            .rotate(toRotate)
+            .add(angle.b.coords);
+          dDoubles += ` M ${initialPoint.x} ${initialPoint.y} A ${thisRad} ${thisRad} 0 0 ${sweepFlag} ${finalPoint.x} ${finalPoint.y}  `;
         }
         d += dDoubles;
       }

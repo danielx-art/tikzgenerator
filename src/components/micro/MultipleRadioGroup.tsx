@@ -17,21 +17,23 @@ const MultipleRadioGroup: React.FC<PropsType> = ({
   labelText,
   disabled,
 }) => {
-
-  console.log(`Entering MultipleRadioGroup: ${initBtnSelected} ${initOptionSelected}`); //debugg
-
-  const [selectedIndex, setSelectedIndex] = useState<number>(initBtnSelected);
-
-  console.log(`MultipleRadioGroup btn being set: ${selectedIndex} `); //debugg
-
+  const [btnSelected, setBtnSelected] = useState(initBtnSelected);
+  const [optionSelected, setOptionsSelected] = useState(initOptionSelected);
 
   useEffect(() => {
-    setSelectedIndex(initBtnSelected);
-  }, [initBtnSelected]);
+    if (initBtnSelected != btnSelected) setBtnSelected(initBtnSelected);
+    if (initOptionSelected != optionSelected)
+      setOptionsSelected(initOptionSelected);
+  }, [initBtnSelected, initOptionSelected]);
 
-  function onSelect(btnIndex: number) {
-    setSelectedIndex(btnIndex);
-  }
+  const handleSelect = (newbtn: number, newopt: number) => {
+    onChange && onChange(newbtn, newopt);
+    if (btnSelected === newbtn) {
+      setOptionsSelected(newopt);
+    } else {
+      setBtnSelected(newbtn);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">
@@ -41,10 +43,9 @@ const MultipleRadioGroup: React.FC<PropsType> = ({
           <MultOption
             key={index}
             buttonIndex={index}
-            selBtnIndex={selectedIndex}
-            initOptionSelected={initOptionSelected}
-            onSelect={() => onSelect(index)}
-            onChange={onChange}
+            selBtnIndex={btnSelected}
+            optionSelected={optionSelected}
+            onSelect={handleSelect}
             disabled={disabled}
           >
             {btn.props.children}
@@ -60,9 +61,8 @@ export default MultipleRadioGroup;
 type TMultOptionProps = {
   buttonIndex: number;
   selBtnIndex: number;
-  initOptionSelected: number;
-  onSelect: (btnIndex: number) => void;
-  onChange?: (selectedIndex: number, optionSelected: number) => void;
+  optionSelected: number;
+  onSelect: (newBtnIndex: number, newOptIndex: number) => void;
   children: Array<React.ReactElement>;
   disabled: boolean;
 };
@@ -70,47 +70,37 @@ type TMultOptionProps = {
 const MultOption: React.FC<TMultOptionProps> = ({
   buttonIndex,
   selBtnIndex,
-  initOptionSelected,
+  optionSelected,
   onSelect,
-  onChange,
   children,
   disabled,
 }) => {
-  const [isSelected, setIsSelected] = useState(buttonIndex === selBtnIndex);
-  const [optionSelIndex, setOptionSelIndex] = useState<number>(initOptionSelected);
-
-  console.log(`Getting to MultOption: ${selBtnIndex} ${initOptionSelected}`); //debugg
-
-  useEffect(() => {
-    setIsSelected(buttonIndex === selBtnIndex);
-  }, [selBtnIndex]);
-
-  useEffect(() => {
-    onChange && onChange(buttonIndex, optionSelIndex);
-  }, [selBtnIndex, optionSelIndex]);
-
-  return (<>
-    {<div
-      className={`flex h-fit flex-1 cursor-pointer select-none items-center rounded-full bg-c_base px-2 py-1 text-sm shadow transition duration-300 ${
-        disabled
-          ? "text-c_scnd2 text-opacity-50"
-          : isSelected
-          ? " text-c_scnd_int"
-          : " text-c_scnd2"
-      }`}
-      onClick={
-        disabled
-          ? () => {}
-          : isSelected
-          ? () =>
-              setOptionSelIndex(
-                (multIndex) => (multIndex! + 1) % children.length,
-              )
-          : () => onSelect(buttonIndex)
+  return (
+    <>
+      {
+        <div
+          className={`flex h-fit flex-1 cursor-pointer select-none items-center rounded-full bg-c_base px-2 py-1 text-sm shadow transition duration-300 ${
+            disabled
+              ? "text-c_scnd2 text-opacity-50"
+              : buttonIndex === selBtnIndex
+              ? " text-c_scnd_int"
+              : " text-c_scnd2"
+          }`}
+          onClick={
+            disabled
+              ? () => {}
+              : () =>
+                  onSelect(
+                    buttonIndex,
+                    buttonIndex === selBtnIndex
+                      ? (optionSelected + 1) % children.length
+                      : optionSelected,
+                  )
+          }
+        >
+          {children[optionSelected]}
+        </div>
       }
-    >
-      {children[optionSelIndex]}
-    </div>
-    }
-    </>);
+    </>
+  );
 };

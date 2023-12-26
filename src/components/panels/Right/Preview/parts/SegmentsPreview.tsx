@@ -28,13 +28,14 @@ const SegmentsPreview: React.FC = () => {
         <path
           key={"svg_path_" + segment.id}
           d={getSegmentPath(segment)}
-          stroke={segment.selected ? "#ff817a" : segment.color}
+          stroke={segment.color}
           strokeLinecap="round"
           strokeWidth={segment.width / 100}
           fill="none"
           onClick={() => toggleSelection(segment.id)}
           className="cursor-pointer"
           strokeDasharray={getStrokeDasharray(segment.style)}
+          filter={segment.selected ? "url(#purple-glow)" : "none"}
         />
       ))}
     </>

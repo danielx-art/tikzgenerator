@@ -16,20 +16,11 @@ const PointsPreview: React.FC = () => {
         let fill = "none";
 
         if (point.dotstyle === 1) {
-          if (point.selected) {
-            stroke = "#ff817a";
-          } else {
-            stroke = point.color;
-          }
+          stroke = point.color;
           fill = "#f5f5f5";
         } else if (point.dotstyle === 2) {
-          if (point.selected) {
-            fill = "#ff817a";
-            stroke = "#ff817a";
-          } else {
-            fill = point.color;
-            stroke = point.color;
-          }
+          fill = point.color;
+          stroke = point.color;
         }
 
         return (
@@ -41,6 +32,7 @@ const PointsPreview: React.FC = () => {
             fill={fill}
             onClick={() => toggleSelection(point.id)}
             className="cursor-pointer"
+            filter={point.selected ? "url(#purple-glow)" : "none"}
           />
         );
       })}
