@@ -19,7 +19,8 @@ const SegmentSizeChanger: React.FC<PropsType> = ({ segId }) => {
       setDisabled(true);
       return;
     }
-    const seg = store.segments.get(segId) as Tsegment;
+    const seg = store.segments.get(segId);
+    if(!seg) return;
     setSize(`${seg.width}`);
     setDisabled(false);
   }, [segId, store]);
