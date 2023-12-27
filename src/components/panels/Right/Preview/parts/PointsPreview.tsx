@@ -32,7 +32,7 @@ const PointsPreview: React.FC = () => {
             fill={fill}
             onClick={() => toggleSelection(point.id)}
             className="cursor-pointer"
-            filter={point.selected ? "url(#purple-glow)" : "none"}
+            filter={point.selected ? "url(#glow)" : "none"}
           />
         );
       })}

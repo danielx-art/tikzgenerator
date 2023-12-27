@@ -18,12 +18,12 @@ const AnglesPreview: React.FC = () => {
           d={getAnglePath(angle)}
           //stroke={angle.selected ? "#ff817a" : angle.color}
           stroke={angle.color}
-          strokeWidth={DEFAULT_LINE_WIDTH / 100}
+          strokeWidth={DEFAULT_LINE_WIDTH}
           fill={angle.dotstyle === 0 ? "none" : angle.color}
           fillOpacity={0.5}
           onClick={() => toggleSelection(angle.id)}
           className="cursor-pointer"
-          filter={angle.selected ? "url(#purple-glow)" : "none"}
+          filter={angle.selected ? "url(#glow)" : "none"}
         />
       ))}
     </>

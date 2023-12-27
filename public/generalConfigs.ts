@@ -4,7 +4,7 @@ export const DEFAULT_COLOR = "black";
 export const DEFAULT_POINT_STYLE = 2;
 export const DEFAULT_POINT_SIZE = 1;
 export const DEFAULT_LINE_STYLE = "solid";
-export const DEFAULT_LINE_WIDTH = 5;
+export const DEFAULT_LINE_WIDTH = 0.5;
 export const DEFAULT_ANGLE_STYLE = 0;
 export const DEFAULT_ANGLE_MARKS = 'mark-0';
 export const DEFAULT_ANGLE_SIZE = 0.5;
@@ -16,7 +16,7 @@ export type ANGLE_MARKS_TYPE = | 'marks-0' | 'marks-1' | 'marks-2' | 'marks-3'
 | 'doubles-0' | 'doubles-1' | 'doubles-2' | 'doubles-3';
 export const ANGLE_MARKS = ["marks", "doubles"].flatMap(word => 
     Array.from({ length: 4 }, (_, i) => `${word}-${i}`)) as ANGLE_MARKS_TYPE[];
-export const RES_SVG_FACTOR = 10;
+export const RES_FACTOR = 10;
 
 
 

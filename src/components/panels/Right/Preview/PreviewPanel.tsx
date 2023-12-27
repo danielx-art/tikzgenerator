@@ -7,6 +7,8 @@ import PointsPreview from "./parts/PointsPreview";
 import AnglesPreview from "./parts/AnglesPreview";
 import SegmentsPreview from "./parts/SegmentsPreview";
 import TagsPreview from "./parts/TagsPreview";
+import { RES_FACTOR } from "public/generalConfigs";
+
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
@@ -16,7 +18,7 @@ const PreviewPanel = () => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const [viewBox, setViewBox] = useState("0 0 100 100");
-  const [svgDim, setSvgDim] = useState({ width: 200, height: 200 });
+  const [svgDim, setSvgDim] = useState({ width: 200*RES_FACTOR, height: 200*RES_FACTOR });
 
   useEffect(() => {
     if (!store || !store.points || store.points.size === 0) return;
@@ -24,16 +26,16 @@ const PreviewPanel = () => {
     const pointsArr = Array.from(store.points.values());
 
     //Find min and max points to define bounds
-    let minX = pointsArr[0]!.coords.x;
-    let maxX = pointsArr[0]!.coords.x;
-    let minY = pointsArr[0]!.coords.y;
-    let maxY = pointsArr[0]!.coords.y;
+    let minX = pointsArr[0]!.coords.x*RES_FACTOR;
+    let maxX = pointsArr[0]!.coords.x*RES_FACTOR;
+    let minY = pointsArr[0]!.coords.y*RES_FACTOR;
+    let maxY = pointsArr[0]!.coords.y*RES_FACTOR;
 
     store.points.forEach((point) => {
-      minX = Math.min(minX, point.coords.x);
-      maxX = Math.max(maxX, point.coords.x);
-      minY = Math.min(minY, point.coords.y);
-      maxY = Math.max(maxY, point.coords.y);
+      minX = Math.min(minX, point.coords.x*RES_FACTOR);
+      maxX = Math.max(maxX, point.coords.x*RES_FACTOR);
+      minY = Math.min(minY, point.coords.y*RES_FACTOR);
+      maxY = Math.max(maxY, point.coords.y*RES_FACTOR);
     });
 
     let pointsWidth = maxX - minX;
@@ -42,7 +44,7 @@ const PreviewPanel = () => {
     let padding = 0.2; //of the maximum dimension
 
     if (pointsArr.length == 1 && pointsArr[0]) {
-      pointsWidth = pointsArr[0].size * 2;
+      pointsWidth = pointsArr[0].size * 2 *RES_FACTOR;
       pointsHeight = pointsWidth;
       padding = 2;
     }
@@ -100,42 +102,13 @@ const PreviewPanel = () => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-              <feOffset dx="4" dy="4" result="offsetblur" />
-              <feComponentTransfer>
-                <feFuncA type="linear" slope="0.5" />
-              </feComponentTransfer>
-              <feMerge>
-                <feMergeNode />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-
-            <filter id="shadow" width="1.5" height="1.5" x="-.25" y="-.25">
-              <feGaussianBlur
-                in="SourceAlpha"
-                stdDeviation="2.5"
-                result="blur"
-              />
-              <feColorMatrix
-                result="bluralpha"
-                type="matrix"
-                values="1 0 0 0   0  0 1 0 0   0  0 0 1 0   0  0 0 0 1 0 "
-              />
-              <feOffset in="bluralpha" dx="0.1" dy="0.1" result="offsetBlur" />
-              <feMerge>
-                <feMergeNode in="offsetBlur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-
             <filter
-              id="purple-glow"
+              id="glow"
               x="-50%"
               y="-50%"
               width="200%"
               height="200%"
+              filterUnits="userSpaceOnUse"
             >
               <feFlood
                 result="flood"
@@ -152,12 +125,12 @@ const PreviewPanel = () => {
                 in="mask"
                 result="dilated"
                 operator="dilate"
-                radius="0.02"
+                radius="0.1"
               ></feMorphology>
               <feGaussianBlur
                 in="dilated"
                 result="blurred"
-                stdDeviation="0.05"
+                stdDeviation="0.1"
               ></feGaussianBlur>
               <feComposite
                 in="blurred"
@@ -173,28 +146,8 @@ const PreviewPanel = () => {
               </feMerge>
             </filter>
 
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="0.05" result="coloredBlur" />
-              <feMerge>
-                <feMergeNode in="coloredBlur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-
-            <filter id="black-glow">
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0   0  0 0 0 0   0  0 0 0 0   0  0 0 0 1 0"
-              />
-              <feGaussianBlur stdDeviation="1" result="coloredBlur" />
-              <feMerge>
-                <feMergeNode in="coloredBlur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-
-            <filter id="fatten" x="-10%" y="-10%" width="120%" height="120%">
-              <feMorphology operator="dilate" radius="0.02" />
+            <filter id="fatten" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse">
+              <feMorphology operator="dilate" radius="0.1" />
             </filter>
           </defs>
           <g transform={`scale(1, -1)`}>

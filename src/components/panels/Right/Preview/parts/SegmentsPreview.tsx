@@ -30,12 +30,12 @@ const SegmentsPreview: React.FC = () => {
           d={getSegmentPath(segment)}
           stroke={segment.color}
           strokeLinecap="round"
-          strokeWidth={segment.width / 100}
+          strokeWidth={segment.width}
           fill="none"
           onClick={() => toggleSelection(segment.id)}
           className="cursor-pointer"
           strokeDasharray={getStrokeDasharray(segment.style)}
-          filter={segment.selected ? "url(#purple-glow)" : "none"}
+          filter={segment.selected ? "url(#glow)" : "none"}
         />
       ))}
     </>

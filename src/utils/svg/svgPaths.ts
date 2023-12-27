@@ -1,15 +1,20 @@
 import { Tsegment, Tangle, Tpoint } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
+import { RES_FACTOR } from "public/generalConfigs";
 
 export const getSegmentPath = (segment: Tsegment) => {
-  return `M${segment.p1.coords.x},${segment.p1.coords.y} L${segment.p2.coords.x},${segment.p2.coords.y}`;
+  return `M${segment.p1.coords.x*RES_FACTOR},${segment.p1.coords.y*RES_FACTOR} L${segment.p2.coords.x*RES_FACTOR},${segment.p2.coords.y*RES_FACTOR}`;
 };
 
 export const getAnglePath = (angle: Tangle) => {
-  let vectorA = vec().copy(angle.a.coords).sub(angle.b.coords);
-  let vectorB = vec().copy(angle.c.coords).sub(angle.b.coords);
-  vectorA.setMag(angle.size);
-  vectorB.setMag(angle.size);
+  const angleA = vec().copy(angle.a.coords).mult(RES_FACTOR);
+  const angleB = vec().copy(angle.b.coords).mult(RES_FACTOR);
+  const angleC = vec().copy(angle.c.coords).mult(RES_FACTOR);
+
+  let vectorA = vec().copy(angleA).sub(angleB);
+  let vectorB = vec().copy(angleC).sub(angleB);
+  vectorA.setMag(angle.size*RES_FACTOR);
+  vectorB.setMag(angle.size*RES_FACTOR);
 
   let startVector;
   let endVector;
@@ -37,25 +42,25 @@ export const getAnglePath = (angle: Tangle) => {
     sweepFlag = 0;
   }
 
-  let start = vec().copy(startVector).add(angle.b.coords);
-  let end = vec().copy(endVector).add(angle.b.coords);
+  let start = vec().copy(startVector).add(angleB);
+  let end = vec().copy(endVector).add(angleB);
 
   if (Math.abs(endAngle - startAngle) == 90) {
-    let d = `M ${angle.b.coords.x + startVector.x} ${
-      angle.b.coords.y + startVector.y
+    let d = `M ${angleB.x + startVector.x} ${
+      angleB.y + startVector.y
     } `;
     d += `l ${endVector.x} ${endVector.y} `;
     d += `l ${-startVector.x} ${-startVector.y} `;
 
     let circleCenter = vec()
-      .copy(angle.b.coords)
+      .copy(angleB)
       .add(
         vec()
           .copy(startVector)
           .add(vec().copy(endVector))
           .mult(1 / 2),
       );
-    let radius = angle.size / 10;
+    let radius = angle.size * RES_FACTOR / 12;
     d += `M ${circleCenter.x + radius} ${circleCenter.y} `;
     d += `A ${radius} ${radius} 0 0 1 ${circleCenter.x - radius} ${
       circleCenter.y
@@ -66,7 +71,7 @@ export const getAnglePath = (angle: Tangle) => {
 
     return d;
   } else {
-    let d = ` M ${angle.b.coords.x} ${angle.b.coords.y} L ${start.x} ${start.y} A ${angle.size} ${angle.size} 0 0 ${sweepFlag} ${end.x} ${end.y} Z `;
+    let d = ` M ${angleB.x} ${angleB.y} L ${start.x} ${start.y} A ${angle.size*RES_FACTOR} ${angle.size*RES_FACTOR} 0 0 ${sweepFlag} ${end.x} ${end.y} Z `;
 
     const angleMark = angle.marks;
 
@@ -74,8 +79,8 @@ export const getAnglePath = (angle: Tangle) => {
       if (angle.marks.includes("marks")) {
         let dMarks = ``;
         const numMarks = parseInt(angle.marks.split("-")[1] as `${number}`);
-        const markLen = angle.size / 2;
-        const r = angle.size;
+        const markLen = angle.size * RES_FACTOR / 2;
+        const r = angle.size * RES_FACTOR;
         const ang = angle.valor;
         const numDiv = numMarks + 1;
         for (let i = 0; i < numMarks; i++) {
@@ -86,20 +91,20 @@ export const getAnglePath = (angle: Tangle) => {
             .copy(startVector)
             .rotate(toRotate)
             .setMag(r - markLen / 2)
-            .add(angle.b.coords);
+            .add(angleB);
           const finalPoint = vec()
             .copy(startVector)
             .setMag(r + markLen / 2)
             .rotate(toRotate)
-            .add(angle.b.coords);
+            .add(angleB);
           dMarks += ` M ${initialPoint.x} ${initialPoint.y} L ${finalPoint.x} ${finalPoint.y} `;
         }
         d += dMarks;
       } else if (angle.marks.includes("doubles")) {
         let dDoubles = ``;
         const numDoubles = parseInt(angle.marks.split("-")[1] as `${number}`);
-        const doubleDist = angle.size / 5;
-        const r = angle.size;
+        const doubleDist = angle.size * RES_FACTOR/ 5;
+        const r = angle.size * RES_FACTOR;
         const ang = angle.valor;
         const rotateWise = sweepFlag === 0 ? -1 : 1;
         const toRotate = rotateWise * ang;
@@ -108,12 +113,12 @@ export const getAnglePath = (angle: Tangle) => {
           const initialPoint = vec()
             .copy(startVector)
             .setMag(thisRad)
-            .add(angle.b.coords);
+            .add(angleB);
           const finalPoint = vec()
             .copy(startVector)
             .setMag(thisRad)
             .rotate(toRotate)
-            .add(angle.b.coords);
+            .add(angleB);
           dDoubles += ` M ${initialPoint.x} ${initialPoint.y} A ${thisRad} ${thisRad} 0 0 ${sweepFlag} ${finalPoint.x} ${finalPoint.y}  `;
         }
         d += dDoubles;
@@ -133,10 +138,10 @@ export const getPointPath = (point: Tpoint) => {
 
   // Calculate the circle path
   const circlePath =
-    `M ${coords.x} ${coords.y} ` +
-    `m -${size * 0.1}, 0 ` +
-    `a ${size * 0.1},${size * 0.1} 0 1,0 ${size * 0.1 * 2},0 ` +
-    `a ${size * 0.1},${size * 0.1} 0 1,0 -${size * 0.1 * 2},0`;
+    `M ${coords.x*RES_FACTOR} ${coords.y*RES_FACTOR} ` +
+    `m -${size * 0.1*RES_FACTOR}, 0 ` +
+    `a ${size * 0.1*RES_FACTOR},${size * 0.1*RES_FACTOR} 0 1,0 ${size * 0.1 * 2*RES_FACTOR},0 ` +
+    `a ${size * 0.1*RES_FACTOR},${size * 0.1*RES_FACTOR} 0 1,0 -${size * 0.1 * 2*RES_FACTOR},0`;
 
   return circlePath;
 };
