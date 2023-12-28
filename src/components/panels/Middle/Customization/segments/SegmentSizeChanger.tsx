@@ -30,7 +30,8 @@ const SegmentSizeChanger: React.FC<PropsType> = ({ segId }) => {
     const updatedSegments = new Map(store.segments);
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
-    const seg = store.segments.get(segId)!;
+    const seg = store.segments.get(segId);
+    if(!seg) return;
     updatedSegments.set(segId, { ...seg, width: newSize });
     store.setSegments(updatedSegments);
   }, [size]);

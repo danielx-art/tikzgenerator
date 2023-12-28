@@ -8,8 +8,10 @@ import {
   DEFAULT_LINE_WIDTH,
   DEFAULT_POINT_SIZE,
   DEFAULT_POINT_STYLE,
+  DEFAULT_SEGMENT_MARKS,
   DEFAULT_TAG_COLOR,
   DEFAULT_TAG_SIZE,
+  SEGMENT_MARKS_TYPE,
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
 
@@ -94,6 +96,7 @@ export const segmento = function (a: Tpoint, b: Tpoint, id: TsegId) {
     visible: true,
     width: DEFAULT_LINE_WIDTH,
     style: DEFAULT_LINE_STYLE,
+    marks: DEFAULT_SEGMENT_MARKS as SEGMENT_MARKS_TYPE,
     color: DEFAULT_COLOR,
     selected: false,
   };

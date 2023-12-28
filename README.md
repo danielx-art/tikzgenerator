@@ -18,7 +18,8 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
   2. ~~ Cor do traço ~~
   3. ~~ [ ângulos ] preenchimento ~~
   4. ~~ [ ângulos ] refinar posicionamento da etiqueta ~~
-  5. [ segmentos ] destaque um/dois/três tracinhos
+  5. ~~ [ segmentos ] destaque um/dois/três tracinhos ~~
+  6. [ segmentos ] fix dashed and dotted segment marks. put in separate path.
 - ~~Customização de cor para ponto~~
 - Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.
 - Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana

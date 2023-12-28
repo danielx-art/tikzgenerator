@@ -3,7 +3,29 @@ import { vec } from "import/utils/math/vetores";
 import { RES_FACTOR } from "public/generalConfigs";
 
 export const getSegmentPath = (segment: Tsegment) => {
-  return `M${segment.p1.coords.x*RES_FACTOR},${segment.p1.coords.y*RES_FACTOR} L${segment.p2.coords.x*RES_FACTOR},${segment.p2.coords.y*RES_FACTOR}`;
+
+  let d = `
+  M${segment.p1.coords.x*RES_FACTOR},${segment.p1.coords.y*RES_FACTOR} 
+  L${segment.p2.coords.x*RES_FACTOR},${segment.p2.coords.y*RES_FACTOR} 
+  `
+
+  if(segment.marks > 0) {
+    const markLength = 0.12*segment.width;
+    const markSep = 1.2*segment.width;
+    const midPoint = vec().copy(segment.p1.coords).add(vec().copy(segment.p2.coords)).mult(RES_FACTOR/2);
+    const normal = vec().copy(segment.p2.coords).sub(vec().copy(segment.p1.coords)).cross(vec(0, 0, 1)).setMag(markLength*RES_FACTOR);
+    const unitTangent = vec().copy(segment.p2.coords).sub(vec().copy(segment.p1.coords)).setMag(1);
+    const start = vec().copy(midPoint).add(vec().copy(unitTangent).mult(-(segment.marks-1)*markSep/2));
+    for(let i=0; i<segment.marks; i++) {
+      const thisMidPoint = vec().copy(start).add(vec().copy(unitTangent).mult(i*markSep))
+      const point1 = vec().copy(thisMidPoint).add(vec().copy(normal));
+      const point2 = vec().copy(thisMidPoint).add(vec().copy(normal).mult(-1));
+      d+=` M${point1.x},${point1.y} L${point2.x},${point2.y} `
+    }    
+  }
+
+
+  return d;
 };
 
 export const getAnglePath = (angle: Tangle) => {
