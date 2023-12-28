@@ -133,11 +133,22 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
 
 export type Tangle = ReturnType<typeof angulo>;
 
-export const circle = function (center: vector, radius: number, id: TcircleId) {
+export const circle = function (
+  center: () => vector | vector,
+  radius: () => number | number,
+  id: TcircleId,
+) {
   return {
     id,
-    center,
-    radius,
+    get center() {
+      if ("x" in center && "y" in center && "z" in center)
+        return vec(center.x as number, center.y as number);
+      return center();
+    },
+    get radius() {
+      if (typeof radius === "number") return radius;
+      return radius();
+    },
     visible: true,
     width: DEFAULT_LINE_WIDTH,
     style: DEFAULT_LINE_STYLE,
