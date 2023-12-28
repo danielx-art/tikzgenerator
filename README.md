@@ -19,7 +19,8 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
   3. ~~ [ ângulos ] preenchimento ~~
   4. ~~ [ ângulos ] refinar posicionamento da etiqueta ~~
   5. ~~ [ segmentos ] destaque um/dois/três tracinhos ~~
-  6. [ segmentos ] fix dashed and dotted segment marks. put in separate path.
+  6. ~~ [ segmentos ] consertar destaques em segmos pontilhados ou traçejados. Separar path.~~
+  7. [ ângulos ] fazer com que laterais radias do ângulo possam ser ocultas (estético em relação a segmentos adjescentes não sólidos), para isso acrescentar mais dotstyles, com ou sem laterais.
 - ~~Customização de cor para ponto~~
 - Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.
 - Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana
