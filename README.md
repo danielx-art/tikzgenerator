@@ -22,7 +22,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
   6. ~~ [ segmentos ] consertar destaques em segmos pontilhados ou traçejados. Separar path.~~
   7. ~~ [ ângulos ] fazer com que laterais radias do ângulo possam ser ocultas (estético em relação a segmentos adjescentes não sólidos), para isso acrescentar mais dotstyles, com ou sem laterais. ~~
   8. ~~ [ ângulos ] consertar fill em ângulos de 90° ~~
-  9. [ ângulos ] consertar visibilidade de customização de 'marcas' para ângulos de 90°
+  9. ~~ [ ângulos ] consertar visibilidade de customização de 'marcas' para ângulos de 90° ~~
 - ~~Customização de cor para ponto~~
 - Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.
 - Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana
