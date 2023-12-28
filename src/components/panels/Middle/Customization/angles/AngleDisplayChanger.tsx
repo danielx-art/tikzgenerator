@@ -62,11 +62,15 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
     store.setAngles(updatedAngles);
   };
 
+  if (thisAngle && (thisAngle.valor * 180) / Math.PI === 90) {
+    return;
+  }
+
   return (
     <div className={`flex flex-row flex-nowrap gap-2`}>
       <div className="grid items-center">Destaques: </div>
       <div className="flex w-full flex-row">
-        {angId && store && store.angles.get(angId) && (
+        {angId && thisAngle && (
           <MultipleRadioGroup
             onChange={handleDisplayChange}
             initBtnSelected={selectedButton}

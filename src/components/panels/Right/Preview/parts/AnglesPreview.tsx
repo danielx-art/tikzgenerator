@@ -13,36 +13,45 @@ const AnglesPreview: React.FC = () => {
 
   return (
     <>
-      {Array.from(angles.values()).map((angle, index) => (
-        <g filter={angle.selected ? "url(#glow)" : "none"}>
-          {
+      {Array.from(angles.values()).map((angle, index) => {
+        const anglePath = getAnglePath(angle);
+
+        return (
+          <g filter={angle.selected ? "url(#glow)" : "none"}>
+            {
+              <path
+                key={"svg_path_marks_" + angle.id}
+                d={anglePath.dMarksPath}
+                stroke={angle.color}
+                strokeWidth={DEFAULT_LINE_WIDTH}
+                fill="none"
+                fillOpacity={0.5}
+              />
+            }
+            {
+              <path
+                key={"svg_path_fill_" + angle.id}
+                d={anglePath.dFillPath}
+                stroke="none"
+                fill={angle.dotstyle === 1 ? angle.color : "none"}
+                fillOpacity={0.5}
+                onClick={() => toggleSelection(angle.id)}
+                className="cursor-pointer"
+              />
+            }
             <path
               key={"svg_path_" + angle.id}
-              d={getAngleMarksPath(angle)}
-              //stroke={angle.selected ? "#ff817a" : angle.color}
+              d={anglePath.d}
               stroke={angle.color}
               strokeWidth={DEFAULT_LINE_WIDTH}
               fill="none"
               fillOpacity={0.5}
-              // onClick={() => toggleSelection(angle.id)}
-              // className="cursor-pointer"
-              // filter={angle.selected ? "url(#glow)" : "none"}
+              onClick={() => toggleSelection(angle.id)}
+              className="cursor-pointer"
             />
-          }
-          <path
-            key={"svg_path_" + angle.id}
-            d={getAnglePath(angle)}
-            //stroke={angle.selected ? "#ff817a" : angle.color}
-            stroke={angle.color}
-            strokeWidth={DEFAULT_LINE_WIDTH}
-            fill={angle.dotstyle === 0 ? "none" : angle.color}
-            fillOpacity={0.5}
-            onClick={() => toggleSelection(angle.id)}
-            className="cursor-pointer"
-            // filter={angle.selected ? "url(#glow)" : "none"}
-          />
-        </g>
-      ))}
+          </g>
+        );
+      })}
     </>
   );
 };
@@ -88,8 +97,13 @@ export const getAnglePath = (angle: Tangle) => {
   let start = vec().copy(startVector).add(angleB);
   let end = vec().copy(endVector).add(angleB);
 
-  if (Math.abs(endAngle - startAngle) == 90) {
-    let d = `M ${angleB.x + startVector.x} ${angleB.y + startVector.y} `;
+  let d = "";
+  let dMarksPath = "";
+  let dFillPath = "";
+
+  //if (Math.abs(endAngle - startAngle) == 90) {
+  if ((angle.valor * 180) / Math.PI === 90) {
+    d += `M ${angleB.x + startVector.x} ${angleB.y + startVector.y} `;
     d += `l ${endVector.x} ${endVector.y} `;
     d += `l ${-startVector.x} ${-startVector.y} `;
 
@@ -110,59 +124,26 @@ export const getAnglePath = (angle: Tangle) => {
       circleCenter.y
     } `;
 
-    return d;
+    dFillPath += ` 
+    M ${angleB.x} ${angleB.y} 
+    L ${angleB.x + startVector.x} ${angleB.y + startVector.y} 
+    l ${endVector.x} ${endVector.y} 
+    l ${-startVector.x} ${-startVector.y} 
+    Z
+    `;
   } else {
-    let d = ` M ${angleB.x} ${angleB.y} L ${start.x} ${start.y} A ${
-      angle.size * RES_FACTOR
-    } ${angle.size * RES_FACTOR} 0 0 ${sweepFlag} ${end.x} ${end.y} Z `;
-    return d;
-  }
-};
+    d += ` M ${start.x} ${start.y} 
+           A ${angle.size * RES_FACTOR} ${angle.size * RES_FACTOR} 
+           0 0 ${sweepFlag} 
+           ${end.x} ${end.y}  `;
 
-export const getAngleMarksPath = (angle: Tangle) => {
-  const angleA = vec().copy(angle.a.coords).mult(RES_FACTOR);
-  const angleB = vec().copy(angle.b.coords).mult(RES_FACTOR);
-  const angleC = vec().copy(angle.c.coords).mult(RES_FACTOR);
+    dFillPath += ` M ${angleB.x} ${angleB.y} L ${start.x} ${start.y}
+              A ${angle.size * RES_FACTOR} ${angle.size * RES_FACTOR}
+              0 0 ${sweepFlag}
+              ${end.x} ${end.y} Z `;
 
-  let vectorA = vec().copy(angleA).sub(angleB);
-  let vectorB = vec().copy(angleC).sub(angleB);
-  vectorA.setMag(angle.size * RES_FACTOR);
-  vectorB.setMag(angle.size * RES_FACTOR);
+    //------MARKS PATH
 
-  let startVector;
-  let endVector;
-  let startAngle;
-  let endAngle;
-
-  let angA = ((vectorA.heading() * 180) / Math.PI + 360) % 360; //in degrees and first positive arc
-  let angB = ((vectorB.heading() * 180) / Math.PI + 360) % 360;
-  let angleDifference = angB - angA;
-  let sweepFlag = 1;
-
-  if (angleDifference >= 0) {
-    startVector = vectorA;
-    startAngle = angA;
-    endVector = vectorB;
-    endAngle = angB;
-  } else {
-    startVector = vectorB;
-    startAngle = angB;
-    endVector = vectorA;
-    endAngle = angA;
-  }
-
-  let d = "";
-
-  if (Math.abs(angleDifference) > 180) {
-    sweepFlag = 0;
-  }
-
-  let start = vec().copy(startVector).add(angleB);
-  let end = vec().copy(endVector).add(angleB);
-
-  if (Math.abs(endAngle - startAngle) == 90) {
-    return d;
-  } else {
     const angleMark = angle.marks;
 
     if (angle.marks.split("-")[1] !== "0") {
@@ -189,7 +170,7 @@ export const getAngleMarksPath = (angle: Tangle) => {
             .add(angleB);
           dMarks += ` M ${initialPoint.x} ${initialPoint.y} L ${finalPoint.x} ${finalPoint.y} `;
         }
-        d += dMarks;
+        dMarksPath += dMarks;
       } else if (angle.marks.includes("doubles")) {
         let dDoubles = ``;
         const numDoubles = parseInt(angle.marks.split("-")[1] as `${number}`);
@@ -211,9 +192,10 @@ export const getAngleMarksPath = (angle: Tangle) => {
             .add(angleB);
           dDoubles += ` M ${initialPoint.x} ${initialPoint.y} A ${thisRad} ${thisRad} 0 0 ${sweepFlag} ${finalPoint.x} ${finalPoint.y}  `;
         }
-        d += dDoubles;
+        dMarksPath += dDoubles;
       }
     }
-    return d;
   }
+
+  return { d, dMarksPath, dFillPath };
 };
