@@ -47,7 +47,8 @@ const SegmentsPreview: React.FC = () => {
             strokeLinecap="round"
             strokeWidth={segment.width}
             fill="none"
-            onClick={() => toggleSelection(segment.id)}
+            onClick={(event) => {event.stopPropagation(); toggleSelection(segment.id)}}
+
             className="cursor-pointer"
             strokeDasharray={getStrokeDasharray(segment.style)}
           />

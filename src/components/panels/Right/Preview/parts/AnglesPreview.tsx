@@ -35,7 +35,7 @@ const AnglesPreview: React.FC = () => {
                 stroke="none"
                 fill={angle.dotstyle === 1 ? angle.color : "none"}
                 fillOpacity={0.5}
-                onClick={() => toggleSelection(angle.id)}
+                onClick={(event) => {event.stopPropagation(); toggleSelection(angle.id)}}
                 className="cursor-pointer"
               />
             }
@@ -46,7 +46,7 @@ const AnglesPreview: React.FC = () => {
               strokeWidth={DEFAULT_LINE_WIDTH}
               fill="none"
               fillOpacity={0.5}
-              onClick={() => toggleSelection(angle.id)}
+              onClick={(event) => {event.stopPropagation(); toggleSelection(angle.id)}}
               className="cursor-pointer"
             />
           </g>

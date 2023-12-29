@@ -31,7 +31,8 @@ const PointsPreview: React.FC = () => {
             stroke={stroke}
             strokeWidth={DEFAULT_LINE_WIDTH}
             fill={fill}
-            onClick={() => toggleSelection(point.id)}
+            onClick={(event) => {event.stopPropagation(); toggleSelection(point.id)}}
+
             className="cursor-pointer"
             filter={point.selected ? "url(#glow)" : "none"}
           />

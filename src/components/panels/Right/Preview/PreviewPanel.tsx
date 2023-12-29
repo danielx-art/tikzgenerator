@@ -8,6 +8,7 @@ import AnglesPreview from "./parts/AnglesPreview";
 import SegmentsPreview from "./parts/SegmentsPreview";
 import TagsPreview from "./parts/TagsPreview";
 import { RES_FACTOR } from "public/generalConfigs";
+import { getKindById, getSelected } from "import/utils/storeHelpers/miscEntity";
 
 
 const PreviewPanel = () => {
@@ -80,6 +81,50 @@ const PreviewPanel = () => {
     setViewBox(`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
   }, [store, store?.points, ref, svgRef, dimensions.width, dimensions.height]);
 
+  const onClickDeselectAll = () => {
+    if(!store) return;
+
+    const selectedPoints = getSelected("point", store);
+    const selectedSegments = getSelected("segment", store);
+    const selectedAngles = getSelected("angle", store);
+    const selectedCircles = getSelected("circle", store);
+    const selectedTags = getSelected("tag", store);
+
+    const updatedPoints = new Map(store.points);
+    const updatedSegments = new Map(store.segments);
+    const updatedAngles = new Map(store.angles);
+    // const updatedCircles = new Map(store.circles);
+    // const updatedTags = new Map(store.tags);
+
+    selectedPoints.forEach(point => {
+      updatedPoints.set(point.id, {...point, selected: false})
+    });
+
+    selectedSegments.forEach(seg => {
+      updatedSegments.set(seg.id, {...seg, selected: false})
+    });
+
+    selectedAngles.forEach(ang => {
+      updatedAngles.set(ang.id, {...ang, selected: false})
+    });
+
+    // selectedCircles.forEach(circle => {
+    //   updatedCircles.set(circle.id, {...circle, selected: false})
+    // });
+
+    // selectedTags.forEach(tag => {
+    //   updatedTags.set(tag.id, {...tag, selected: false})
+    // });
+    
+    // store.setPoints(updatedPoints);
+    // store.setSegments(updatedSegments);
+    // store.setAngles(updatedAngles);
+    // store.setCircles(updatedCircles);
+    // store.setTags(updatedTags);
+    store.set({...store, points: updatedPoints, segments: updatedSegments, angles: updatedAngles, selections: [] })
+
+  }
+
   if (!store) return;
 
   return (
@@ -100,6 +145,7 @@ const PreviewPanel = () => {
           className="border-2 border-c_disabled2 border-opacity-10"
           ref={svgRef}
           xmlns="http://www.w3.org/2000/svg"
+          onClick={onClickDeselectAll}
         >
           <defs>
             <filter

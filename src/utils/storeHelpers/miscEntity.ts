@@ -157,9 +157,9 @@ export function getSelected<T extends TallKind>(
       ? Array<Tsegment>
       : T extends "angle"
       ? Array<Tangle>
-      : T extends TcircleId
+      : T extends "circle"
       ? Array<Tcircle>
-      : T extends TangId
+      : T extends "tag"
       ? Array<Ttag>
       : undefined)
   | [] {
