@@ -9,6 +9,7 @@ import SegmentsPreview from "./parts/SegmentsPreview";
 import TagsPreview from "./parts/TagsPreview";
 import { RES_FACTOR } from "public/generalConfigs";
 import { getKindById, getSelected } from "import/utils/storeHelpers/miscEntity";
+import Panel from "../micro/Panel";
 
 
 const PreviewPanel = () => {
@@ -96,31 +97,37 @@ const PreviewPanel = () => {
     // const updatedCircles = new Map(store.circles);
     // const updatedTags = new Map(store.tags);
 
-    selectedPoints.forEach(point => {
-      updatedPoints.set(point.id, {...point, selected: false})
-    });
+    if(selectedPoints.length > 0){
+      selectedPoints.forEach(point => {
+        updatedPoints.set(point.id, {...point, selected: false})
+      });
+    }
 
-    selectedSegments.forEach(seg => {
-      updatedSegments.set(seg.id, {...seg, selected: false})
-    });
+    if(selectedSegments.length > 0){
+      selectedSegments.forEach(seg => {
+        updatedSegments.set(seg.id, {...seg, selected: false})
+      });
+    }
 
-    selectedAngles.forEach(ang => {
-      updatedAngles.set(ang.id, {...ang, selected: false})
-    });
 
+    if(selectedAngles.length > 0){
+      selectedAngles.forEach(ang => {
+        updatedAngles.set(ang.id, {...ang, selected: false})
+      });
+    }
+
+    if(selectedCircles.length > 0){
     // selectedCircles.forEach(circle => {
     //   updatedCircles.set(circle.id, {...circle, selected: false})
     // });
+    }
 
+    if(selectedTags.length > 0){
     // selectedTags.forEach(tag => {
     //   updatedTags.set(tag.id, {...tag, selected: false})
     // });
-    
-    // store.setPoints(updatedPoints);
-    // store.setSegments(updatedSegments);
-    // store.setAngles(updatedAngles);
-    // store.setCircles(updatedCircles);
-    // store.setTags(updatedTags);
+    }
+
     store.set({...store, points: updatedPoints, segments: updatedSegments, angles: updatedAngles, selections: [] })
 
   }
@@ -128,21 +135,21 @@ const PreviewPanel = () => {
   if (!store) return;
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center gap-2 rounded-md border-2 border-c_discrete p-2 pb-3 sm:h-full sm:max-h-full sm:min-h-full">
+    <Panel className="relative h-full items-center p-2">
       <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
-      <div
-        ref={ref}
-        className="relative grid h-full max-h-full w-full flex-1 place-items-center overflow-auto"
-      >
-        <div className="absolute left-0 top-0 h-6 w-6">
+      <div className="absolute left-0 top-0 h-6 w-6">
           <DownloadSVGBtn svgRef={svgRef} />
         </div>
+      <div
+        ref={ref}
+        className="flex-1 max-h-full grid place-items-center overflow-hidden"
+      >
         <svg
           width={svgDim.width > 0 ? svgDim.width : "100%"}
           height={svgDim.height > 0 ? svgDim.height : "100%"}
           viewBox={viewBox}
           preserveAspectRatio="xMidYMid"
-          className="border-2 border-c_disabled2 border-opacity-10"
+          // className="border-2 border-c_disabled2 border-opacity-10"
           ref={svgRef}
           xmlns="http://www.w3.org/2000/svg"
           onClick={onClickDeselectAll}
@@ -158,8 +165,8 @@ const PreviewPanel = () => {
             >
               <feFlood
                 result="flood"
-                flood-color="#ff817a"
-                flood-opacity="1"
+                floodColor="#ff817a"
+                floodOpacity="1"
               ></feFlood>
               <feComposite
                 in="flood"
@@ -204,7 +211,7 @@ const PreviewPanel = () => {
           </g>
         </svg>
       </div>
-    </div>
+    </Panel>
   );
 };
 

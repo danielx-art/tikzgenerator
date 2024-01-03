@@ -1,4 +1,4 @@
-import PreviewPanel from "./Preview/PreviewPanel";
+import PreviewPanel from "../../../components/preview/PreviewPanel";
 
 const RightPanel = () => {
   return (

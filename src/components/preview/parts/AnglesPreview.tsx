@@ -17,7 +17,7 @@ const AnglesPreview: React.FC = () => {
         const anglePath = getAnglePath(angle);
 
         return (
-          <g filter={angle.selected ? "url(#glow)" : "none"}>
+          <g filter={angle.selected ? "url(#glow)" : "none"}  key={"svg_path_angle_" + angle.id}>
             {
               <path
                 key={"svg_path_marks_" + angle.id}

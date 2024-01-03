@@ -1,4 +1,4 @@
-import EntitiesPanel from "./Entities/EntitiesPanel";
+import EntitiesPanel from "./EntitiesPanel";
 
 const LeftPanel = () => {
   return (

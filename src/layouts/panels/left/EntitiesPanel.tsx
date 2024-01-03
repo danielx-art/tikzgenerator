@@ -3,7 +3,7 @@ import PointsTab from "./Tabs/PointsTab";
 import SegmentsTab from "./Tabs/SegmentsTab";
 import AnglesTab from "./Tabs/AnglesTab";
 import useStore from "import/utils/store/useStore";
-import TabsNavigation from "./parts/TabsNavigation";
+import TabsNavigation from "../../../components/entities/TabsNavigation";
 import TagsTab from "./Tabs/TagsTab";
 
 const EntitiesPanel = () => {

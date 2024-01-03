@@ -20,7 +20,7 @@ import {
   getKindById,
 } from "import/utils/storeHelpers/miscEntity";
 
-const CustomizationPanel = () => {
+const Customization = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [curr, setCurr] = useState(0);
   const [selectedEntities, setSelectedEntities] = useState<
@@ -62,15 +62,14 @@ const CustomizationPanel = () => {
   }, [curr, selectedEntities]);
 
   return (
-    <div className="flex w-full flex-col items-start justify-start gap-2 rounded-md border-2 border-c_discrete p-4 pb-2">
-      <div className="w-full">
-        <div className="flex w-full select-none flex-row items-center gap-2 text-c_scnd">
+      <div className="w-full border-b-2 border-c_discrete border-opacity-20">
+        <div className="flex w-full select-none flex-row items-center gap-2 text-c_scnd text-opacity-90 hover:text-opacity-100 mb-1">
           <div
             className="group flex flex-1 cursor-pointer select-none flex-row items-center"
             onClick={() => setIsOpen((prev) => !prev)}
           >
             <OpenCloseAccordionButton isOpen={isOpen} />
-            <div className="">Customização</div>
+            <div className="pl-1">Customização</div>
           </div>
           {isOpen ? (
             <div className=" place-self-end self-end">
@@ -128,8 +127,7 @@ const CustomizationPanel = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 
-export default CustomizationPanel;
+export default Customization;

@@ -7,8 +7,6 @@ function useDimensions<T extends HTMLElement = HTMLDivElement>() {
     useEffect(() => {
         function updateSize() {
             if(ref.current) {
-
-                
                 setDimensions({
                     width: ref.current.offsetWidth,
                     height: ref.current.offsetHeight

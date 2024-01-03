@@ -1,7 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import ItemsList from "../parts/ItemsList";
-import AngleItem from "../parts/AngleItem";
+import ItemsList from "../../../../components/entities/ItemsList";
+import AngleItem from "../../../../components/entities/AngleItem";
 import { type Tpoint, type Tangle, angulo } from "public/entidades";
 import {
   fromSelectionsGet,

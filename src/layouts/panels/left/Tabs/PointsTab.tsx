@@ -1,10 +1,10 @@
 import myStore from "import/utils/store/store";
-import PointItem from "../parts/PointItem";
-import GroupItem from "../parts/GroupItem";
-import AddPointInput from "../parts/AddPointInput";
-import AddAndSelectGroup from "../parts/AddAndSelectGroup";
+import PointItem from "../../../../components/entities/PointItem";
+import GroupItem from "../../../../components/entities/GroupItem";
+import AddPointInput from "../../../../components/entities/AddPointInput";
+import AddAndSelectGroup from "../../../../components/entities/AddAndSelectGroup";
 import useStore from "import/utils/store/useStore";
-import ItemsList from "../parts/ItemsList";
+import ItemsList from "../../../../components/entities/ItemsList";
 
 export default function PointsTab() {
   const store = useStore(myStore, (state) => state);

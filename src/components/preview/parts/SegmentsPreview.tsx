@@ -27,7 +27,7 @@ const SegmentsPreview: React.FC = () => {
   return (
     <>
       {Array.from(segments.values()).map((segment, index) => (
-        <g filter={segment.selected ? "url(#glow)" : "none"}>
+        <g filter={segment.selected ? "url(#glow)" : "none"} key={"svg_path_segment_" + segment.id}>
           {segment.marks != 0 && (
             <path
               key={"svg_path_" + segment.id + "marks"}

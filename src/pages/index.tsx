@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { ErrorBanner } from "import/components/micro/ErrorBanner";
 import { Debugger } from "import/components/micro/Debugger";
-import LeftPanel from "import/components/panels/Left/LeftPanel";
-import MiddlePanel from "import/components/panels/Middle/MIddlePanel";
-import RightPanel from "import/components/panels/Right/RightPanel";
+import ThreePanels from "import/layouts/panels/ThreePanels";
+import LayoutV2 from "import/layouts/v2/LayoutV2";
+
 
 export default function Home() {
   return (
@@ -13,13 +13,12 @@ export default function Home() {
         <meta name="description" content="Generates TikZ scripts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="md:no-scrollbar flex h-full flex-col gap-4 overflow-auto bg-c_base p-4 font-jost md:grid md:max-h-full md:grid-cols-[2fr_2fr_3fr]">
+      <div className="w-full h-full font-jost overflow-auto">
         <ErrorBanner />
-        <LeftPanel />
-        <MiddlePanel />
-        <RightPanel />
+        {/* <ThreePanels /> */}
+        <LayoutV2 />
         <Debugger />
-      </div>
+      </ div>
     </>
   );
 }

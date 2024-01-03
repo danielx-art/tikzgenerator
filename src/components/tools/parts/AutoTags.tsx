@@ -184,7 +184,7 @@ const AutoTagEntityMenuBody: React.FC<AutoTagEntityMenuBodyProps> = ({
 
   return (
     <div>
-      <div className="w-full">
+      <div className="w-auto py-2">
         <Switcher
           isChecked={isChecked}
           setIsChecked={setIsChecked}
@@ -196,7 +196,7 @@ const AutoTagEntityMenuBody: React.FC<AutoTagEntityMenuBodyProps> = ({
       {Options.map((option, index) => (
         <div
           key={index}
-          className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap py-2 pl-4 pr-2 text-sm text-c_scnd hover:bg-c_interact hover:text-c_base"
+          className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap py-2 pl-0 pr-2 text-sm text-c_scnd hover:bg-c_interact hover:text-c_base"
           role="menuitem"
           onClick={
             isChecked

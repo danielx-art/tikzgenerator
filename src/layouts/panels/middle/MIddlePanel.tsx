@@ -1,5 +1,5 @@
-import CustomizationPanel from "./Customization/CustomizationPanel";
-import ToolsPanel from "./Tools/ToolsPanel";
+import CustomizationPanel from "../../../components/custom/Customization";
+import ToolsPanel from "../../../components/tools/Tools";
 
 const MiddlePanel = () => {
   return (

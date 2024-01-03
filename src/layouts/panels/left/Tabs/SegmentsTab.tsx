@@ -2,8 +2,8 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { type Tpoint, type Tsegment, segmento } from "public/entidades";
 import { useState } from "react";
-import ItemsList from "../parts/ItemsList";
-import SegmentItem from "../parts/SegmentItem";
+import ItemsList from "../../../../components/entities/ItemsList";
+import SegmentItem from "../../../../components/entities/SegmentItem";
 import ToolTip from "import/components/micro/ToolTip";
 
 export default function SegmentsTab() {

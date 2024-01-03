@@ -1,8 +1,8 @@
 import myStore from "import/utils/store/store";
-import PointItem from "../parts/PointItem";
-import GroupItem from "../parts/GroupItem";
+import PointItem from "../../../../components/entities/PointItem";
+import GroupItem from "../../../../components/entities/GroupItem";
 import useStore from "import/utils/store/useStore";
-import ItemsList from "../parts/ItemsList";
+import ItemsList from "../../../../components/entities/ItemsList";
 
 export default function PresetsTab() {
   const store = useStore(myStore, (state) => state);

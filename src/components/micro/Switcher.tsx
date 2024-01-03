@@ -21,15 +21,15 @@ const Switcher: React.FC<PropsType> = ({
   };
 
   return (
-    <label className="group isolate flex cursor-pointer select-none flex-wrap items-center justify-center px-2 py-2">
+    <label className="group isolate flex cursor-pointer select-none flex-nowrap items-center justify-start">
       <div
         className={`${
           isChecked ? "text-c_scnd_int" : "text-c_faded"
-        } px-2 text-sm`}
+        } text-sm`}
       >
         {messageOne}
       </div>
-      <div className="mx-2">
+      <div className="mx-4">
         <input
           type="checkbox"
           checked={isChecked}
@@ -47,7 +47,7 @@ const Switcher: React.FC<PropsType> = ({
       {messageTwo && <div
         className={`${
           !isChecked ? "text-c_scnd_int" : "text-c_faded"
-        } whitespace-nowrap px-2 text-sm`}
+        } whitespace-nowrap text-sm`}
       >
         {messageTwo}
       </div>}

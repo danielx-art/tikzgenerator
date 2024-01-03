@@ -10,7 +10,7 @@ const jost = Jost({
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <div className={`${jost.variable}`}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </div>
   );
 };
