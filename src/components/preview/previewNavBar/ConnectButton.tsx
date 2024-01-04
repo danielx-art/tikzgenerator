@@ -39,7 +39,7 @@ const ConnectButton: React.FC<PropsType> = ({
           x2="80%"
           y2="20%"
           stroke="currentColor"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         />
         <circle
           cx={"80%"}
