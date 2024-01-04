@@ -2,17 +2,15 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { useEffect, useRef, useState } from "react";
 import useDimensions from "import/utils/generalHooks/useDimensions";
-import DownloadSVGBtn from "./parts/DownloadSVGBtn";
 import PointsPreview from "./parts/PointsPreview";
 import AnglesPreview from "./parts/AnglesPreview";
 import SegmentsPreview from "./parts/SegmentsPreview";
 import TagsPreview from "./parts/TagsPreview";
 import { RES_FACTOR } from "public/generalConfigs";
 import Panel from "../micro/Panel";
-import Filters from "./Filters";
-import PreviewNav from "./PreviewNav";
+import Filters from "./parts/Filters";
+import PreviewNav from "./previewNavBar/PreviewNav";
 import { deselectAll } from "import/utils/storeHelpers/deselectAll";
-import { RemoveButton } from "../micro/RemoveButton";
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);

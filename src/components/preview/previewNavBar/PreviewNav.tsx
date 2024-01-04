@@ -1,11 +1,9 @@
 import { cn } from "import/utils/cn";
-import { Ref, forwardRef } from "react";
-import { RemoveButton } from "../micro/RemoveButton";
-import DownloadSVGBtn from "./parts/DownloadSVGBtn";
-import useStore from "import/utils/store/useStore";
-import myStore from "import/utils/store/store";
-import { getKindById } from "import/utils/storeHelpers/miscEntity";
-import type { TentId, TtagId } from "public/entidades";
+import { type Ref, forwardRef } from "react";
+import DownloadSVGBtn from "./DownloadSVGBtn";
+import RemoveEntityButton from "./RemoveEntityButton";
+import ConnectButton from "./ConnectButton";
+import MakeAnglesButton from "./MakeAnglesButton";
 
 type PreviewNavProps = React.HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode | React.ReactNode[];
@@ -16,21 +14,6 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
   { className, children, childrenClassName },
   ref: Ref<SVGSVGElement>,
 ) {
-  const store = useStore(myStore, (state) => state);
-
-  const handleRemove = () => {
-    if (!store) return;
-    const selections = store.selections;
-    selections.forEach((sel) => {
-      let kind = getKindById(sel);
-      if (kind == "tag") {
-        store.deleteTag(sel as TtagId);
-      } else {
-        store.deleteEntity(sel as TentId);
-      }
-    });
-  };
-
   return (
     <div
       className={cn(
@@ -42,10 +25,9 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
         ref={ref}
         className="hover:-translate-y-0.5 hover:text-c_interact"
       />
-      <RemoveButton
-        handleClick={handleRemove}
-        className="hover:-translate-y-0.5 hover:text-c_interact"
-      />
+      <RemoveEntityButton className="hover:-translate-y-0.5 hover:text-c_interact" />
+      <ConnectButton className="hover:-translate-y-0.5 hover:text-c_interact" />
+      <MakeAnglesButton className="hover:-translate-y-0.5 hover:text-c_interact" />
       {children &&
         (Array.isArray(children) ? (
           children.map((child, index) => (

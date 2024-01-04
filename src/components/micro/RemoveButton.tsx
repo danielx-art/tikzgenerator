@@ -1,16 +1,15 @@
 import { cn } from "import/utils/cn";
-import { HTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from "react";
 
-type PropsType = HTMLAttributes<HTMLDivElement> & {
-  handleClick: () => void;
-};
+type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const RemoveButton: React.FC<PropsType> = ({
-  handleClick,
+  onClick,
   className,
+  ...rest
 }) => {
   return (
-    <button className={cn("", className)} onClick={handleClick}>
+    <button className={cn("", className)} onClick={onClick} {...rest}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
