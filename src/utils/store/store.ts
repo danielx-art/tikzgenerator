@@ -1,4 +1,3 @@
-import { Enriqueta } from "next/font/google";
 import {
   Tpoint,
   Tsegment,
@@ -57,14 +56,13 @@ export type Action = {
   deleteEntity: (id: TentId) => void;
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
-  set: (state: State & Action)=>void;
+  set: (state: State & Action) => void;
 };
 
 const myStore = create<State & Action>()(
   persist(
     (set, get) => ({
-
-      set: (state)=>set(()=>({...state})),
+      set: (state) => set(() => ({ ...state })),
 
       tab: "points" as TallKindPlural,
       setTab: (tab) => set(() => ({ tab: tab })),
@@ -138,8 +136,6 @@ const myStore = create<State & Action>()(
           };
         });
       },
-
-      
 
       addEntity: <T extends Tkind>(
         entityKind: T,

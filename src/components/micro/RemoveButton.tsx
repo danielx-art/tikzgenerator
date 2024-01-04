@@ -1,17 +1,23 @@
-type PropsType = {
+import { cn } from "import/utils/cn";
+import { HTMLAttributes } from "react";
+
+type PropsType = HTMLAttributes<HTMLDivElement> & {
   handleClick: () => void;
 };
 
-export const RemoveButton: React.FC<PropsType> = ({ handleClick }) => {
+export const RemoveButton: React.FC<PropsType> = ({
+  handleClick,
+  className,
+}) => {
   return (
-    <button className="text-c_faded" onClick={handleClick}>
+    <button className={cn("", className)} onClick={handleClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-4 w-4"
+        className="h-full w-full p-1"
       >
         <path
           strokeLinecap="round"

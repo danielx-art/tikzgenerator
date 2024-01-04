@@ -29,7 +29,7 @@ const Item: React.FC<PropsType> = ({
           {children}
         </div>
         <div className="">
-          <RemoveButton handleClick={removeFn} />
+          <RemoveButton handleClick={removeFn} className="text-c_faded" />
         </div>
       </div>
     </div>

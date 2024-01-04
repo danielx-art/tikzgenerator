@@ -8,10 +8,11 @@ import AnglesPreview from "./parts/AnglesPreview";
 import SegmentsPreview from "./parts/SegmentsPreview";
 import TagsPreview from "./parts/TagsPreview";
 import { RES_FACTOR } from "public/generalConfigs";
-import { getKindById, getSelected } from "import/utils/storeHelpers/miscEntity";
 import Panel from "../micro/Panel";
 import Filters from "./Filters";
 import PreviewNav from "./PreviewNav";
+import { deselectAll } from "import/utils/storeHelpers/deselectAll";
+import { RemoveButton } from "../micro/RemoveButton";
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
@@ -50,7 +51,7 @@ const PreviewPanel = () => {
     let padding = 0.2; //of the maximum dimension
 
     if (pointsArr.length == 1 && pointsArr[0]) {
-      pointsWidth = pointsArr[0].size * 2 * RES_FACTOR;
+      pointsWidth = ((pointsArr[0].size * 1) / 2) * RES_FACTOR;
       pointsHeight = pointsWidth;
       padding = 2;
     }
@@ -86,60 +87,6 @@ const PreviewPanel = () => {
     setViewBox(`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
   }, [store, store?.points, ref, svgRef, dimensions.width, dimensions.height]);
 
-  const onClickDeselectAll = () => {
-    if (!store) return;
-
-    const selectedPoints = getSelected("point", store);
-    const selectedSegments = getSelected("segment", store);
-    const selectedAngles = getSelected("angle", store);
-    const selectedCircles = getSelected("circle", store);
-    const selectedTags = getSelected("tag", store);
-
-    const updatedPoints = new Map(store.points);
-    const updatedSegments = new Map(store.segments);
-    const updatedAngles = new Map(store.angles);
-    // const updatedCircles = new Map(store.circles);
-    // const updatedTags = new Map(store.tags);
-
-    if (selectedPoints.length > 0) {
-      selectedPoints.forEach((point) => {
-        updatedPoints.set(point.id, { ...point, selected: false });
-      });
-    }
-
-    if (selectedSegments.length > 0) {
-      selectedSegments.forEach((seg) => {
-        updatedSegments.set(seg.id, { ...seg, selected: false });
-      });
-    }
-
-    if (selectedAngles.length > 0) {
-      selectedAngles.forEach((ang) => {
-        updatedAngles.set(ang.id, { ...ang, selected: false });
-      });
-    }
-
-    if (selectedCircles.length > 0) {
-      // selectedCircles.forEach(circle => {
-      //   updatedCircles.set(circle.id, {...circle, selected: false})
-      // });
-    }
-
-    if (selectedTags.length > 0) {
-      // selectedTags.forEach(tag => {
-      //   updatedTags.set(tag.id, {...tag, selected: false})
-      // });
-    }
-
-    store.set({
-      ...store,
-      points: updatedPoints,
-      segments: updatedSegments,
-      angles: updatedAngles,
-      selections: [],
-    });
-  };
-
   if (!store) return;
 
   return (
@@ -149,9 +96,7 @@ const PreviewPanel = () => {
         ref={ref}
         className="relative grid max-h-full flex-1 place-items-center overflow-hidden"
       >
-        <PreviewNav>
-          <DownloadSVGBtn svgRef={svgRef} />
-        </PreviewNav>
+        <PreviewNav ref={svgRef} />
         <svg
           width={svgDim.width > 0 ? svgDim.width : "100%"}
           height={svgDim.height > 0 ? svgDim.height : "100%"}
@@ -160,7 +105,7 @@ const PreviewPanel = () => {
           // className="border-2 border-c_disabled2 border-opacity-10"
           ref={svgRef}
           xmlns="http://www.w3.org/2000/svg"
-          onClick={onClickDeselectAll}
+          onClick={() => deselectAll(store)}
         >
           <Filters />
           <g transform={`scale(1, -1)`}>
