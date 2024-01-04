@@ -39,7 +39,7 @@ const MakeAnglesButton: React.FC<PropsType> = ({
           x2="20%"
           y2="50%"
           stroke="currentColor"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         />
         <circle
           cx={"20%"}
@@ -55,7 +55,7 @@ const MakeAnglesButton: React.FC<PropsType> = ({
           x2="80%"
           y2="80%"
           stroke="currentColor"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         />
         <circle
           cx={"80%"}

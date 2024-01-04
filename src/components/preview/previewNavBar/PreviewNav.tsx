@@ -4,6 +4,7 @@ import DownloadSVGBtn from "./DownloadSVGBtn";
 import RemoveEntityButton from "./RemoveEntityButton";
 import ConnectButton from "./ConnectButton";
 import MakeAnglesButton from "./MakeAnglesButton";
+import CloseFigureButton from "./CloseFigureButton";
 
 type PreviewNavProps = React.HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode | React.ReactNode[];
@@ -28,6 +29,7 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
       <RemoveEntityButton className="hover:-translate-y-0.5 hover:text-c_interact" />
       <ConnectButton className="hover:-translate-y-0.5 hover:text-c_interact" />
       <MakeAnglesButton className="hover:-translate-y-0.5 hover:text-c_interact" />
+      <CloseFigureButton className="hover:-translate-y-0.5 hover:text-c_interact" />
       {children &&
         (Array.isArray(children) ? (
           children.map((child, index) => (
