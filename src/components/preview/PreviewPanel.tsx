@@ -10,7 +10,8 @@ import TagsPreview from "./parts/TagsPreview";
 import { RES_FACTOR } from "public/generalConfigs";
 import { getKindById, getSelected } from "import/utils/storeHelpers/miscEntity";
 import Panel from "../micro/Panel";
-
+import Filters from "./Filters";
+import PreviewNav from "./PreviewNav";
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
@@ -20,7 +21,10 @@ const PreviewPanel = () => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const [viewBox, setViewBox] = useState("0 0 100 100");
-  const [svgDim, setSvgDim] = useState({ width: 200*RES_FACTOR, height: 200*RES_FACTOR });
+  const [svgDim, setSvgDim] = useState({
+    width: 200 * RES_FACTOR,
+    height: 200 * RES_FACTOR,
+  });
 
   useEffect(() => {
     if (!store || !store.points || store.points.size === 0) return;
@@ -28,16 +32,16 @@ const PreviewPanel = () => {
     const pointsArr = Array.from(store.points.values());
 
     //Find min and max points to define bounds
-    let minX = pointsArr[0]!.coords.x*RES_FACTOR;
-    let maxX = pointsArr[0]!.coords.x*RES_FACTOR;
-    let minY = pointsArr[0]!.coords.y*RES_FACTOR;
-    let maxY = pointsArr[0]!.coords.y*RES_FACTOR;
+    let minX = pointsArr[0]!.coords.x * RES_FACTOR;
+    let maxX = pointsArr[0]!.coords.x * RES_FACTOR;
+    let minY = pointsArr[0]!.coords.y * RES_FACTOR;
+    let maxY = pointsArr[0]!.coords.y * RES_FACTOR;
 
     store.points.forEach((point) => {
-      minX = Math.min(minX, point.coords.x*RES_FACTOR);
-      maxX = Math.max(maxX, point.coords.x*RES_FACTOR);
-      minY = Math.min(minY, point.coords.y*RES_FACTOR);
-      maxY = Math.max(maxY, point.coords.y*RES_FACTOR);
+      minX = Math.min(minX, point.coords.x * RES_FACTOR);
+      maxX = Math.max(maxX, point.coords.x * RES_FACTOR);
+      minY = Math.min(minY, point.coords.y * RES_FACTOR);
+      maxY = Math.max(maxY, point.coords.y * RES_FACTOR);
     });
 
     let pointsWidth = maxX - minX;
@@ -46,7 +50,7 @@ const PreviewPanel = () => {
     let padding = 0.2; //of the maximum dimension
 
     if (pointsArr.length == 1 && pointsArr[0]) {
-      pointsWidth = pointsArr[0].size * 2 *RES_FACTOR;
+      pointsWidth = pointsArr[0].size * 2 * RES_FACTOR;
       pointsHeight = pointsWidth;
       padding = 2;
     }
@@ -83,7 +87,7 @@ const PreviewPanel = () => {
   }, [store, store?.points, ref, svgRef, dimensions.width, dimensions.height]);
 
   const onClickDeselectAll = () => {
-    if(!store) return;
+    if (!store) return;
 
     const selectedPoints = getSelected("point", store);
     const selectedSegments = getSelected("segment", store);
@@ -97,53 +101,57 @@ const PreviewPanel = () => {
     // const updatedCircles = new Map(store.circles);
     // const updatedTags = new Map(store.tags);
 
-    if(selectedPoints.length > 0){
-      selectedPoints.forEach(point => {
-        updatedPoints.set(point.id, {...point, selected: false})
+    if (selectedPoints.length > 0) {
+      selectedPoints.forEach((point) => {
+        updatedPoints.set(point.id, { ...point, selected: false });
       });
     }
 
-    if(selectedSegments.length > 0){
-      selectedSegments.forEach(seg => {
-        updatedSegments.set(seg.id, {...seg, selected: false})
+    if (selectedSegments.length > 0) {
+      selectedSegments.forEach((seg) => {
+        updatedSegments.set(seg.id, { ...seg, selected: false });
       });
     }
 
-
-    if(selectedAngles.length > 0){
-      selectedAngles.forEach(ang => {
-        updatedAngles.set(ang.id, {...ang, selected: false})
+    if (selectedAngles.length > 0) {
+      selectedAngles.forEach((ang) => {
+        updatedAngles.set(ang.id, { ...ang, selected: false });
       });
     }
 
-    if(selectedCircles.length > 0){
-    // selectedCircles.forEach(circle => {
-    //   updatedCircles.set(circle.id, {...circle, selected: false})
-    // });
+    if (selectedCircles.length > 0) {
+      // selectedCircles.forEach(circle => {
+      //   updatedCircles.set(circle.id, {...circle, selected: false})
+      // });
     }
 
-    if(selectedTags.length > 0){
-    // selectedTags.forEach(tag => {
-    //   updatedTags.set(tag.id, {...tag, selected: false})
-    // });
+    if (selectedTags.length > 0) {
+      // selectedTags.forEach(tag => {
+      //   updatedTags.set(tag.id, {...tag, selected: false})
+      // });
     }
 
-    store.set({...store, points: updatedPoints, segments: updatedSegments, angles: updatedAngles, selections: [] })
-
-  }
+    store.set({
+      ...store,
+      points: updatedPoints,
+      segments: updatedSegments,
+      angles: updatedAngles,
+      selections: [],
+    });
+  };
 
   if (!store) return;
 
   return (
-    <Panel className="relative h-full items-center p-2">
+    <Panel className="h-full items-center p-2">
       <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
-      <div className="absolute left-0 top-0 h-6 w-6">
-          <DownloadSVGBtn svgRef={svgRef} />
-        </div>
       <div
         ref={ref}
-        className="flex-1 max-h-full grid place-items-center overflow-hidden"
+        className="relative grid max-h-full flex-1 place-items-center overflow-hidden"
       >
+        <PreviewNav>
+          <DownloadSVGBtn svgRef={svgRef} />
+        </PreviewNav>
         <svg
           width={svgDim.width > 0 ? svgDim.width : "100%"}
           height={svgDim.height > 0 ? svgDim.height : "100%"}
@@ -154,55 +162,7 @@ const PreviewPanel = () => {
           xmlns="http://www.w3.org/2000/svg"
           onClick={onClickDeselectAll}
         >
-          <defs>
-            <filter
-              id="glow"
-              x="-50%"
-              y="-50%"
-              width="200%"
-              height="200%"
-              filterUnits="userSpaceOnUse"
-            >
-              <feFlood
-                result="flood"
-                floodColor="#ff817a"
-                floodOpacity="1"
-              ></feFlood>
-              <feComposite
-                in="flood"
-                result="mask"
-                in2="SourceGraphic"
-                operator="in"
-              ></feComposite>
-              <feMorphology
-                in="mask"
-                result="dilated"
-                operator="dilate"
-                radius="0.1"
-              ></feMorphology>
-              <feGaussianBlur
-                in="dilated"
-                result="blurred"
-                stdDeviation="0.1"
-              ></feGaussianBlur>
-              <feComposite
-                in="blurred"
-                in2="SourceGraphic"
-                operator="arithmetic"
-                k2="1"
-                k3="-1"
-                result="nocombine"
-              ></feComposite>
-              <feMerge>
-                <feMergeNode in="nocombine"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-              </feMerge>
-            </filter>
-
-            <filter id="fatten" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse">
-              <feMorphology operator="dilate" radius="0.1" />
-            </filter>
-          </defs>
+          <Filters />
           <g transform={`scale(1, -1)`}>
             <AnglesPreview />
             <SegmentsPreview />

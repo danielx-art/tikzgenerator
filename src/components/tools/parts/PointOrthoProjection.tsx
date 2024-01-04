@@ -61,7 +61,7 @@ const PointOrthoProjection: React.FC = () => {
       {!thisPoints && <div>Selecione so menos três pontos (os três primeiros seráo usados)</div>}
       <button
         onClick={handleClick}
-        className="rounded-sm bg-c_interact p-2 text-c_base shadow-md hover:bg-c_high1"
+        className="rounded-sm bg-c_interact p-2 mr-4 my-2 text-c_base shadow-md hover:bg-c_high1"
         disabled={thisPoints ? false : true}
       >
         Projetar ponto 

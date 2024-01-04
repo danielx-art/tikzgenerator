@@ -86,7 +86,7 @@ const Customization = () => {
           )}
         </div>
         <div
-          className={`w-full p-1 transition-all ease-in-out ${
+          className={`w-full p-1 pl-7 transition-all ease-in-out ${
             isOpen
               ? "h-auto pb-2 opacity-100"
               : "disabled pointer-events-none h-0 select-none overflow-hidden opacity-0"
@@ -121,7 +121,7 @@ const Customization = () => {
               </div>
             ))} */}
           {!thisEntityId && (
-            <div className="px-4 py-1 text-sm text-c_scnd">
+            <div className="py-1 text-sm text-c_scnd">
               Selecione um objeto para customizá-lo
             </div>
           )}
