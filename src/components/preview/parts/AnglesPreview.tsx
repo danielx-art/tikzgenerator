@@ -17,7 +17,10 @@ const AnglesPreview: React.FC = () => {
         const anglePath = getAnglePath(angle);
 
         return (
-          <g filter={angle.selected ? "url(#glow)" : "none"}  key={"svg_path_angle_" + angle.id}>
+          <g
+            filter={angle.selected ? "url(#glow)" : "url(#dropshadow"}
+            key={"svg_path_angle_" + angle.id}
+          >
             {
               <path
                 key={"svg_path_marks_" + angle.id}
@@ -33,12 +36,27 @@ const AnglesPreview: React.FC = () => {
                 key={"svg_path_fill_" + angle.id}
                 d={anglePath.dFillPath}
                 stroke="none"
-                fill={angle.dotstyle === 1 ? angle.color : "none"}
+                fill={angle.dotstyle === 1 ? angle.color : "transparent"}
                 fillOpacity={0.5}
-                onClick={(event) => {event.stopPropagation(); toggleSelection(angle.id)}}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleSelection(angle.id);
+                }}
                 className="cursor-pointer"
               />
             }
+            <path
+              key={"svg_path_hitbox_" + angle.id}
+              d={anglePath.d}
+              stroke={"transparent"}
+              strokeWidth={2 * DEFAULT_LINE_WIDTH}
+              fill="transparent"
+              onClick={(event) => {
+                event.stopPropagation();
+                toggleSelection(angle.id);
+              }}
+              className="cursor-pointer"
+            />
             <path
               key={"svg_path_" + angle.id}
               d={anglePath.d}
@@ -46,8 +64,7 @@ const AnglesPreview: React.FC = () => {
               strokeWidth={DEFAULT_LINE_WIDTH}
               fill="none"
               fillOpacity={0.5}
-              onClick={(event) => {event.stopPropagation(); toggleSelection(angle.id)}}
-              className="cursor-pointer"
+              className="pointer-events-none"
             />
           </g>
         );

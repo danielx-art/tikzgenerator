@@ -27,7 +27,10 @@ const SegmentsPreview: React.FC = () => {
   return (
     <>
       {Array.from(segments.values()).map((segment, index) => (
-        <g filter={segment.selected ? "url(#glow)" : "none"} key={"svg_path_segment_" + segment.id}>
+        <g
+          filter={segment.selected ? "url(#glow)" : "url(#dropshadow"}
+          key={"svg_path_segment_" + segment.id}
+        >
           {segment.marks != 0 && (
             <path
               key={"svg_path_" + segment.id + "marks"}
@@ -41,15 +44,27 @@ const SegmentsPreview: React.FC = () => {
             />
           )}
           <path
+            //This is only to increase the hit box
+            key={"svg_path_hitbox_" + segment.id}
+            d={getSegmentPath(segment)}
+            stroke={"transparent"}
+            strokeLinecap="round"
+            strokeWidth={3 * segment.width}
+            fill="none"
+            onClick={(event) => {
+              event.stopPropagation();
+              toggleSelection(segment.id);
+            }}
+            className="cursor-pointer"
+          />
+          <path
             key={"svg_path_" + segment.id}
             d={getSegmentPath(segment)}
             stroke={segment.color}
             strokeLinecap="round"
             strokeWidth={segment.width}
             fill="none"
-            onClick={(event) => {event.stopPropagation(); toggleSelection(segment.id)}}
-
-            className="cursor-pointer"
+            className="pointer-events-none"
             strokeDasharray={getStrokeDasharray(segment.style)}
           />
         </g>

@@ -17,7 +17,39 @@ const ConnectButton: React.FC<PropsType> = ({
 
   return (
     <button className={cn("", className)} onClick={handleConnect} {...rest}>
-      Connect!
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke="currentColor"
+        className="h-full w-full p-1"
+      >
+        <circle
+          cx={"20%"}
+          cy={"80%"}
+          r={"10%"}
+          stroke="currentColor"
+          strokeWidth={"1.5"}
+          fill={"currentColor"}
+        />
+        <line
+          x1="20%"
+          y1="80%"
+          x2="80%"
+          y2="20%"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+        <circle
+          cx={"80%"}
+          cy={"20%"}
+          r={"10%"}
+          stroke="currentColor"
+          strokeWidth={"1.5"}
+          fill={"currentColor"}
+        />
+      </svg>
     </button>
   );
 };

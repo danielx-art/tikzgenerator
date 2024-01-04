@@ -24,18 +24,45 @@ const PointsPreview: React.FC = () => {
           stroke = point.color;
         }
 
-        return (
-          <path
-            key={"svg_path_" + point.id}
-            d={getPointPath(point)}
-            stroke={stroke}
-            strokeWidth={DEFAULT_LINE_WIDTH}
-            fill={fill}
-            onClick={(event) => {event.stopPropagation(); toggleSelection(point.id)}}
+        const hitBoxSize = 2;
 
-            className="cursor-pointer"
-            filter={point.selected ? "url(#glow)" : "none"}
-          />
+        return (
+          <g
+            filter={point.selected ? "url(#glow)" : "url(#dropshadow"}
+            key={"svg_path_point_" + point.id}
+          >
+            <path
+              key={"svg_path_hitbox_" + point.id}
+              d={
+                `M ${point.coords.x * RES_FACTOR} ${
+                  point.coords.y * RES_FACTOR
+                } ` +
+                `m -${hitBoxSize * 0.1 * RES_FACTOR}, 0 ` +
+                `a ${hitBoxSize * 0.1 * RES_FACTOR},${
+                  hitBoxSize * 0.1 * RES_FACTOR
+                } 0 1,0 ${hitBoxSize * 0.1 * 2 * RES_FACTOR},0 ` +
+                `a ${hitBoxSize * 0.1 * RES_FACTOR},${
+                  hitBoxSize * 0.1 * RES_FACTOR
+                } 0 1,0 -${hitBoxSize * 0.1 * 2 * RES_FACTOR},0`
+              }
+              stroke={"transparent"}
+              strokeWidth={2 * DEFAULT_LINE_WIDTH}
+              fill={"transparent"}
+              onClick={(event) => {
+                event.stopPropagation();
+                toggleSelection(point.id);
+              }}
+              className="cursor-pointer"
+            />
+            <path
+              key={"svg_path_" + point.id}
+              d={getPointPath(point)}
+              stroke={stroke}
+              strokeWidth={DEFAULT_LINE_WIDTH}
+              fill={fill}
+              className="pointer-events-none"
+            />
+          </g>
         );
       })}
     </>

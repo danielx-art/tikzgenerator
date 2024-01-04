@@ -20,12 +20,12 @@ const Filters = () => (
           in="mask"
           result="dilated"
           operator="dilate"
-          radius="0.1"
+          radius="0.3"
         ></feMorphology>
         <feGaussianBlur
           in="dilated"
           result="blurred"
-          stdDeviation="0.1"
+          stdDeviation="0.2"
         ></feGaussianBlur>
         <feComposite
           in="blurred"
@@ -51,8 +51,27 @@ const Filters = () => (
       >
         <feMorphology operator="dilate" radius="0.1" />
       </filter>
+
+      <filter
+        id="dropshadow"
+        x="-10%"
+        y="-10%"
+        width="120%"
+        height="120%"
+        filterUnits="userSpaceOnUse"
+      >
+        <feOffset result="offOut" in="SourceGraphic" dx=".3" dy="-.3" />
+        <feColorMatrix
+          result="matrixOut"
+          in="offOut"
+          type="matrix"
+          values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0"
+        />
+        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="0.25" />
+        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+      </filter>
     </defs>
   </>
 );
 
-export default Filters
+export default Filters;
