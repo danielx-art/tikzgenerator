@@ -24,7 +24,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
   8. ~~[ ângulos ] consertar fill em ângulos de 90°~~
   9. ~~[ ângulos ] consertar visibilidade de customização de 'marcas' para ângulos de 90°~~
 - ~~Customização de cor para ponto~~
-- Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.
+- ~~Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.~~
 - Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana
 - Selecionado um ângulo: criar bissetriz
 - Selecionado um segmento: criar mediatriz
