@@ -54,10 +54,10 @@ const Filters = () => (
 
       <filter
         id="dropshadow"
-        x="-10%"
-        y="-10%"
-        width="120%"
-        height="120%"
+        x="-50%"
+        y="-50%"
+        width="200%"
+        height="200%"
         filterUnits="userSpaceOnUse"
       >
         <feOffset result="offOut" in="SourceGraphic" dx=".3" dy="-.3" />

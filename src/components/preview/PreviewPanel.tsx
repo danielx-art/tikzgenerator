@@ -21,8 +21,8 @@ const PreviewPanel = () => {
 
   const [viewBox, setViewBox] = useState("0 0 100 100");
   const [svgDim, setSvgDim] = useState({
-    width: 200 * RES_FACTOR,
-    height: 200 * RES_FACTOR,
+    width: 10 * RES_FACTOR,
+    height: 10 * RES_FACTOR,
   });
 
   useEffect(() => {
@@ -90,11 +90,11 @@ const PreviewPanel = () => {
   return (
     <Panel className="h-full items-center p-2">
       <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
+      <PreviewNav ref={svgRef} />
       <div
         ref={ref}
-        className="relative grid max-h-full flex-1 place-items-center overflow-hidden"
+        className="grid max-h-full flex-1 place-items-center overflow-hidden"
       >
-        <PreviewNav ref={svgRef} />
         <svg
           width={svgDim.width > 0 ? svgDim.width : "100%"}
           height={svgDim.height > 0 ? svgDim.height : "100%"}
