@@ -9,19 +9,25 @@ import { RES_FACTOR } from "public/generalConfigs";
 
 const TagsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
+  const tags = useStore(myStore, (state)=>state.tags);
 
-  if (!store || !store.tags) return;
+  if (!store || !tags) return;
 
   return (
     <>
-      {store.tags &&
-        Array.from(store.tags.values()).map((tag) => {
+      {store && tags &&
+        Array.from(tags.values()).map((tag) => {
+
           const ent = getEntityById(tag.entityId, store);
+
           if (!ent) return;
+
           const entityKind = getEntityKind(ent) as
             | "point"
             | "segment"
             | "angle";
+
+
           let x = 0;
           let y = 0;
           const DISTANCE_FACTOR = 0.35;

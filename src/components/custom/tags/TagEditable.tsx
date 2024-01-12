@@ -4,55 +4,75 @@ import type { TallId, TtagId, Tentity, Ttag, TentId } from "public/entidades";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import {
   findTagByEntityId,
-  getEntityKind,
   getKindById,
 } from "import/utils/storeHelpers/miscEntity";
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
 type PropsType = {
   thisTagId: TtagId | undefined;
+  thisEntityId: TallId | undefined;
 };
 
-const TagEditable: React.FC<PropsType> = ({ thisTagId }) => {
+const TagEditable: React.FC<PropsType> = ({ thisTagId, thisEntityId }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
 
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    if (!store || !thisTagId) {
-      setDisabled(true);
+    
+    if (!store || !thisEntityId) {
       setInputValue("");
       return;
     }
+
+
+    if(!thisTagId) {
+      setInputValue("");
+      return;
+    }
+
     const thisTag = store.tags.get(thisTagId);
 
-    if (!thisTag || !store.selections.includes(thisTag.entityId)) {
-      setDisabled(true);
+    if(!thisTag) {
       setInputValue("");
       return;
     }
-    setDisabled(false);
     const firstValue = thisTag.value;
     setInputValue(firstValue);
-  }, [thisTagId, store]);
+  }, [thisTagId, thisEntityId, store]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
   const handleBtnPress = () => {
-    if (!store || !thisTagId || disabled) return;
+    if (!store || disabled || !thisEntityId) return;
     if (!editMode) {
       setEditMode(true);
     } else {
-      if (inputValue.length <= 0) return;
-      const updatedTags = new Map(store.tags);
-      const thisTag = store.tags.get(thisTagId)!;
-      updatedTags.set(thisTagId, { ...thisTag, value: inputValue });
-      store.setTags(updatedTags);
-      setEditMode(false);
+      if (inputValue.length <= 0) {
+        if(thisTagId) {
+          store.deleteTag(thisTagId);
+        }
+        setInputValue("");
+        setEditMode(false);
+        return;
+      } else {
+        const updatedTags = new Map(store.tags);
+        const thisTagExists = thisTagId ? store.tags.has(thisTagId) : false;
+        if(thisTagId && thisTagExists){
+          
+          const thisTag = store.tags.get(thisTagId)!;
+          updatedTags.set(thisTagId, { ...thisTag, value: inputValue });
+          store.setTags(updatedTags);
+        } else if ( thisEntityId ) {
+
+          store.addTag(inputValue, thisEntityId as TentId);
+        }
+        setEditMode(false);
+      }
     }
   };
 

@@ -47,7 +47,7 @@ const Filters = () => (
         y="-10%"
         width="120%"
         height="120%"
-        filterUnits="userSpaceOnUse"
+        //filterUnits="userSpaceOnUse"
       >
         <feMorphology operator="dilate" radius="0.1" />
       </filter>

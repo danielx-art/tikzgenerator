@@ -44,6 +44,7 @@ const TagCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
       <div className="flex flex-1 flex-row flex-wrap justify-evenly gap-6">
         <TagEditable
           thisTagId={thisTagId}
+          thisEntityId={thisEntityId}
           key={`tagEditable_${thisEntityId || "_e"}_${thisTagId || "_t"}`}
         />
         <TagDirectionChanger

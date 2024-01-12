@@ -235,6 +235,7 @@ const myStore = create<State & Action>()(
       },
 
       addTag: (value: string, entityId: TentId) => {
+
         const tagId = get().generateId("tag") as TtagId;
 
         const newTag = tag(value, entityId, tagId);
