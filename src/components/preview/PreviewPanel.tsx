@@ -105,8 +105,8 @@ const PreviewPanel = () => {
           xmlns="http://www.w3.org/2000/svg"
           onClick={() => deselectAll(store)}
         >
-          <Filters />
           <g transform={`scale(1, -1)`}>
+            <Filters />
             <AnglesPreview />
             <SegmentsPreview />
             <PointsPreview />

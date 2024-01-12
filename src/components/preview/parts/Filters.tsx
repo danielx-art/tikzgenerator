@@ -7,7 +7,7 @@ const Filters = () => (
         y="-50%"
         width="200%"
         height="200%"
-        filterUnits="userSpaceOnUse"
+        //filterUnits="userSpaceOnUse"
       >
         <feFlood result="flood" floodColor="#ff817a" floodOpacity="1"></feFlood>
         <feComposite
@@ -58,7 +58,7 @@ const Filters = () => (
         y="-50%"
         width="200%"
         height="200%"
-        filterUnits="userSpaceOnUse"
+        //filterUnits="userSpaceOnUse"
       >
         <feOffset result="offOut" in="SourceGraphic" dx=".3" dy="-.3" />
         <feColorMatrix

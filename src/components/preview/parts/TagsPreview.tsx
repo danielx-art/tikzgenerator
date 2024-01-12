@@ -5,6 +5,7 @@ import {
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { Tangle, Tpoint, Tsegment, Ttag, TtagId } from "public/entidades";
+import { RES_FACTOR } from "public/generalConfigs";
 
 const TagsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
@@ -56,15 +57,15 @@ const TagsPreview: React.FC = () => {
             }
           }
 
-          const textSize = ` ${tag.size}px `;
+          const textSize = ` ${tag.size*RES_FACTOR}px `;
 
-          const textColor = ` text-${tag.color} `;
+          //const textColor = ` text-${tag.color} `;
 
           return (
             <g key={"svg_path_" + tag.id} transform={`scale(1, -1)`}>
               <text
-                x={x}
-                y={y}
+                x={x*RES_FACTOR}
+                y={y*RES_FACTOR}
                 className={`cursor-pointer select-none`}
                 fill={tag.color}
                 fontSize={textSize}
