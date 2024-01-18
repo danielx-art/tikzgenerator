@@ -1,9 +1,19 @@
-import { type Ttag } from "public/entidades";
+import type {
+  TangId,
+  TentId,
+  Tkind,
+  TpointId,
+  TsegId,
+  Ttag,
+} from "public/entidades";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import Item from "./Item";
 import { roundAndDisplayNicely } from "import/utils/math/misc";
-import { findTagByEntityId } from "import/utils/storeHelpers/miscEntity";
+import {
+  findTagByEntityId,
+  getKindById,
+} from "import/utils/storeHelpers/miscEntity";
 
 type PropsType = {
   tag: Ttag;
@@ -13,36 +23,25 @@ type PropsType = {
 const TagItem: React.FC<PropsType> = ({ tag }) => {
   const store = useStore(myStore, (state) => state);
 
-  type Tstore = typeof store;
-
   if (!store) return;
 
-  const {
-    points,
-    setPoints,
-    segments,
-    setSegments,
-    angles,
-    setAngles,
-    tags,
-    setTags,
-    toggleSelection,
-    deleteTag,
-  } = store;
+  const { points, segments, angles, tags, toggleSelection, deleteTag } = store;
 
-  function getEntityDisplay(id: string) {
+  function getEntityDisplay(id: TentId) {
     if (!store) return "?";
-    const entityKind = id.split("_")[0] as "point" | "segment" | "angle";
-    switch (entityKind) {
+
+    const entKind = getKindById(id) as Tkind;
+
+    switch (entKind) {
       case "point": {
-        const ent = points.get(id);
+        const ent = points.get(id as TpointId);
         if (!ent) return;
         return `Ponto (${roundAndDisplayNicely(
           ent.coords.x,
         )};${roundAndDisplayNicely(ent.coords.y)})`;
       }
       case "segment": {
-        const ent = segments.get(id);
+        const ent = segments.get(id as TsegId);
         if (!ent) return;
         return `Segmento (${roundAndDisplayNicely(
           ent.p1.coords.x,
@@ -51,7 +50,7 @@ const TagItem: React.FC<PropsType> = ({ tag }) => {
         )};${roundAndDisplayNicely(ent.p2.coords.y)})`;
       }
       case "angle": {
-        const ent = angles.get(id);
+        const ent = angles.get(id as TangId);
         if (!ent) return;
         let result = "";
 
@@ -78,7 +77,7 @@ const TagItem: React.FC<PropsType> = ({ tag }) => {
         return `Ângulo ${result}`;
       }
       default:
-        return `${entityKind}`;
+        return `${entKind}`;
     }
   }
 
