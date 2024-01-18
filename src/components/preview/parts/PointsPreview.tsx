@@ -12,7 +12,18 @@ const PointsPreview: React.FC = () => {
 
   const { points, toggleSelection, movePoint } = store;
 
-  return <>{Array.from(points.values()).map((point, index) => <PointPreview point={point} toggleSelection={toggleSelection} movePoint={movePoint} key={"svg_path_point_" + point.id} />)}</>;
+  return (
+    <>
+      {Array.from(points.values()).map((point, index) => (
+        <PointPreview
+          point={point}
+          toggleSelection={toggleSelection}
+          movePoint={movePoint}
+          key={"svg_path_point_" + point.id}
+        />
+      ))}
+    </>
+  );
 };
 
 export default PointsPreview;
@@ -30,7 +41,7 @@ const PointPreview: React.FC<PointProps> = ({
 }) => {
   const { handleMouseDown, handleTouchStart } = useDraggablePoint(
     point.id,
-    point.coords || vec(0,0),
+    point.coords || vec(0, 0),
     movePoint,
   );
 
@@ -48,10 +59,7 @@ const PointPreview: React.FC<PointProps> = ({
   const hitBoxSize = 2;
 
   return (
-    <g
-      filter={point.selected ? "url(#glow)" : "url(#dropshadow"}
-      
-    >
+    <g filter={point.selected ? "url(#glow)" : "url(#dropshadow"}>
       <path
         key={"svg_path_hitbox_" + point.id}
         d={
@@ -71,8 +79,8 @@ const PointPreview: React.FC<PointProps> = ({
           event.stopPropagation();
           toggleSelection(point.id);
         }}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
+        // onMouseDown={handleMouseDown}
+        // onTouchStart={handleTouchStart}
         className="cursor-pointer"
       />
       <path

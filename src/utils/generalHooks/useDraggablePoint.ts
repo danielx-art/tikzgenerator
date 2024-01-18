@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { vec, vector } from "../math/vetores";
 import { TpointId } from "public/entidades";
-import { RES_FACTOR } from "public/generalConfigs";
 
 const useDraggablePoint = (
   id: TpointId,

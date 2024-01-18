@@ -63,7 +63,7 @@ const GroupItem: React.FC<PropsType> = ({ groupId, selected, children }) => {
         <div
           onClick={() => handleGroupClick(groupId)}
         >{`Grupo ${groupId}`}</div>
-        <RemoveButton handleClick={() => removeGroup(groupId)} />
+        <RemoveButton onClick={() => removeGroup(groupId)} />
       </div>
       {children}
     </div>
