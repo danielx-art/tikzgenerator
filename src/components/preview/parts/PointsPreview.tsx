@@ -1,6 +1,8 @@
+import useDraggablePoint from "import/utils/generalHooks/useDraggablePoint";
+import { vec, vector } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { Tpoint } from "public/entidades";
+import { TallId, Tpoint, TpointId } from "public/entidades";
 import { DEFAULT_LINE_WIDTH, RES_FACTOR } from "public/generalConfigs";
 
 const PointsPreview: React.FC = () => {
@@ -8,68 +10,82 @@ const PointsPreview: React.FC = () => {
 
   if (!store) return;
 
-  const { points, toggleSelection } = store;
+  const { points, toggleSelection, movePoint } = store;
 
-  return (
-    <>
-      {Array.from(points.values()).map((point, index) => {
-        let stroke = "none";
-        let fill = "none";
-
-        if (point.dotstyle === 1) {
-          stroke = point.color;
-          fill = "#f5f5f5";
-        } else if (point.dotstyle === 2) {
-          fill = point.color;
-          stroke = point.color;
-        }
-
-        const hitBoxSize = 2;
-
-        return (
-          <g
-            filter={point.selected ? "url(#glow)" : "url(#dropshadow"}
-            key={"svg_path_point_" + point.id}
-          >
-            <path
-              key={"svg_path_hitbox_" + point.id}
-              d={
-                `M ${point.coords.x * RES_FACTOR} ${
-                  point.coords.y * RES_FACTOR
-                } ` +
-                `m -${hitBoxSize * 0.1 * RES_FACTOR}, 0 ` +
-                `a ${hitBoxSize * 0.1 * RES_FACTOR},${
-                  hitBoxSize * 0.1 * RES_FACTOR
-                } 0 1,0 ${hitBoxSize * 0.1 * 2 * RES_FACTOR},0 ` +
-                `a ${hitBoxSize * 0.1 * RES_FACTOR},${
-                  hitBoxSize * 0.1 * RES_FACTOR
-                } 0 1,0 -${hitBoxSize * 0.1 * 2 * RES_FACTOR},0`
-              }
-              stroke={"transparent"}
-              strokeWidth={2 * DEFAULT_LINE_WIDTH}
-              fill={"transparent"}
-              onClick={(event) => {
-                event.stopPropagation();
-                toggleSelection(point.id);
-              }}
-              className="cursor-pointer"
-            />
-            <path
-              key={"svg_path_" + point.id}
-              d={getPointPath(point)}
-              stroke={stroke}
-              strokeWidth={DEFAULT_LINE_WIDTH}
-              fill={fill}
-              className="pointer-events-none"
-            />
-          </g>
-        );
-      })}
-    </>
-  );
+  return <>{Array.from(points.values()).map((point, index) => <PointPreview point={point} toggleSelection={toggleSelection} movePoint={movePoint} key={"svg_path_point_" + point.id} />)}</>;
 };
 
 export default PointsPreview;
+
+type PointProps = {
+  point: Tpoint;
+  toggleSelection: (id: TallId) => void;
+  movePoint: (id: TpointId, newPosition: vector) => void;
+};
+
+const PointPreview: React.FC<PointProps> = ({
+  point,
+  toggleSelection,
+  movePoint,
+}) => {
+  const { handleMouseDown, handleTouchStart } = useDraggablePoint(
+    point.id,
+    point.coords || vec(0,0),
+    movePoint,
+  );
+
+  let stroke = "none";
+  let fill = "none";
+
+  if (point.dotstyle === 1) {
+    stroke = point.color;
+    fill = "#f5f5f5";
+  } else if (point.dotstyle === 2) {
+    fill = point.color;
+    stroke = point.color;
+  }
+
+  const hitBoxSize = 2;
+
+  return (
+    <g
+      filter={point.selected ? "url(#glow)" : "url(#dropshadow"}
+      
+    >
+      <path
+        key={"svg_path_hitbox_" + point.id}
+        d={
+          `M ${point.coords.x * RES_FACTOR} ${point.coords.y * RES_FACTOR} ` +
+          `m -${hitBoxSize * 0.1 * RES_FACTOR}, 0 ` +
+          `a ${hitBoxSize * 0.1 * RES_FACTOR},${
+            hitBoxSize * 0.1 * RES_FACTOR
+          } 0 1,0 ${hitBoxSize * 0.1 * 2 * RES_FACTOR},0 ` +
+          `a ${hitBoxSize * 0.1 * RES_FACTOR},${
+            hitBoxSize * 0.1 * RES_FACTOR
+          } 0 1,0 -${hitBoxSize * 0.1 * 2 * RES_FACTOR},0`
+        }
+        stroke={"transparent"}
+        strokeWidth={2 * DEFAULT_LINE_WIDTH}
+        fill={"transparent"}
+        onClick={(event) => {
+          event.stopPropagation();
+          toggleSelection(point.id);
+        }}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        className="cursor-pointer"
+      />
+      <path
+        key={"svg_path_" + point.id}
+        d={getPointPath(point)}
+        stroke={stroke}
+        strokeWidth={DEFAULT_LINE_WIDTH}
+        fill={fill}
+        className="pointer-events-none"
+      />
+    </g>
+  );
+};
 
 export const getPointPath = (point: Tpoint) => {
   const { coords, dotstyle, size } = point;

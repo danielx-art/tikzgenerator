@@ -100,7 +100,7 @@ const PreviewPanel = () => {
           height={svgDim.height > 0 ? svgDim.height : "100%"}
           viewBox={viewBox}
           preserveAspectRatio="xMidYMid"
-          // className="border-2 border-c_disabled2 border-opacity-10"
+          className="border-2 border-c_disabled2 border-opacity-30"
           ref={svgRef}
           xmlns="http://www.w3.org/2000/svg"
           onClick={() => deselectAll(store)}

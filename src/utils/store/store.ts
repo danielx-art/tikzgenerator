@@ -21,7 +21,7 @@ import {
   TkindPluralFrom,
   Tcircle,
 } from "public/entidades";
-import { vec } from "import/utils/math/vetores";
+import { vec, vector } from "import/utils/math/vetores";
 import { create } from "zustand";
 import { StorageValue, persist } from "zustand/middleware";
 import { getKindById } from "../storeHelpers/miscEntity";
@@ -54,6 +54,7 @@ export type Action = {
   toggleSelection: (id: TallId) => void;
   addEntity: (entityKind: Tkind, elementBody: Tentity) => void;
   deleteEntity: (id: TentId) => void;
+  movePoint: (id: TpointId, newPosition: vector) => void;
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
   set: (state: State & Action) => void;
@@ -233,6 +234,17 @@ const myStore = create<State & Action>()(
           });
         }
       },
+
+      movePoint: (id, newPosition) =>
+        set((state) => {
+          const updatedPoints = new Map(state.points);
+          const point = updatedPoints.get(id);
+          if (point) {
+            updatedPoints.set(id, { ...point, coords: newPosition });
+          }
+          return { points: updatedPoints };
+        }
+      ),
 
       addTag: (value: string, entityId: TentId) => {
 
