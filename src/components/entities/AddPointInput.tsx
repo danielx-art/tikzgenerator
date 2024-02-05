@@ -133,13 +133,14 @@ const AddPointInput = () => {
   };
 
   return (
-    <div className="my-2 flex w-full flex-row flex-nowrap">
+    <div className="group my-2 flex w-full flex-row flex-nowrap gap-2 rounded-sm outline outline-2 outline-c_discrete focus-within:outline-c_interact">
       <input
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="flex-1 p-2 focus:outline-c_high1"
+        className="flex-1 px-2 focus:outline-none"
+        placeholder="(X;Y) ou (R:&#x3B8;) separados por espaço"
       />
       <button
         className="rounded-sm bg-c_interact p-2 text-c_base outline-1 hover:bg-c_high1"
