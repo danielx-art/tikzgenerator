@@ -1,4 +1,3 @@
-import useDraggablePoint from "import/utils/generalHooks/useDraggablePoint";
 import { vec, vector } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
@@ -39,11 +38,6 @@ const PointPreview: React.FC<PointProps> = ({
   toggleSelection,
   movePoint,
 }) => {
-  const { handleMouseDown, handleTouchStart } = useDraggablePoint(
-    point.id,
-    point.coords || vec(0, 0),
-    movePoint,
-  );
 
   let stroke = "none";
   let fill = "none";
@@ -79,8 +73,6 @@ const PointPreview: React.FC<PointProps> = ({
           event.stopPropagation();
           toggleSelection(point.id);
         }}
-        // onMouseDown={handleMouseDown}
-        // onTouchStart={handleTouchStart}
         className="cursor-pointer"
       />
       <path

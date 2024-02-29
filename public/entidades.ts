@@ -9,23 +9,25 @@ import {
   DEFAULT_POINT_SIZE,
   DEFAULT_POINT_STYLE,
   DEFAULT_SEGMENT_MARKS,
+  DEFAULT_POLYGON_FILL,
   DEFAULT_TAG_COLOR,
   DEFAULT_TAG_SIZE,
   SEGMENT_MARKS_TYPE,
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
 
-export type Tkind = "point" | "segment" | "angle" | "circle";
+export type Tkind = "point" | "segment" | "angle" | "circle" | "polygon";
 export type TallKind = Tkind | "tag";
-export type TkindPlural = "points" | "segments" | "angles" | "circles";
+export type TkindPlural = "points" | "segments" | "angles" | "circles" | "polygons";
 export type TallKindPlural = TkindPlural | "tags";
 export type TpointId = `point_${number}`;
 export type TsegId = `segment_${number}`;
 export type TangId = `angle_${number}`;
 export type TcircleId = `circle_${number}`;
+export type TpolyId = `polygon_${number}`;
 export type TtagId = `tag_${number}`;
 //export type TentId = `${Tkind}_${number}`;
-export type TentId = TpointId | TsegId | TangId | TcircleId;
+export type TentId = TpointId | TsegId | TangId | TcircleId | TpolyId;
 export type TallId = TentId | TtagId;
 
 export type TbodyFromKind<TypeKind> = TypeKind extends "point"
@@ -38,6 +40,8 @@ export type TbodyFromKind<TypeKind> = TypeKind extends "point"
   ? Ttag
   : TypeKind extends "circle"
   ? Tcircle
+  : TypeKind extends "polygon"
+  ? Tpolygon
   : never;
 export type TidFromKind<TypeKind> = TypeKind extends "point"
   ? TpointId
@@ -49,6 +53,8 @@ export type TidFromKind<TypeKind> = TypeKind extends "point"
   ? TtagId
   : TypeKind extends "circle"
   ? TcircleId
+  : TypeKind extends "polygon"
+  ? TpolyId
   : never;
 export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
   ? "points"
@@ -60,9 +66,11 @@ export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
   ? "tags"
   : TypeKind extends "circle"
   ? "circles"
+  : TypeKind extends "polygon"
+  ? "polygons"
   : never;
 
-export type Tentity = Tpoint | Tsegment | Tangle | Tcircle;
+export type Tentity = Tpoint | Tsegment | Tangle | Tcircle | Tpolygon;
 
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
   return {
@@ -158,6 +166,18 @@ export const circle = function (
 };
 
 export type Tcircle = ReturnType<typeof circle>;
+
+export const polygon = function (vertices: Array<Tpoint>, id: TpolyId) {
+  return {
+    id,
+    vertices,
+    visible: true,
+    selected: false,
+    color: DEFAULT_POLYGON_FILL
+  }
+}
+
+export type Tpolygon = ReturnType<typeof polygon>;
 
 export const tag = function (
   value: string = "",

@@ -1,25 +1,28 @@
 import {
-  Tpoint,
-  Tsegment,
-  Tangle,
-  Ttag,
-  Tentity,
+  type Tpoint,
+  type Tsegment,
+  type Tangle,
+  type Ttag,
+  type Tentity,
+  type TkindPlural,
+  type TpointId,
+  type TangId,
+  type TsegId,
+  type TtagId,
+  type TentId,
+  type Tkind,
+  type TallId,
+  type TallKind,
+  type TallKindPlural,
+  type TcircleId,
+  type TbodyFromKind,
+  type TidFromKind,
+  type TkindPluralFrom,
+  type Tcircle,
+  type TpolyId,
+  type Tpolygon,
   tag,
-  TkindPlural,
-  TpointId,
-  TangId,
-  TsegId,
-  TtagId,
-  TentId,
-  Tkind,
-  TallId,
-  TallKind,
-  TallKindPlural,
-  TcircleId,
-  TbodyFromKind,
-  TidFromKind,
-  TkindPluralFrom,
-  Tcircle,
+  polygon,
 } from "public/entidades";
 import { vec, vector } from "import/utils/math/vetores";
 import { create } from "zustand";
@@ -32,6 +35,7 @@ export type State = {
   segments: Map<TsegId, Tsegment>;
   angles: Map<TangId, Tangle>;
   circles: Map<TcircleId, Tcircle>;
+  polygons: Map<TpolyId, Tpolygon>;
   tags: Map<TtagId, Ttag>;
   groups: number[];
   selectedGroup: number;
@@ -46,6 +50,7 @@ export type Action = {
   setSegments: (segments: State["segments"]) => void;
   setAngles: (angles: State["angles"]) => void;
   setCircles: (circles: State["circles"]) => void;
+  setPolygons: (polygons: State["polygons"]) => void;
   setGroups: (groups: State["groups"]) => void;
   setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
   setTags: (tags: State["tags"]) => void;
@@ -71,11 +76,14 @@ const myStore = create<State & Action>()(
       segments: new Map<TsegId, Tsegment>(),
       angles: new Map<TangId, Tangle>(),
       circles: new Map<TcircleId, Tcircle>(),
+      polygons: new Map<TpolyId, Tpolygon>(),
       tags: new Map<TtagId, Ttag>(),
       setPoints: (points) => set(() => ({ points: points })),
       setSegments: (segments) => set(() => ({ segments: segments })),
       setAngles: (angles) => set(() => ({ angles: angles })),
       setCircles: (circles) => set(() => ({ circles: circles })),
+      setPolygons: (polygons) => set(() => ({ polygons: polygons })),
+
       setTags: (tags) => set(() => ({ tags: tags })),
 
       groups: [1] as number[],
@@ -91,6 +99,7 @@ const myStore = create<State & Action>()(
         segment: 0,
         angle: 0,
         circle: 0,
+        polygon: 0,
         tag: 0,
       },
 
@@ -167,6 +176,7 @@ const myStore = create<State & Action>()(
             const updatedPoints = new Map(state.points);
             const updatedSegments = new Map(state.segments);
             const updatedAngles = new Map(state.angles);
+            const updatedPolygons = new Map(state.polygons);
             const updatedTags = new Map(state.tags);
             const removedIds = [] as string[];
             const updatedSelections = [...state.selections];
@@ -193,6 +203,16 @@ const myStore = create<State & Action>()(
               }
             });
 
+            //now for polygons
+            updatedPolygons.forEach((polygon, polyId) => {
+              const verticesIds = polygon.vertices.map((each) => each.id);
+
+              if (verticesIds.includes(id as TpointId)) {
+                removedIds.push(polyId);
+                updatedPolygons.delete(polyId);
+              }
+            });
+
             updatedTags.forEach((tag, tagId) => {
               if (removedIds.includes(tag.entityId)) {
                 updatedTags.delete(tagId);
@@ -203,6 +223,7 @@ const myStore = create<State & Action>()(
               points: updatedPoints,
               segments: updatedSegments,
               angles: updatedAngles,
+              polygons: updatedPolygons,
               selections: updatedSelections,
             };
           });
@@ -243,11 +264,9 @@ const myStore = create<State & Action>()(
             updatedPoints.set(id, { ...point, coords: newPosition });
           }
           return { points: updatedPoints };
-        }
-      ),
+        }),
 
       addTag: (value: string, entityId: TentId) => {
-
         const tagId = get().generateId("tag") as TtagId;
 
         const newTag = tag(value, entityId, tagId);

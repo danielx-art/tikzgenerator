@@ -1,7 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { useEffect, useRef, useState } from "react";
-import useDimensions from "import/utils/generalHooks/useDimensions";
+import useDimensions from "import/utils/hooks/useDimensions";
 import PointsPreview from "./parts/PointsPreview";
 import AnglesPreview from "./parts/AnglesPreview";
 import SegmentsPreview from "./parts/SegmentsPreview";

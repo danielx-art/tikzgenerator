@@ -2,20 +2,19 @@ import { cn } from "import/utils/cn";
 import { vec, vector } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { closeFigure } from "import/utils/storeHelpers/closeFigure";
-
+import { connectPoints } from "import/utils/storeHelpers/connectPoints";
 import { ButtonHTMLAttributes } from "react";
 
 type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 
-const CloseFigureButton: React.FC<PropsType> = ({
+const CloseLoopButton: React.FC<PropsType> = ({
   className,
   onClick,
   ...rest
 }) => {
   const store = useStore(myStore, (state) => state);
 
-  const handleCloseFigure = () => closeFigure(store);
+  const handleCloseFigure = () => connectPoints(store, true);
 
   const realSize = 24;
   const p1 = vec(0.6, 0.9).mult(realSize);
@@ -29,32 +28,40 @@ const CloseFigureButton: React.FC<PropsType> = ({
     <button className={cn("", className)} onClick={handleCloseFigure} {...rest}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        fill="gray"
-        fillOpacity={0.4}
+        fill="none"
         viewBox="0 0 24 24"
-        strokeWidth="2"
+        strokeWidth="1.5"
         stroke="currentColor"
         className="h-full w-full p-1"
-      >  
+      >
         {ps.map((point, index, ps) => {
           const nextPoint = index === ps.length - 1 ? ps[0]! : ps[index + 1]!;
           return (
-            <g key={`closefigurebtn_${index}`}>
+            <g key={`closeloopbtn_${index}`}>
               <circle
                 cx={point.x}
                 cy={point.y}
                 r={"5%"}
                 stroke="currentColor"
-                strokeWidth={"1"}
+                strokeWidth={"1.5"}
                 fill={"currentColor"}
+              />
+
+              <line
+                x1={point.x}
+                y1={point.y}
+                x2={nextPoint.x}
+                y2={nextPoint.y}
+                stroke="currentColor"
+                strokeOpacity={index === 0 ? "1" : "0.6"}
+                strokeWidth={index === 0 ? "3" : "1.5"}
               />
             </g>
           );
         })}
-        <path d={`M ${p1.x} ${p1.y} L ${p2.x} ${p2.y} L ${p3.x} ${p3.y}L ${p4.x} ${p4.y}L ${p5.x} ${p5.y} Z`} />
       </svg>
     </button>
   );
 };
 
-export default CloseFigureButton;
+export default CloseLoopButton;
