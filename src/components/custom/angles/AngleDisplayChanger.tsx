@@ -1,6 +1,6 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { getKindById } from "import/utils/storeHelpers/miscEntity";
+import { getKindById } from "import/utils/storeHelpers/entityGetters";
 import { TangId, Tangle } from "public/entidades";
 import MultipleRadioGroup from "import/components/micro/MultipleRadioGroup";
 import { vec } from "import/utils/math/vetores";

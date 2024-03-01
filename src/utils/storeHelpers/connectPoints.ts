@@ -1,6 +1,6 @@
 import { type Tpoint, segmento, Tsegment } from "public/entidades";
 import type { Action, State } from "../store/store";
-import { getSelected } from "./miscEntity";
+import { getSelected } from "./entityGetters";
 
 export const connectPoints = (
   store: (State & Action) | undefined,

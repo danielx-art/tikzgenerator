@@ -2,7 +2,7 @@ import { Tsegment } from "public/entidades";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import Item from "./Item";
-import { findTagByEntityId } from "import/utils/storeHelpers/miscEntity";
+import { findTagByEntityId } from "import/utils/storeHelpers/entityGetters";
 
 type PropsType = {
   segment: Tsegment;

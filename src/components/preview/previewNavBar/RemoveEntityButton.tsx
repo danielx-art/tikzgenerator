@@ -1,7 +1,7 @@
 import { RemoveButton } from "import/components/micro/RemoveButton";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { getKindById } from "import/utils/storeHelpers/miscEntity";
+import { getKindById } from "import/utils/storeHelpers/entityGetters";
 import type { TentId, TtagId } from "public/entidades";
 import { ButtonHTMLAttributes } from "react";
 

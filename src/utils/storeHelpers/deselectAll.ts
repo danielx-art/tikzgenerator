@@ -1,5 +1,5 @@
 import type { Action, State } from "../store/store";
-import { getSelected } from "./miscEntity";
+import { getSelected } from "./entityGetters";
 
 export const deselectAll = (store: (State & Action) | undefined) => {
   if (!store) return;

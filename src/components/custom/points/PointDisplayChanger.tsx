@@ -1,7 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import RadioGroup from "import/components/micro/RadioGroup";
-import { getKindById } from "import/utils/storeHelpers/miscEntity";
+import { getKindById } from "import/utils/storeHelpers/entityGetters";
 import { Tpoint, type TpointId } from "public/entidades";
 
 type PropsType = {

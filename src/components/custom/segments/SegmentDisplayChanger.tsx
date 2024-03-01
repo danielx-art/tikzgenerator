@@ -1,6 +1,6 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { getKindById } from "import/utils/storeHelpers/miscEntity";
+import { getKindById } from "import/utils/storeHelpers/entityGetters";
 import { SEGMENT_MARKS_TYPE } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 import { TsegId } from "public/entidades";

@@ -3,7 +3,7 @@ import { roundAndDisplayNicely } from "import/utils/math/misc";
 import { vec } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { findTagByEntityId, getSelected } from "import/utils/storeHelpers/miscEntity";
+import { findTagByEntityId, getSelected } from "import/utils/storeHelpers/entityGetters";
 import { Tpoint, angulo, ponto, segmento } from "public/entidades";
 import { useEffect, useState } from "react";
 

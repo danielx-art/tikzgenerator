@@ -1,7 +1,7 @@
 import {
   getEntityById,
   getEntityKind,
-} from "import/utils/storeHelpers/miscEntity";
+} from "import/utils/storeHelpers/entityGetters";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { Tangle, Tpoint, Tsegment, Ttag, TtagId } from "public/entidades";

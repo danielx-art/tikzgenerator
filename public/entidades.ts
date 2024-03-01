@@ -142,8 +142,8 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
 export type Tangle = ReturnType<typeof angulo>;
 
 export const circle = function (
-  center: () => vector | vector,
-  radius: () => number | number,
+  center: (() => vector) | vector,
+  radius: (() => number) | number,
   id: TcircleId,
 ) {
   return {

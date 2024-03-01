@@ -18,7 +18,7 @@ import AngleCustomization from "./angles/AngleCustomization";
 import {
   getEntityById,
   getKindById,
-} from "import/utils/storeHelpers/miscEntity";
+} from "import/utils/storeHelpers/entityGetters";
 
 const Customization = () => {
   const [isOpen, setIsOpen] = useState(true);

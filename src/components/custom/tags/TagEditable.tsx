@@ -5,7 +5,7 @@ import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import {
   findTagByEntityId,
   getKindById,
-} from "import/utils/storeHelpers/miscEntity";
+} from "import/utils/storeHelpers/entityGetters";
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
 type PropsType = {

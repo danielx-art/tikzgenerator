@@ -1,6 +1,6 @@
 import { type Tpoint, angulo } from "public/entidades";
 import type { Action, State } from "../store/store";
-import { getSelected } from "./miscEntity";
+import { getSelected } from "./entityGetters";
 
 export const makeAngles = (
   store: (State & Action) | undefined,

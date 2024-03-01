@@ -13,7 +13,7 @@ import { roundAndDisplayNicely } from "import/utils/math/misc";
 import {
   findTagByEntityId,
   getKindById,
-} from "import/utils/storeHelpers/miscEntity";
+} from "import/utils/storeHelpers/entityGetters";
 
 type PropsType = {
   tag: Ttag;

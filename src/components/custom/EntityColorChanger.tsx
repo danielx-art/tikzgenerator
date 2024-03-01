@@ -9,7 +9,7 @@ import {
   getKindById,
   getMapByKind,
   getMapSetterKind,
-} from "import/utils/storeHelpers/miscEntity";
+} from "import/utils/storeHelpers/entityGetters";
 
 type PropsType = {
   entityId: TentId | undefined;

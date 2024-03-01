@@ -3,7 +3,7 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import Item from "./Item";
 import { roundToDecimalPlaces } from "import/utils/math/misc";
-import { findTagByEntityId } from "import/utils/storeHelpers/miscEntity";
+import { findTagByEntityId } from "import/utils/storeHelpers/entityGetters";
 
 type PropsType = {
   angle: Tangle;

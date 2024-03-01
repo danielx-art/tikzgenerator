@@ -7,7 +7,7 @@ import {
   type Tsegment,
   type Tangle,
 } from "public/entidades";
-import { getEntityKind } from "./miscEntity";
+import { getEntityKind } from "./entityGetters";
 
 const useApplyTags = (store: State & Action) => {
   const applyTags = <T extends Tentity>(

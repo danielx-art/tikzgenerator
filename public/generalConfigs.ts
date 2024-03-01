@@ -11,6 +11,7 @@ export const DEFAULT_ANGLE_STYLE = 0;
 export const DEFAULT_ANGLE_MARKS = 'mark-0';
 export const DEFAULT_ANGLE_SIZE = 0.5;
 export const DEFAULT_POLYGON_FILL = "gray";
+export const DEFAULT_CIRCLE_RADIUS = 1;
 export const DEFAULT_TAG_SIZE = 0.3;
 export const DEFAULT_TAG_COLOR = "black";
 export const LATEX_COLORS = ["red", "green", "blue", "cyan", "magenta", "yellow", "gray", "black", "white"] as const;

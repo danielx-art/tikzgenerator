@@ -5,7 +5,7 @@ import TagEditable from "./TagEditable";
 import {
   findTagByEntityId,
   getKindById,
-} from "import/utils/storeHelpers/miscEntity";
+} from "import/utils/storeHelpers/entityGetters";
 import TagColorChanger from "./TagColorChanger";
 import TagSizeChanger from "./TagSizeChanger";
 import useStore from "import/utils/store/useStore";

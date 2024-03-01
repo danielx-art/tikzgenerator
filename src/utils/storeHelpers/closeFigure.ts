@@ -1,6 +1,6 @@
 import { type Tpoint, type Tsegment, type TpointId, type TsegId, polygon } from "public/entidades";
 import type { Action, State } from "../store/store";
-import { getSelected } from "./miscEntity";
+import { getSelected } from "./entityGetters";
 import { segmentsIntersect } from "../math/segmentsIntersect";
 
 type TAdjacencyList = {[key: TpointId]: TsegId[]};

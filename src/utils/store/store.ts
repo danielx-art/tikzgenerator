@@ -27,7 +27,7 @@ import {
 import { vec, vector } from "import/utils/math/vetores";
 import { create } from "zustand";
 import { StorageValue, persist } from "zustand/middleware";
-import { getKindById } from "../storeHelpers/miscEntity";
+import { getKindById } from "../storeHelpers/entityGetters";
 
 export type State = {
   tab: TallKindPlural;
