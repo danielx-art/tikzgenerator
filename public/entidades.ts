@@ -157,6 +157,9 @@ export const circle = function (
       if (typeof radius === "number") return radius;
       return radius();
     },
+    isArc: false,
+    arcStart: 0,
+    arcEnd: 360,
     visible: true,
     width: DEFAULT_LINE_WIDTH,
     style: DEFAULT_LINE_STYLE,

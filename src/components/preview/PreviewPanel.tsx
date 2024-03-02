@@ -11,6 +11,8 @@ import Panel from "../micro/Panel";
 import Filters from "./parts/Filters";
 import PreviewNav from "./previewNavBar/PreviewNav";
 import { deselectAll } from "import/utils/storeHelpers/deselectAll";
+import PolygonsPreview from "./parts/PolygonsPreview";
+import CirclesPreview from "./parts/CirclesPreview";
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
@@ -107,6 +109,8 @@ const PreviewPanel = () => {
         >
           <g transform={`scale(1, -1)`}>
             <Filters />
+            <PolygonsPreview />
+            <CirclesPreview />
             <AnglesPreview />
             <SegmentsPreview />
             <PointsPreview />
