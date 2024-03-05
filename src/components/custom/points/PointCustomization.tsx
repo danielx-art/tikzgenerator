@@ -2,7 +2,7 @@ import { type TpointId } from "public/entidades";
 import PointDisplayChanger from "./PointDisplayChanger";
 import TagCustomization from "../tags/TagCustomization";
 import PointSizeChanger from "./PointSizeChanger";
-import EntityColorChanger from "../EntityColorChanger";
+import EntityColorChanger from "../ColorChanger";
 
 type PropsType = {
   thisEntityId: TpointId | undefined;

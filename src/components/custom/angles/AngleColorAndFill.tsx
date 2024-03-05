@@ -1,5 +1,5 @@
 import type { TangId } from "public/entidades";
-import EntityColorChanger from "../EntityColorChanger";
+import EntityColorChanger from "../ColorChanger";
 import { DEFAULT_ANGLE_STYLE, LATEX_COLOR } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 import useStore from "import/utils/store/useStore";

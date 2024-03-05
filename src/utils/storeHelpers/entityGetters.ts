@@ -15,6 +15,7 @@ import {
   Tcircle,
   TpolyId,
   Tpolygon,
+  TallMap,
 } from "public/entidades";
 import { type Action, type State } from "import/utils/store/store";
 
@@ -56,21 +57,7 @@ export function getEntityById(id: TallId, store: (State & Action) | undefined) {
 export function getMapByKind<T extends TallKind>(
   kind: T,
   store: (State & Action) | undefined,
-):
-  | (T extends "point"
-      ? Map<TpointId, Tpoint>
-      : T extends "segment"
-      ? Map<TsegId, Tsegment>
-      : T extends "angle"
-      ? Map<TangId, Tangle>
-      : T extends "circle"
-      ? Map<TcircleId, Tcircle>
-      : T extends "polygon"
-      ? Map<TpolyId, Tpolygon>
-      : T extends "tag"
-      ? Map<TtagId, Ttag>
-      : never)
-  | undefined {
+): TallMap<T> | undefined {
   if (!store) return;
 
   switch (kind) {
@@ -89,7 +76,7 @@ export function getMapByKind<T extends TallKind>(
   }
 }
 
-export function getMapSetterKind<T extends TallKind>(
+export function getSetterByKind<T extends TallKind>(
   kind: T,
   store: (State & Action) | undefined,
 ):

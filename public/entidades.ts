@@ -16,6 +16,7 @@ import {
   FILL_STYLES,
   DEFAULT_FILL_STYLE,
   DEFAULT_FILL_COLOR,
+  LATEX_COLOR,
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
 
@@ -80,16 +81,18 @@ export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
 
 export type Tentity = Tpoint | Tsegment | Tangle | Tcircle | Tpolygon;
 
+export type TallMap<T extends TallKind> = Map<TidFromKind<T>, T>;
+
 export type Tstroke = {
   width: number;
   style: STROKE_STYLES;
-  color: string;
+  color: LATEX_COLOR;
   opacity: number;
 };
 
 export type Tfill = {
   style: FILL_STYLES;
-  color: string;
+  color: LATEX_COLOR;
   opacity: number;
 };
 

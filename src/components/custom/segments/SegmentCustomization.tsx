@@ -1,9 +1,7 @@
 import type { TsegId } from "public/entidades";
 import TagCustomization from "../tags/TagCustomization";
-import SegmentStyleChanger from "./SegmentStyleChanger";
-import EntityColorChanger from "../EntityColorChanger";
-import SegmentSizeChanger from "./SegmentSizeChanger";
 import SegmentDisplayChanger from "./SegmentDisplayChanger";
+import StrokeCustomization from "../general/stroke/StrokeCustomization";
 
 type PropsType = {
   thisEntityId: TsegId | undefined;
@@ -16,10 +14,8 @@ const SegmentCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
         thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
-      <SegmentStyleChanger segId={thisEntityId} />
       <SegmentDisplayChanger segId={thisEntityId} />
-      <SegmentSizeChanger segId={thisEntityId} />
-      <EntityColorChanger entityId={thisEntityId} />
+      <StrokeCustomization entId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
     </div>
   );

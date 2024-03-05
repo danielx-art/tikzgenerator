@@ -1,7 +1,7 @@
 import type { TsegId } from "public/entidades";
 import TagCustomization from "../tags/TagCustomization";
 import SegmentStyleChanger from "./SegmentStyleChanger";
-import EntityColorChanger from "../EntityColorChanger";
+import EntityColorChanger from "../ColorChanger";
 import SegmentSizeChanger from "./SegmentSizeChanger";
 import SegmentDisplayChanger from "./SegmentDisplayChanger";
 
