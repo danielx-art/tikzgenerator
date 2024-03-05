@@ -1,7 +1,11 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { TcircleId, TentId } from "public/entidades";
-import { DEFAULT_STROKE_STYLE, DEFAULT_STROKE_WIDTH } from "public/generalConfigs";
+import {
+  DEFAULT_COLOR,
+  DEFAULT_STROKE_STYLE,
+  DEFAULT_STROKE_WIDTH,
+} from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
@@ -10,7 +14,9 @@ type PropsType = {
 
 const StrokeCustomization: React.FC<PropsType> = ({ entId }) => {
   const [size, setSize] = useState(`${DEFAULT_STROKE_WIDTH}`);
-  const [ style, setStyle ] = useState(DEFAULT_STROKE_STYLE);
+  const [style, setStyle] = useState(DEFAULT_STROKE_STYLE);
+  const [color, setColor] = useState(DEFAULT_COLOR);
+  const [opacity, setOpacity] = useState(1);
   const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);
@@ -21,7 +27,7 @@ const StrokeCustomization: React.FC<PropsType> = ({ entId }) => {
       return;
     }
     const ent = store.segments.get(entId);
-    if(!ent) return;
+    if (!ent) return;
     setSize(`${seg.width}`);
     setDisabled(false);
   }, [entId, store]);
@@ -32,7 +38,7 @@ const StrokeCustomization: React.FC<PropsType> = ({ entId }) => {
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
     const seg = store.segments.get(circleId);
-    if(!seg) return;
+    if (!seg) return;
     updatedSegments.set(circleId, { ...seg, width: newSize });
     store.setSegments(updatedSegments);
   }, [size]);

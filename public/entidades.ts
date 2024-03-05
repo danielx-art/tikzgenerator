@@ -9,17 +9,24 @@ import {
   DEFAULT_POINT_SIZE,
   DEFAULT_POINT_STYLE,
   DEFAULT_SEGMENT_MARKS,
-  DEFAULT_POLYGON_FILL,
   DEFAULT_TAG_COLOR,
   DEFAULT_TAG_SIZE,
   SEGMENT_MARKS_TYPE,
   STROKE_STYLES,
+  FILL_STYLES,
+  DEFAULT_FILL_STYLE,
+  DEFAULT_FILL_COLOR,
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
 
 export type Tkind = "point" | "segment" | "angle" | "circle" | "polygon";
 export type TallKind = Tkind | "tag";
-export type TkindPlural = "points" | "segments" | "angles" | "circles" | "polygons";
+export type TkindPlural =
+  | "points"
+  | "segments"
+  | "angles"
+  | "circles"
+  | "polygons";
 export type TallKindPlural = TkindPlural | "tags";
 export type TpointId = `point_${number}`;
 export type TsegId = `segment_${number}`;
@@ -74,18 +81,17 @@ export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
 export type Tentity = Tpoint | Tsegment | Tangle | Tcircle | Tpolygon;
 
 export type Tstroke = {
-  width: string,
-  style: STROKE_STYLES,
-  color: string,
-  opacity: number
-}
+  width: number;
+  style: STROKE_STYLES;
+  color: string;
+  opacity: number;
+};
 
 export type Tfill = {
-  width: string,
-  style: STROKE_STYLES,
-  color: string,
-  opacity: number
-}
+  style: FILL_STYLES;
+  color: string;
+  opacity: number;
+};
 
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
   return {
@@ -117,10 +123,13 @@ export const segmento = function (a: Tpoint, b: Tpoint, id: TsegId) {
         .setMag(1);
     },
     visible: true,
-    width: DEFAULT_STROKE_WIDTH,
-    style: DEFAULT_STROKE_STYLE,
+    stroke: {
+      width: DEFAULT_STROKE_WIDTH,
+      style: DEFAULT_STROKE_STYLE,
+      color: DEFAULT_COLOR,
+      opacity: 1,
+    } as Tstroke,
     marks: DEFAULT_SEGMENT_MARKS as SEGMENT_MARKS_TYPE,
-    color: DEFAULT_COLOR,
     selected: false,
   };
 };
@@ -150,6 +159,7 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
     dotstyle: DEFAULT_ANGLE_STYLE,
     marks: DEFAULT_ANGLE_MARKS as ANGLE_MARKS_TYPE,
     color: DEFAULT_COLOR,
+    opacity: 1,
     selected: false,
   };
 };
@@ -176,9 +186,17 @@ export const circle = function (
     arcStart: 0,
     arcEnd: 360,
     visible: true,
-    width: DEFAULT_STROKE_WIDTH,
-    style: DEFAULT_STROKE_STYLE,
-    color: DEFAULT_COLOR,
+    stroke: {
+      width: DEFAULT_STROKE_WIDTH,
+      style: DEFAULT_STROKE_STYLE,
+      color: DEFAULT_COLOR,
+      opacity: 1,
+    } as Tstroke,
+    fill: {
+      style: DEFAULT_FILL_STYLE,
+      color: DEFAULT_FILL_COLOR,
+      opacity: 0,
+    } as Tfill,
     selected: false,
   };
 };
@@ -191,9 +209,19 @@ export const polygon = function (vertices: Array<Tpoint>, id: TpolyId) {
     vertices,
     visible: true,
     selected: false,
-    color: DEFAULT_POLYGON_FILL
-  }
-}
+    stroke: {
+      width: DEFAULT_STROKE_WIDTH,
+      style: DEFAULT_STROKE_STYLE,
+      color: DEFAULT_COLOR,
+      opacity: 1,
+    } as Tstroke,
+    fill: {
+      style: DEFAULT_FILL_STYLE,
+      color: DEFAULT_FILL_COLOR,
+      opacity: 1,
+    } as Tfill,
+  };
+};
 
 export type Tpolygon = ReturnType<typeof polygon>;
 

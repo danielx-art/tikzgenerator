@@ -13,6 +13,8 @@ import {
   Tangle,
   TcircleId,
   Tcircle,
+  TpolyId,
+  Tpolygon,
 } from "public/entidades";
 import { type Action, type State } from "import/utils/store/store";
 
@@ -42,6 +44,8 @@ export function getEntityById(id: TallId, store: (State & Action) | undefined) {
       return store.angles.get(id as TangId);
     case "circle":
       return store.circles.get(id as TcircleId);
+    case "polygon":
+      return store.polygons.get(id as TpolyId);
     case "tag":
       return store.tags.get(id as TtagId);
     default:
@@ -61,6 +65,8 @@ export function getMapByKind<T extends TallKind>(
       ? Map<TangId, Tangle>
       : T extends "circle"
       ? Map<TcircleId, Tcircle>
+      : T extends "polygon"
+      ? Map<TpolyId, Tpolygon>
       : T extends "tag"
       ? Map<TtagId, Ttag>
       : never)
@@ -76,6 +82,8 @@ export function getMapByKind<T extends TallKind>(
       return store.angles as any;
     case "circle":
       return store.circles as any;
+    case "polygon":
+      return store.polygons as any;
     case "tag":
       return store.tags as any;
   }
@@ -93,6 +101,8 @@ export function getMapSetterKind<T extends TallKind>(
       ? Action["setAngles"]
       : T extends "circle"
       ? Action["setCircles"]
+      : T extends "polygon"
+      ? Action["setPolygons"]
       : T extends "tag"
       ? Action["setTags"]
       : never)
@@ -108,6 +118,8 @@ export function getMapSetterKind<T extends TallKind>(
       return store.setAngles as any;
     case "circle":
       return store.setCircles as any;
+    case "polygon":
+      return store.setPolygons as any;
     case "tag":
       return store.setTags as any;
   }
@@ -140,6 +152,8 @@ export function fromSelectionsGet<T extends TallKind>(
     ? Array<TangId>
     : T extends "circle"
     ? Array<TcircleId>
+    : T extends "polygon"
+    ? Array<TpolyId>
     : Array<TtagId>;
 
   return result;
@@ -159,6 +173,8 @@ export function getSelected<T extends TallKind>(
       ? Array<Tangle>
       : T extends "circle"
       ? Array<Tcircle>
+      : T extends "polygon"
+      ? Array<Tpolygon>
       : T extends "tag"
       ? Array<Ttag>
       : undefined)
@@ -197,6 +213,13 @@ export function getSelected<T extends TallKind>(
       let selected = [] as Array<Tcircle>;
       for (let sel of selections) {
         selected.push(store.circles.get(sel as TcircleId)!);
+      }
+      return selected as any;
+    }
+    case "polygon": {
+      let selected = [] as Array<Tpolygon>;
+      for (let sel of selections) {
+        selected.push(store.polygons.get(sel as TpolyId)!);
       }
       return selected as any;
     }
