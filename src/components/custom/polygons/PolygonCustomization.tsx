@@ -1,6 +1,5 @@
 import { TpolyId } from "public/entidades";
-
-//customize the fill, and all the vertices and edges (create function to get the edges)
+import FillStyleChanger from "../general/fill/FillStyleChanger";
 
 type PropsType = {
   thisEntityId: TpolyId | undefined;
@@ -12,7 +11,9 @@ const PolygonCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
       className={`mb-2 flex w-full flex-col gap-4 ${
         thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
-    ></div>
+    >
+      <FillStyleChanger entId={thisEntityId} />
+    </div>
   );
 };
 

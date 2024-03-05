@@ -1,5 +1,8 @@
 import type { TcircleId, TsegId } from "public/entidades";
 import ColorChanger from "../ColorChanger";
+import FillCustomization from "../general/fill/FillCustomization";
+import StrokeCustomization from "../general/stroke/StrokeCustomization";
+import CircleRadiusChanger from "./CircleRadiusChanger";
 
 type PropsType = {
   thisEntityId: TcircleId | undefined;
@@ -12,7 +15,9 @@ const CircleCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
         thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
-      <ColorChanger entId={thisEntityId} />
+      <FillCustomization entId={thisEntityId} />
+      <StrokeCustomization entId={thisEntityId} />
+      <CircleRadiusChanger circleId={thisEntityId} />
     </div>
   );
 };
