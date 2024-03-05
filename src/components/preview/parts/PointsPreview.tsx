@@ -2,7 +2,7 @@ import { vec, vector } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { TallId, Tpoint, TpointId } from "public/entidades";
-import { DEFAULT_LINE_WIDTH, RES_FACTOR } from "public/generalConfigs";
+import { DEFAULT_STROKE_WIDTH, RES_FACTOR } from "public/generalConfigs";
 
 const PointsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
@@ -67,7 +67,7 @@ const PointPreview: React.FC<PointProps> = ({
           } 0 1,0 -${hitBoxSize * 0.1 * 2 * RES_FACTOR},0`
         }
         stroke={"transparent"}
-        strokeWidth={2 * DEFAULT_LINE_WIDTH}
+        strokeWidth={2 * DEFAULT_STROKE_WIDTH}
         fill={"transparent"}
         onClick={(event) => {
           event.stopPropagation();
@@ -79,7 +79,7 @@ const PointPreview: React.FC<PointProps> = ({
         key={"svg_path_" + point.id}
         d={getPointPath(point)}
         stroke={stroke}
-        strokeWidth={DEFAULT_LINE_WIDTH}
+        strokeWidth={DEFAULT_STROKE_WIDTH}
         fill={fill}
         className="pointer-events-none"
       />

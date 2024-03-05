@@ -1,7 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { TsegId, Tsegment } from "public/entidades";
-import { DEFAULT_LINE_WIDTH } from "public/generalConfigs";
+import { DEFAULT_STROKE_WIDTH } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
@@ -9,7 +9,7 @@ type PropsType = {
 };
 
 const SegmentSizeChanger: React.FC<PropsType> = ({ segId }) => {
-  const [size, setSize] = useState(`${DEFAULT_LINE_WIDTH}`);
+  const [size, setSize] = useState(`${DEFAULT_STROKE_WIDTH}`);
   const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);

@@ -1,6 +1,6 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { DEFAULT_LINE_WIDTH, RES_FACTOR } from "public/generalConfigs";
+import { DEFAULT_STROKE_WIDTH, RES_FACTOR } from "public/generalConfigs";
 import { Tangle } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
 
@@ -26,7 +26,7 @@ const AnglesPreview: React.FC = () => {
                 key={"svg_path_marks_" + angle.id}
                 d={anglePath.dMarksPath}
                 stroke={angle.color}
-                strokeWidth={DEFAULT_LINE_WIDTH}
+                strokeWidth={DEFAULT_STROKE_WIDTH}
                 fill="none"
                 fillOpacity={0.5}
               />
@@ -49,7 +49,7 @@ const AnglesPreview: React.FC = () => {
               key={"svg_path_hitbox_" + angle.id}
               d={anglePath.d}
               stroke={"transparent"}
-              strokeWidth={2 * DEFAULT_LINE_WIDTH}
+              strokeWidth={2 * DEFAULT_STROKE_WIDTH}
               fill="transparent"
               onClick={(event) => {
                 event.stopPropagation();
@@ -61,7 +61,7 @@ const AnglesPreview: React.FC = () => {
               key={"svg_path_" + angle.id}
               d={anglePath.d}
               stroke={angle.color}
-              strokeWidth={DEFAULT_LINE_WIDTH}
+              strokeWidth={DEFAULT_STROKE_WIDTH}
               fill="none"
               fillOpacity={0.5}
               className="pointer-events-none"

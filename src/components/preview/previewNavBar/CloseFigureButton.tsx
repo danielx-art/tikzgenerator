@@ -13,6 +13,7 @@ const CloseFigureButton: React.FC<PropsType> = ({
   onClick,
   ...rest
 }) => {
+  
   const store = useStore(myStore, (state) => state);
 
   const handleCloseFigure = () => closeFigure(store);

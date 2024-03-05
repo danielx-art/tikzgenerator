@@ -4,8 +4,8 @@ import {
   DEFAULT_ANGLE_SIZE,
   DEFAULT_ANGLE_STYLE,
   DEFAULT_COLOR,
-  DEFAULT_LINE_STYLE,
-  DEFAULT_LINE_WIDTH,
+  DEFAULT_STROKE_STYLE,
+  DEFAULT_STROKE_WIDTH,
   DEFAULT_POINT_SIZE,
   DEFAULT_POINT_STYLE,
   DEFAULT_SEGMENT_MARKS,
@@ -13,6 +13,7 @@ import {
   DEFAULT_TAG_COLOR,
   DEFAULT_TAG_SIZE,
   SEGMENT_MARKS_TYPE,
+  STROKE_STYLES,
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
 
@@ -72,6 +73,20 @@ export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
 
 export type Tentity = Tpoint | Tsegment | Tangle | Tcircle | Tpolygon;
 
+export type Tstroke = {
+  width: string,
+  style: STROKE_STYLES,
+  color: string,
+  opacity: number
+}
+
+export type Tfill = {
+  width: string,
+  style: STROKE_STYLES,
+  color: string,
+  opacity: number
+}
+
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
   return {
     id,
@@ -102,8 +117,8 @@ export const segmento = function (a: Tpoint, b: Tpoint, id: TsegId) {
         .setMag(1);
     },
     visible: true,
-    width: DEFAULT_LINE_WIDTH,
-    style: DEFAULT_LINE_STYLE,
+    width: DEFAULT_STROKE_WIDTH,
+    style: DEFAULT_STROKE_STYLE,
     marks: DEFAULT_SEGMENT_MARKS as SEGMENT_MARKS_TYPE,
     color: DEFAULT_COLOR,
     selected: false,
@@ -161,8 +176,8 @@ export const circle = function (
     arcStart: 0,
     arcEnd: 360,
     visible: true,
-    width: DEFAULT_LINE_WIDTH,
-    style: DEFAULT_LINE_STYLE,
+    width: DEFAULT_STROKE_WIDTH,
+    style: DEFAULT_STROKE_STYLE,
     color: DEFAULT_COLOR,
     selected: false,
   };

@@ -52,15 +52,17 @@ export function isConnectedGraph(adjacencyList: TAdjacencyList, edges: Tsegment[
 
     function dfs(vertex: TpointId) {
         visited[vertex] = true;
-        adjacencyList[vertex]!.forEach((edgeId) => {
-            // Find the connected vertex through this edge
-            const edge = edges.find(edge => edge.id === edgeId);
-            if (!edge) return; // Edge not found (should not happen ince at least the starting vertex have this edge)
-            const connectedVertex = edge.p1.id === vertex ? edge.p2.id : edge.p1.id;
-            if (!visited[connectedVertex]) {
-                dfs(connectedVertex);
-            }
-        });
+        if(adjacencyList[vertex]) {
+            adjacencyList[vertex]!.forEach((edgeId) => {
+                // Find the connected vertex through this edge
+                const edge = edges.find(edge => edge.id === edgeId);
+                if (!edge) return; // Edge not found (should not happen ince at least the starting vertex have this edge)
+                const connectedVertex = edge.p1.id === vertex ? edge.p2.id : edge.p1.id;
+                if (!visited[connectedVertex]) {
+                    dfs(connectedVertex);
+                }
+            });
+        }
     }
 
     dfs(startVertex); // Start DFS from one of the vertices
@@ -75,6 +77,7 @@ type TEulerPath = TpointId[];
 export function findEulerCycle(adjacencyList: TAdjacencyList, edges: TEdges): TEulerPath | null {
     
     let startVertex = Object.keys(adjacencyList)[0] as TpointId;
+
     let stack: TpointId[] = [startVertex]; // Stack for vertices
     let path: TEulerPath = []; // To store the Euler path
     let usedEdges: Set<TsegId> = new Set(); // To track the used edges
@@ -116,6 +119,11 @@ export const closeFigure = (
 
     const selectedSegments = getSelected("segment", store);
 
+    if(selectedSegments.length < 3) {
+        store.setError("Selecione ao menos três segmentos, formando um polígono, para preenchê-lo. ");
+        return undefined;
+    }
+
     const edgesMap: Map<TsegId, Tsegment> = new Map(selectedSegments.map(edge => [edge.id, edge]));
 
     const adjacencyList = createAdjacencyList(selectedSegments);
@@ -145,12 +153,14 @@ export const closeFigure = (
             vertices.push(thisPoint!);
         });
 
+
         const newPolygonId = store.generateId("polygon");
         const newPolygon = polygon(vertices, newPolygonId);
 
         const updatedPolygons = new Map(store.polygons);
 
         updatedPolygons.set(newPolygonId, newPolygon);
+
         store.setPolygons(updatedPolygons);
     }
 }

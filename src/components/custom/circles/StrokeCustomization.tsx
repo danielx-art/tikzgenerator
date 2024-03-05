@@ -1,49 +1,50 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import type { TangId, Tangle } from "public/entidades";
-import { DEFAULT_STROKE_WIDTH } from "public/generalConfigs";
+import type { TcircleId, TentId } from "public/entidades";
+import { DEFAULT_STROKE_STYLE, DEFAULT_STROKE_WIDTH } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
-  angId: TangId | undefined;
+  entId: TentId | undefined;
 };
 
-const AngleSizeChanger: React.FC<PropsType> = ({ angId }) => {
+const StrokeCustomization: React.FC<PropsType> = ({ entId }) => {
   const [size, setSize] = useState(`${DEFAULT_STROKE_WIDTH}`);
+  const [ style, setStyle ] = useState(DEFAULT_STROKE_STYLE);
   const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    if (!store || !angId) {
+    if (!store || !entId) {
       setDisabled(true);
       return;
     }
-    const ang = store.angles.get(angId);
-    if (!ang) return;
-    setSize(`${ang.size}`);
+    const ent = store.segments.get(entId);
+    if(!ent) return;
+    setSize(`${seg.width}`);
     setDisabled(false);
-  }, [angId, store]);
+  }, [entId, store]);
 
   useEffect(() => {
-    if (!angId || !store || disabled) return;
-    const updatedAngles = new Map(store.angles);
+    if (!circleId || !store || disabled) return;
+    const updatedSegments = new Map(store.segments);
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
-    const ang = store.angles.get(angId);
-    if (!ang) return;
-    updatedAngles.set(angId, { ...ang, size: newSize });
-    store.setAngles(updatedAngles);
+    const seg = store.segments.get(circleId);
+    if(!seg) return;
+    updatedSegments.set(circleId, { ...seg, width: newSize });
+    store.setSegments(updatedSegments);
   }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!angId || !store || disabled) return;
+    if (!circleId || !store || disabled) return;
     setSize(event.target.value);
   };
 
   return (
     <div className={`flex flex-row flex-nowrap gap-2`}>
-      <div className="grid items-center">Tamanho:</div>
+      <div className="grid items-center">Espessura:</div>
       <input
         type="number"
         name="sizeInput"
@@ -57,4 +58,4 @@ const AngleSizeChanger: React.FC<PropsType> = ({ angId }) => {
   );
 };
 
-export default AngleSizeChanger;
+export default StrokeCustomization;
