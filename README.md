@@ -14,28 +14,29 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 # Trabalho em progresso:
 
 - Criação de customização para segmentos e ângulos:
-  1. ~~Estilo de traço~~
-  2. ~~Cor do traço~~
-  3. ~~[ ângulos ] preenchimento~~
-  4. ~~[ ângulos ] refinar posicionamento da etiqueta~~
-  5. ~~[ segmentos ] destaque um/dois/três tracinhos~~
+  1. ~~Estilo de traço.~~
+  2. ~~Cor do traço.~~
+  3. ~~[ ângulos ] preenchimento.~~
+  4. ~~[ ângulos ] refinar posicionamento da etiqueta.~~
+  5. ~~[ segmentos ] destaque um/dois/três tracinhos.~~
   6. ~~[ segmentos ] consertar destaques em segmos pontilhados ou traçejados. Separar path.~~
   7. ~~[ ângulos ] fazer com que laterais radias do ângulo possam ser ocultas (estético em relação a segmentos adjescentes não sólidos), para isso acrescentar mais dotstyles, com ou sem laterais. ~~
-  8. ~~[ ângulos ] consertar fill em ângulos de 90°~~
-  9. ~~[ ângulos ] consertar visibilidade de customização de 'marcas' para ângulos de 90°~~
-- ~~Customização de cor para ponto~~
+  8. ~~[ ângulos ] consertar fill em ângulos de 90°.~~
+  9. ~~[ ângulos ] consertar visibilidade de customização de 'marcas' para ângulos de 90°.~~
+- ~~Customização de cor para ponto.~~
 - ~~Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.~~
-- Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana
-- Selecionado um ângulo: criar bissetriz
-- Selecionado um segmento: criar mediatriz
-- ~~Criar nova entidade: círculo~~
-- Selecionados três pontos: criar círculo
-- Selecionado círculo: inserir ponto no círculo
-- Selecionados dois pontos e uma reta: Criar círculo tangente a essa reta que passa pelo ponto
-- Selecionados três segmentos: Criar círculo tangente aos três segmentos
-- Colocar um setTimeOut para as mensagens de erro automaticamente esmaecerem
-- Selecionadas duas retas e um ponto: Criar círculo tangente a reta que passa pelo ponto
-- Selecionado um ponto e uma reta: Criar círculo com centro nesse ponto e tangente à reta
+- Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana.
+- Selecionado um ângulo: criar bissetriz.
+- Selecionado um segmento: criar mediatriz.
+- ~~Criar nova entidade: círculo.~~
+- ~~Selecionados dois pontos: criar círculo centrado no primeiro e cujo raio é a distância entre os dois pontos. ~~
+- ~~Selecionados três pontos: criar círculo.~~
+- ~~Selecionados ponto e um segmento: criar círculo centrado no ponto e tangente ao segmento.~~
+- ~~Selecionados três segmentos: Criar círculo tangente aos três segmentos (não).~~
+- ~~Customização de contornos.~~
+- ~~Customização de Preenchimentos.~~
+- ~~Criação de uma nova entidade: polígono, para preenchimento.~~
+- Colocar um setTimeOut para as mensagens de erro automaticamente esmaecerem (toast).
 - Presets:
   1. Triângulo retângulo:
      - Inscrito
@@ -47,4 +48,5 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
      - B.I.C.O
   3. Hexágono:
      - Diagonais
-- Ferramenta rotacionar um grupo
+- Ferramenta rotacionar um grupo.
+- Ferramenta zoom.
