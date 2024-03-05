@@ -1,14 +1,9 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { getKindById } from "import/utils/storeHelpers/entityGetters";
-import { TangId, Tangle } from "public/entidades";
+import type { TangId } from "public/entidades";
 import MultipleRadioGroup from "import/components/micro/MultipleRadioGroup";
-import { vec } from "import/utils/math/vetores";
-import {
-  ANGLE_MARKS,
-  ANGLE_MARKS_TYPE,
-  LATEX_COLOR,
-} from "public/generalConfigs";
+import { ANGLE_MARKS_TYPE } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 import AngDisplay from "./AngDisplay";
 

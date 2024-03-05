@@ -3,7 +3,6 @@ import useStore from "import/utils/store/useStore";
 import { useEffect, useState } from "react";
 import type {
   Tentity,
-  TallKindPlural,
   TallId,
   TpointId,
   TsegId,
@@ -20,6 +19,8 @@ import {
   getEntityById,
   getKindById,
 } from "import/utils/storeHelpers/entityGetters";
+import PolygonCustomization from "./polygons/PolygonCustomization";
+import CircleCustomization from "./circles/CircleCustomization";
 
 const Customization = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -111,18 +112,16 @@ const Customization = () => {
             thisEntityId={thisEntityId as TangId | undefined}
           />
         ) : null}
-        {
-            thisEntityId && getKindById(thisEntityId) === "circle" ? (
-              <CircleCustomization
-                thisEntityId={thisEntityId as TcircleId | undefined}
-              />
-            ) : null}
-        {
-            thisEntityId && getKindById(thisEntityId) === "polygon" ? (
-              <PolygonCustomization
-                thisEntityId={thisEntityId as TpolyId | undefined}
-              />
-            ) : null }
+        {thisEntityId && getKindById(thisEntityId) === "circle" ? (
+          <CircleCustomization
+            thisEntityId={thisEntityId as TcircleId | undefined}
+          />
+        ) : null}
+        {thisEntityId && getKindById(thisEntityId) === "polygon" ? (
+          <PolygonCustomization
+            thisEntityId={thisEntityId as TpolyId | undefined}
+          />
+        ) : null}
         {!thisEntityId && (
           <div className="py-1 text-sm text-c_scnd">
             Selecione um objeto para customizá-lo

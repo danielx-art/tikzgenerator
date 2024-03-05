@@ -2,7 +2,6 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { getKindById } from "import/utils/storeHelpers/entityGetters";
 import { SEGMENT_MARKS_TYPE } from "public/generalConfigs";
-import { useEffect, useState } from "react";
 import { TsegId } from "public/entidades";
 import CyclicBtn from "import/components/micro/CyclicBtn";
 
@@ -60,7 +59,7 @@ const SegmentDisplayChanger: React.FC<PropsType> = ({ segId }) => {
                 />
               </svg>
             </div>
-            
+
             <div className="h-4 w-8">
               <svg
                 width="100%"

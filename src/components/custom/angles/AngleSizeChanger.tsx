@@ -1,6 +1,6 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import type { TangId, Tangle } from "public/entidades";
+import type { TangId } from "public/entidades";
 import { DEFAULT_STROKE_WIDTH } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 

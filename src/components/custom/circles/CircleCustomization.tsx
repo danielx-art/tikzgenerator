@@ -1,12 +1,8 @@
-import type { TsegId } from "public/entidades";
-import TagCustomization from "../tags/TagCustomization";
-import SegmentStyleChanger from "./SegmentStyleChanger";
-import EntityColorChanger from "../ColorChanger";
-import SegmentSizeChanger from "./SegmentSizeChanger";
-import SegmentDisplayChanger from "./SegmentDisplayChanger";
+import type { TcircleId, TsegId } from "public/entidades";
+import ColorChanger from "../ColorChanger";
 
 type PropsType = {
-  thisEntityId: TsegId | undefined;
+  thisEntityId: TcircleId | undefined;
 };
 
 const CircleCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
@@ -16,11 +12,7 @@ const CircleCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
         thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
-      <SegmentStyleChanger segId={thisEntityId} />
-      <SegmentDisplayChanger segId={thisEntityId} />
-      <SegmentSizeChanger segId={thisEntityId} />
-      <EntityColorChanger entityId={thisEntityId} />
-      {/* <TagCustomization thisEntityId={thisEntityId} /> */}
+      <ColorChanger entId={thisEntityId} />
     </div>
   );
 };
