@@ -8,12 +8,14 @@ export const deselectAll = (store: (State & Action) | undefined) => {
   const selectedSegments = getSelected("segment", store);
   const selectedAngles = getSelected("angle", store);
   const selectedCircles = getSelected("circle", store);
+  const selectedPolygons = getSelected("polygon", store);
   const selectedTags = getSelected("tag", store);
 
   const updatedPoints = new Map(store.points);
   const updatedSegments = new Map(store.segments);
   const updatedAngles = new Map(store.angles);
-  // const updatedCircles = new Map(store.circles);
+  const updatedCircles = new Map(store.circles);
+  const updatedPolygons = new Map(store.polygons);
   // const updatedTags = new Map(store.tags);
 
   if (selectedPoints.length > 0) {
@@ -35,9 +37,15 @@ export const deselectAll = (store: (State & Action) | undefined) => {
   }
 
   if (selectedCircles.length > 0) {
-    // selectedCircles.forEach(circle => {
-    //   updatedCircles.set(circle.id, {...circle, selected: false})
-    // });
+    selectedCircles.forEach(circle => {
+      updatedCircles.set(circle.id, {...circle, selected: false})
+    });
+  }
+
+  if (selectedPolygons.length > 0) {
+    selectedPolygons.forEach(polygon => {
+      updatedPolygons.set(polygon.id, {...polygon, selected: false})
+    });
   }
 
   if (selectedTags.length > 0) {
@@ -51,6 +59,8 @@ export const deselectAll = (store: (State & Action) | undefined) => {
     points: updatedPoints,
     segments: updatedSegments,
     angles: updatedAngles,
+    circles: updatedCircles,
+    polygons: updatedPolygons,
     selections: [],
   });
 };

@@ -28,6 +28,8 @@ export function createCircleFromOnePoint(store: State & Action) {
 
   updatedCircles.set(newCircleId, newCircle);
 
+  console.log(updatedCircles); //debugg
+
   store.setCircles(updatedCircles);
 
   return;

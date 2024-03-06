@@ -1,6 +1,6 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { DEFAULT_STROKE_WIDTH, RES_FACTOR } from "public/generalConfigs";
+import { DEFAULT_STROKE_WIDTH, RES_FACTOR, ThachureOrientations } from "public/generalConfigs";
 import { Tangle, Tcircle } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
 
@@ -25,8 +25,8 @@ const CirclesPreview: React.FC = () => {
               <path
                 key={"svg_path_circle_" + circle.id}
                 d={arcPath}
-                stroke={circle.color}
-                strokeWidth={circle.width}
+                stroke={circle.stroke.color}
+                strokeWidth={circle.stroke.width}
                 fill="transparent"
                 onClick={(event) => {
                   event.stopPropagation();
@@ -46,14 +46,24 @@ const CirclesPreview: React.FC = () => {
                 cx={circle.center.x * RES_FACTOR}
                 cy={circle.center.y * RES_FACTOR}
                 r={circle.radius * RES_FACTOR}
-                stroke={circle.color}
-                strokeWidth={circle.width}
-                fill="transparent"
+                stroke={circle.stroke.color}
+                strokeWidth={circle.stroke.width}
+                fill="none"
                 onClick={(event) => {
                   event.stopPropagation();
                   toggleSelection(circle.id);
                 }}
                 className="cursor-pointer"
+              />
+              <circle
+                cx={circle.center.x * RES_FACTOR}
+                cy={circle.center.y * RES_FACTOR}
+                r={circle.radius * RES_FACTOR}
+                stroke="none"
+                color={circle.fill.color}
+                fill={getCircleFill(circle)}
+                fillOpacity={circle.fill.opacity}
+                className=" pointer-events-none"
               />
             </g>
           );
@@ -87,3 +97,16 @@ export const getArcPath = (circle: Tcircle) => {
 
   return d;
 };
+
+export const getCircleFill = (circle: Tcircle)=>{
+  const style = circle.fill.style;
+  if(style === "solid"){
+    return circle.fill.color;
+  } else if(style === "dotted"){ 
+    return "url(#dotted)";
+  } else {
+    const hachureOrientation = style.split("-")[1];
+    return `url(#hatch-${hachureOrientation})`;
+  }
+  return "transparent"
+}

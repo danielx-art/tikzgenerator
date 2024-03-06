@@ -22,7 +22,6 @@ import {
   type TpolyId,
   type Tpolygon,
   tag,
-  polygon,
 } from "public/entidades";
 import { vec, vector } from "import/utils/math/vetores";
 import { create } from "zustand";
@@ -213,6 +212,7 @@ const myStore = create<State & Action>()(
               }
             });
 
+
             updatedTags.forEach((tag, tagId) => {
               if (removedIds.includes(tag.entityId)) {
                 updatedTags.delete(tagId);
@@ -303,6 +303,8 @@ const myStore = create<State & Action>()(
               segments: new Map(state.segments),
               angles: new Map(state.angles),
               tags: new Map(state.tags),
+              circles: new Map(state.circles),
+              polygons: new Map(state.polygons)
             },
           };
         },
@@ -313,9 +315,10 @@ const myStore = create<State & Action>()(
               ...newValue.state,
               points: Array.from(newValue.state.points.entries()),
               segments: Array.from(newValue.state.segments.entries()),
-
               angles: Array.from(newValue.state.angles.entries()),
               tags: Array.from(newValue.state.tags.entries()),
+              circles: Array.from(newValue.state.circles.entries()),
+              polygons: Array.from(newValue.state.polygons.entries())
             },
           });
           localStorage.setItem(name, str);

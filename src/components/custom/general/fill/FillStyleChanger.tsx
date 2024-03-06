@@ -28,20 +28,24 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
     myStore,
     (state) => entId && getEntityById(entId, state),
   );
+  
+  const [disabled, setDisabled] = useState(true);
+  const [selectedButton, setSelectedButton] = useState<TstyleIndexes | null>(null);
+  const [selectedOption, setSelectedOption] = useState<ThachureOrientations | null>(null);
 
-  const [selectedButton, setSelectedButton] = useState<TstyleIndexes>(0);
-  const [selectedOption, setSelectedOption] = useState<ThachureOrientations>(0);
+
 
   useEffect(() => {
     if (entId && store && thisEnt && "fill" in thisEnt) {
       const [btnIndex, optionIndex] = parseFill(thisEnt.fill.style);
       setSelectedButton(btnIndex);
       setSelectedOption(optionIndex);
-    } else {
-      setSelectedButton(0);
-      setSelectedOption(0);
     }
-  }, [store, store?.angles, thisEnt]);
+  }, [store, thisEnt]);
+
+  useEffect(()=>{
+    if(selectedButton && selectedOption) { setDisabled(false); } else { setDisabled(true)}
+  }, [selectedButton, selectedOption]);
 
   const parseFill = (
     fillStyle: FILL_STYLES,
@@ -74,7 +78,7 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
     const entSetter = getSetterByKind(kind, store);
     if (!entMap || !entSetter) return;
     const updatedEntities = new Map(entMap);
-    const newStyle = getFillStyle(selectedButton, selectedOption);
+    const newStyle = getFillStyle(btnIndex as TstyleIndexes, optionSel as ThachureOrientations);
     const newEnt = { ...thisEnt, fill: { ...thisEnt.fill, style: newStyle } };
     updatedEntities.set(entId, newEnt as any);
     entSetter(updatedEntities as any);
@@ -84,28 +88,29 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
     <div className={`flex flex-row flex-nowrap gap-2`}>
       <div className="grid items-center">Destaques: </div>
       <div className="flex w-full flex-row">
-        {entId && thisEnt && "fill" in thisEnt && (
+        {!disabled && (
           <MultipleRadioGroup
             onChange={handleDisplayChange}
-            initBtnSelected={selectedButton}
-            initOptionSelected={selectedOption}
+            initBtnSelected={selectedButton || 0}
+            initOptionSelected={selectedOption || 0}
             disabled={!entId}
           >
             <div key="fill-solid-changer">
-              <div className="h-6 w-6">
+              {[<div className="h-6 w-6" key="fill-solid-changer-inner">
                 <svg className="grid h-full w-full items-center overflow-hidden">
                   <rect
-                    stroke="none"
-                    fill={thisEnt.fill.color}
-                    fillOpacity={thisEnt.fill.opacity}
+                    stroke="black"
+                    strokeWidth={2}
+                    fill={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
+                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
                     width="100%"
                     height="100%"
                   />
                 </svg>
-              </div>
+              </div>]}
             </div>
             <div key="fill-hachure-changer">
-              <div className="h-6 w-6" key="fill-hachure-changer-0">
+              {[<div className="h-6 w-6" key="fill-hachure-changer-0">
                 <svg className="grid h-full w-full items-center overflow-hidden">
                   <defs>
                     <pattern
@@ -120,20 +125,21 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                         y1="0"
                         x2="4"
                         y2="0"
-                        stroke={thisEnt.fill.color}
-                        stroke-width="1"
+                        stroke={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
+                        strokeWidth="1"
                       />
                     </pattern>
                   </defs>
                   <rect
-                    stroke="none"
+                    stroke="black"
+                    strokeWidth={2}
                     fill="url(#hatch0)"
-                    fillOpacity={thisEnt.fill.opacity}
+                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
                     width="100%"
                     height="100%"
                   />
                 </svg>
-              </div>
+              </div>,
               <div className="h-6 w-6" key="fill-hachure-changer-1">
                 <svg className="grid h-full w-full items-center overflow-hidden">
                   <defs>
@@ -149,20 +155,21 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                         y1="0"
                         x2="4"
                         y2="0"
-                        stroke={thisEnt.fill.color}
-                        stroke-width="1"
+                        stroke={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
+                        strokeWidth="1"
                       />
                     </pattern>
                   </defs>
                   <rect
-                    stroke="none"
+                    stroke="black"
+                    strokeWidth={2}
                     fill="url(#hatch1)"
-                    fillOpacity={thisEnt.fill.opacity}
+                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
                     width="100%"
                     height="100%"
                   />
                 </svg>
-              </div>
+              </div>,
               <div className="h-6 w-6" key="fill-hachure-changer-2">
                 <svg className="grid h-full w-full items-center overflow-hidden">
                   <defs>
@@ -178,20 +185,21 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                         y1="0"
                         x2="4"
                         y2="0"
-                        stroke={thisEnt.fill.color}
-                        stroke-width="1"
+                        stroke={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
+                        strokeWidth="1"
                       />
                     </pattern>
                   </defs>
                   <rect
-                    stroke="none"
+                    stroke="black"
+                    strokeWidth={2}
                     fill="url(#hatch2)"
-                    fillOpacity={thisEnt.fill.opacity}
+                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
                     width="100%"
                     height="100%"
                   />
                 </svg>
-              </div>
+              </div>,
               <div className="h-6 w-6" key="fill-hachure-changer-3">
                 <svg className="grid h-full w-full items-center overflow-hidden">
                   <defs>
@@ -207,23 +215,24 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                         y1="0"
                         x2="4"
                         y2="0"
-                        stroke={thisEnt.fill.color}
-                        stroke-width="1"
+                        stroke={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
+                        strokeWidth="1"
                       />
                     </pattern>
                   </defs>
                   <rect
-                    stroke="none"
+                    stroke="black"
+                    strokeWidth={2}
                     fill="url(#hatch3)"
-                    fillOpacity={thisEnt.fill.opacity}
+                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
                     width="100%"
                     height="100%"
                   />
                 </svg>
-              </div>
+              </div>]}
             </div>
             <div key="fill-dotted-changer">
-              <div className="h-6 w-6">
+              {[<div className="h-6 w-6" key="fill-dotted-changer-inner">
                 <svg className="grid h-full w-full items-center overflow-hidden">
                   <defs>
                     <pattern
@@ -232,18 +241,19 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                       width="6"
                       height="6"
                     >
-                      <circle cx="3" cy="3" r="2" fill={thisEnt.fill.color} />
+                      <circle cx="3" cy="3" r="2" fill={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"} />
                     </pattern>
                   </defs>
                   <rect
-                    stroke="none"
+                    stroke="black"
+                    strokeWidth={2}
                     fill="url(#dots)"
-                    fillOpacity={thisEnt.fill.opacity}
+                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
                     width="100%"
                     height="100%"
                   />
                 </svg>
-              </div>
+              </div>]}
             </div>
           </MultipleRadioGroup>
         )}
