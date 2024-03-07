@@ -1,5 +1,5 @@
 import { TpolyId } from "public/entidades";
-import FillStyleChanger from "../general/fill/FillStyleChanger";
+import FillCustomization from "../general/fill/FillCustomization";
 
 type PropsType = {
   thisEntityId: TpolyId | undefined;
@@ -12,7 +12,7 @@ const PolygonCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
         thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
-      <FillStyleChanger entId={thisEntityId} />
+      <FillCustomization entId={thisEntityId} />
     </div>
   );
 };

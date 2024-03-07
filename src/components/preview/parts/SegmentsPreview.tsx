@@ -1,8 +1,9 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { vec } from "import/utils/math/vetores";
-import { Tsegment } from "public/entidades";
+import type { Tsegment } from "public/entidades";
 import { RES_FACTOR } from "public/generalConfigs";
+import { getStrokeDasharray } from "../helpers";
 
 const SegmentsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
@@ -10,19 +11,6 @@ const SegmentsPreview: React.FC = () => {
   if (!store) return;
 
   const { segments, toggleSelection } = store;
-
-  const getStrokeDasharray = (style: string) => {
-    switch (style) {
-      case "solid":
-        return "";
-      case "dashed":
-        return "0.5, 1";
-      case "dotted":
-        return "0.01, 1";
-      default:
-        return "";
-    }
-  };
 
   return (
     <>
@@ -61,11 +49,11 @@ const SegmentsPreview: React.FC = () => {
             key={"svg_path_" + segment.id}
             d={getSegmentPath(segment)}
             stroke={segment.stroke.color}
-            strokeLinecap="round"
             strokeWidth={segment.stroke.width}
+            strokeDasharray={getStrokeDasharray(segment.stroke.style)}
+            strokeLinecap="round"
             fill="none"
             className="pointer-events-none"
-            strokeDasharray={getStrokeDasharray(segment.stroke.style)}
           />
         </g>
       ))}

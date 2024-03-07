@@ -7,6 +7,7 @@ import {
 } from "public/generalConfigs";
 import { Tangle, Tcircle } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
+import { getFillMask, getStrokeDasharray } from "../helpers";
 
 const CirclesPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
@@ -46,12 +47,13 @@ const CirclesPreview: React.FC = () => {
               filter={circle.selected ? "url(#glow)" : "url(#dropshadow"}
               key={"svg_path_circle_group_" + circle.id}
             >
+              {/*this first is hitbox*/}
               <circle
                 cx={circle.center.x * RES_FACTOR}
                 cy={circle.center.y * RES_FACTOR}
                 r={circle.radius * RES_FACTOR}
-                stroke={circle.stroke.color}
-                strokeWidth={circle.stroke.width}
+                stroke={"transparent"}
+                strokeWidth={circle.stroke.width * 3}
                 fill="none"
                 onClick={(event) => {
                   event.stopPropagation();
@@ -63,9 +65,20 @@ const CirclesPreview: React.FC = () => {
                 cx={circle.center.x * RES_FACTOR}
                 cy={circle.center.y * RES_FACTOR}
                 r={circle.radius * RES_FACTOR}
+                stroke={circle.stroke.color}
+                strokeWidth={circle.stroke.width}
+                strokeDasharray={getStrokeDasharray(circle.stroke.style)}
+                strokeLinecap="round"
+                fill="none"
+                className="pointer-events-none"
+              />
+              <circle
+                cx={circle.center.x * RES_FACTOR}
+                cy={circle.center.y * RES_FACTOR}
+                r={circle.radius * RES_FACTOR}
                 fill={circle.fill.color}
                 fillOpacity={circle.fill.opacity}
-                mask={getCircleFill(circle)}
+                mask={getFillMask(circle.fill.style)}
                 className="pointer-events-none"
               />
             </g>
@@ -99,17 +112,4 @@ export const getArcPath = (circle: Tcircle) => {
   } 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2}`;
 
   return d;
-};
-
-export const getCircleFill = (circle: Tcircle) => {
-  const style = circle.fill.style;
-  if (style === "solid") {
-    return "none";
-  } else if (style === "dotted") {
-    return "url(#mask-dotted)";
-  } else {
-    const hachureOrientation = style.split("-")[1];
-    return `url(#mask-hatch-${hachureOrientation})`;
-  }
-  return "transparent";
 };
