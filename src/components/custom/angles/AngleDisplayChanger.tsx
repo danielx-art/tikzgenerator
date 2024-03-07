@@ -18,8 +18,9 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
     (state) => angId && state.angles.get(angId),
   );
 
-  const [selectedButton, setSelectedButton] = useState<number>(0);
-  const [selectedOption, setSelectedOption] = useState<number>(0);
+  const [selectedButton, setSelectedButton] = useState<number | null>(null);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     if (angId && store && thisAngle) {
@@ -27,25 +28,28 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
       const [btnIndex, optionIndex] = parseMarks(angleMarks);
       setSelectedButton(btnIndex);
       setSelectedOption(optionIndex);
-    } else {
-      setSelectedButton(0);
-      setSelectedOption(0);
     }
-  }, [store, store?.angles, thisAngle]);
+  }, [store, thisAngle]);
+
+  useEffect(() => {
+    if (selectedButton !== null && selectedOption !== null) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [selectedButton, selectedOption]);
 
   const parseMarks = (marks?: ANGLE_MARKS_TYPE): [number, number] => {
     if (!marks) return [0, 0];
     const parts = marks.split("-");
     const btnIndex = parts[0] === "marks" ? 0 : 1;
-    const optionIndex = parseInt(parts[1]!, 10);
+    const optionIndex = parts[1] ? parseInt(parts[1], 10) : 0;
     return [btnIndex, optionIndex];
   };
 
   const handleDisplayChange = (btnIndex: number, optionSel: number) => {
-    if (!angId || getKindById(angId) != "angle" || !store) return;
+    if (!angId || !store || !thisAngle) return;
     const updatedAngles = new Map(store.angles);
-    thisAngle;
-    if (!thisAngle) return;
     const possibleMarks = ["marks", "doubles"];
     const newMark = possibleMarks[btnIndex]
       ? `${possibleMarks[btnIndex]}-${optionSel}`
@@ -65,7 +69,7 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
     <div className={`flex flex-row flex-nowrap gap-2`}>
       <div className="grid items-center">Destaques: </div>
       <div className="flex w-full flex-row">
-        {angId && thisAngle && (
+        {!disabled && selectedButton !== null && selectedOption !== null && (
           <MultipleRadioGroup
             onChange={handleDisplayChange}
             initBtnSelected={selectedButton}

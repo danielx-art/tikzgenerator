@@ -28,12 +28,13 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
     myStore,
     (state) => entId && getEntityById(entId, state),
   );
-  
+
   const [disabled, setDisabled] = useState(true);
-  const [selectedButton, setSelectedButton] = useState<TstyleIndexes | null>(null);
-  const [selectedOption, setSelectedOption] = useState<ThachureOrientations | null>(null);
-
-
+  const [selectedButton, setSelectedButton] = useState<TstyleIndexes | null>(
+    null,
+  );
+  const [selectedOption, setSelectedOption] =
+    useState<ThachureOrientations | null>(null);
 
   useEffect(() => {
     if (entId && store && thisEnt && "fill" in thisEnt) {
@@ -43,8 +44,12 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
     }
   }, [store, thisEnt]);
 
-  useEffect(()=>{
-    if(selectedButton && selectedOption) { setDisabled(false); } else { setDisabled(true)}
+  useEffect(() => {
+    if (selectedButton !== null && selectedOption !== null) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
   }, [selectedButton, selectedOption]);
 
   const parseFill = (
@@ -78,7 +83,10 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
     const entSetter = getSetterByKind(kind, store);
     if (!entMap || !entSetter) return;
     const updatedEntities = new Map(entMap);
-    const newStyle = getFillStyle(btnIndex as TstyleIndexes, optionSel as ThachureOrientations);
+    const newStyle = getFillStyle(
+      btnIndex as TstyleIndexes,
+      optionSel as ThachureOrientations,
+    );
     const newEnt = { ...thisEnt, fill: { ...thisEnt.fill, style: newStyle } };
     updatedEntities.set(entId, newEnt as any);
     entSetter(updatedEntities as any);
@@ -88,172 +96,219 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
     <div className={`flex flex-row flex-nowrap gap-2`}>
       <div className="grid items-center">Destaques: </div>
       <div className="flex w-full flex-row">
-        {!disabled && (
+        {!disabled && selectedButton !== null && selectedOption !== null && (
           <MultipleRadioGroup
             onChange={handleDisplayChange}
-            initBtnSelected={selectedButton || 0}
-            initOptionSelected={selectedOption || 0}
+            initBtnSelected={selectedButton}
+            initOptionSelected={selectedOption}
             disabled={!entId}
           >
             <div key="fill-solid-changer">
-              {[<div className="h-6 w-6" key="fill-solid-changer-inner">
-                <svg className="grid h-full w-full items-center overflow-hidden">
-                  <rect
-                    stroke="black"
-                    strokeWidth={2}
-                    fill={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
-                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-              </div>]}
+              {[
+                <div className="h-6 w-6" key="fill-solid-changer-inner">
+                  <svg className="grid h-full w-full items-center overflow-hidden">
+                    <rect
+                      stroke="black"
+                      strokeWidth={2}
+                      fill={
+                        thisEnt && "fill" in thisEnt
+                          ? thisEnt.fill.color
+                          : "black"
+                      }
+                      fillOpacity={
+                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                      }
+                      width="100%"
+                      height="100%"
+                    />
+                  </svg>
+                </div>,
+              ]}
             </div>
             <div key="fill-hachure-changer">
-              {[<div className="h-6 w-6" key="fill-hachure-changer-0">
-                <svg className="grid h-full w-full items-center overflow-hidden">
-                  <defs>
-                    <pattern
-                      id="hatch0"
-                      patternUnits="userSpaceOnUse"
-                      width="4"
-                      height="4"
-                      patternTransform="rotate(0)"
-                    >
-                      <line
-                        x1="0"
-                        y1="0"
-                        x2="4"
-                        y2="0"
-                        stroke={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
-                        strokeWidth="1"
-                      />
-                    </pattern>
-                  </defs>
-                  <rect
-                    stroke="black"
-                    strokeWidth={2}
-                    fill="url(#hatch0)"
-                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-              </div>,
-              <div className="h-6 w-6" key="fill-hachure-changer-1">
-                <svg className="grid h-full w-full items-center overflow-hidden">
-                  <defs>
-                    <pattern
-                      id="hatch1"
-                      patternUnits="userSpaceOnUse"
-                      width="4"
-                      height="4"
-                      patternTransform="rotate(45)"
-                    >
-                      <line
-                        x1="0"
-                        y1="0"
-                        x2="4"
-                        y2="0"
-                        stroke={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
-                        strokeWidth="1"
-                      />
-                    </pattern>
-                  </defs>
-                  <rect
-                    stroke="black"
-                    strokeWidth={2}
-                    fill="url(#hatch1)"
-                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-              </div>,
-              <div className="h-6 w-6" key="fill-hachure-changer-2">
-                <svg className="grid h-full w-full items-center overflow-hidden">
-                  <defs>
-                    <pattern
-                      id="hatch2"
-                      patternUnits="userSpaceOnUse"
-                      width="4"
-                      height="4"
-                      patternTransform="rotate(90)"
-                    >
-                      <line
-                        x1="0"
-                        y1="0"
-                        x2="4"
-                        y2="0"
-                        stroke={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
-                        strokeWidth="1"
-                      />
-                    </pattern>
-                  </defs>
-                  <rect
-                    stroke="black"
-                    strokeWidth={2}
-                    fill="url(#hatch2)"
-                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-              </div>,
-              <div className="h-6 w-6" key="fill-hachure-changer-3">
-                <svg className="grid h-full w-full items-center overflow-hidden">
-                  <defs>
-                    <pattern
-                      id="hatch3"
-                      patternUnits="userSpaceOnUse"
-                      width="4"
-                      height="4"
-                      patternTransform="rotate(135)"
-                    >
-                      <line
-                        x1="0"
-                        y1="0"
-                        x2="4"
-                        y2="0"
-                        stroke={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"}
-                        strokeWidth="1"
-                      />
-                    </pattern>
-                  </defs>
-                  <rect
-                    stroke="black"
-                    strokeWidth={2}
-                    fill="url(#hatch3)"
-                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-              </div>]}
+              {[
+                <div className="h-6 w-6" key="fill-hachure-changer-0">
+                  <svg className="grid h-full w-full items-center overflow-hidden">
+                    <defs>
+                      <pattern
+                        id="hatch0"
+                        patternUnits="userSpaceOnUse"
+                        width="4"
+                        height="4"
+                        patternTransform="rotate(0)"
+                      >
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="4"
+                          y2="0"
+                          stroke={
+                            thisEnt && "fill" in thisEnt
+                              ? thisEnt.fill.color
+                              : "black"
+                          }
+                          strokeWidth="1"
+                        />
+                      </pattern>
+                    </defs>
+                    <rect
+                      stroke="black"
+                      strokeWidth={2}
+                      fill="url(#hatch0)"
+                      fillOpacity={
+                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                      }
+                      width="100%"
+                      height="100%"
+                    />
+                  </svg>
+                </div>,
+                <div className="h-6 w-6" key="fill-hachure-changer-1">
+                  <svg className="grid h-full w-full items-center overflow-hidden">
+                    <defs>
+                      <pattern
+                        id="hatch1"
+                        patternUnits="userSpaceOnUse"
+                        width="4"
+                        height="4"
+                        patternTransform="rotate(135)"
+                      >
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="4"
+                          y2="0"
+                          stroke={
+                            thisEnt && "fill" in thisEnt
+                              ? thisEnt.fill.color
+                              : "black"
+                          }
+                          strokeWidth="1"
+                        />
+                      </pattern>
+                    </defs>
+                    <rect
+                      stroke="black"
+                      strokeWidth={2}
+                      fill="url(#hatch1)"
+                      fillOpacity={
+                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                      }
+                      width="100%"
+                      height="100%"
+                    />
+                  </svg>
+                </div>,
+                <div className="h-6 w-6" key="fill-hachure-changer-2">
+                  <svg className="grid h-full w-full items-center overflow-hidden">
+                    <defs>
+                      <pattern
+                        id="hatch2"
+                        patternUnits="userSpaceOnUse"
+                        width="4"
+                        height="4"
+                        patternTransform="rotate(90)"
+                      >
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="4"
+                          y2="0"
+                          stroke={
+                            thisEnt && "fill" in thisEnt
+                              ? thisEnt.fill.color
+                              : "black"
+                          }
+                          strokeWidth="1"
+                        />
+                      </pattern>
+                    </defs>
+                    <rect
+                      stroke="black"
+                      strokeWidth={2}
+                      fill="url(#hatch2)"
+                      fillOpacity={
+                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                      }
+                      width="100%"
+                      height="100%"
+                    />
+                  </svg>
+                </div>,
+                <div className="h-6 w-6" key="fill-hachure-changer-3">
+                  <svg className="grid h-full w-full items-center overflow-hidden">
+                    <defs>
+                      <pattern
+                        id="hatch3"
+                        patternUnits="userSpaceOnUse"
+                        width="4"
+                        height="4"
+                        patternTransform="rotate(45)"
+                      >
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="4"
+                          y2="0"
+                          stroke={
+                            thisEnt && "fill" in thisEnt
+                              ? thisEnt.fill.color
+                              : "black"
+                          }
+                          strokeWidth="1"
+                        />
+                      </pattern>
+                    </defs>
+                    <rect
+                      stroke="black"
+                      strokeWidth={2}
+                      fill="url(#hatch3)"
+                      fillOpacity={
+                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                      }
+                      width="100%"
+                      height="100%"
+                    />
+                  </svg>
+                </div>,
+              ]}
             </div>
             <div key="fill-dotted-changer">
-              {[<div className="h-6 w-6" key="fill-dotted-changer-inner">
-                <svg className="grid h-full w-full items-center overflow-hidden">
-                  <defs>
-                    <pattern
-                      id="dots"
-                      patternUnits="userSpaceOnUse"
-                      width="6"
-                      height="6"
-                    >
-                      <circle cx="3" cy="3" r="2" fill={thisEnt && "fill" in thisEnt ? thisEnt.fill.color : "black"} />
-                    </pattern>
-                  </defs>
-                  <rect
-                    stroke="black"
-                    strokeWidth={2}
-                    fill="url(#dots)"
-                    fillOpacity={thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1}
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-              </div>]}
+              {[
+                <div className="h-6 w-6" key="fill-dotted-changer-inner">
+                  <svg className="grid h-full w-full items-center overflow-hidden">
+                    <defs>
+                      <pattern
+                        id="dots"
+                        patternUnits="userSpaceOnUse"
+                        width="6"
+                        height="6"
+                      >
+                        <circle
+                          cx="3"
+                          cy="3"
+                          r="2"
+                          fill={
+                            thisEnt && "fill" in thisEnt
+                              ? thisEnt.fill.color
+                              : "black"
+                          }
+                        />
+                      </pattern>
+                    </defs>
+                    <rect
+                      stroke="black"
+                      strokeWidth={2}
+                      fill="url(#dots)"
+                      fillOpacity={
+                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                      }
+                      width="100%"
+                      height="100%"
+                    />
+                  </svg>
+                </div>,
+              ]}
             </div>
           </MultipleRadioGroup>
         )}
