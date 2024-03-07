@@ -63,10 +63,10 @@ const CirclesPreview: React.FC = () => {
                 cx={circle.center.x * RES_FACTOR}
                 cy={circle.center.y * RES_FACTOR}
                 r={circle.radius * RES_FACTOR}
-                color="red"
-                className="pointer-events-none"
+                color={circle.fill.color}
                 fill={getCircleFill(circle)}
                 fillOpacity={circle.fill.opacity}
+                className="pointer-events-none"
               />
             </g>
           );
