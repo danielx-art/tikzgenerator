@@ -19,6 +19,7 @@ type PropsType = {
 };
 
 const styleNames = ["solid", "hachure", "dotted"] as const;
+const minOpacity = 0.3;
 type TstyleNames = (typeof styleNames)[number];
 type TstyleIndexes = 0 | 1 | 2;
 
@@ -116,7 +117,9 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                           : "black"
                       }
                       fillOpacity={
-                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                        thisEnt && "fill" in thisEnt
+                          ? Math.max(thisEnt.fill.opacity, minOpacity)
+                          : 1
                       }
                       width="100%"
                       height="100%"
@@ -156,7 +159,9 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                       strokeWidth={2}
                       fill="url(#hatch0)"
                       fillOpacity={
-                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                        thisEnt && "fill" in thisEnt
+                          ? Math.max(thisEnt.fill.opacity, minOpacity)
+                          : 1
                       }
                       width="100%"
                       height="100%"
@@ -192,7 +197,9 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                       strokeWidth={2}
                       fill="url(#hatch1)"
                       fillOpacity={
-                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                        thisEnt && "fill" in thisEnt
+                          ? Math.max(thisEnt.fill.opacity, minOpacity)
+                          : 1
                       }
                       width="100%"
                       height="100%"
@@ -228,7 +235,9 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                       strokeWidth={2}
                       fill="url(#hatch2)"
                       fillOpacity={
-                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                        thisEnt && "fill" in thisEnt
+                          ? Math.max(thisEnt.fill.opacity, minOpacity)
+                          : 1
                       }
                       width="100%"
                       height="100%"
@@ -264,7 +273,9 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                       strokeWidth={2}
                       fill="url(#hatch3)"
                       fillOpacity={
-                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                        thisEnt && "fill" in thisEnt
+                          ? Math.max(thisEnt.fill.opacity, minOpacity)
+                          : 1
                       }
                       width="100%"
                       height="100%"
@@ -311,7 +322,9 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                       strokeWidth={2}
                       fill="url(#dots)"
                       fillOpacity={
-                        thisEnt && "fill" in thisEnt ? thisEnt.fill.opacity : 1
+                        thisEnt && "fill" in thisEnt
+                          ? Math.max(thisEnt.fill.opacity, minOpacity)
+                          : 1
                       }
                       width="100%"
                       height="100%"

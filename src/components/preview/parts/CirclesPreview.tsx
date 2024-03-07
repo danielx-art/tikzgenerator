@@ -61,6 +61,16 @@ const CirclesPreview: React.FC = () => {
                 }}
                 className="cursor-pointer"
               />
+
+              <circle
+                cx={circle.center.x * RES_FACTOR}
+                cy={circle.center.y * RES_FACTOR}
+                r={circle.radius * RES_FACTOR}
+                fill={circle.fill.color}
+                fillOpacity={circle.fill.opacity}
+                mask={getFillMask(circle.fill.style)}
+                className="pointer-events-none"
+              />
               <circle
                 cx={circle.center.x * RES_FACTOR}
                 cy={circle.center.y * RES_FACTOR}
@@ -70,15 +80,6 @@ const CirclesPreview: React.FC = () => {
                 strokeDasharray={getStrokeDasharray(circle.stroke.style)}
                 strokeLinecap="round"
                 fill="none"
-                className="pointer-events-none"
-              />
-              <circle
-                cx={circle.center.x * RES_FACTOR}
-                cy={circle.center.y * RES_FACTOR}
-                r={circle.radius * RES_FACTOR}
-                fill={circle.fill.color}
-                fillOpacity={circle.fill.opacity}
-                mask={getFillMask(circle.fill.style)}
                 className="pointer-events-none"
               />
             </g>

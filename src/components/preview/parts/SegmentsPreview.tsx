@@ -26,9 +26,8 @@ const SegmentsPreview: React.FC = () => {
               stroke={segment.stroke.color}
               strokeLinecap="round"
               strokeWidth={segment.stroke.width}
+              strokeOpacity={segment.stroke.opacity}
               fill="none"
-              // onClick={() => toggleSelection(segment.id)}
-              // className="cursor-pointer"
             />
           )}
           <path
@@ -52,6 +51,7 @@ const SegmentsPreview: React.FC = () => {
             strokeWidth={segment.stroke.width}
             strokeDasharray={getStrokeDasharray(segment.stroke.style)}
             strokeLinecap="round"
+            strokeOpacity={segment.stroke.opacity}
             fill="none"
             className="pointer-events-none"
           />
