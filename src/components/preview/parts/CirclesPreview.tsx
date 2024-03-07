@@ -63,9 +63,9 @@ const CirclesPreview: React.FC = () => {
                 cx={circle.center.x * RES_FACTOR}
                 cy={circle.center.y * RES_FACTOR}
                 r={circle.radius * RES_FACTOR}
-                color={circle.fill.color}
-                fill={getCircleFill(circle)}
+                fill={circle.fill.color}
                 fillOpacity={circle.fill.opacity}
+                mask={getCircleFill(circle)}
                 className="pointer-events-none"
               />
             </g>
@@ -104,12 +104,12 @@ export const getArcPath = (circle: Tcircle) => {
 export const getCircleFill = (circle: Tcircle) => {
   const style = circle.fill.style;
   if (style === "solid") {
-    return circle.fill.color;
+    return "none";
   } else if (style === "dotted") {
-    return "url(#dotted)";
+    return "url(#mask-dotted)";
   } else {
     const hachureOrientation = style.split("-")[1];
-    return `url(#hatch-${hachureOrientation})`;
+    return `url(#mask-hatch-${hachureOrientation})`;
   }
   return "transparent";
 };
