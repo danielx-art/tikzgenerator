@@ -42,7 +42,7 @@ const AngleSizeChanger: React.FC<PropsType> = ({ angId }) => {
   };
 
   return (
-    <div className={`flex flex-row flex-nowrap gap-2`}>
+    <div className={`flex flex-row gap-2`}>
       <div className="grid items-center">Tamanho:</div>
       <input
         type="number"

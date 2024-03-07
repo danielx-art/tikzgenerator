@@ -1,5 +1,5 @@
 import type { TangId } from "public/entidades";
-import EntityColorChanger from "../ColorChanger";
+import ColorChanger from "../ColorChanger";
 import { DEFAULT_ANGLE_STYLE, LATEX_COLOR } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 import useStore from "import/utils/store/useStore";
@@ -43,8 +43,8 @@ const AngleColorAndFill: React.FC<PropsType> = ({ angId }) => {
 
   return (
     <div className="flex flex-1 flex-row gap-2">
-      <EntityColorChanger entityId={angId} />
-      <div>
+      <ColorChanger entId={angId} />
+      <div className="self-end">
         <CyclicBtn
           initOption={thisAngle && thisAngle.dotstyle}
           onChange={handleStyleChange}

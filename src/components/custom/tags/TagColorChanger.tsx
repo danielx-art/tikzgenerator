@@ -38,7 +38,7 @@ const TagColorChanger: React.FC<PropsType> = ({ thisTagId }) => {
   }, [selectedColor]);
 
   return (
-    <div className="flex flex-row flex-nowrap gap-2">
+    <div className="flex flex-row flex-wrap gap-2">
       <div className="grid items-center">Cor:</div>
       <div>
         {

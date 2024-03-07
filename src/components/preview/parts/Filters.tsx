@@ -67,7 +67,14 @@ const Filters = () => (
           height="0.4"
           patternTransform="rotate(0)"
         >
-          <line x1="0" y1="0" x2="0.4" y2="0" stroke="currentColor" strokeWidth="0.2" />
+          <line
+            x1="0"
+            y1="0"
+            x2="0.4"
+            y2="0"
+            stroke="currentColor"
+            strokeWidth="0.2"
+          />
         </pattern>
         <pattern
           id="hatch-1"
@@ -76,7 +83,14 @@ const Filters = () => (
           height="0.4"
           patternTransform="rotate(45)"
         >
-          <line x1="0" y1="0" x2="0.4" y2="0" stroke="currentColor" strokeWidth="0.2" />
+          <line
+            x1="0"
+            y1="0"
+            x2="0.4"
+            y2="0"
+            stroke="currentColor"
+            strokeWidth="0.2"
+          />
         </pattern>
         <pattern
           id="hatch-2"
@@ -85,7 +99,14 @@ const Filters = () => (
           height="0.4"
           patternTransform="rotate(90)"
         >
-          <line x1="0" y1="0" x2="0.4" y2="0" stroke="currentColor" strokeWidth="0.2" />
+          <line
+            x1="0"
+            y1="0"
+            x2="0.4"
+            y2="0"
+            stroke="currentColor"
+            strokeWidth="0.2"
+          />
         </pattern>
         <pattern
           id="hatch-3"
@@ -94,9 +115,21 @@ const Filters = () => (
           height="0.4"
           patternTransform="rotate(135)"
         >
-          <line x1="0" y1="0" x2="0.4" y2="0" stroke="currentColor" strokeWidth="0.2" />
+          <line
+            x1="0"
+            y1="0"
+            x2="0.4"
+            y2="0"
+            stroke="currentColor"
+            strokeWidth="0.2"
+          />
         </pattern>
-        <pattern id="dotted" patternUnits="userSpaceOnUse" width="0.4" height="0.4">
+        <pattern
+          id="dotted"
+          patternUnits="userSpaceOnUse"
+          width="0.4"
+          height="0.4"
+        >
           <circle cx="0.1" cy="0.1" r="0.1" fill="currentColor" />
           <circle cx="0.3" cy="0.3" r="0.1" fill="currentColor" />
         </pattern>

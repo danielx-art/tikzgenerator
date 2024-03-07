@@ -20,7 +20,7 @@ const CircleRadiusChanger: React.FC<PropsType> = ({ circleId }) => {
       return;
     }
     const circ = store.circles.get(circleId);
-    if(!circ) return;
+    if (!circ) return;
     setSize(`${circ.radius}`);
     setDisabled(false);
   }, [circleId, store]);
@@ -29,9 +29,13 @@ const CircleRadiusChanger: React.FC<PropsType> = ({ circleId }) => {
     if (!circleId || !store || disabled) return;
     const updatedCircles = new Map(store.circles);
     const newSize =
-      size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : DEFAULT_CIRCLE_RADIUS) : DEFAULT_CIRCLE_RADIUS;
+      size.length > 0
+        ? parseFloat(size) > 0
+          ? parseFloat(size)
+          : DEFAULT_CIRCLE_RADIUS
+        : DEFAULT_CIRCLE_RADIUS;
     const seg = store.circles.get(circleId);
-    if(!seg) return;
+    if (!seg) return;
     updatedCircles.set(circleId, { ...seg, radius: newSize });
     store.setCircles(updatedCircles);
   }, [size]);
@@ -42,7 +46,7 @@ const CircleRadiusChanger: React.FC<PropsType> = ({ circleId }) => {
   };
 
   return (
-    <div className={`flex flex-row flex-nowrap gap-2`}>
+    <div className={`flex flex-row flex-wrap gap-2`}>
       <div className="grid items-center">Raio:</div>
       <input
         type="number"

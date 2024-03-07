@@ -147,7 +147,7 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                               ? thisEnt.fill.color
                               : "black"
                           }
-                          strokeWidth="1"
+                          strokeWidth="5"
                         />
                       </pattern>
                     </defs>
@@ -183,7 +183,7 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                               ? thisEnt.fill.color
                               : "black"
                           }
-                          strokeWidth="1"
+                          strokeWidth="5"
                         />
                       </pattern>
                     </defs>
@@ -219,7 +219,7 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                               ? thisEnt.fill.color
                               : "black"
                           }
-                          strokeWidth="1"
+                          strokeWidth="5"
                         />
                       </pattern>
                     </defs>
@@ -255,7 +255,7 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                               ? thisEnt.fill.color
                               : "black"
                           }
-                          strokeWidth="1"
+                          strokeWidth="5"
                         />
                       </pattern>
                     </defs>
@@ -285,9 +285,19 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                         height="6"
                       >
                         <circle
-                          cx="3"
-                          cy="3"
-                          r="2"
+                          cx="1.5"
+                          cy="1.5"
+                          r="1.5"
+                          fill={
+                            thisEnt && "fill" in thisEnt
+                              ? thisEnt.fill.color
+                              : "black"
+                          }
+                        />
+                        <circle
+                          cx="4.5"
+                          cy="4.5"
+                          r="1.5"
                           fill={
                             thisEnt && "fill" in thisEnt
                               ? thisEnt.fill.color

@@ -55,7 +55,7 @@ const StrokeWidthChanger: React.FC<PropsType> = ({ entId }) => {
   };
 
   return (
-    <div className={`flex flex-row flex-nowrap gap-2`}>
+    <div className={`flex flex-row flex-wrap gap-2`}>
       <div className="grid items-center">Espessura:</div>
       <input
         type="number"

@@ -35,9 +35,9 @@ const SegmentsPreview: React.FC = () => {
             <path
               key={"svg_path_" + segment.id + "marks"}
               d={getSegmentMarksPath(segment)}
-              stroke={segment.color}
+              stroke={segment.stroke.color}
               strokeLinecap="round"
-              strokeWidth={segment.width}
+              strokeWidth={segment.stroke.width}
               fill="none"
               // onClick={() => toggleSelection(segment.id)}
               // className="cursor-pointer"
@@ -49,7 +49,7 @@ const SegmentsPreview: React.FC = () => {
             d={getSegmentPath(segment)}
             stroke={"transparent"}
             strokeLinecap="round"
-            strokeWidth={3 * segment.width}
+            strokeWidth={3 * segment.stroke.width}
             fill="none"
             onClick={(event) => {
               event.stopPropagation();
@@ -60,12 +60,12 @@ const SegmentsPreview: React.FC = () => {
           <path
             key={"svg_path_" + segment.id}
             d={getSegmentPath(segment)}
-            stroke={segment.color}
+            stroke={segment.stroke.color}
             strokeLinecap="round"
-            strokeWidth={segment.width}
+            strokeWidth={segment.stroke.width}
             fill="none"
             className="pointer-events-none"
-            strokeDasharray={getStrokeDasharray(segment.style)}
+            strokeDasharray={getStrokeDasharray(segment.stroke.style)}
           />
         </g>
       ))}
@@ -86,8 +86,8 @@ export const getSegmentPath = (segment: Tsegment) => {
 export const getSegmentMarksPath = (segment: Tsegment) => {
   let d = "";
   if (segment.marks > 0) {
-    const markLength = 0.12 * segment.width;
-    const markSep = 1.2 * segment.width;
+    const markLength = 0.12 * segment.stroke.width;
+    const markSep = 1.2 * segment.stroke.width;
     const midPoint = vec()
       .copy(segment.p1.coords)
       .add(vec().copy(segment.p2.coords))

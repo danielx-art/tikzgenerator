@@ -19,8 +19,8 @@ const PointSizeChanger: React.FC<PropsType> = ({ pointId }) => {
       setDisabled(true);
       return;
     }
-    const point = store.points.get(pointId)
-    if(!point) return;
+    const point = store.points.get(pointId);
+    if (!point) return;
     if (point.dotstyle !== 0) {
       setDisabled(false);
     } else {
@@ -45,7 +45,7 @@ const PointSizeChanger: React.FC<PropsType> = ({ pointId }) => {
   };
 
   return (
-    <div className={`flex flex-row flex-nowrap gap-2`}>
+    <div className={`flex flex-row flex-wrap gap-2`}>
       <div className="grid items-center">Tamanho:</div>
       <input
         type="number"

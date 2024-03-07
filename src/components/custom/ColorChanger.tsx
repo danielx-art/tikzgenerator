@@ -86,7 +86,7 @@ const ColorChanger: React.FC<PropsType> = ({ entId, atrName }) => {
   }, [selectedColor]);
 
   return (
-    <div className="flex flex-row flex-nowrap gap-2">
+    <div className="flex flex-row flex-wrap gap-2">
       <div className="grid items-center">Cor:</div>
       <div>
         {

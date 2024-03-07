@@ -15,9 +15,9 @@ const CircleCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
         thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
       }`}
     >
+      <CircleRadiusChanger circleId={thisEntityId} />
       <FillCustomization entId={thisEntityId} />
       <StrokeCustomization entId={thisEntityId} />
-      <CircleRadiusChanger circleId={thisEntityId} />
     </div>
   );
 };

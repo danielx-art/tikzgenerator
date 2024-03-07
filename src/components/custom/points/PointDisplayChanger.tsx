@@ -20,9 +20,9 @@ const PointDisplayChanger: React.FC<PropsType> = ({ pointId }) => {
   };
 
   return (
-    <div className={`flex flex-row flex-nowrap gap-2`}>
+    <div className={`flex w-full flex-row flex-wrap gap-2`}>
       <div className="grid items-center">Destaque: </div>
-      <div className="flex w-full flex-row">
+      <div className="flex flex-row">
         <RadioGroup
           onChange={(option) => handleDisplayChange(option)}
           value={

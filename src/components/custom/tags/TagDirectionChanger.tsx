@@ -8,7 +8,7 @@ type PropsType = {
   thisTagId: TtagId | undefined;
 };
 
-const PRESET_DIRECTIONS  = 12;
+const PRESET_DIRECTIONS = 12;
 
 const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
   const [direction, setDirection] = useState(vec(0, 1));
@@ -28,7 +28,8 @@ const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
     }
     let aposHeading = Math.round((apos.heading() * 180) / Math.PI);
     aposHeading < 0 ? (aposHeading += 360) : null;
-    let updatedCounter = aposHeading / (360/PRESET_DIRECTIONS) - (90/(360/PRESET_DIRECTIONS));
+    let updatedCounter =
+      aposHeading / (360 / PRESET_DIRECTIONS) - 90 / (360 / PRESET_DIRECTIONS);
     if (updatedCounter < 0) updatedCounter += PRESET_DIRECTIONS;
     return updatedCounter;
   }
@@ -46,15 +47,18 @@ const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
     setDisabled(false);
     //recreate the vector from zustand:
     setDirection(vec(thisTag.pos.x, thisTag.pos.y));
-    setSize(vec(thisTag.pos.x, thisTag.pos.y).mag())
+    setSize(vec(thisTag.pos.x, thisTag.pos.y).mag());
   }, [thisTagId, store]);
 
   const handleDirectionChange = () => {
     if (!store || !thisTagId || disabled) return;
     const thisTag = store.tags.get(thisTagId);
-    if(!thisTag) return;
-    const newCounter = (getRoundedCounterFromTag(thisTag) + 1) % (PRESET_DIRECTIONS+1);
-    const updatedDir = vec(0, 1).rotate((newCounter * 2*Math.PI) / PRESET_DIRECTIONS).setMag(size);
+    if (!thisTag) return;
+    const newCounter =
+      (getRoundedCounterFromTag(thisTag) + 1) % (PRESET_DIRECTIONS + 1);
+    const updatedDir = vec(0, 1)
+      .rotate((newCounter * 2 * Math.PI) / PRESET_DIRECTIONS)
+      .setMag(size);
     const updatedTags = new Map(store.tags);
     updatedTags.set(thisTagId, { ...thisTag, pos: updatedDir });
     store.setTags(updatedTags);
@@ -64,9 +68,13 @@ const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!store || !thisTagId || disabled) return;
     const thisTag = store.tags.get(thisTagId);
-    if(!thisTag) return;
-    const updatedSize = event.target.value ? parseFloat(event.target.value) : size;
-    const updatedDir = vec().copy(vec(thisTag.pos.x, thisTag.pos.y)).setMag(updatedSize);
+    if (!thisTag) return;
+    const updatedSize = event.target.value
+      ? parseFloat(event.target.value)
+      : size;
+    const updatedDir = vec()
+      .copy(vec(thisTag.pos.x, thisTag.pos.y))
+      .setMag(updatedSize);
     const updatedTags = new Map(store.tags);
     updatedTags.set(thisTagId, { ...thisTag, pos: updatedDir });
     store.setTags(updatedTags);
@@ -74,48 +82,56 @@ const TagDirectionChanger: React.FC<PropsType> = ({ thisTagId }) => {
   };
 
   return (
-    <div className="flex flex-row flex-nowrap gap-2">
-      <div className="grid place-items-center">Orientação: </div>
-      <button
-        className={``}
-        onClick={handleDirectionChange}
-        disabled={disabled}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className={`h-6 w-6`}
-          style={{
-            rotate: `${-(360/PRESET_DIRECTIONS) * getRoundedCounterFromDir(direction) + 180}deg`,
-          }}
+    <div className="flex flex-row flex-wrap gap-2">
+      <div className="flex flex-row flex-nowrap gap-2">
+        <div className="grid place-items-center">Orientação: </div>
+        <button
+          className={``}
+          onClick={handleDirectionChange}
+          disabled={disabled}
         >
-          {getRoundedCounterFromDir(direction) != 8 ? (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 17.25L12 21m0 0l-3.75-3.75M12 21V3"
-            />
-          ) : (
-            <>
-              <circle cx={12} cy={12} r={6} />
-              <circle cx={12} cy={12} r={2} fill="black" />
-            </>
-          )}
-        </svg>
-      </button>
-      <div className="grid items-center">Distância:</div>
-      <input
-        type="number"
-        name="sizeInput"
-        step={0.1}
-        onChange={handleSizeChange}
-        disabled={disabled}
-        className="inline w-16 bg-c_base p-1 text-center focus:underline focus:outline-none"
-        value={size}
-      />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className={`h-6 w-6`}
+            style={{
+              rotate: `${
+                -(360 / PRESET_DIRECTIONS) *
+                  getRoundedCounterFromDir(direction) +
+                180
+              }deg`,
+            }}
+          >
+            {getRoundedCounterFromDir(direction) != 8 ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 17.25L12 21m0 0l-3.75-3.75M12 21V3"
+              />
+            ) : (
+              <>
+                <circle cx={12} cy={12} r={6} />
+                <circle cx={12} cy={12} r={2} fill="black" />
+              </>
+            )}
+          </svg>
+        </button>
+      </div>
+      <div className="flex flex-row flex-nowrap gap-2">
+        <div className="grid items-center">Distância:</div>
+        <input
+          type="number"
+          name="sizeInput"
+          step={0.1}
+          onChange={handleSizeChange}
+          disabled={disabled}
+          className="inline w-16 bg-c_base p-1 text-center focus:underline focus:outline-none"
+          value={size}
+        />
+      </div>
     </div>
   );
 };

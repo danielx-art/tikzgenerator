@@ -29,7 +29,7 @@ const SegmentDisplayChanger: React.FC<PropsType> = ({ segId }) => {
   };
 
   return (
-    <div className={`flex flex-row flex-nowrap gap-2`}>
+    <div className={`flex flex-row flex-wrap gap-2`}>
       <div className="grid items-center">Destaque: </div>
       <div className="flex w-12 flex-row">
         {segId && store && store.segments.get(segId) && (
