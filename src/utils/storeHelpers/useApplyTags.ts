@@ -1,13 +1,6 @@
 import type { Action, State } from "import/utils/store/store";
-import {
-  type Tentity,
-  type Ttag,
-  tag,
-  type Tpoint,
-  type Tsegment,
-  type Tangle,
-} from "public/entidades";
-import { getEntityKind } from "./entityGetters";
+import { type Tentity } from "public/entidades";
+import { toast } from "sonner";
 
 const useApplyTags = (store: State & Action) => {
   const applyTags = <T extends Tentity>(
@@ -15,7 +8,7 @@ const useApplyTags = (store: State & Action) => {
     entities: Map<string, T>,
   ) => {
     if (!store || entities.size < 1) {
-      store.setError("Não foram encontrados objetos para etiquetar");
+      toast.error("Não foram encontrados objetos para etiquetar");
       return;
     }
 

@@ -1,16 +1,17 @@
-import { circle, type Tpoint } from "public/entidades";
+import { circle } from "public/entidades";
 import type { Action, State } from "../store/store";
 import { DEFAULT_CIRCLE_RADIUS } from "public/generalConfigs";
-import { vec, vector } from "../math/vetores";
+import { vec } from "../math/vetores";
 import { getSelected } from "./entityGetters";
 import { distanceFromPointToLine } from "../math/distancePointToLine";
 import { findCircleFromThreePoints } from "../math/findCircleFromThreePoints";
+import { toast } from "sonner";
 
 export function createCircleFromOnePoint(store: State & Action) {
   const selectedPoints = getSelected("point", store);
 
   if (!selectedPoints || selectedPoints.length == 0) {
-    store.setError(
+    toast.error(
       "Por favor selecione um ponto para criar um círculo dessa maneira. ",
     );
     return;
@@ -39,7 +40,7 @@ export function createCircleFromTwoPoints(store: State & Action) {
   const selectedPoints = getSelected("point", store);
 
   if (!selectedPoints || selectedPoints.length < 2) {
-    store.setError(
+    toast.error(
       "Por favor selecione ao menos dois pontos para criar um círculo dessa maneira. ",
     );
     return;
@@ -74,7 +75,7 @@ export function createCircleFromTangent(store: State & Action) {
     selectedPoints.length == 0 ||
     selectedLines.length == 0
   ) {
-    store.setError(
+    toast.error(
       "Por favor selecione um ponto e um segmento para criar um círculo dessa maneira. ",
     );
     return;
@@ -92,7 +93,7 @@ export function createCircleFromTangent(store: State & Action) {
   const newRadius = distanceFromPointToLine(center, line);
 
   if (!newRadius) {
-    store.setError(
+    toast.error(
       "Por favor selecione um ponto que não esteja no próprio segmento selecionado, ou selecione outro segmento para criar um círculo dessa maneira. ",
     );
     return;
@@ -111,7 +112,7 @@ export function createCircleFromThreePoints(store: State & Action) {
   const selectedPoints = getSelected("point", store);
 
   if (!selectedPoints || selectedPoints.length < 3) {
-    store.setError(
+    toast.error(
       "Por favor selecione ao menos três pontos não colineares para criar um círculo dessa maneira. ",
     );
     return;
@@ -134,7 +135,7 @@ export function createCircleFromThreePoints(store: State & Action) {
   );
 
   if (!circleParams) {
-    store.setError(
+    toast.error(
       "Por favor selecione ao menos três pontos não colineares para criar um círculo dessa maneira. ",
     );
     return;

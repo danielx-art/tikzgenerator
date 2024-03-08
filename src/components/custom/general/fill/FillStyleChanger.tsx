@@ -109,12 +109,12 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                 <div className="h-6 w-6" key="fill-solid-changer-inner">
                   <svg className="grid h-full w-full items-center overflow-hidden">
                     <rect
-                      stroke="black"
+                      stroke="#333333"
                       strokeWidth={2}
                       fill={
                         thisEnt && "fill" in thisEnt
                           ? thisEnt.fill.color
-                          : "black"
+                          : "#333333"
                       }
                       fillOpacity={
                         thisEnt && "fill" in thisEnt
@@ -148,14 +148,14 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                           stroke={
                             thisEnt && "fill" in thisEnt
                               ? thisEnt.fill.color
-                              : "black"
+                              : "#333333"
                           }
                           strokeWidth="5"
                         />
                       </pattern>
                     </defs>
                     <rect
-                      stroke="black"
+                      stroke="#333333"
                       strokeWidth={2}
                       fill="url(#hatch0)"
                       fillOpacity={
@@ -186,14 +186,14 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                           stroke={
                             thisEnt && "fill" in thisEnt
                               ? thisEnt.fill.color
-                              : "black"
+                              : "#333333"
                           }
                           strokeWidth="5"
                         />
                       </pattern>
                     </defs>
                     <rect
-                      stroke="black"
+                      stroke="#333333"
                       strokeWidth={2}
                       fill="url(#hatch1)"
                       fillOpacity={
@@ -224,14 +224,14 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                           stroke={
                             thisEnt && "fill" in thisEnt
                               ? thisEnt.fill.color
-                              : "black"
+                              : "#333333"
                           }
                           strokeWidth="5"
                         />
                       </pattern>
                     </defs>
                     <rect
-                      stroke="black"
+                      stroke="#333333"
                       strokeWidth={2}
                       fill="url(#hatch2)"
                       fillOpacity={
@@ -262,14 +262,14 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                           stroke={
                             thisEnt && "fill" in thisEnt
                               ? thisEnt.fill.color
-                              : "black"
+                              : "#333333"
                           }
                           strokeWidth="5"
                         />
                       </pattern>
                     </defs>
                     <rect
-                      stroke="black"
+                      stroke="#333333"
                       strokeWidth={2}
                       fill="url(#hatch3)"
                       fillOpacity={
@@ -302,7 +302,7 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                           fill={
                             thisEnt && "fill" in thisEnt
                               ? thisEnt.fill.color
-                              : "black"
+                              : "#333333"
                           }
                         />
                         <circle
@@ -312,13 +312,13 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
                           fill={
                             thisEnt && "fill" in thisEnt
                               ? thisEnt.fill.color
-                              : "black"
+                              : "#333333"
                           }
                         />
                       </pattern>
                     </defs>
                     <rect
-                      stroke="black"
+                      stroke="#333333"
                       strokeWidth={2}
                       fill="url(#dots)"
                       fillOpacity={

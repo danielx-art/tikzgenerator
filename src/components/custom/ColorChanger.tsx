@@ -24,7 +24,6 @@ const ColorChanger: React.FC<PropsType> = ({ entId, atrName }) => {
 
   useEffect(() => {
     if (!store || !entId) {
-      //setSelectedColor("black");
       setDisabled(true);
       return;
     }

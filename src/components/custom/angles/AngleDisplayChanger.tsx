@@ -1,6 +1,5 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { getKindById } from "import/utils/storeHelpers/entityGetters";
 import type { TangId } from "public/entidades";
 import MultipleRadioGroup from "import/components/micro/MultipleRadioGroup";
 import { ANGLE_MARKS_TYPE } from "public/generalConfigs";

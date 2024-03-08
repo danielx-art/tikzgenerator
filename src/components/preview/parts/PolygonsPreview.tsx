@@ -35,7 +35,7 @@ const PolygonsPreview: React.FC = () => {
               className="cursor-pointer"
             />
             <path
-              key={"svg_path_polygon_" + polygon.id}
+              key={"svg_path_polygon_fill_" + polygon.id}
               d={polygonPath}
               stroke="none"
               fill={polygon.fill.color}

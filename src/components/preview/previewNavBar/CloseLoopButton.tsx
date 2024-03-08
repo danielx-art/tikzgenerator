@@ -1,5 +1,5 @@
 import { cn } from "import/utils/cn";
-import { vec, vector } from "import/utils/math/vetores";
+import { vec } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { connectPoints } from "import/utils/storeHelpers/connectPoints";

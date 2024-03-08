@@ -77,9 +77,6 @@ const MultOption: React.FC<TMultOptionProps> = ({
 
   const handleClick = useCallback(() => {
     if (disabled) return;
-    console.log(
-      `handleClick, sel btn ${selBtnIndex} btn ${buttonIndex} and option ${option}`,
-    ); //debugg
     if (selBtnIndex !== buttonIndex) {
       onChange(buttonIndex, option);
       setSelectBtn(buttonIndex);

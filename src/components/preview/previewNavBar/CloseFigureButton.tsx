@@ -1,5 +1,5 @@
 import { cn } from "import/utils/cn";
-import { vec, vector } from "import/utils/math/vetores";
+import { vec } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { closeFigure } from "import/utils/storeHelpers/closeFigure";
@@ -13,7 +13,6 @@ const CloseFigureButton: React.FC<PropsType> = ({
   onClick,
   ...rest
 }) => {
-  
   const store = useStore(myStore, (state) => state);
 
   const handleCloseFigure = () => closeFigure(store);
@@ -36,7 +35,7 @@ const CloseFigureButton: React.FC<PropsType> = ({
         strokeWidth="2"
         stroke="currentColor"
         className="h-full w-full p-1"
-      >  
+      >
         {ps.map((point, index, ps) => {
           const nextPoint = index === ps.length - 1 ? ps[0]! : ps[index + 1]!;
           return (
@@ -52,7 +51,9 @@ const CloseFigureButton: React.FC<PropsType> = ({
             </g>
           );
         })}
-        <path d={`M ${p1.x} ${p1.y} L ${p2.x} ${p2.y} L ${p3.x} ${p3.y}L ${p4.x} ${p4.y}L ${p5.x} ${p5.y} Z`} />
+        <path
+          d={`M ${p1.x} ${p1.y} L ${p2.x} ${p2.y} L ${p3.x} ${p3.y}L ${p4.x} ${p4.y}L ${p5.x} ${p5.y} Z`}
+        />
       </svg>
     </button>
   );

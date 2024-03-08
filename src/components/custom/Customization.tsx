@@ -34,7 +34,6 @@ const Customization = () => {
   );
 
   const store = useStore(myStore, (state) => state);
-  //const selections = useStore(myStore, (state) => state.selections);
 
   useEffect(() => {
     if (!store || !store.selections) return;

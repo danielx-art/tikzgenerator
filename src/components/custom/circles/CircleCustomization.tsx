@@ -1,5 +1,4 @@
 import type { TcircleId, TsegId } from "public/entidades";
-import ColorChanger from "../ColorChanger";
 import FillCustomization from "../general/fill/FillCustomization";
 import StrokeCustomization from "../general/stroke/StrokeCustomization";
 import CircleRadiusChanger from "./CircleRadiusChanger";

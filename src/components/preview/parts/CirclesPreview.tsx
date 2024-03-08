@@ -1,12 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import {
-  DEFAULT_STROKE_WIDTH,
-  RES_FACTOR,
-  ThachureOrientations,
-} from "public/generalConfigs";
-import { Tangle, Tcircle } from "public/entidades";
-import { vec } from "import/utils/math/vetores";
+import { RES_FACTOR } from "public/generalConfigs";
+import type { Tcircle } from "public/entidades";
 import { getFillMask, getStrokeDasharray } from "../helpers";
 
 const CirclesPreview: React.FC = () => {

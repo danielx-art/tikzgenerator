@@ -1,4 +1,4 @@
-import { vec, vector } from "import/utils/math/vetores";
+import { vector } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { TallId, Tpoint, TpointId } from "public/entidades";
@@ -38,7 +38,6 @@ const PointPreview: React.FC<PointProps> = ({
   toggleSelection,
   movePoint,
 }) => {
-
   let stroke = "none";
   let fill = "none";
 

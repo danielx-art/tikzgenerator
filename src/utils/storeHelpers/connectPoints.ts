@@ -10,10 +10,6 @@ export const connectPoints = (
 
   const { points, segments, generateId, setSegments } = store;
 
-  // const selectedPoints = Array.from(points.values()).filter(
-  //   (point) => point.selected,
-  // );
-
   const selectedPoints = getSelected("point", store);
 
   const updatedSegments = new Map(segments);

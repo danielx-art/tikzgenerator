@@ -4,20 +4,20 @@ import {
 } from "import/utils/storeHelpers/entityGetters";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { Tangle, Tpoint, Tsegment, Ttag, TtagId } from "public/entidades";
+import { Tangle, Tpoint, Tsegment } from "public/entidades";
 import { RES_FACTOR } from "public/generalConfigs";
 
 const TagsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
-  const tags = useStore(myStore, (state)=>state.tags);
+  const tags = useStore(myStore, (state) => state.tags);
 
   if (!store || !tags) return;
 
   return (
     <>
-      {store && tags &&
+      {store &&
+        tags &&
         Array.from(tags.values()).map((tag) => {
-
           const ent = getEntityById(tag.entityId, store);
 
           if (!ent) return;
@@ -26,7 +26,6 @@ const TagsPreview: React.FC = () => {
             | "point"
             | "segment"
             | "angle";
-
 
           let x = 0;
           let y = 0;
@@ -63,15 +62,15 @@ const TagsPreview: React.FC = () => {
             }
           }
 
-          const textSize = ` ${tag.size*RES_FACTOR}px `;
+          const textSize = ` ${tag.size * RES_FACTOR}px `;
 
           //const textColor = ` text-${tag.color} `;
 
           return (
             <g key={"svg_path_" + tag.id} transform={`scale(1, -1)`}>
               <text
-                x={x*RES_FACTOR}
-                y={y*RES_FACTOR}
+                x={x * RES_FACTOR}
+                y={y * RES_FACTOR}
                 className={`cursor-pointer select-none`}
                 fill={tag.color}
                 fontSize={textSize}

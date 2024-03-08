@@ -1,6 +1,5 @@
 import type { TangId } from "public/entidades";
 import TagCustomization from "../tags/TagCustomization";
-import EntityColorChanger from "../ColorChanger";
 import AngleDisplayChanger from "./AngleDisplayChanger";
 import AngleSizeChanger from "./AngleSizeChanger";
 import AngleColorAndFill from "./AngleColorAndFill";

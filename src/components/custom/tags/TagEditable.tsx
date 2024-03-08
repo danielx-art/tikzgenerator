@@ -1,11 +1,7 @@
 import useStore from "import/utils/store/useStore";
 import myStore from "import/utils/store/store";
-import type { TallId, TtagId, Tentity, Ttag, TentId } from "public/entidades";
+import type { TallId, TtagId, TentId } from "public/entidades";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import {
-  findTagByEntityId,
-  getKindById,
-} from "import/utils/storeHelpers/entityGetters";
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
 type PropsType = {
@@ -21,21 +17,19 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId, thisEntityId }) => {
   const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
-    
     if (!store || !thisEntityId) {
       setInputValue("");
       return;
     }
 
-
-    if(!thisTagId) {
+    if (!thisTagId) {
       setInputValue("");
       return;
     }
 
     const thisTag = store.tags.get(thisTagId);
 
-    if(!thisTag) {
+    if (!thisTag) {
       setInputValue("");
       return;
     }
@@ -53,7 +47,7 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId, thisEntityId }) => {
       setEditMode(true);
     } else {
       if (inputValue.length <= 0) {
-        if(thisTagId) {
+        if (thisTagId) {
           store.deleteTag(thisTagId);
         }
         setInputValue("");
@@ -62,13 +56,11 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId, thisEntityId }) => {
       } else {
         const updatedTags = new Map(store.tags);
         const thisTagExists = thisTagId ? store.tags.has(thisTagId) : false;
-        if(thisTagId && thisTagExists){
-          
+        if (thisTagId && thisTagExists) {
           const thisTag = store.tags.get(thisTagId)!;
           updatedTags.set(thisTagId, { ...thisTag, value: inputValue });
           store.setTags(updatedTags);
-        } else if ( thisEntityId ) {
-
+        } else if (thisEntityId) {
           store.addTag(inputValue, thisEntityId as TentId);
         }
         setEditMode(false);

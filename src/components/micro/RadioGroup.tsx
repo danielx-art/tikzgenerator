@@ -70,7 +70,7 @@ const Option: React.FC<TOptionProps> = ({
         disabled
           ? "text-c_scnd2 text-opacity-50"
           : isSelected
-          ? " text-c_scnd_int"
+          ? " text-c_scnd_int ring-1 ring-c_scnd_int"
           : " text-c_scnd2"
       }`}
       onClick={disabled ? () => {} : () => onSelect(index)}

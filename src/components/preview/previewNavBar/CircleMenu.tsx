@@ -1,9 +1,14 @@
 import Dropdown from "import/components/micro/Dropdown";
 import { cn } from "import/utils/cn";
-import { vec, vector } from "import/utils/math/vetores";
+import { vec } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { createCircleFromOnePoint, createCircleFromTangent, createCircleFromThreePoints, createCircleFromTwoPoints } from "import/utils/storeHelpers/circleCreators";
+import {
+  createCircleFromOnePoint,
+  createCircleFromTangent,
+  createCircleFromThreePoints,
+  createCircleFromTwoPoints,
+} from "import/utils/storeHelpers/circleCreators";
 
 import { ButtonHTMLAttributes } from "react";
 

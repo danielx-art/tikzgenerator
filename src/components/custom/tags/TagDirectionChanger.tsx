@@ -1,6 +1,6 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import type { TallId, Ttag, TtagId } from "public/entidades";
+import type { Ttag, TtagId } from "public/entidades";
 import { vec, vector } from "import/utils/math/vetores";
 import { useEffect, useState } from "react";
 

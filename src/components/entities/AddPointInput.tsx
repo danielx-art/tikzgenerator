@@ -4,6 +4,7 @@ import { ponto, type Tpoint } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
 import useStore from "import/utils/store/useStore";
 import { MAXIMUM_NUMBER_OF_POINTS } from "public/generalConfigs";
+import { toast } from "sonner";
 
 const AddPointInput = () => {
   const store = useStore(myStore, (state) => state);
@@ -19,10 +20,10 @@ const AddPointInput = () => {
     if (!store) return;
 
     if (points.size > MAXIMUM_NUMBER_OF_POINTS) {
-      setError(
-        error +
-          `Devido à medidas de segurança, você atingiu o limite de ${MAXIMUM_NUMBER_OF_POINTS} pontos. Remova alguns pontos para que seja possível adicionar outros. `,
+      toast(
+        `Devido à medidas de segurança, você atingiu o limite de ${MAXIMUM_NUMBER_OF_POINTS} pontos. Remova alguns pontos para que seja possível adicionar outros. `,
       );
+      return;
     }
 
     const substrings = input.split(" ");
@@ -36,9 +37,8 @@ const AddPointInput = () => {
         const [str1, str2] = substring.split(";");
 
         if (!(str1 && str2)) {
-          setError(
-            error +
-              `O ponto "${substring}", da forma X;Y, não contém uma das coordenadas. `,
+          toast.error(
+            `O ponto "${substring}", da forma X;Y, não contém uma das coordenadas. `,
           );
           continue;
         }
@@ -53,8 +53,8 @@ const AddPointInput = () => {
           continue;
         }
 
-        setError(
-          error + `As coordenadas do ponto "${substring}" devem ser números. `,
+        toast.error(
+          `As coordenadas do ponto "${substring}" devem ser números. `,
         );
       } else if (substring.includes(":")) {
         const pointsArr = Array.from(points.values());
@@ -70,18 +70,16 @@ const AddPointInput = () => {
           pointsInTheSameGroup[pointsInTheSameGroup.length - 1];
 
         if (referencePoint == undefined) {
-          setError(
-            error +
-              "Para adicionar um ponto da forma R:θ, você deve ter pelo menos outro ponto no mesmo grupo, ou um ponto selecionado. ",
+          toast.error(
+            "Para adicionar um ponto da forma R:θ, você deve ter pelo menos outro ponto no mesmo grupo, ou um ponto selecionado. ",
           );
           continue;
         }
 
         const [str1, str2] = substring.split(":");
         if (!(str1 && str2)) {
-          setError(
-            error +
-              `O ponto "${substring}", da forma R:θ, não contém uma das coordenadas. `,
+          toast.error(
+            `O ponto "${substring}", da forma R:θ, não contém uma das coordenadas. `,
           );
           continue;
         }
@@ -108,13 +106,12 @@ const AddPointInput = () => {
           continue;
         }
 
-        setError(
-          error + `As coordenadas do ponto "${substring}" devem ser números. `,
+        toast.error(
+          `As coordenadas do ponto "${substring}" devem ser números. `,
         );
       } else {
-        setError(
-          error +
-            `O ponto "${substring}" deve ser da forma absoluta X;Y ou da forma relativa R:θ, partindo de um ponto selecionado ou do último ponto adicionado no mesmo grupo. `,
+        toast.error(
+          `O ponto "${substring}" deve ser da forma absoluta X;Y ou da forma relativa R:θ, partindo de um ponto selecionado ou do último ponto adicionado no mesmo grupo. `,
         );
       }
     }

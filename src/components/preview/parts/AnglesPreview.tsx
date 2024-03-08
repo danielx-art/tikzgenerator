@@ -118,7 +118,6 @@ export const getAnglePath = (angle: Tangle) => {
   let dMarksPath = "";
   let dFillPath = "";
 
-  //if (Math.abs(endAngle - startAngle) == 90) {
   if ((angle.valor * 180) / Math.PI === 90) {
     d += `M ${angleB.x + startVector.x} ${angleB.y + startVector.y} `;
     d += `l ${endVector.x} ${endVector.y} `;

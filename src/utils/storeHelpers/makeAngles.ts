@@ -13,7 +13,7 @@ export const makeAngles = (
   const { generateId, setError, setAngles } = store;
 
   if (selectedPoints.length < 3) {
-    setError(
+    toast.error(
       "Você precisa selecionar no mínimo três pontos para criar um ângulo.",
     );
     return;

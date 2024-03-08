@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 type PropsType = {
   isChecked: boolean;
   setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,9 +21,7 @@ const Switcher: React.FC<PropsType> = ({
   return (
     <label className="group isolate flex cursor-pointer select-none flex-nowrap items-center justify-start">
       <div
-        className={`${
-          isChecked ? "text-c_scnd_int" : "text-c_faded"
-        } text-sm`}
+        className={`${isChecked ? "text-c_scnd_int" : "text-c_faded"} text-sm`}
       >
         {messageOne}
       </div>
@@ -44,13 +40,15 @@ const Switcher: React.FC<PropsType> = ({
           ></div>
         </div>
       </div>
-      {messageTwo && <div
-        className={`${
-          !isChecked ? "text-c_scnd_int" : "text-c_faded"
-        } whitespace-nowrap text-sm`}
-      >
-        {messageTwo}
-      </div>}
+      {messageTwo && (
+        <div
+          className={`${
+            !isChecked ? "text-c_scnd_int" : "text-c_faded"
+          } whitespace-nowrap text-sm`}
+        >
+          {messageTwo}
+        </div>
+      )}
     </label>
   );
 };

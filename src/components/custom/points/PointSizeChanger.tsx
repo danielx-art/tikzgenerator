@@ -1,6 +1,6 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import type { Tpoint, TpointId } from "public/entidades";
+import type { TpointId } from "public/entidades";
 import { DEFAULT_POINT_SIZE } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
