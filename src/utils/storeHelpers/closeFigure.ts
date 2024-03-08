@@ -8,6 +8,7 @@ import {
 import type { Action, State } from "../store/store";
 import { getSelected } from "./entityGetters";
 import { segmentsIntersect } from "../math/segmentsIntersect";
+import { toast } from "sonner";
 
 type TAdjacencyList = { [key: TpointId]: TsegId[] };
 
