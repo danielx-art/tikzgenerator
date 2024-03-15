@@ -38,6 +38,9 @@ export default function getAnglesTikzCode(store: State & Action) {
 
       if (Math.abs(angleDifference) > 180) {
         sweepFlag = 0;
+        // const swap = startAngle;
+        // startAngle = endAngle;
+        // endAngle = swap;
       }
 
       if ((angle.valor * 180) / Math.PI === 90) {
@@ -62,11 +65,12 @@ export default function getAnglesTikzCode(store: State & Action) {
 
         tikzCode += `\\filldraw [${angle.color}, opacity=${angle.opacity}] (${circleCenter.x}, ${circleCenter.y}) circle (${radius});\n`;
       } else {
-        //not right
+        //not right angle
 
         if (angle.dotstyle === 0) {
           // Stroke only
           tikzCode += `\\draw [${angle.color}, opacity=${angle.opacity}] (${angle.b.id}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size});\n`;
+          tikzCode += `\\fill [fill=black, fill opacity=1] (${angle.b.id}) ++(${startAngle}:${angle.size}) circle (0.02);\n`
         } else if (angle.dotstyle === 1) {
           // Stroke and fill (as a 'circle sector')
           tikzCode += `\\filldraw [${angle.color}, opacity=${angle.opacity}] (${angle.b.id}) -- (${angle.b.id}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size}) -- (${angle.b.id});\n`;
@@ -97,7 +101,6 @@ export default function getAnglesTikzCode(store: State & Action) {
               tikzCode += `\\draw [${angle.color}, opacity=${angle.opacity}] (${initialPoint.x}, ${initialPoint.y}) -- (${finalPoint.x}, ${finalPoint.y});\n`;
             }
           } else if (angle.marks.includes("doubles")) {
-            let dDoubles = ``;
             const numDoubles = parseInt(
               angle.marks.split("-")[1] as `${number}`,
             );
@@ -118,7 +121,7 @@ export default function getAnglesTikzCode(store: State & Action) {
                 .rotate(toRotate)
                 .add(angleB);
 
-              tikzCode += `\\draw [${angle.color}, opacity=${angle.opacity}] (${initialPoint.x} ${initialPoint.y}) arc (${startAngle}:${endAngle}:${thisRad});\n`;
+              tikzCode += `\\draw [${angle.color}, opacity=${angle.opacity}] (${initialPoint.x}, ${initialPoint.y}) arc (${startAngle}:${endAngle}:${thisRad});\n`;
             }
           }
         }

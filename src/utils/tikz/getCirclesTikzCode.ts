@@ -5,7 +5,10 @@ export default function getCirclesTikzCode(store: State & Action) {
   let tikzCode = "";
   store.circles.forEach((circle) => {
     if (circle.visible) {
-      let strokeSettings = `line width=${circle.stroke.width}pt, ${circle.stroke.style}, draw=${circle.stroke.color}, draw opacity=${circle.stroke.opacity}`;
+
+      const strokeStyle = circle.stroke.style.includes('dashed') ? "dashed" : circle.stroke.style;
+
+      let strokeSettings = `line width=${circle.stroke.width}pt, ${strokeStyle}, draw=${circle.stroke.color}, draw opacity=${circle.stroke.opacity}`;
 
       // Start defining the TikZ code for this circle
       let circleCommands = "";
@@ -35,16 +38,16 @@ export default function getCirclesTikzCode(store: State & Action) {
           // Extract angle from the fill style
           const angleOption = circle.fill.style.split("-")[1];
           if (!angleOption) return "";
-          const angle = parseFloat(angleOption);
+          const angle = parseInt(angleOption)*45;
           const minX = circle.center.x - circle.radius;
           const maxX = circle.center.x + circle.radius;
           const minY = circle.center.y - circle.radius;
           const maxY = circle.center.y + circle.radius;
           const HACHURE_DIST = 0.2;
           const pattern = getHachureLines(minX,maxX, minY, maxY, HACHURE_DIST, angle);
-          circleCommands += `\\foreach \\i in {0,1,...,${pattern.number}}{\n`;
-          circleCommands += `\\draw [thin, ${circle.fill.color}, opacity=${circle.fill.opacity}] (${pattern.points[i]?.x1},${}) -- (${},${});\n`;
-          circleCommands += `}\n`;
+          pattern.points.forEach((point)=>{
+            circleCommands += `\\draw [thin, ${circle.fill.color}, opacity=${circle.fill.opacity}] (${point.x1},${point.y1}) -- (${point.x2},${point.y2});\n`;
+          });
         }
 
         circleCommands += `\\end{scope}\n`;

@@ -1,3 +1,4 @@
+import getHachureLines from "../math/getHachureLines";
 import type { Action, State } from "../store/store";
 
 export default function getPolygonsTikzCode(store: State & Action) {
@@ -37,23 +38,12 @@ export default function getPolygonsTikzCode(store: State & Action) {
         // Extract angle from the fill style and create hatching within clipped area
         const angleOption = polygon.fill.style.split("-")[1];
         if (!angleOption) return "";
-        const angleRadians = (parseFloat(angleOption) * Math.PI) / 180;
-        const polygonLenX = maxX - minX;
-        const polygonLenY = maxY - minY;
-        tikzCode += `\\foreach \\x in {${minX},${minX + 0.2},...,${maxX}}{\n`;
-        tikzCode += `    \\draw [${polygon.fill.color}, opacity=${
-          polygon.fill.opacity
-        }, thin] (\\x,${minY}) -- (\\x+${polygonLenX},${
-          minY + polygonLenX * Math.tan(angleRadians)
-        });`;
-        tikzCode += `}\n`;
-        tikzCode += `\\foreach \\y in {${minY},${minY + 0.2},...,${maxY}}{\n`;
-        tikzCode += `    \\draw [${polygon.fill.color}, opacity=${
-          polygon.fill.opacity
-        }, thin] (${minX}, \\y) -- (${maxX}, \\y+${
-          polygonLenX * Math.tan(angleRadians)
-        });`;
-        tikzCode += `}\n`;
+        const angle = parseInt(angleOption)*45;
+        const HACHURE_DIST = 0.2;
+        const pattern = getHachureLines(minX,maxX, minY, maxY, HACHURE_DIST, angle);
+        pattern.points.forEach((point)=>{
+          tikzCode += `\\draw [thin, ${polygon.fill.color}, opacity=${polygon.fill.opacity}] (${point.x1},${point.y1}) -- (${point.x2},${point.y2});\n`;
+        });
       }
 
       tikzCode += `\\end{scope}\n`;

@@ -67,7 +67,7 @@ const PreviewPanel = () => {
 
     let padding = 0.2; //of the maximum dimension
 
-    if (pointsArr.length == 1 && pointsArr[0]) {
+    if (pointsArr.length == 1 && pointsArr[0] && store.circles && store.circles.size < 1) {
       properWidth = ((pointsArr[0].size * 1) / 2) * RES_FACTOR;
       properHeight = properWidth;
       padding = 2;
