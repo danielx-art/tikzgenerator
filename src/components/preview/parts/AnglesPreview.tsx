@@ -159,9 +159,6 @@ export const getAnglePath = (angle: Tangle) => {
               ${end.x} ${end.y} Z `;
 
     //------MARKS PATH
-
-    const angleMark = angle.marks;
-
     if (angle.marks.split("-")[1] !== "0") {
       if (angle.marks.includes("marks")) {
         let dMarks = ``;

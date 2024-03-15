@@ -7,6 +7,7 @@ import MakeAnglesButton from "./MakeAnglesButton";
 import CloseLoopButton from "./CloseLoopButton";
 import CloseFigureButton from "./CloseFigureButton";
 import CircleMenu from "./CircleMenu";
+import DownloadMenu from "./DownloadMenu";
 
 type PreviewNavProps = React.HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode | React.ReactNode[];
@@ -20,20 +21,24 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
   return (
     <div
       className={cn(
-        "flex flex-row mx-auto h-10 gap-2 px-1 rounded-md border-2 border-c_discrete",
+        "mx-auto flex h-10 flex-row gap-2 rounded-md border-2 border-c_discrete px-1",
         className,
       )}
     >
-      <DownloadSVGBtn
+      {/* <DownloadSVGBtn
         ref={ref}
         className="hover:-translate-y-0.5 hover:text-c_interact w-8"
+      /> */}
+      <DownloadMenu
+        ref={ref}
+        className="w-8 hover:-translate-y-0.5 hover:text-c_interact"
       />
-      <RemoveEntityButton className="hover:-translate-y-0.5 hover:text-c_interact w-8" />
-      <ConnectButton className="hover:-translate-y-0.5 hover:text-c_interact w-8" />
-      <MakeAnglesButton className="hover:-translate-y-0.5 hover:text-c_interact w-8" />
-      <CloseLoopButton className="hover:-translate-y-0.5 hover:text-c_interact w-8" />
-      <CloseFigureButton className="hover:-translate-y-0.5 hover:text-c_interact w-8" />
-      <CircleMenu  className="hover:-translate-y-0.5 hover:text-c_interact w-8" />
+      <RemoveEntityButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
+      <ConnectButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
+      <MakeAnglesButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
+      <CloseLoopButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
+      <CloseFigureButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
+      <CircleMenu className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
       {children &&
         (Array.isArray(children) ? (
           children.map((child, index) => (

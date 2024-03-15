@@ -1,9 +1,9 @@
 import { cn } from "import/utils/cn";
 import { RES_FACTOR } from "public/generalConfigs";
-import type { HTMLAttributes, Ref, RefObject } from "react";
+import type { ButtonHTMLAttributes, Ref, RefObject } from "react";
 import { forwardRef } from "react";
 
-type PropsType = HTMLAttributes<HTMLDivElement>;
+type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   { className },
