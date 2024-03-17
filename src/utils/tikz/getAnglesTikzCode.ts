@@ -38,9 +38,7 @@ export default function getAnglesTikzCode(store: State & Action) {
 
       if (Math.abs(angleDifference) > 180) {
         sweepFlag = 0;
-        // const swap = startAngle;
-        // startAngle = endAngle;
-        // endAngle = swap;
+        if(startAngle < endAngle) startAngle += 360;
       }
 
       if ((angle.valor * 180) / Math.PI === 90) {
