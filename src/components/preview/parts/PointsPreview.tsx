@@ -49,7 +49,7 @@ const PointPreview: React.FC<PointProps> = ({
     stroke = point.color;
   }
 
-  const hitBoxSize = 2;
+  const hitBoxSize = point.size + 0.2;
 
   return (
     <g filter={point.selected ? "url(#glow)" : "url(#dropshadow"}>
