@@ -42,22 +42,23 @@ export function segmentsIntersect(
 
   // General case - excluding end point intersections
   if (o1 != o2 && o3 != o4) {
-    // Check if the intersection is only at endpoints
-    if ((o1 === 0 && (p2 === q1 || p2 === p1)) || 
-        (o2 === 0 && (q2 === q1 || q2 === p1)) ||
-        (o3 === 0 && (p1 === q2 || p1 === p2)) ||
-        (o4 === 0 && (q1 === q2 || q1 === p2))) {
 
+    // Check if the intersection is only at endpoints
+    if ((o1 === 0 && (p2.id === q1.id || p2.id === p1.id)) || 
+        (o2 === 0 && (q2.id === q1.id || q2.id === p1.id)) ||
+        (o3 === 0 && (p1.id === q2.id || p1.id === p2.id)) ||
+        (o4 === 0 && (q1.id === q2.id || q1.id === p2.id))) {
       return false;
     }
+
     return true;
   }
 
   // Special Cases - excluding intersections only at endpoints
-  if (o1 == 0 && onSegment(p1, p2, q1) && !(p2 === p1 || p2 === q1)) return true;
-  if (o2 == 0 && onSegment(p1, q2, q1) && !(q2 === p1 || q2 === q1)) return true;
-  if (o3 == 0 && onSegment(p2, p1, q2) && !(p1 === p2 || p1 === q2)) return true;
-  if (o4 == 0 && onSegment(p2, q1, q2) && !(q1 === p2 || q1 === q2)) return true;
+  if (o1 == 0 && onSegment(p1, p2, q1) && !(p2.id === p1.id || p2.id === q1.id)) return true;
+  if (o2 == 0 && onSegment(p1, q2, q1) && !(q2.id === p1.id || q2.id === q1.id)) return true;
+  if (o3 == 0 && onSegment(p2, p1, q2) && !(p1.id === p2.id || p1.id === q2.id)) return true;
+  if (o4 == 0 && onSegment(p2, q1, q2) && !(q1.id === p2.id || q1.id === q2.id)) return true;
 
   // Doesn't fall in any of the above cases
   return false;
