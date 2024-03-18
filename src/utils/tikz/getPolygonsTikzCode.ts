@@ -51,5 +51,5 @@ export default function getPolygonsTikzCode(store: State & Action) {
       tikzCode += `\\draw [${polygon.fill.color}, opacity=${polygon.fill.opacity}] ${vertexPath} -- cycle;\n`;
     }
   });
-  
+  return tikzCode;
 }
