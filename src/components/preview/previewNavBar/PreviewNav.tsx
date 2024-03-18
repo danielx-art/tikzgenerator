@@ -21,7 +21,7 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
   return (
     <div
       className={cn(
-        "mx-auto flex h-10 flex-row gap-2 rounded-md border-2 border-c_discrete px-1",
+        "absolute top-10 bg-c_base mx-auto flex h-10 flex-row gap-2 rounded-md border-2 border-c_discrete px-1",
         className,
       )}
     >

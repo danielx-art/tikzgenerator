@@ -1,6 +1,7 @@
 import type { Action, State } from "../store/store";
 import getAnglesTikzCode from "./getAnglesTikzCode";
 import getCirclesTikzCode from "./getCirclesTikzCode";
+import getCoordinatesTikzCode from "./getCoordinatesTikzCode";
 import getPointsTikzCode from "./getPointsTikzCode";
 import getPolygonsTikzCode from "./getPolygonsTikzCode";
 import getSegmentsTikzCode from "./getSegmentsTikzCode";
@@ -9,8 +10,9 @@ import getTagsTikzCode from "./getTagsTikzCode";
 export default function getTikzCode(store?: State & Action) {
   if (!store) return;
 
-  let tikzCode = "\\begin{tikzpicture}\n";
+  let tikzCode = `\\begin{tikzpicture}[scale=${store.scale}]\n`;
 
+  tikzCode += getCoordinatesTikzCode(store);
   tikzCode += getPolygonsTikzCode(store);
   tikzCode += getCirclesTikzCode(store);
   tikzCode += getSegmentsTikzCode(store);

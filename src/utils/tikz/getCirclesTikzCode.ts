@@ -22,17 +22,20 @@ export default function getCirclesTikzCode(store: State & Action) {
 
         // Dotted or hachure pattern, similar logic as with polygons but now within a circle
         if (circle.fill.style === "dotted") {
+
+          const step = store.scale < 0.5 ? 0.2*store.scale : 0.02*store.scale;
+
           circleCommands += `\\foreach \\x in {${
             circle.center.x - circle.radius
-          },${circle.center.x - circle.radius + 0.2},...,${
+          },${circle.center.x - circle.radius + step},...,${
             circle.center.x + circle.radius
           }}{\n`;
           circleCommands += `\\foreach \\y in {${
             circle.center.y - circle.radius
-          },${circle.center.y - circle.radius + 0.2},...,${
+          },${circle.center.y - circle.radius + step},...,${
             circle.center.y + circle.radius
           }}{\n`;
-          circleCommands += `\\fill [fill=${circle.fill.color}, fill opacity=${circle.fill.opacity}] (\\x,\\y) circle (0.5pt);\n`;
+          circleCommands += `\\fill [fill=${circle.fill.color}, fill opacity=${circle.fill.opacity}] (\\x,\\y) circle (${5*step});\n`;
           circleCommands += `}\n}\n`;
         } else if (circle.fill.style.startsWith("hachure")) {
           // Extract angle from the fill style
@@ -43,7 +46,7 @@ export default function getCirclesTikzCode(store: State & Action) {
           const maxX = circle.center.x + circle.radius;
           const minY = circle.center.y - circle.radius;
           const maxY = circle.center.y + circle.radius;
-          const HACHURE_DIST = 0.2;
+          const HACHURE_DIST = store.scale < 1 ? 0.1 : 0.02*store.scale;
           const pattern = getHachureLines(minX,maxX, minY, maxY, HACHURE_DIST, angle);
           pattern.points.forEach((point)=>{
             circleCommands += `\\draw [thin, ${circle.fill.color}, opacity=${circle.fill.opacity}] (${point.x1},${point.y1}) -- (${point.x2},${point.y2});\n`;

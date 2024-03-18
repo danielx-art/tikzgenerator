@@ -13,9 +13,11 @@ import PreviewNav from "./previewNavBar/PreviewNav";
 import { deselectAll } from "import/utils/storeHelpers/deselectAll";
 import PolygonsPreview from "./parts/PolygonsPreview";
 import CirclesPreview from "./parts/CirclesPreview";
+import PreviewSideBar from "./previewSideBar/PreviewSideBar";
 
 const PreviewPanel = () => {
   const store = useStore(myStore, (state) => state);
+  const scale = useStore(myStore, (state) => state.scale);
 
   const [ref, dimensions] = useDimensions();
 
@@ -28,36 +30,36 @@ const PreviewPanel = () => {
   });
 
   useEffect(() => {
-    if (!store || !store.points || store.points.size === 0) return;
+    if (!store || !store.points || store.points.size === 0 || !scale) return;
 
     const pointsArr = Array.from(store.points.values());
 
     //Find min and max points to define bounds
-    let minX = pointsArr[0]!.coords.x * RES_FACTOR;
-    let maxX = pointsArr[0]!.coords.x * RES_FACTOR;
-    let minY = pointsArr[0]!.coords.y * RES_FACTOR;
-    let maxY = pointsArr[0]!.coords.y * RES_FACTOR;
+    let minX = pointsArr[0]!.coords.x * RES_FACTOR * scale;
+    let maxX = pointsArr[0]!.coords.x * RES_FACTOR * scale;
+    let minY = pointsArr[0]!.coords.y * RES_FACTOR * scale;
+    let maxY = pointsArr[0]!.coords.y * RES_FACTOR * scale;
 
     store.points.forEach((point) => {
-      minX = Math.min(minX, point.coords.x * RES_FACTOR);
-      maxX = Math.max(maxX, point.coords.x * RES_FACTOR);
-      minY = Math.min(minY, point.coords.y * RES_FACTOR);
-      maxY = Math.max(maxY, point.coords.y * RES_FACTOR);
+      minX = Math.min(minX, point.coords.x * RES_FACTOR * scale);
+      maxX = Math.max(maxX, point.coords.x * RES_FACTOR * scale);
+      minY = Math.min(minY, point.coords.y * RES_FACTOR * scale);
+      maxY = Math.max(maxY, point.coords.y * RES_FACTOR * scale);
     });
 
     if (store.circles && store.circles.size > 0) {
       //circles can get out of bounds, so i need to reajust max and min values
       store.circles.forEach((circle) => {
-        const cLeft = (circle.center.x - circle.radius) * RES_FACTOR;
+        const cLeft = (circle.center.x - circle.radius) * RES_FACTOR * scale;
         if (cLeft < minX) minX = cLeft;
 
-        const cTop = (circle.center.y + circle.radius) * RES_FACTOR;
+        const cTop = (circle.center.y + circle.radius) * RES_FACTOR * scale;
         if (cTop > maxY) maxY = cTop;
 
-        const cRight = (circle.center.x + circle.radius) * RES_FACTOR;
+        const cRight = (circle.center.x + circle.radius) * RES_FACTOR * scale;
         if (cRight > maxX) maxX = cRight;
 
-        const cBottom = (circle.center.y - circle.radius) * RES_FACTOR;
+        const cBottom = (circle.center.y - circle.radius) * RES_FACTOR * scale;
         if (cBottom < minY) minY = cBottom;
       });
     }
@@ -65,10 +67,15 @@ const PreviewPanel = () => {
     let properWidth = maxX - minX;
     let properHeight = maxY - minY;
 
-    let padding = 0.2; //of the maximum dimension
+    let padding = 0.5 / scale; //of the maximum dimension
 
-    if (pointsArr.length == 1 && pointsArr[0] && store.circles && store.circles.size < 1) {
-      properWidth = ((pointsArr[0].size * 1) / 2) * RES_FACTOR;
+    if (
+      pointsArr.length == 1 &&
+      pointsArr[0] &&
+      store.circles &&
+      store.circles.size < 1
+    ) {
+      properWidth = ((pointsArr[0].size * 1) / 2) * RES_FACTOR * scale;
       properHeight = properWidth;
       padding = 2;
     }
@@ -102,14 +109,26 @@ const PreviewPanel = () => {
     }
 
     setViewBox(`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
-  }, [store, store?.points, ref, svgRef, dimensions.width, dimensions.height]);
+  }, [
+    store,
+    store?.points,
+    store?.circles,
+    ref,
+    svgRef,
+    dimensions.width,
+    dimensions.height,
+    scale
+  ]);
 
-  if (!store) return;
+  if (!store || !scale) return;
+
+  const transformParam = `scale(${scale}, -${scale})`;
 
   return (
-    <Panel className="h-full items-center p-2">
+    <Panel className="relative h-full items-center p-2">
       <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
       <PreviewNav ref={svgRef} />
+      <PreviewSideBar />
       <div
         ref={ref}
         className="grid max-h-full flex-1 place-items-center overflow-hidden"
@@ -124,7 +143,7 @@ const PreviewPanel = () => {
           xmlns="http://www.w3.org/2000/svg"
           onClick={() => deselectAll(store)}
         >
-          <g transform={`scale(1, -1)`}>
+          <g transform={transformParam}>
             <Filters />
             <PolygonsPreview />
             <CirclesPreview />

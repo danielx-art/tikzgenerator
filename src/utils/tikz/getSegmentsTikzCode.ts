@@ -6,11 +6,11 @@ export default function getSegmentsTikzCode(store: State & Action) {
   store.segments.forEach((segment) => {
     if (segment.visible) {
       let strokeStyle = segment.stroke.style.split("-")[0];
-      tikzCode += `\\draw [${segment.stroke.color}, ${strokeStyle}, line width=${segment.stroke.width}pt, opacity=${segment.stroke.opacity}] (${segment.p1.id}) -- (${segment.p2.id});\n`;
+      tikzCode += `\\draw [${segment.stroke.color}, ${strokeStyle}, line width=${segment.stroke.width*store.scale}pt, opacity=${segment.stroke.opacity}] (${segment.p1.id}) -- (${segment.p2.id});\n`;
       //DO THE MARKS
       if (segment.marks > 0) {
-        const markLength = 0.12 * segment.stroke.width;
-        const markSep = 1.2 * segment.stroke.width;
+        const markLength = 0.12 * segment.stroke.width*store.scale;
+        const markSep = 1.2 * segment.stroke.width*store.scale;
         const midPoint = vec()
           .copy(segment.p1.coords)
           .add(vec().copy(segment.p2.coords));
@@ -42,7 +42,7 @@ export default function getSegmentsTikzCode(store: State & Action) {
           const point2 = vec()
             .copy(thisMidPoint)
             .add(vec().copy(normal).mult(-1));
-          tikzCode += `\\draw [${segment.stroke.color}, "solid", line width=${segment.stroke.width}pt, opacity=${segment.stroke.opacity}] (${point1.x}, ${point1.y}) -- (${point2.x}, ${point2.y});\n`;
+          tikzCode += `\\draw [${segment.stroke.color}, "solid", line width=${segment.stroke.width*store.scale}pt, opacity=${segment.stroke.opacity}] (${point1.x}, ${point1.y}) -- (${point2.x}, ${point2.y});\n`;
         }
       }
     }

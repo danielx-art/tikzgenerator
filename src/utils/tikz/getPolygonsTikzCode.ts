@@ -27,11 +27,13 @@ export default function getPolygonsTikzCode(store: State & Action) {
         tikzCode += `\\fill [fill=${polygon.fill.color}, fill opacity=${polygon.fill.opacity}] ${vertexPath};\n`;
       } else if (polygon.fill.style === "dotted") {
         // Manually create dotted fill within clipped area
-        tikzCode += `\\foreach \\x in {${minX},${minX + 0.2},...,${maxX}}{\n`;
-        tikzCode += `    \\foreach \\y in {${minY},${
-          minY + 0.2
-        },...,${maxY}}{\n`;
-        tikzCode += `        \\fill [${polygon.fill.color}, opacity=${polygon.fill.opacity}] (\\x,\\y) circle (0.5pt);\n`;
+
+        const step = store.scale < 0.5 ? 0.2*store.scale : 0.02*store.scale;
+      
+
+        tikzCode += `\\foreach \\x in {${minX},${minX + step},...,${maxX}}{\n`;
+        tikzCode += `    \\foreach \\y in {${minY},${minY + step},...,${maxY}}{\n`;
+        tikzCode += `        \\fill [${polygon.fill.color}, opacity=${polygon.fill.opacity}] (\\x,\\y) circle (${5*step}pt);\n`;
         tikzCode += `    }\n`;
         tikzCode += `}\n`;
       } else if (polygon.fill.style.startsWith("hachure")) {
@@ -39,7 +41,8 @@ export default function getPolygonsTikzCode(store: State & Action) {
         const angleOption = polygon.fill.style.split("-")[1];
         if (!angleOption) return "";
         const angle = parseInt(angleOption)*45;
-        const HACHURE_DIST = 0.2;
+        const HACHURE_DIST = store.scale < 1 ? 0.1 : 0.02*store.scale;
+
         const pattern = getHachureLines(minX,maxX, minY, maxY, HACHURE_DIST, angle);
         pattern.points.forEach((point)=>{
           tikzCode += `\\draw [thin, ${polygon.fill.color}, opacity=${polygon.fill.opacity}] (${point.x1},${point.y1}) -- (${point.x2},${point.y2});\n`;

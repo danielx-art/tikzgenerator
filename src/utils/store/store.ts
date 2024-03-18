@@ -41,6 +41,7 @@ export type State = {
   error: string;
   idCounters: Record<TallKind, number>;
   selections: Array<TallId>;
+  scale: number,
 };
 
 export type Action = {
@@ -61,6 +62,7 @@ export type Action = {
   movePoint: (id: TpointId, newPosition: vector) => void;
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
+  setScale: (scale: number) => void;
   set: (state: State & Action) => void;
 };
 
@@ -287,6 +289,14 @@ const myStore = create<State & Action>()(
           return { tags: updatedTags };
         });
       },
+
+      scale: 1,
+
+      setScale: (scale: number) => {
+        set((state)=>{
+          return {scale: scale};
+        })
+      }
     }),
     {
       name: "storage",

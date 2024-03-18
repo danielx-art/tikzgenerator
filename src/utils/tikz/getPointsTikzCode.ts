@@ -6,8 +6,6 @@ export default function getPointsTikzCode(store: State & Action) {
     const radius = point.size / 10;
     const { x, y } = point.coords;
 
-    tikzCode += `\\coordinate (${point.id}) at (${x},${y});\n`; //SET COORDINATES
-
     if (point.visible) {
       switch (point.dotstyle) {
         case 1:

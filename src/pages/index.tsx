@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>TikZ Generatot</title>
+        <title>GeoSimples</title>
         <meta name="description" content="Generates TikZ scripts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
