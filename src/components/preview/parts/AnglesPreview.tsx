@@ -3,6 +3,7 @@ import useStore from "import/utils/store/useStore";
 import { DEFAULT_STROKE_WIDTH, RES_FACTOR } from "public/generalConfigs";
 import { Tangle } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
+import { roundToDecimalPlaces } from "import/utils/math/misc";
 
 const AnglesPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
@@ -118,7 +119,9 @@ export const getAnglePath = (angle: Tangle) => {
   let dMarksPath = "";
   let dFillPath = "";
 
-  if ((angle.valor * 180) / Math.PI === 90) {
+  const roundedDegrees = parseFloat(roundToDecimalPlaces((angle.valor * 180) / Math.PI));
+
+  if (roundedDegrees === 90) {
     d += `M ${angleB.x + startVector.x} ${angleB.y + startVector.y} `;
     d += `l ${endVector.x} ${endVector.y} `;
     d += `l ${-startVector.x} ${-startVector.y} `;
