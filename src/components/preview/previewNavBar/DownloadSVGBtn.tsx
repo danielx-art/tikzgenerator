@@ -1,3 +1,4 @@
+import ToolTip from "import/components/micro/ToolTip";
 import { cn } from "import/utils/cn";
 import { RES_FACTOR } from "public/generalConfigs";
 import type { ButtonHTMLAttributes, Ref, RefObject } from "react";
@@ -20,22 +21,24 @@ const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   };
 
   return (
-    <button className={cn("", className)} onClick={handleDownload}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="1.5"
-        stroke="currentColor"
-        className="h-full w-full p-1"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-        />
-      </svg>
-    </button>
+    <ToolTip message="Salva a imagem como arquivo PNG">
+      <button className={cn("", className)} onClick={handleDownload}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="h-full w-full p-1"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+          />
+        </svg>
+      </button>
+    </ToolTip>
   );
 });
 

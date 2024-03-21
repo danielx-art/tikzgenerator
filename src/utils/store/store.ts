@@ -41,7 +41,7 @@ export type State = {
   error: string;
   idCounters: Record<TallKind, number>;
   selections: Array<TallId>;
-  scale: number,
+  scale: number;
 };
 
 export type Action = {
@@ -63,6 +63,7 @@ export type Action = {
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
   setScale: (scale: number) => void;
+  clear: () => void;
   set: (state: State & Action) => void;
 };
 
@@ -214,7 +215,6 @@ const myStore = create<State & Action>()(
               }
             });
 
-
             updatedTags.forEach((tag, tagId) => {
               if (removedIds.includes(tag.entityId)) {
                 updatedTags.delete(tagId);
@@ -293,10 +293,23 @@ const myStore = create<State & Action>()(
       scale: 1,
 
       setScale: (scale: number) => {
-        set((state)=>{
-          return {scale: scale};
-        })
-      }
+        set(() => {
+          return { scale: scale };
+        });
+      },
+
+      clear: () => {
+        set(() => {
+          return {
+            points: new Map<TpointId, Tpoint>(),
+            segments: new Map<TsegId, Tsegment>(),
+            angles: new Map<TangId, Tangle>(),
+            circles: new Map<TcircleId, Tcircle>(),
+            polygons: new Map<TpolyId, Tpolygon>(),
+            tags: new Map<TtagId, Ttag>(),
+          };
+        });
+      },
     }),
     {
       name: "storage",
@@ -314,7 +327,7 @@ const myStore = create<State & Action>()(
               angles: new Map(state.angles),
               tags: new Map(state.tags),
               circles: new Map(state.circles),
-              polygons: new Map(state.polygons)
+              polygons: new Map(state.polygons),
             },
           };
         },
@@ -328,7 +341,7 @@ const myStore = create<State & Action>()(
               angles: Array.from(newValue.state.angles.entries()),
               tags: Array.from(newValue.state.tags.entries()),
               circles: Array.from(newValue.state.circles.entries()),
-              polygons: Array.from(newValue.state.polygons.entries())
+              polygons: Array.from(newValue.state.polygons.entries()),
             },
           });
           localStorage.setItem(name, str);

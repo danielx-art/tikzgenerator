@@ -32,6 +32,9 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
         onMouseEnter={()=>{
           toast.info(message, {closeButton: false});
         }}
+        onMouseLeave={()=>{
+          toast.dismiss();
+        }}
         className="group relative inline-block"
       >
         {children}
