@@ -126,7 +126,7 @@ const PreviewPanel = () => {
 
   return (
     <Panel className="relative h-full items-center p-2 overflow-hidden">
-      <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
+      <div className="border-b-2 border-b-c_discrete">Prévia</div>
       <PreviewNav ref={svgRef} />
       <PreviewSideBar />
       <div
