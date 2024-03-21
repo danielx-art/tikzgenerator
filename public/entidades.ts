@@ -39,18 +39,18 @@ export type TtagId = `tag_${number}`;
 export type TentId = TpointId | TsegId | TangId | TcircleId | TpolyId;
 export type TallId = TentId | TtagId;
 
-export type TbodyFromKind<TypeKind> = TypeKind extends "point"
-  ? Tpoint
+export type TinitKind<TypeKind> = TypeKind extends "point"
+  ? Partial<Tpoint>
   : TypeKind extends "segment"
-  ? Tsegment
+  ? Partial<Tsegment>
   : TypeKind extends "angle"
-  ? Tangle
+  ? Partial<Tangle>
   : TypeKind extends "tag"
-  ? Ttag
+  ? Partial<Ttag>
   : TypeKind extends "circle"
-  ? Tcircle
+  ? Partial<Tcircle>
   : TypeKind extends "polygon"
-  ? Tpolygon
+  ? Partial<Tpolygon>
   : never;
 export type TidFromKind<TypeKind> = TypeKind extends "point"
   ? TpointId

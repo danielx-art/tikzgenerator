@@ -15,7 +15,7 @@ import {
   type TallKind,
   type TallKindPlural,
   type TcircleId,
-  type TbodyFromKind,
+  type TinitKind,
   type TidFromKind,
   type TkindPluralFrom,
   type Tcircle,
@@ -150,7 +150,7 @@ const myStore = create<State & Action>()(
 
       addEntity: <T extends Tkind>(
         entityKind: T,
-        elementBody: TbodyFromKind<T>,
+        elementBody: TinitKind<T>,
       ) => {
         const id = get().generateId(entityKind) as TidFromKind<T>;
         const stateMapKey = (entityKind + "s") as TkindPluralFrom<T>;
