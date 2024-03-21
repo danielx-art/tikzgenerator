@@ -1,5 +1,6 @@
 export const MAXIMUM_NUMBER_OF_POINTS = 3458;
-export const DECIMAL_POINTS = 2;
+export const DECIMAL_POINTS = 1;
+export const SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE = 2;
 export const DEFAULT_COLOR = "black" as LATEX_COLOR;
 export const DEFAULT_POINT_STYLE = 2;
 export const DEFAULT_POINT_SIZE = 1;

@@ -4,6 +4,7 @@ import {
   clamp,
   inverse_Hyperb_Linear_Hyperb,
   lerp,
+  roundAndDisplayNicely,
   roundToDecimalPlaces,
 } from "import/utils/math/misc";
 import {
@@ -277,7 +278,7 @@ const AddPointInSegment: React.FC = () => {
               }}
             />
           </div>
-          <div className="isolate h-fit">
+          <div className="flex flex-row w-fit max-w-full">
             <div
               className="pointer-events-none inline-block w-fit -translate-x-1/2 select-none"
               style={{
@@ -287,7 +288,7 @@ const AddPointInSegment: React.FC = () => {
               {findTagByEntityId(segPoints[0].id, store.tags)?.value &&
               findTagByEntityId(segPoints[0].id, store.tags)?.value !== ""
                 ? findTagByEntityId(segPoints[0].id, store.tags)?.value
-                : `(${segPoints[0]!.coords.x};${segPoints[0]!.coords.y})`}
+                : `(${roundAndDisplayNicely(segPoints[0]!.coords.x)};${roundAndDisplayNicely(segPoints[0]!.coords.y)})`}
             </div>
             <div
               className="pointer-events-none inline-block w-fit -translate-x-1/2 select-none"
@@ -298,15 +299,15 @@ const AddPointInSegment: React.FC = () => {
               {findTagByEntityId(segPoints[1].id, store.tags)?.value &&
               findTagByEntityId(segPoints[1].id, store.tags)?.value !== ""
                 ? findTagByEntityId(segPoints[1].id, store.tags)?.value
-                : `(${segPoints[1]!.coords.x};${segPoints[1]!.coords.y})`}
+                : `(${roundAndDisplayNicely(segPoints[1]!.coords.x)};${roundAndDisplayNicely(segPoints[1]!.coords.y)})`}
             </div>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
           <input
             type="text"
-            className="focus:outline-c_high z-10 w-1/2 cursor-text rounded-sm bg-c_base px-2 py-1 text-c_scnd"
-            value={inputVal}
+            className="focus:outline-c_high z-10 w-1/2 cursor-text rounded-sm bg-c_base px-2 py-1 text-c_scnd text-center"
+            value={roundToDecimalPlaces(parseFloat(inputVal),2)}
             onChange={handleInput}
           />
           <Switcher

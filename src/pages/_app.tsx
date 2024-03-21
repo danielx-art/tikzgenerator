@@ -13,7 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <div className={`${jost.variable}`}>
       <Toaster
         expand
-        visibleToasts={3}
+        visibleToasts={1}
         position="top-center"
         closeButton
         duration={3500}

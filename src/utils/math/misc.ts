@@ -1,4 +1,4 @@
-import { DECIMAL_POINTS } from "public/generalConfigs";
+import { DECIMAL_POINTS, SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE } from "public/generalConfigs";
 
 export const instanceOf = <T>(value: any, fieldName: string): value is T =>
   fieldName in value;
@@ -10,7 +10,8 @@ export const roundToDecimalPlaces = (value: number, decimalPoints: number = DECI
 
 export const roundAndDisplayNicely = (value: number, decimalPoints: number = DECIMAL_POINTS) => {
   const roundedValue = roundToDecimalPlaces(value, decimalPoints);
-  const isRounded = Number(roundedValue) !== value;
+  const roundedWithTolerance = roundToDecimalPlaces(value, SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE);
+  const isRounded = Number(roundedValue) !== Number(roundedWithTolerance);
   
   if (isRounded) {
       return `~${roundedValue}`;

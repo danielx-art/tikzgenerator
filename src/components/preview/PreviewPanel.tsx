@@ -125,7 +125,7 @@ const PreviewPanel = () => {
   const transformParam = `scale(${scale}, -${scale})`;
 
   return (
-    <Panel className="relative h-full items-center p-2">
+    <Panel className="relative h-full items-center p-2 overflow-hidden">
       <div className="border-b-2 border-b-c_discrete">Prévia (SVG)</div>
       <PreviewNav ref={svgRef} />
       <PreviewSideBar />

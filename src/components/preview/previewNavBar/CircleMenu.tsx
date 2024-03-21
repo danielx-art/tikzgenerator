@@ -1,4 +1,5 @@
 import Dropdown from "import/components/micro/Dropdown";
+import ToolTip from "import/components/micro/ToolTip";
 import { cn } from "import/utils/cn";
 import { vec } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
@@ -50,38 +51,40 @@ export const CircleFromOnePoint: React.FC<PropsType> = ({
   const p1 = vec(0.5, 0.5).mult(realSize);
 
   return (
-    <button
-      className={cn("", className)}
-      onClick={circleFromOnePoint}
-      {...rest}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="gray"
-        fillOpacity={1}
-        viewBox="0 0 24 24"
-        strokeWidth="2"
-        stroke="currentColor"
-        className="h-full w-full p-1"
+    <ToolTip message="Cria círculo de raio 1 em torno do ponto selecionado. ">
+      <button
+        className={cn("", className)}
+        onClick={circleFromOnePoint}
+        {...rest}
       >
-        <circle
-          cx={p1.x}
-          cy={p1.y}
-          r={"10%"}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="gray"
+          fillOpacity={1}
+          viewBox="0 0 24 24"
+          strokeWidth="2"
           stroke="currentColor"
-          strokeWidth={"1"}
-          fill={"red"}
-        />
-        <circle
-          cx={p1.x}
-          cy={p1.y}
-          r={"45%"}
-          stroke="currentColor"
-          strokeWidth={"2"}
-          fill={"none"}
-        />
-      </svg>
-    </button>
+          className="h-full w-full p-1"
+        >
+          <circle
+            cx={p1.x}
+            cy={p1.y}
+            r={"10%"}
+            stroke="currentColor"
+            strokeWidth={"1"}
+            fill={"red"}
+          />
+          <circle
+            cx={p1.x}
+            cy={p1.y}
+            r={"45%"}
+            stroke="currentColor"
+            strokeWidth={"2"}
+            fill={"none"}
+          />
+        </svg>
+      </button>
+    </ToolTip>
   );
 };
 
@@ -108,56 +111,58 @@ export const CircleFromTwoPoints: React.FC<PropsType> = ({
   const p2 = vec().copy(p1).add(radii);
 
   return (
-    <button
-      className={cn("", className)}
-      onClick={circleFromTwoPoints}
-      {...rest}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="gray"
-        viewBox="0 0 24 24"
-        strokeWidth="2"
-        stroke="currentColor"
-        className="h-full w-full p-1"
+    <ToolTip message="Cria círculo com centro no primeiro ponto e com borda no segundo ponto selecionado. ">
+      <button
+        className={cn("", className)}
+        onClick={circleFromTwoPoints}
+        {...rest}
       >
-        <circle
-          cx={p1.x}
-          cy={p1.y}
-          r={"5%"}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="gray"
+          viewBox="0 0 24 24"
+          strokeWidth="2"
           stroke="currentColor"
-          strokeWidth={"1"}
-          fill={"currentColor"}
-        />
-        <circle
-          cx={p1.x}
-          cy={p1.y}
-          r={"45%"}
-          stroke="currentColor"
-          strokeWidth={"2"}
-          fill={"none"}
-        />
-        <line
-          x1={p1.x}
-          y1={p1.y}
-          x2={p2.x}
-          y2={p2.y}
-          strokeWidth={2}
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeOpacity={0.5}
-        />
-        <circle
-          cx={p2.x}
-          cy={p2.y}
-          r={"10%"}
-          stroke="currentColor"
-          strokeWidth={"1"}
-          fill={"red"}
-        />
-      </svg>
-    </button>
+          className="h-full w-full p-1"
+        >
+          <circle
+            cx={p1.x}
+            cy={p1.y}
+            r={"5%"}
+            stroke="currentColor"
+            strokeWidth={"1"}
+            fill={"currentColor"}
+          />
+          <circle
+            cx={p1.x}
+            cy={p1.y}
+            r={"45%"}
+            stroke="currentColor"
+            strokeWidth={"2"}
+            fill={"none"}
+          />
+          <line
+            x1={p1.x}
+            y1={p1.y}
+            x2={p2.x}
+            y2={p2.y}
+            strokeWidth={2}
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeOpacity={0.5}
+          />
+          <circle
+            cx={p2.x}
+            cy={p2.y}
+            r={"10%"}
+            stroke="currentColor"
+            strokeWidth={"1"}
+            fill={"red"}
+          />
+        </svg>
+      </button>
+    </ToolTip>
   );
 };
 
@@ -183,67 +188,73 @@ export const CircleFromTangent: React.FC<PropsType> = ({
   const l1 = vec().copy(p1).add(radii).add(vec(0, 0.5).mult(realSize));
   const l2 = vec().copy(p1).add(radii).add(vec(0, -0.5).mult(realSize));
   return (
-    <button className={cn("", className)} onClick={circleFromTangent} {...rest}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="gray"
-        fillOpacity={1}
-        viewBox="0 0 24 24"
-        strokeWidth="2"
-        stroke="currentColor"
-        className="h-full w-full p-1"
+    <ToolTip message="Cria círculo com centro no ponto e tangente à direção do segmento selecionados. ">
+      <button
+        className={cn("", className)}
+        onClick={circleFromTangent}
+        {...rest}
       >
-        <g transform="rotate(-45, 12, 12) translate(-4, 0)">
-          <circle
-            cx={p1.x}
-            cy={p1.y}
-            r={"5%"}
-            stroke="currentColor"
-            strokeWidth={"1"}
-            fill={"currentColor"}
-          />
-          <circle
-            cx={p1.x}
-            cy={p1.y}
-            r={"35%"}
-            stroke="currentColor"
-            strokeWidth={"1.5"}
-            strokeOpacity={0.5}
-            fill={"none"}
-          />
-          <line
-            x1={p1.x}
-            y1={p1.y}
-            x2={p2.x}
-            y2={p2.y}
-            strokeWidth={1}
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeOpacity={0.5}
-          />
-          <line
-            x1={l1.x}
-            y1={l1.y}
-            x2={l2.x}
-            y2={l2.y}
-            strokeWidth={1.5}
-            stroke="red"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeOpacity={1}
-          />
-          <circle
-            cx={p2.x}
-            cy={p2.y}
-            r={"8%"}
-            stroke="currentColor"
-            strokeWidth={"1"}
-            fill={"red"}
-          />
-        </g>
-      </svg>
-    </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="gray"
+          fillOpacity={1}
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+          className="h-full w-full p-1"
+        >
+          <g transform="rotate(-45, 12, 12) translate(-4, 0)">
+            <circle
+              cx={p1.x}
+              cy={p1.y}
+              r={"5%"}
+              stroke="currentColor"
+              strokeWidth={"1"}
+              fill={"currentColor"}
+            />
+            <circle
+              cx={p1.x}
+              cy={p1.y}
+              r={"35%"}
+              stroke="currentColor"
+              strokeWidth={"1.5"}
+              strokeOpacity={0.5}
+              fill={"none"}
+            />
+            <line
+              x1={p1.x}
+              y1={p1.y}
+              x2={p2.x}
+              y2={p2.y}
+              strokeWidth={1}
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeOpacity={0.5}
+            />
+            <line
+              x1={l1.x}
+              y1={l1.y}
+              x2={l2.x}
+              y2={l2.y}
+              strokeWidth={1.5}
+              stroke="red"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeOpacity={1}
+            />
+            <circle
+              cx={p2.x}
+              cy={p2.y}
+              r={"8%"}
+              stroke="currentColor"
+              strokeWidth={"1"}
+              fill={"red"}
+            />
+          </g>
+        </svg>
+      </button>
+    </ToolTip>
   );
 };
 
@@ -282,63 +293,65 @@ export const CircleFromThreePoints: React.FC<PropsType> = ({
     );
 
   return (
-    <button
-      className={cn("", className)}
-      onClick={circleFromThreePoints}
-      {...rest}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="gray"
-        fillOpacity={1}
-        viewBox="0 0 24 24"
-        strokeWidth="2"
-        stroke="currentColor"
-        className="h-full w-full p-1"
+    <ToolTip message="Cria círculo que passa pelos três pontos selecionados. ">
+      <button
+        className={cn("", className)}
+        onClick={circleFromThreePoints}
+        {...rest}
       >
-        <g transform="translate(-1, 0)">
-          <circle
-            cx={p1.x}
-            cy={p1.y}
-            r={"5%"}
-            stroke="currentColor"
-            strokeWidth={"1"}
-            fill={"currentColor"}
-          />
-          <circle
-            cx={p1.x}
-            cy={p1.y}
-            r={"40%"}
-            stroke="currentColor"
-            strokeWidth={"2"}
-            fill={"none"}
-          />
-          <circle
-            cx={p2.x}
-            cy={p2.y}
-            r={"9%"}
-            stroke="currentColor"
-            strokeWidth={"1"}
-            fill={"red"}
-          />
-          <circle
-            cx={p3.x}
-            cy={p3.y}
-            r={"9%"}
-            stroke="currentColor"
-            strokeWidth={"1"}
-            fill={"red"}
-          />
-          <circle
-            cx={p4.x}
-            cy={p4.y}
-            r={"9%"}
-            stroke="currentColor"
-            strokeWidth={"1"}
-            fill={"red"}
-          />
-        </g>
-      </svg>
-    </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="gray"
+          fillOpacity={1}
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+          className="h-full w-full p-1"
+        >
+          <g transform="translate(-1, 0)">
+            <circle
+              cx={p1.x}
+              cy={p1.y}
+              r={"5%"}
+              stroke="currentColor"
+              strokeWidth={"1"}
+              fill={"currentColor"}
+            />
+            <circle
+              cx={p1.x}
+              cy={p1.y}
+              r={"40%"}
+              stroke="currentColor"
+              strokeWidth={"2"}
+              fill={"none"}
+            />
+            <circle
+              cx={p2.x}
+              cy={p2.y}
+              r={"9%"}
+              stroke="currentColor"
+              strokeWidth={"1"}
+              fill={"red"}
+            />
+            <circle
+              cx={p3.x}
+              cy={p3.y}
+              r={"9%"}
+              stroke="currentColor"
+              strokeWidth={"1"}
+              fill={"red"}
+            />
+            <circle
+              cx={p4.x}
+              cy={p4.y}
+              r={"9%"}
+              stroke="currentColor"
+              strokeWidth={"1"}
+              fill={"red"}
+            />
+          </g>
+        </svg>
+      </button>
+    </ToolTip>
   );
 };

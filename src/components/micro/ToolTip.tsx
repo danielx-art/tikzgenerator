@@ -1,8 +1,50 @@
+import useWindowSize from "import/utils/hooks/useWindowsSize";
+import { useRef } from "react";
+import ReactDOM from "react-dom";
+import { toast } from "sonner";
+
 type PropsType = {
   message: string;
+  children?: React.ReactNode;
 };
 
-const ToolTip: React.FC<PropsType> = ({ message }) => {
+const ToolTip: React.FC<PropsType> = ({ message, children }) => {
+  // const toolTipRef = useRef<HTMLSpanElement>(null);
+  // const containerRef = useRef<HTMLDivElement>(null);
+  // const windowDimensions = useWindowSize();
+
+  if (children) {
+    return (
+      <div
+        //ref={containerRef}
+        // onMouseEnter={({ clientX, clientY }) => {
+        //   if (!toolTipRef.current || !containerRef.current || !windowDimensions) return;
+        //   const containerDimensions = containerRef.current.getBoundingClientRect();
+        //   const spanDimensions = toolTipRef.current.getBoundingClientRect();
+        //   const positionLeft = clientX - containerDimensions.left;
+        //   if(clientX + spanDimensions.width < windowDimensions.width){
+        //     toolTipRef.current.style.left = positionLeft + "px";
+        //   } else {
+        //     toolTipRef.current.style.display = "none";
+        //     toast.info(message, {closeButton: false});
+        //   }
+        // }}
+        onMouseEnter={()=>{
+          toast.info(message, {closeButton: false});
+        }}
+        className="group relative inline-block"
+      >
+        {children}
+        {/* <span
+          //ref={toolTipRef}
+          className="absolute z-50 top-1/2 select-none cursor-pointer invisible rounded whitespace-nowrap bg-c_scnd p-1 text-sm text-c_base opacity-0 transition-opacity delay-100 group-hover:opacity-80 group-hover:visible"
+        >
+          {message}
+        </span> */}
+      </div>
+    );
+  }
+
   return (
     <div className="group flex w-auto flex-col items-center">
       <svg
