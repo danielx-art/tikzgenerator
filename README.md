@@ -14,39 +14,45 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 # Trabalho em progresso:
 
 - Criação de customização para segmentos e ângulos:
-  1. ~~Estilo de traço.~~
-  2. ~~Cor do traço.~~
-  3. ~~[ ângulos ] preenchimento.~~
-  4. ~~[ ângulos ] refinar posicionamento da etiqueta.~~
-  5. ~~[ segmentos ] destaque um/dois/três tracinhos.~~
-  6. ~~[ segmentos ] consertar destaques em segmos pontilhados ou traçejados. Separar path.~~
-  7. ~~[ ângulos ] fazer com que laterais radias do ângulo possam ser ocultas (estético em relação a segmentos adjescentes não sólidos), para isso acrescentar mais dotstyles, com ou sem laterais. ~~
-  8. ~~[ ângulos ] consertar fill em ângulos de 90°.~~
-  9. ~~[ ângulos ] consertar visibilidade de customização de 'marcas' para ângulos de 90°.~~
-- ~~Customização de cor para ponto.~~
-- ~~Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.~~
+  1. [x]Estilo de traço.
+  2. [x]Cor do traço.
+  3. [x] ângulos ] preenchimento.
+  4. [x] ângulos ] refinar posicionamento da etiqueta.
+  5. [x] segmentos ] destaque um/dois/três tracinhos.
+  6. [x] segmentos ] consertar destaques em segmos pontilhados ou traçejados. Separar path.
+  7. [x] ângulos ] fazer com que laterais radias do ângulo possam ser ocultas (estético em relação a segmentos adjescentes não sólidos), para isso acrescentar mais dotstyles, com ou sem laterais. 
+  8. [x] ângulos ] consertar fill em ângulos de 90°.
+  9. [x] ângulos ] consertar visibilidade de customização de 'marcas' para ângulos de 90°.
+- [x]Customização de cor para ponto.
+- [x]Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.
 - Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana.
 - Selecionado um ângulo: criar bissetriz.
 - Selecionado um segmento: criar mediatriz.
-- ~~Criar nova entidade: círculo.~~
-- ~~Selecionados dois pontos: criar círculo centrado no primeiro e cujo raio é a distância entre os dois pontos. ~~
-- ~~Selecionados três pontos: criar círculo.~~
-- ~~Selecionados ponto e um segmento: criar círculo centrado no ponto e tangente ao segmento.~~
-- ~~Selecionados três segmentos: Criar círculo tangente aos três segmentos (não).~~
-- ~~Customização de contornos.~~
-- ~~Customização de Preenchimentos.~~
-- ~~Criação de uma nova entidade: polígono, para preenchimento.~~
-- Colocar um setTimeOut para as mensagens de erro automaticamente esmaecerem (toast).
+- [x]Criar nova entidade: círculo.
+- [x]Selecionados dois pontos: criar círculo centrado no primeiro e cujo raio é a distância entre os dois pontos. 
+- [x]Selecionados três pontos: criar círculo.
+- [x]Selecionados ponto e um segmento: criar círculo centrado no ponto e tangente ao segmento.
+- [x]Selecionados três segmentos: Criar círculo tangente aos três segmentos (não).
+- [x]Customização de contornos.
+- [x]Customização de Preenchimentos.
+- [x]Criação de uma nova entidade: polígono, para preenchimento.
+- [x]Colocar um setTimeOut para as mensagens de erro automaticamente esmaecerem (toast).
+- [x]Tooptips.
 - Presets:
   1. Triângulo retângulo:
-     - Inscrito
-     - Cincunscrito
-     - Altura pela hipotenusa
+     - Inscrito.
+     - Cincunscrito.
+     - Altura pela hipotenusa.
   2. Triângulo equilátero:
-     - Inscrito
-     - Cincunscrito
-     - B.I.C.O
+     - Inscrito.
+     - Cincunscrito.
+     - B.I.C.O.
   3. Hexágono:
-     - Diagonais
+     - Diagonais.
 - Ferramenta rotacionar um grupo.
-- Ferramenta zoom.
+- [x]Ferramenta zoom.
+- Do código Tikz para entidades?
+- Trocar prévia em svg por canvas interativo?
+- 3D?
+- Salvar imagem em svg.
+- Modal configurações e sobre.
