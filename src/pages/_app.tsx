@@ -10,7 +10,7 @@ const jost = Jost({
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <div className={`${jost.variable}`}>
+    <div className={`${jost.variable}`} id="myapp">
       <Toaster
         expand
         visibleToasts={1}

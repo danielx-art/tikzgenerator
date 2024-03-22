@@ -6,13 +6,13 @@ import { forwardRef } from "react";
 
 type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 
-const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
+const DownloadPNGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   { className },
   ref: Ref<SVGSVGElement>,
 ) {
   const handleDownload = () => {
     if ((ref as RefObject<SVGSVGElement>).current) {
-      downloadSvg(ref as RefObject<SVGSVGElement>, "figura_.svg").catch(
+      downloadSvgAsPng(ref as RefObject<SVGSVGElement>, "figura_.png").catch(
         (error) => {
           console.error("Error downloading the image:", error);
         },
@@ -21,7 +21,7 @@ const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   };
 
   return (
-    <ToolTip message="Salva a imagem como arquivo SVG">
+    <ToolTip message="Salva a imagem como arquivo PNG">
       <button className={cn("", className)} onClick={handleDownload}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@ const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
             className="translate-y-0.5"
           />
           <text x={2.5} y={12} className="text-[0.7rem] font-thin">
-            SVG
+            PNG
           </text>
         </svg>
       </button>
@@ -46,9 +46,9 @@ const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   );
 });
 
-export default DownloadSVGBtn;
+export default DownloadPNGBtn;
 
-async function downloadSvg(
+async function downloadSvgAsPng(
   svgRef: React.RefObject<SVGSVGElement>,
   fileName: string,
 ): Promise<void> {
@@ -86,7 +86,7 @@ async function downloadSvg(
       URL.revokeObjectURL(url);
 
       // Using toDataURL as a fallback method
-      const imgDataUrl = canvas.toDataURL("image/svg");
+      const imgDataUrl = canvas.toDataURL("image/png");
 
       // Convert data URL to blob
       fetch(imgDataUrl)
