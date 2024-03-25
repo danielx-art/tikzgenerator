@@ -29,6 +29,24 @@ export default {
         c_disabled2: "#5e8edb",
         c_faded: "#9aafd0",
       },
+      keyframes: {
+          slideup: {
+          "0%": {transform: "translateY(1rem)"},
+          "100%": {transform: "translateY(0)"}
+        },
+        fadein: {
+          "0%": {opacity: "0%"},
+          "100%": {opacity: "100%"}
+        },
+        comein: {
+          "0%": {transform: "translateY(1rem)", opacity: "0%"},
+          "100%": {transform: "translateY(0)", opacity: "100%"}
+        }
+      },
+      animation: {
+        comein: 'comein 75ms ease-out 1',
+        fadein: 'fadein 200ms ease-out 1'
+      }
     },
   },
   plugins: [],

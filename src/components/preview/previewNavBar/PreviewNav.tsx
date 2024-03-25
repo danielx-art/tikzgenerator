@@ -1,6 +1,5 @@
 import { cn } from "import/utils/cn";
 import { type Ref, forwardRef } from "react";
-import DownloadSVGBtn from "./DownloadSVGBtn";
 import RemoveEntityButton from "./RemoveEntityButton";
 import ConnectButton from "./ConnectButton";
 import MakeAnglesButton from "./MakeAnglesButton";
@@ -18,6 +17,10 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
   { className, children, childrenClassName },
   ref: Ref<SVGSVGElement>,
 ) {
+
+
+  const commonClasses = "w-8 hover:-translate-y-0.5 hover:text-c_interact transition-all duration-75";
+
   return (
     <div
       className={cn(
@@ -31,14 +34,14 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
       /> */}
       <DownloadMenu
         ref={ref}
-        className="w-8 hover:-translate-y-0.5 hover:text-c_interact"
+        className={commonClasses}
       />
-      <RemoveEntityButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
-      <ConnectButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
-      <MakeAnglesButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
-      <CloseLoopButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
-      <CloseFigureButton className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
-      <CircleMenu className="w-8 hover:-translate-y-0.5 hover:text-c_interact" />
+      <RemoveEntityButton className={commonClasses} />
+      <ConnectButton className={commonClasses} />
+      <MakeAnglesButton className={commonClasses} />
+      <CloseLoopButton className={commonClasses} />
+      <CloseFigureButton className={commonClasses} />
+      <CircleMenu className={commonClasses} />
       {children &&
         (Array.isArray(children) ? (
           children.map((child, index) => (
