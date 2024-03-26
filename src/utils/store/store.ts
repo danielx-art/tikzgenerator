@@ -227,6 +227,7 @@ const myStore = create<State & Action>()(
               angles: updatedAngles,
               polygons: updatedPolygons,
               selections: updatedSelections,
+              tags: updatedTags
             };
           });
         } else {
