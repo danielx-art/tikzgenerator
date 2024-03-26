@@ -102,7 +102,7 @@ const PreviewPanel = () => {
     //avoid equal values when points are colinear or equal making the default 100 too big
     if (minX === maxX && minY === maxY){
       //cold be theres only one point or two identical points (maybe take care of that when creating points.)
-      if(points.size > 1) {
+      if(points.size >= 1) {
         const onepoint = Array.from(points.values())[0];
         const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
         //center the point
@@ -114,13 +114,25 @@ const PreviewPanel = () => {
         padding = 2;
       }
     } else if(minX === maxX && minY !== maxY) {
-      //make it a square
       const len = maxY - minY;
+      if(points.size >= 1){
+        const onepoint = Array.from(points.values())[0];
+        const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
+        //center the point
+        minX -= (+len)/2;
+      }
+      //make it a square
       maxX = minX + len;
       properWidth = len;
     } else if(minX !== maxX && minY === maxY) {
-      //make it a square again
       const len = maxX - minX;
+      if(points.size >= 1){
+        const onepoint = Array.from(points.values())[0];
+        const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
+        //center the point
+        minY -= (+len)/2;
+      }
+      //make it a square again
       maxY = minY + len;
       properHeight = len;
     }
