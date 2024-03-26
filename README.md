@@ -32,7 +32,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [x]Selecionados dois pontos: criar círculo centrado no primeiro e cujo raio é a distância entre os dois pontos. 
 - [x]Selecionados três pontos: criar círculo.
 - [x]Selecionados ponto e um segmento: criar círculo centrado no ponto e tangente ao segmento.
-- [x]Selecionados três segmentos: Criar círculo tangente aos três segmentos (não).
+- [x] ~~Selecionados três segmentos: Criar círculo tangente aos três segmentos. ~~ (não)
 - [x]Customização de contornos.
 - [x]Customização de Preenchimentos.
 - [x]Criação de uma nova entidade: polígono, para preenchimento.
@@ -51,8 +51,6 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
      - Diagonais.
 - Ferramenta rotacionar um grupo.
 - [x]Ferramenta zoom.
-- Do código Tikz para entidades?
-- Trocar prévia em svg por canvas interativo?
 - 3D?
-- Salvar imagem em svg.
-- Modal configurações e sobre.
+- [x] Salvar imagem em svg.
+- [-] Modal configurações e sobre.

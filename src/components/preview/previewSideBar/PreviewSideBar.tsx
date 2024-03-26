@@ -10,7 +10,7 @@ type PreviewSideBarProps = React.HTMLAttributes<HTMLDivElement> & {
 const PreviewSideBar: React.FC<PreviewSideBarProps> =  ({children, childrenClassName}) => {
   return (
     <div
-      className={cn("absolute right-1 top-[50%] -translate-y-[50%] flex w-10 flex-col gap-2 rounded-md border-2 border-c_discrete px-1 py-1")}
+      className={cn("absolute right-1 top-[50%] -translate-y-[50%] flex w-10 flex-col gap-2 rounded-md border-2 border-c_discrete bg-c_base px-1 py-1")}
     >
         <ZoomOutBtn />
         <ZoomInBtn />

@@ -70,23 +70,24 @@ const PreviewPanel = () => {
       });
     }
 
-    if (tags && tags.size > 0) {
-      tags.forEach((tag) => {
-        const tagPos = vec().copy(tag.anchor).add(vec().copy(tag.pos));
+    //uncomment bellow if want to perfectly adjust considering tags
+    // if (tags && tags.size > 0) {
+    //   tags.forEach((tag) => {
+    //     const tagPos = vec().copy(tag.anchor).add(vec().copy(tag.pos));
 
-        const tLeft = tagPos.x - tag.size;
-        if(tLeft < minX) minX = tLeft;
+    //     const tLeft = tagPos.x - tag.size;
+    //     if(tLeft < minX) minX = tLeft;
         
-        const tTop = tagPos.y + tag.size;
-        if(tTop > maxY) maxY = tTop;
+    //     const tTop = tagPos.y + tag.size;
+    //     if(tTop > maxY) maxY = tTop;
         
-        const tRight = tagPos.x + tag.size;
-        if(tRight > maxX) maxX = tRight;
+    //     const tRight = tagPos.x + tag.size;
+    //     if(tRight > maxX) maxX = tRight;
         
-        const tBottom = tagPos.y - tag.size;
-        if(tBottom < minY) minY = tBottom;
-      });
-    }
+    //     const tBottom = tagPos.y - tag.size;
+    //     if(tBottom < minY) minY = tBottom;
+    //   });
+    // }
 
     let padding = 0.5 / scale; //of the maximum dimension
 
