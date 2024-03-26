@@ -7,6 +7,7 @@ import CloseLoopButton from "./CloseLoopButton";
 import CloseFigureButton from "./CloseFigureButton";
 import CircleMenu from "./CircleMenu";
 import DownloadMenu from "./DownloadMenu";
+import ConnectMenu from "./ConnectMenu";
 
 type PreviewNavProps = React.HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode | React.ReactNode[];
@@ -17,14 +18,13 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
   { className, children, childrenClassName },
   ref: Ref<SVGSVGElement>,
 ) {
-
-
-  const commonClasses = "w-8 hover:-translate-y-0.5 hover:text-c_interact transition-all duration-75";
+  const commonClasses =
+    "w-8 hover:-translate-y-0.5 hover:text-c_interact transition-all duration-75";
 
   return (
     <div
       className={cn(
-        "absolute top-10 bg-c_base mx-auto flex h-10 flex-row gap-2 rounded-md border-2 border-c_discrete px-1",
+        "absolute top-10 mx-auto flex h-10 flex-row gap-2 rounded-md border-2 border-c_discrete bg-c_base px-1",
         className,
       )}
     >
@@ -32,14 +32,10 @@ const PreviewNav = forwardRef<SVGSVGElement, PreviewNavProps>(function (
         ref={ref}
         className="hover:-translate-y-0.5 hover:text-c_interact w-8"
       /> */}
-      <DownloadMenu
-        ref={ref}
-        className={commonClasses}
-      />
+      <DownloadMenu ref={ref} className={commonClasses} />
       <RemoveEntityButton className={commonClasses} />
-      <ConnectButton className={commonClasses} />
+      <ConnectMenu className={commonClasses} />
       <MakeAnglesButton className={commonClasses} />
-      <CloseLoopButton className={commonClasses} />
       <CloseFigureButton className={commonClasses} />
       <CircleMenu className={commonClasses} />
       {children &&

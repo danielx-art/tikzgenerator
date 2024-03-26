@@ -1,6 +1,4 @@
 import Dropdown from "import/components/micro/Dropdown";
-import { cn } from "import/utils/cn";
-import { RES_FACTOR } from "public/generalConfigs";
 import type { ButtonHTMLAttributes, Ref } from "react";
 import { forwardRef } from "react";
 import DownloadSVGBtn from "./DownloadSVGBtn";
