@@ -14,6 +14,7 @@ import { deselectAll } from "import/utils/storeHelpers/deselectAll";
 import PolygonsPreview from "./parts/PolygonsPreview";
 import CirclesPreview from "./parts/CirclesPreview";
 import PreviewSideBar from "./previewSideBar/PreviewSideBar";
+import { vec } from "import/utils/math/vetores";
 
 const PreviewPanel = () => {
   const svgRef = useRef<SVGSVGElement>(null); //this is to save the png image
@@ -54,6 +55,7 @@ const PreviewPanel = () => {
 
     if (circles && circles.size > 0) {
       circles.forEach((circle) => {
+        
         const cLeft = circle.center.x - circle.radius;
         if (cLeft < minX) minX = cLeft;
 
@@ -70,17 +72,23 @@ const PreviewPanel = () => {
 
     if (tags && tags.size > 0) {
       tags.forEach((tag) => {
-        /*
-        WIP tag logic here. Now the (global) tag position is calculated in TagsPreview, 
-        accessing each tag entity and them using it together with the relative tag.position
-        to calculate the global tah position.
-        This is NOT a good way of doing this. I should make a get method
-        in the tag entity itself that calculates this, together with the 
-        anchor point of the tag based on the kind of entity, them when changing the tag position
-        this remains unaltered.
-        */
+        const tagPos = vec().copy(tag.anchor).add(vec().copy(tag.pos));
+
+        const tLeft = tagPos.x - tag.size;
+        if(tLeft < minX) minX = tLeft;
+        
+        const tTop = tagPos.y + tag.size;
+        if(tTop > maxY) maxY = tTop;
+        
+        const tRight = tagPos.x + tag.size;
+        if(tRight > maxX) maxX = tRight;
+        
+        const tBottom = tagPos.y - tag.size;
+        if(tBottom < minY) minY = tBottom;
       });
     }
+
+    let padding = 0.5 / scale; //of the maximum dimension
 
     //avoid infinities
     if (minX === Infinity) minX = 0;
@@ -91,18 +99,30 @@ const PreviewPanel = () => {
     let properWidth = maxX - minX;
     let properHeight = maxY - minY;
 
-    let padding = 0.5 / scale; //of the maximum dimension
+    //avoid equal values when points are colinear or equal making the default 100 too big
+    if (minX === maxX && minY === maxY){
+      //cold be theres only one point or two identical points (maybe take care of that when creating points.)
+      if(points.size > 1) {
+        const onepoint = Array.from(points.values())[0];
+        const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
+        //center the point
+        minX -= onesize / 2;
+        maxY += onesize / 2;
 
-    if (points.size === 1 && (properWidth === 0 || properHeight === 0)) {
-      const onepoint = Array.from(points.values())[0];
-      const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
-      //center the point
-      minX -= onesize / 2;
-      maxY += onesize / 2;
-
-      properWidth = onesize;
-      properHeight = properWidth;
-      padding = 2;
+        properWidth = onesize;
+        properHeight = properWidth;
+        padding = 2;
+      }
+    } else if(minX === maxX && minY !== maxY) {
+      //make it a square
+      const len = maxY - minY;
+      maxX = minX + len;
+      properWidth = len;
+    } else if(minX !== maxX && minY === maxY) {
+      //make it a square again
+      const len = maxX - minX;
+      maxY = minY + len;
+      properHeight = len;
     }
 
     const viewAR = properWidth / properHeight;

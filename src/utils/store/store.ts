@@ -308,7 +308,7 @@ const myStore = create<State & Action>()(
           };
         }
 
-        const newTag = tag(value, entityId, tagId, vec(0,1), anchor);
+        const newTag = tag(value, entityId, tagId, vec(0,0.35), anchor);
 
         set((state) => {
           const updatedTags = new Map(state.tags);

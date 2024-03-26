@@ -22,7 +22,7 @@ const TagsPreview: React.FC = () => {
             <g key={"svg_path_" + tag.id} transform={`scale(1, -1)`}>
               <text
                 x={x * RES_FACTOR}
-                y={y * RES_FACTOR}
+                y={-y * RES_FACTOR}
                 className={`cursor-pointer select-none`}
                 fill={tag.color}
                 fontSize={textSize}

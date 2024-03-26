@@ -232,7 +232,7 @@ export const tag = function (
   value: string = "",
   entityId: TentId,
   id: TtagId,
-  pos: vector = vec(0, 0.25),
+  pos: vector = vec(0, 0.35),
   anchor: vector
 ) {
   return {
