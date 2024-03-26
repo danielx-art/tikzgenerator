@@ -12,7 +12,7 @@ const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
 ) {
   const handleDownload = () => {
     if ((ref as RefObject<SVGSVGElement>).current) {
-      downloadSvg(ref as RefObject<SVGSVGElement>, "figura_.svg").catch(
+      downloadSvgAsSvg(ref as RefObject<SVGSVGElement>, "figura_.svg").catch(
         (error) => {
           console.error("Error downloading the image:", error);
         },
@@ -48,7 +48,7 @@ const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
 
 export default DownloadSVGBtn;
 
-async function downloadSvg(
+async function downloadSvgAsSvg(
   svgRef: React.RefObject<SVGSVGElement>,
   fileName: string,
 ): Promise<void> {
@@ -58,61 +58,17 @@ async function downloadSvg(
   }
 
   const svgData = new XMLSerializer().serializeToString(svgRef.current);
+
   const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+
   const url = URL.createObjectURL(svgBlob);
 
-  const image = new Image();
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
 
-  return new Promise((resolve, reject) => {
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = image.width * RES_FACTOR;
-      canvas.height = image.height * RES_FACTOR;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        console.error("Unable to get canvas context");
-        reject(new Error("Canvas context not available"));
-        return;
-      }
-
-      ctx.drawImage(
-        image,
-        0,
-        0,
-        image.width * RES_FACTOR,
-        image.height * RES_FACTOR,
-      );
-      URL.revokeObjectURL(url);
-
-      // Using toDataURL as a fallback method
-      const imgDataUrl = canvas.toDataURL("image/svg");
-
-      // Convert data URL to blob
-      fetch(imgDataUrl)
-        .then((res) => res.blob())
-        .then((blob) => {
-          const newUrl = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = newUrl;
-          a.download = fileName;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(newUrl);
-          resolve();
-        })
-        .catch((error) => {
-          console.error("Error converting canvas to Blob", error);
-          reject(error);
-        });
-    };
-
-    image.onerror = () => {
-      console.error("Error loading SVG as image");
-      reject(new Error("Error loading SVG as image"));
-    };
-
-    image.src = url;
-  });
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
