@@ -303,7 +303,13 @@ const myStore = create<State & Action>()(
             break;
           };
           case "polygon":{
-            //no logic yet, maybe find centroid?
+            const ref = thisEntity as Tpolygon;
+            let centroid = vec(0,0);
+            ref.vertices.forEach((vertex)=>{
+              centroid.add(vertex.coords);
+            })
+            centroid.div(ref.vertices.length);
+            anchor.add(centroid);
             break;
           };
         }
