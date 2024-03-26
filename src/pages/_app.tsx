@@ -1,11 +1,16 @@
 import { type AppType } from "next/dist/shared/lib/utils";
-import { Jost } from "next/font/google";
+import { Jost, Inter } from "next/font/google";
 import "import/styles/globals.css";
 import { Toaster } from "sonner";
 
 const jost = Jost({
   subsets: ["latin"],
   variable: "--font-jost",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 const MyApp: AppType = ({ Component, pageProps }) => {

@@ -1,5 +1,5 @@
 import useWindowSize from "import/utils/hooks/useWindowsSize";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { toast } from "sonner";
 
@@ -12,63 +12,84 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
   const toolTipRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const windowDimensions = useWindowSize();
-  //const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
+  const [isVisible, setIsVisible] = useState(false);
+  const [posX, setPosX] = useState(0);
+  let timeoutId = useRef<NodeJS.Timeout | null>(null);
 
-  const mouseEnter = (clientX: number) => {
-    if (!containerRef.current || !toolTipRef.current || !windowDimensions) return;
+  useEffect(() => {
+    return () => {
+      timeoutId.current ? clearTimeout(timeoutId.current) : null;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || !toolTipRef.current || !windowDimensions) {
+      return;
+    }
+    timeoutId.current ? clearTimeout(timeoutId.current) : null;
+    timeoutId.current = setTimeout(() => {
+      setIsVisible(false);
+    }, 2000);
     const containerDimensions = containerRef.current.getBoundingClientRect();
     const toolTipDimensions = toolTipRef.current.getBoundingClientRect();
-    if(clientX + toolTipDimensions.width < windowDimensions.width){
-      toolTipRef.current.style.visibility = "visible";
-      toolTipRef.current.style.opacity = "100";
-      toolTipRef.current.style.left = clientX + "px";
-      if(containerDimensions.bottom - 30 < windowDimensions.height) {
-        toolTipRef.current.style.top = containerDimensions.bottom -10 + "px";
+    if (posX + toolTipDimensions.width < windowDimensions.width) {
+      toolTipRef.current.style.left = posX + "px";
+      if (containerDimensions.bottom - 30 < windowDimensions.height) {
+        toolTipRef.current.style.top = containerDimensions.bottom - 10 + "px";
       } else {
         toolTipRef.current.style.top = containerDimensions.top + 10 + "px";
       }
     } else {
-      if(toolTipDimensions < windowDimensions && clientX - toolTipDimensions.width > 0) {
-        toolTipRef.current.style.visibility = "visible";
-        toolTipRef.current.style.opacity = "100";
-        toolTipRef.current.style.left = clientX - toolTipDimensions.width + "px";
-        if(containerDimensions.bottom - 30 < windowDimensions.height) {
-          toolTipRef.current.style.top = containerDimensions.bottom -10 + "px";
+      if (
+        toolTipDimensions < windowDimensions &&
+        posX - toolTipDimensions.width > 0
+      ) {
+        toolTipRef.current.style.left = posX - toolTipDimensions.width + "px";
+        if (containerDimensions.bottom - 30 < windowDimensions.height) {
+          toolTipRef.current.style.top = containerDimensions.bottom - 10 + "px";
         } else {
           toolTipRef.current.style.top = containerDimensions.top + 10 + "px";
         }
       } else {
-        toast.info(message, {closeButton: false, position: "bottom-center"});
+        toast.info(message, { closeButton: false, position: "bottom-center" });
       }
     }
+  }, [isVisible]);
+
+  const mouseEnter = (clientX: number) => {
+    setIsVisible(true);
+    setPosX(clientX);
   };
 
   const mouseLeave = () => {
     if (!toolTipRef.current) return;
-    toolTipRef.current.style.visibility = "none";
-    toolTipRef.current.style.opacity = "0";
+    setIsVisible(false);
+    timeoutId.current ? clearTimeout(timeoutId.current) : null;
   };
 
-  const tooltipContent = (
+  const tooltipContent = isVisible ? (
     <span
       ref={toolTipRef}
-      className="absolute font-jost select-none pointer-events-none invisible rounded whitespace-nowrap bg-c_scnd p-1 text-sm text-c_base transition-opacity"
+      className="animate-quickcomein pointer-events-none absolute select-none whitespace-nowrap rounded bg-c_scnd p-1 font-jost text-sm text-c_base"
     >
       {message}
     </span>
-  );
+  ) : null;
 
-  if (children && document.getElementById("myapp")!=null) {
+  if (children && document.getElementById("myapp") != null) {
     return (
       <div
-      ref={containerRef}
-      onMouseEnter={({clientX})=>mouseEnter(clientX)}
-      onMouseLeave={()=>mouseLeave()}
-      className="inline-block"
-    >
-      {children}
-      {ReactDOM.createPortal(tooltipContent, document.getElementById("myapp")!)}
-    </div>
+        ref={containerRef}
+        onMouseEnter={({ clientX }) => mouseEnter(clientX)}
+        onMouseLeave={() => mouseLeave()}
+        className="inline-block"
+      >
+        {children}
+        {ReactDOM.createPortal(
+          tooltipContent,
+          document.getElementById("myapp")!,
+        )}
+      </div>
     );
   }
 
