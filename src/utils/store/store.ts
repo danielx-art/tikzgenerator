@@ -23,10 +23,10 @@ import {
   type Tpolygon,
   tag,
 } from "public/entidades";
-import { vec, vector } from "import/utils/math/vetores";
+import { vec, type vector } from "import/utils/math/vetores";
 import { create } from "zustand";
 import { StorageValue, persist } from "zustand/middleware";
-import { getKindById } from "../storeHelpers/entityGetters";
+import { getEntityById, getKindById } from "../storeHelpers/entityGetters";
 
 export type State = {
   tab: TallKindPlural;
@@ -57,7 +57,7 @@ export type Action = {
   setError: (error: State["error"]) => void;
   generateId: <T extends TallKind>(type: T) => TidFromKind<T>;
   toggleSelection: (id: TallId) => void;
-  addEntity: (entityKind: Tkind, elementBody: Tentity) => void;
+  //addEntity: (entityKind: Tkind, elementBody: Tentity) => void;
   deleteEntity: (id: TentId) => void;
   movePoint: (id: TpointId, newPosition: vector) => void;
   addTag: (value: string, entityId: TentId) => void;
@@ -149,24 +149,24 @@ const myStore = create<State & Action>()(
         });
       },
 
-      addEntity: <T extends Tkind>(
-        entityKind: T,
-        elementBody: TinitKind<T>,
-      ) => {
-        const id = get().generateId(entityKind) as TidFromKind<T>;
-        const stateMapKey = (entityKind + "s") as TkindPluralFrom<T>;
+      // addEntity: <T extends Tkind>(
+      //   entityKind: T,
+      //   elementBody: TinitKind<T>,
+      // ) => {
+      //   const id = get().generateId(entityKind) as TidFromKind<T>;
+      //   const stateMapKey = (entityKind + "s") as TkindPluralFrom<T>;
 
-        set((state) => {
-          const existingMap = state[stateMapKey] as Map<
-            TentId,
-            typeof elementBody
-          >;
-          const updatedMap = new Map(existingMap);
-          updatedMap.set(id, { ...elementBody, id });
+      //   set((state) => {
+      //     const existingMap = state[stateMapKey] as Map<
+      //       TentId,
+      //       typeof elementBody
+      //     >;
+      //     const updatedMap = new Map(existingMap);
+      //     updatedMap.set(id, { ...elementBody, id });
 
-          return { [stateMapKey]: updatedMap };
-        });
-      },
+      //     return { [stateMapKey]: updatedMap };
+      //   });
+      // },
 
       deleteEntity: (id: TentId) => {
         const entityKind = getKindById(id) as Tkind;
@@ -271,7 +271,44 @@ const myStore = create<State & Action>()(
       addTag: (value: string, entityId: TentId) => {
         const tagId = get().generateId("tag") as TtagId;
 
-        const newTag = tag(value, entityId, tagId);
+        let anchor = vec(0,0);
+
+        const thisEntity = getEntityById(entityId, get());
+
+        if(!thisEntity) return;
+
+        const entityKind = getKindById(entityId);
+
+        switch(entityKind) {
+          case "point": {
+            const ref = thisEntity as Tpoint;
+            anchor.add(ref.coords);
+            break;
+          };
+          case "segment":{
+            const ref = thisEntity as Tsegment;
+            const {p1, p2} = ref;
+            const midPoint = vec().copy(p1.coords).add(vec().copy(p2.coords)).div(2);
+            anchor.add(midPoint);
+            break;
+          };
+          case "angle":{
+            const ref = thisEntity as Tangle;
+            anchor.add(ref.b.coords);
+            break;
+          };
+          case "circle":{
+            const ref = thisEntity as Tcircle;
+            anchor.add(ref.center);
+            break;
+          };
+          case "polygon":{
+            //no logic yet, maybe find centroid?
+            break;
+          };
+        }
+
+        const newTag = tag(value, entityId, tagId, vec(0,1), anchor);
 
         set((state) => {
           const updatedTags = new Map(state.tags);

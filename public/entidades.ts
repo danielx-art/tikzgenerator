@@ -232,7 +232,8 @@ export const tag = function (
   value: string = "",
   entityId: TentId,
   id: TtagId,
-  pos: vector = vec(0, 1),
+  pos: vector = vec(0, 0.25),
+  anchor: vector
 ) {
   return {
     id,
@@ -241,6 +242,7 @@ export const tag = function (
     size: DEFAULT_TAG_SIZE,
     color: DEFAULT_TAG_COLOR,
     pos,
+    anchor,
     selected: false,
   };
 };
