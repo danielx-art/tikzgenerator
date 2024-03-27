@@ -31,11 +31,11 @@ const What = () => {
       >
         <p>
           <p className="inline text-c_scnd_int">GeoSimples</p> é uma ferramenta
-          com foco em simplicidade na criação de figuras geométricas.
+          para desenhar figuras geométricas simples.
         </p>
         <p>
-          Desenhada para educadores (e por um educador), especialmente os
-          criadores de conteúdo educativo, como materiais didáticos e testes.
+          Feita para educadores (e por um educador), especialmente os criadores
+          de conteúdo educativo, como materiais didáticos e testes.
         </p>
         <div className="group text-right italic">
           Criada por{" "}
