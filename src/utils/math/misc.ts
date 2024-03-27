@@ -1,4 +1,7 @@
-import { DECIMAL_POINTS, SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE } from "public/generalConfigs";
+import { initConfigs } from "public/generalConfigs";
+import myStore from "../store/store";
+
+const { DECIMAL_POINTS, SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE } = myStore.getState().configs;
 
 export const instanceOf = <T>(value: any, fieldName: string): value is T =>
   fieldName in value;

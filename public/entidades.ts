@@ -7,6 +7,7 @@ import {
   initConfigs,
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
+import myStore from "import/utils/store/store";
 
 export type Tkind = "point" | "segment" | "angle" | "circle" | "polygon";
 export type TallKind = Tkind | "tag";
@@ -99,7 +100,6 @@ const {
   DEFAULT_FILL_STYLE,
   DEFAULT_FILL_COLOR,
 } = initConfigs;
-//doesnt work getting state from the store. something wrong happens.
 
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
 
