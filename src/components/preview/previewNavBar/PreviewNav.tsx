@@ -1,9 +1,7 @@
 import { cn } from "import/utils/cn";
 import { type Ref, forwardRef } from "react";
 import RemoveEntityButton from "./RemoveEntityButton";
-import ConnectButton from "./ConnectButton";
 import MakeAnglesButton from "./MakeAnglesButton";
-import CloseLoopButton from "./CloseLoopButton";
 import CloseFigureButton from "./CloseFigureButton";
 import CircleMenu from "./CircleMenu";
 import DownloadMenu from "./DownloadMenu";

@@ -1,3 +1,4 @@
+import configStore from "import/utils/store/configStore";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import {
@@ -16,8 +17,9 @@ type PropsType = {
 
 const StrokeWidthChanger: React.FC<PropsType> = ({ entId }) => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
   
-  const [size, setSize] = useState(`${store?.configs.DEFAULT_STROKE_WIDTH || initConfigs.DEFAULT_STROKE_WIDTH}`);
+  const [size, setSize] = useState(`${configs?.DEFAULT_STROKE_WIDTH || initConfigs.DEFAULT_STROKE_WIDTH}`);
   const [disabled, setDisabled] = useState(true);
 
 

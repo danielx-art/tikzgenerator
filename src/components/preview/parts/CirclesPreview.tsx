@@ -2,19 +2,23 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { Tcircle } from "public/entidades";
 import { getFillMask, getStrokeDasharray } from "../helpers";
+import configStore from "import/utils/store/configStore";
 
 const CirclesPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
 
-  if (!store) return;
-
+  
+  if (!store || !configs) return;
+  
+  const {RES_FACTOR_SVG} = configs;
   const { circles, toggleSelection } = store;
 
   return (
     <>
       {Array.from(circles.values()).map((circle, index) => {
         if (circle.isArc) {
-          const arcPath = getArcPath(circle, store.configs.RES_FACTOR_SVG);
+          const arcPath = getArcPath(circle, configs.RES_FACTOR_SVG);
 
           return (
             <g
@@ -43,9 +47,9 @@ const CirclesPreview: React.FC = () => {
             >
               {/*this first is hitbox*/}
               <circle
-                cx={circle.center.x * store.configs.RES_FACTOR_SVG}
-                cy={circle.center.y * store.configs.RES_FACTOR_SVG}
-                r={circle.radius * store.configs.RES_FACTOR_SVG}
+                cx={circle.center.x * RES_FACTOR_SVG}
+                cy={circle.center.y * RES_FACTOR_SVG}
+                r={circle.radius * RES_FACTOR_SVG}
                 stroke={"transparent"}
                 strokeWidth={circle.stroke.width * 3}
                 fill="none"
@@ -57,18 +61,18 @@ const CirclesPreview: React.FC = () => {
               />
 
               <circle
-                cx={circle.center.x * store.configs.RES_FACTOR_SVG}
-                cy={circle.center.y * store.configs.RES_FACTOR_SVG}
-                r={circle.radius * store.configs.RES_FACTOR_SVG}
+                cx={circle.center.x * RES_FACTOR_SVG}
+                cy={circle.center.y * RES_FACTOR_SVG}
+                r={circle.radius * RES_FACTOR_SVG}
                 fill={circle.fill.color}
                 fillOpacity={circle.fill.opacity}
                 mask={getFillMask(circle.fill.style)}
                 className="pointer-events-none"
               />
               <circle
-                cx={circle.center.x * store.configs.RES_FACTOR_SVG}
-                cy={circle.center.y * store.configs.RES_FACTOR_SVG}
-                r={circle.radius * store.configs.RES_FACTOR_SVG}
+                cx={circle.center.x * RES_FACTOR_SVG}
+                cy={circle.center.y * RES_FACTOR_SVG}
+                r={circle.radius * RES_FACTOR_SVG}
                 stroke={circle.stroke.color}
                 strokeWidth={circle.stroke.width}
                 strokeDasharray={getStrokeDasharray(circle.stroke.style)}

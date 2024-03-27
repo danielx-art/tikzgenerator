@@ -5,6 +5,7 @@ import { getSelected } from "./entityGetters";
 import { distanceFromPointToLine } from "../math/distancePointToLine";
 import { findCircleFromThreePoints } from "../math/findCircleFromThreePoints";
 import { toast } from "sonner";
+import configStore from "../store/configStore";
 
 export function createCircleFromOnePoint(store: State & Action) {
   const selectedPoints = getSelected("point", store);
@@ -24,7 +25,7 @@ export function createCircleFromOnePoint(store: State & Action) {
 
   const newCircleId = store.generateId("circle");
 
-  const newCircle = circle(center.coords, store.configs.DEFAULT_CIRCLE_RADIUS, newCircleId);
+  const newCircle = circle(center.coords, configStore.getState().DEFAULT_CIRCLE_RADIUS, newCircleId);
 
   updatedCircles.set(newCircleId, newCircle);
 

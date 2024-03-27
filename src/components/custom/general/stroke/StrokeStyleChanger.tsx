@@ -10,6 +10,7 @@ import {
 import type { TentId } from "public/entidades";
 import { STROKE_STYLES, initConfigs } from "public/generalConfigs";
 import { useState, useEffect } from "react";
+import configStore from "import/utils/store/configStore";
 
 type PropsType = {
   entId: TentId | undefined;
@@ -19,8 +20,10 @@ const OptionsMap = ["solid", "dashed-0.5-1", "dotted"] as Array<STROKE_STYLES>;
 
 const StrokeStyleChanger: React.FC<PropsType> = ({ entId }) => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
+
   
-  const [style, setStyle] = useState<STROKE_STYLES>(store?.configs.DEFAULT_STROKE_STYLE || initConfigs.DEFAULT_STROKE_STYLE);
+  const [style, setStyle] = useState<STROKE_STYLES>(configs?.DEFAULT_STROKE_STYLE || initConfigs.DEFAULT_STROKE_STYLE);
   const [disabled, setDisabled] = useState(true);
 
 

@@ -2,18 +2,21 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { Tpolygon } from "public/entidades";
 import { getFillMask } from "../helpers";
+import configStore from "import/utils/store/configStore";
 
 const PolygonsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
 
-  if (!store) return;
+  if (!store || !configs) return;
 
+  const {RES_FACTOR_SVG} = configs
   const { polygons, toggleSelection } = store;
 
   return (
     <>
       {Array.from(polygons.values()).map((polygon, index) => {
-        const polygonPath = getPolygonPath(polygon, store.configs.RES_FACTOR_SVG);
+        const polygonPath = getPolygonPath(polygon, RES_FACTOR_SVG);
 
         return (
           <g

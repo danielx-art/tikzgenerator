@@ -1,8 +1,10 @@
 import getHachureLines from "../math/getHachureLines";
+import { ConfigState } from "../store/configStore";
 import type { Action, State } from "../store/store";
 
-export default function getPolygonsTikzCode(store: State & Action) {
+export default function getPolygonsTikzCode(store: State & Action, configs: ConfigState) {
   let tikzCode = "";
+  const {TIKZ_SCALE} = configs;
   store.polygons.forEach((polygon) => {
     if (polygon.visible) {
       let vertexPath = polygon.vertices
@@ -28,9 +30,8 @@ export default function getPolygonsTikzCode(store: State & Action) {
       } else if (polygon.fill.style === "dotted") {
         // Manually create dotted fill within clipped area
 
-        const step = store.configs.TIKZ_SCALE < 0.5 ? 0.2*store.configs.TIKZ_SCALE : 0.02*store.configs.TIKZ_SCALE;
+        const step = TIKZ_SCALE < 0.5 ? 0.2*TIKZ_SCALE : 0.02*TIKZ_SCALE;
       
-
         tikzCode += `\\foreach \\x in {${minX},${minX + step},...,${maxX}}{\n`;
         tikzCode += `    \\foreach \\y in {${minY},${minY + step},...,${maxY}}{\n`;
         tikzCode += `        \\fill [${polygon.fill.color}, opacity=${polygon.fill.opacity}] (\\x,\\y) circle (${5*step}pt);\n`;
@@ -41,7 +42,7 @@ export default function getPolygonsTikzCode(store: State & Action) {
         const angleOption = polygon.fill.style.split("-")[1];
         if (!angleOption) return "";
         const angle = parseInt(angleOption)*45;
-        const HACHURE_DIST = store.configs.TIKZ_SCALE < 1 ? 0.1 : 0.02*store.configs.TIKZ_SCALE;
+        const HACHURE_DIST = TIKZ_SCALE < 1 ? 0.1 : 0.02*TIKZ_SCALE;
 
         const pattern = getHachureLines(minX,maxX, minY, maxY, HACHURE_DIST, angle);
         pattern.points.forEach((point)=>{

@@ -1,14 +1,16 @@
 import { vector } from "import/utils/math/vetores";
+import configStore, { type ConfigState } from "import/utils/store/configStore";
 import myStore, { State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { TallId, Tpoint, TpointId } from "public/entidades";
 
 const PointsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
 
-  if (!store) return;
+  if (!store || !configs) return;
 
-  const { points, toggleSelection, movePoint, configs } = store;
+  const { points, toggleSelection, movePoint} = store;
 
   return (
     <>
@@ -31,7 +33,7 @@ type PointProps = {
   point: Tpoint;
   toggleSelection: (id: TallId) => void;
   movePoint: (id: TpointId, newPosition: vector) => void;
-  configs: State['configs']
+  configs: ConfigState
 };
 
 const PointPreview: React.FC<PointProps> = ({

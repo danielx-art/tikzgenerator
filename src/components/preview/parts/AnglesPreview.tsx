@@ -3,18 +3,20 @@ import useStore from "import/utils/store/useStore";
 import { Tangle } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
 import { roundToDecimalPlaces } from "import/utils/math/misc";
+import configStore from "import/utils/store/configStore";
 
 const AnglesPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
 
-  if (!store) return;
+  if (!store || !configs) return;
 
   const { angles, toggleSelection } = store;
 
   return (
     <>
       {Array.from(angles.values()).map((angle, index) => {
-        const anglePath = getAnglePath(angle, store.configs.RES_FACTOR_SVG);
+        const anglePath = getAnglePath(angle, configs.RES_FACTOR_SVG);
 
         return (
           <g
@@ -26,7 +28,7 @@ const AnglesPreview: React.FC = () => {
                 key={"svg_path_marks_" + angle.id}
                 d={anglePath.dMarksPath}
                 stroke={angle.color}
-                strokeWidth={store.configs.DEFAULT_STROKE_WIDTH}
+                strokeWidth={configs.DEFAULT_STROKE_WIDTH}
                 fill="none"
                 fillOpacity={0.5}
               />
@@ -49,7 +51,7 @@ const AnglesPreview: React.FC = () => {
               key={"svg_path_hitbox_" + angle.id}
               d={anglePath.d}
               stroke={"transparent"}
-              strokeWidth={2 * store.configs.DEFAULT_STROKE_WIDTH}
+              strokeWidth={2 * configs.DEFAULT_STROKE_WIDTH}
               fill="transparent"
               onClick={(event) => {
                 event.stopPropagation();
@@ -61,7 +63,7 @@ const AnglesPreview: React.FC = () => {
               key={"svg_path_" + angle.id}
               d={anglePath.d}
               stroke={angle.color}
-              strokeWidth={store.configs.DEFAULT_STROKE_WIDTH}
+              strokeWidth={configs.DEFAULT_STROKE_WIDTH}
               fill="none"
               fillOpacity={0.5}
               className="pointer-events-none"

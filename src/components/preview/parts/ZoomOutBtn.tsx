@@ -1,19 +1,23 @@
 import { cn } from "import/utils/cn";
+import configStore from "import/utils/store/configStore";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { initConfigs } from "public/generalConfigs";
 import { ButtonHTMLAttributes } from "react";
 
 type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const ZoomOutBtn: React.FC<PropsType> = ({ className, ...rest }) => {
   const store = useStore(myStore, (state) => state);
-  const scale = store?.configs.TIKZ_SCALE || initConfigs.TIKZ_SCALE;
+  const configs = useStore(configStore, (state)=>state);
+
+  if(!configs) return
+
+  const scale = configs.TIKZ_SCALE;
 
   const handleZoomOut = () => {
     if (!store) return;
     const newValue = scale-0.1;
-    store.setConfig("TIKZ_SCALE", newValue);
+    configs.setConfig("TIKZ_SCALE", newValue);
   };
 
   return (

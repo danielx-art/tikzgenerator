@@ -6,6 +6,7 @@ import useStore from "import/utils/store/useStore";
 import myStore from "import/utils/store/store";
 import CyclicBtn from "import/components/micro/CyclicBtn";
 import AngDisplay from "./AngDisplay";
+import configStore from "import/utils/store/configStore";
 
 type PropsType = {
   angId: TangId | undefined;
@@ -13,8 +14,10 @@ type PropsType = {
 
 const AngleColorAndFill: React.FC<PropsType> = ({ angId }) => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
+
   
-  const [style, setStyle] = useState(store?.configs.DEFAULT_ANGLE_STYLE || initConfigs.DEFAULT_ANGLE_STYLE);
+  const [style, setStyle] = useState(configs?.DEFAULT_ANGLE_STYLE || initConfigs.DEFAULT_ANGLE_STYLE);
 
 
   const thisAngle = useStore(

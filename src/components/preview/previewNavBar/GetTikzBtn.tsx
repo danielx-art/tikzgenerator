@@ -1,7 +1,7 @@
 import ToolTip from "import/components/micro/ToolTip";
 import { cn } from "import/utils/cn";
-import { vec } from "import/utils/math/vetores";
-import myStore, { Action, State } from "import/utils/store/store";
+import configStore from "import/utils/store/configStore";
+import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import getTikzCode from "import/utils/tikz/getTikzCode";
 import { ButtonHTMLAttributes } from "react";
@@ -10,6 +10,7 @@ type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const GetTikzBtn: React.FC<PropsType> = ({ className, ...rest }) => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
 
   const copyTextToClipboard = async (text: string) => {
     if ("clipboard" in navigator) {
@@ -43,7 +44,7 @@ const GetTikzBtn: React.FC<PropsType> = ({ className, ...rest }) => {
       <button
         className={cn("", className)}
         onClick={() => {
-          const tikzCode = getTikzCode(store);
+          const tikzCode = getTikzCode(store, configs);
           if (!tikzCode) return;
           copyTextToClipboard(tikzCode);
         }}

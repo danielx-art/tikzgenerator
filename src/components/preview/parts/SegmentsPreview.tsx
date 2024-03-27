@@ -3,12 +3,15 @@ import useStore from "import/utils/store/useStore";
 import { vec } from "import/utils/math/vetores";
 import type { Tsegment } from "public/entidades";
 import { getStrokeDasharray } from "../helpers";
+import configStore from "import/utils/store/configStore";
 
 const SegmentsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
 
-  if (!store) return;
+  if (!store || !configs) return;
 
+  const {RES_FACTOR_SVG} = configs;
   const { segments, toggleSelection } = store;
 
   return (
@@ -21,7 +24,7 @@ const SegmentsPreview: React.FC = () => {
           {segment.marks != 0 && (
             <path
               key={"svg_path_" + segment.id + "marks"}
-              d={getSegmentMarksPath(segment, store.configs.RES_FACTOR_SVG)}
+              d={getSegmentMarksPath(segment, RES_FACTOR_SVG)}
               stroke={segment.stroke.color}
               strokeLinecap="round"
               strokeWidth={segment.stroke.width}
@@ -32,7 +35,7 @@ const SegmentsPreview: React.FC = () => {
           <path
             //This is only to increase the hit box
             key={"svg_path_hitbox_" + segment.id}
-            d={getSegmentPath(segment, store.configs.RES_FACTOR_SVG)}
+            d={getSegmentPath(segment, RES_FACTOR_SVG)}
             stroke={"transparent"}
             strokeLinecap="round"
             strokeWidth={3 * segment.stroke.width}
@@ -45,7 +48,7 @@ const SegmentsPreview: React.FC = () => {
           />
           <path
             key={"svg_path_" + segment.id}
-            d={getSegmentPath(segment, store.configs.RES_FACTOR_SVG)}
+            d={getSegmentPath(segment, RES_FACTOR_SVG)}
             stroke={segment.stroke.color}
             strokeWidth={segment.stroke.width}
             strokeDasharray={getStrokeDasharray(segment.stroke.style)}

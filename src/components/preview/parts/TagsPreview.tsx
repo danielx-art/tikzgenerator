@@ -2,10 +2,12 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { vec } from "import/utils/math/vetores";
+import configStore from "import/utils/store/configStore";
 
 const TagsPreview: React.FC = () => {
   const tags = useStore(myStore, (state) => state.tags);
-  const configs = useStore(myStore, (state)=>state.configs);
+  const configs = useStore(configStore, (state)=>state);
+
 
   if (!tags || !configs) return;
 

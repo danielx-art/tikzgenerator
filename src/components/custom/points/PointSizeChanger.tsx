@@ -1,3 +1,4 @@
+import configStore from "import/utils/store/configStore";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { TpointId } from "public/entidades";
@@ -10,8 +11,9 @@ type PropsType = {
 
 const PointSizeChanger: React.FC<PropsType> = ({ pointId }) => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
   
-  const [size, setSize] = useState(`${store?.configs.DEFAULT_POINT_SIZE || initConfigs.DEFAULT_POINT_SIZE}`);
+  const [size, setSize] = useState(`${configs?.DEFAULT_POINT_SIZE || initConfigs.DEFAULT_POINT_SIZE}`);
   const [disabled, setDisabled] = useState(true);
 
 

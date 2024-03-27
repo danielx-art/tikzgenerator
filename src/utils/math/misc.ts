@@ -1,7 +1,6 @@
-import { initConfigs } from "public/generalConfigs";
-import myStore from "../store/store";
+import configStore from "../store/configStore";
 
-const { DECIMAL_POINTS, SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE } = myStore.getState().configs;
+const { DECIMAL_POINTS, SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE } = configStore.getState();
 
 export const instanceOf = <T>(value: any, fieldName: string): value is T =>
   fieldName in value;

@@ -1,3 +1,4 @@
+import configStore from "import/utils/store/configStore";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { TcircleId } from "public/entidades";
@@ -10,8 +11,9 @@ type PropsType = {
 
 const CircleRadiusChanger: React.FC<PropsType> = ({ circleId }) => {
   const store = useStore(myStore, (state) => state);
+  const configs = useStore(configStore, (state)=>state);
   
-  const [size, setSize] = useState(`${store?.configs.DEFAULT_CIRCLE_RADIUS || initConfigs.DEFAULT_CIRCLE_RADIUS}`);
+  const [size, setSize] = useState(`${configs?.DEFAULT_CIRCLE_RADIUS || initConfigs.DEFAULT_CIRCLE_RADIUS}`);
   const [disabled, setDisabled] = useState(true);
 
 
@@ -27,14 +29,14 @@ const CircleRadiusChanger: React.FC<PropsType> = ({ circleId }) => {
   }, [circleId, store]);
 
   useEffect(() => {
-    if (!circleId || !store || disabled) return;
+    if (!circleId || !store || !configs || disabled) return;
     const updatedCircles = new Map(store.circles);
     const newSize =
       size.length > 0
         ? parseFloat(size) > 0
           ? parseFloat(size)
-          : store.configs.DEFAULT_CIRCLE_RADIUS
-        : store.configs.DEFAULT_CIRCLE_RADIUS;
+          : configs.DEFAULT_CIRCLE_RADIUS
+        : configs.DEFAULT_CIRCLE_RADIUS;
     const seg = store.circles.get(circleId);
     if (!seg) return;
     updatedCircles.set(circleId, { ...seg, radius: newSize });

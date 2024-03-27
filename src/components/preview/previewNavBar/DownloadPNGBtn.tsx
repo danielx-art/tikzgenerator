@@ -1,6 +1,6 @@
 import ToolTip from "import/components/micro/ToolTip";
 import { cn } from "import/utils/cn";
-import myStore from "import/utils/store/store";
+import configStore from "import/utils/store/configStore";
 import useStore from "import/utils/store/useStore";
 import { initConfigs } from "public/generalConfigs";
 import type { ButtonHTMLAttributes, Ref, RefObject } from "react";
@@ -13,7 +13,7 @@ const DownloadPNGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   ref: Ref<SVGSVGElement>,
 ) {
 
-  const RES_FACTOR_SVG = useStore(myStore, (state)=>state.configs.RES_FACTOR_SVG);
+  const RES_FACTOR_SVG = useStore(configStore, (state)=>state.RES_FACTOR_SVG);
 
   const handleDownload = () => {
     if ((ref as RefObject<SVGSVGElement>).current) {

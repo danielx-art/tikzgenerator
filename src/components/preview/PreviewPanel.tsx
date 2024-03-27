@@ -13,6 +13,7 @@ import { deselectAll } from "import/utils/storeHelpers/deselectAll";
 import PolygonsPreview from "./parts/PolygonsPreview";
 import CirclesPreview from "./parts/CirclesPreview";
 import PreviewSideBar from "./previewSideBar/PreviewSideBar";
+import configStore from "import/utils/store/configStore";
 
 const PreviewPanel = () => {
   const svgRef = useRef<SVGSVGElement>(null); //this is to save the png image
@@ -27,8 +28,8 @@ const PreviewPanel = () => {
   const points = useStore(myStore, (state) => state.points);
   const circles = useStore(myStore, (state) => state.circles);
   const tags = useStore(myStore, (state) => state.tags);
-  const scale = useStore(myStore, (state) => state.configs.TIKZ_SCALE);
-  const configs = useStore(myStore, (state) => state.configs);
+  const scale = useStore(configStore, (state) => state.TIKZ_SCALE);
+  const configs = useStore(configStore, (state) => state);
 
   const [containerRef, containerDimensions] = useDimensions();
   const [viewBox, setViewBox] = useState("0 0 100 100");

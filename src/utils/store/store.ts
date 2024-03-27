@@ -27,7 +27,7 @@ import { vec, type vector } from "import/utils/math/vetores";
 import { create } from "zustand";
 import { StorageValue, persist } from "zustand/middleware";
 import { getEntityById, getKindById } from "../storeHelpers/entityGetters";
-import { initConfigs } from "public/generalConfigs";
+//import { initConfigs } from "public/generalConfigs";
 
 export type State = {
   tab: TallKindPlural;
@@ -41,7 +41,7 @@ export type State = {
   selectedGroup: number;
   idCounters: Record<TallKind, number>;
   selections: Array<TallId>;
-  configs: typeof initConfigs;
+  //configs: typeof initConfigs;
 };
 
 export type Action = {
@@ -61,7 +61,7 @@ export type Action = {
   movePoint: (id: TpointId, newPosition: vector) => void;
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
-  setConfig: <Key extends keyof State['configs']>(config: Key, newValue: State['configs'][Key])=>void;
+  //setConfig: <Key extends keyof State['configs']>(config: Key, newValue: State['configs'][Key])=>void;
   clear: () => void;
   set: (state: State & Action) => void;
 };
@@ -71,12 +71,12 @@ const myStore = create<State & Action>()(
     (set, get) => ({
       set: (state) => set(() => ({ ...state })),
 
-      configs: initConfigs,
-      setConfig: <Key extends keyof typeof initConfigs>(config: Key, newValue: (typeof initConfigs)[Key])=>{
-        let updatedCongifs = get().configs;
-        updatedCongifs = {...updatedCongifs, [config]: newValue};
-        set(()=>({configs: updatedCongifs}));
-      },
+      // configs: initConfigs,
+      // setConfig: <Key extends keyof typeof initConfigs>(config: Key, newValue: (typeof initConfigs)[Key])=>{
+      //   let updatedCongifs = get().configs;
+      //   updatedCongifs = {...updatedCongifs, [config]: newValue};
+      //   set(()=>({configs: updatedCongifs}));
+      // },
 
       tab: "points" as TallKindPlural,
       setTab: (tab) => set(() => ({ tab: tab })),
