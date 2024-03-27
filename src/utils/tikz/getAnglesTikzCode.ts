@@ -1,10 +1,10 @@
 import { vec } from "../math/vetores";
-import { ConfigState } from "../store/configStore";
+import configStore from "../store/configStore";
 import type { Action, State } from "../store/store";
 
-export default function getAnglesTikzCode(store: State & Action, configs: ConfigState) {
+export default function getAnglesTikzCode(store: State & Action) {
 
-  const {DEFAULT_STROKE_WIDTH, TIKZ_SCALE} = configs;
+  const {DEFAULT_STROKE_WIDTH, TIKZ_SCALE} = configStore.getState();
 
   let tikzCode = "";
   store.angles.forEach((angle) => {

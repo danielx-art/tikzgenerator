@@ -1,10 +1,10 @@
 import { vec } from "../math/vetores";
-import { ConfigState } from "../store/configStore";
+import configStore from "../store/configStore";
 import type { Action, State } from "../store/store";
 
-export default function getSegmentsTikzCode(store: State & Action, configs: ConfigState) {
+export default function getSegmentsTikzCode(store: State & Action) {
   let tikzCode = "";
-  const {TIKZ_SCALE} = configs;
+  const {TIKZ_SCALE} = configStore.getState();
   store.segments.forEach((segment) => {
     if (segment.visible) {
       let strokeStyle = segment.stroke.style.split("-")[0];

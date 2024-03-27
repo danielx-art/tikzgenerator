@@ -1,10 +1,10 @@
 import getHachureLines from "../math/getHachureLines";
-import { ConfigState } from "../store/configStore";
+import configStore from "../store/configStore";
 import type { Action, State } from "../store/store";
 
-export default function getPolygonsTikzCode(store: State & Action, configs: ConfigState) {
+export default function getPolygonsTikzCode(store: State & Action) {
   let tikzCode = "";
-  const {TIKZ_SCALE} = configs;
+  const {TIKZ_SCALE} = configStore.getState();
   store.polygons.forEach((polygon) => {
     if (polygon.visible) {
       let vertexPath = polygon.vertices
