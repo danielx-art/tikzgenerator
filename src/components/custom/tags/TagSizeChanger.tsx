@@ -1,7 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { TtagId } from "public/entidades";
-import { DEFAULT_TAG_SIZE } from "public/generalConfigs";
+import { initConfigs } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
@@ -9,10 +9,11 @@ type PropsType = {
 };
 
 const TagSizeChanger: React.FC<PropsType> = ({ thisTagId }) => {
-  const [size, setSize] = useState(`${DEFAULT_TAG_SIZE}`);
+  const store = useStore(myStore, (state) => state);
+  
+  const [size, setSize] = useState(`${store?.configs.DEFAULT_TAG_SIZE || initConfigs.DEFAULT_TAG_SIZE}`);
   const [disabled, setDisabled] = useState(true);
 
-  const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
     if (!store || !thisTagId) {

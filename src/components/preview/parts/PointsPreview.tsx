@@ -1,15 +1,14 @@
 import { vector } from "import/utils/math/vetores";
-import myStore from "import/utils/store/store";
+import myStore, { State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { TallId, Tpoint, TpointId } from "public/entidades";
-import { DEFAULT_STROKE_WIDTH, RES_FACTOR } from "public/generalConfigs";
 
 const PointsPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
 
   if (!store) return;
 
-  const { points, toggleSelection, movePoint } = store;
+  const { points, toggleSelection, movePoint, configs } = store;
 
   return (
     <>
@@ -19,6 +18,7 @@ const PointsPreview: React.FC = () => {
           toggleSelection={toggleSelection}
           movePoint={movePoint}
           key={"svg_path_point_" + point.id}
+          configs={configs}
         />
       ))}
     </>
@@ -31,12 +31,14 @@ type PointProps = {
   point: Tpoint;
   toggleSelection: (id: TallId) => void;
   movePoint: (id: TpointId, newPosition: vector) => void;
+  configs: State['configs']
 };
 
 const PointPreview: React.FC<PointProps> = ({
   point,
   toggleSelection,
   movePoint,
+  configs
 }) => {
   let stroke = "none";
   let fill = "none";
@@ -51,19 +53,21 @@ const PointPreview: React.FC<PointProps> = ({
 
   const hitBoxSize = point.size + 0.2;
 
+  const {RES_FACTOR_SVG, DEFAULT_STROKE_WIDTH} = configs;
+
   return (
     <g filter={point.selected ? "url(#glow)" : "url(#dropshadow"}>
       <path
         key={"svg_path_hitbox_" + point.id}
         d={
-          `M ${point.coords.x * RES_FACTOR} ${point.coords.y * RES_FACTOR} ` +
-          `m -${hitBoxSize * 0.1 * RES_FACTOR}, 0 ` +
-          `a ${hitBoxSize * 0.1 * RES_FACTOR},${
-            hitBoxSize * 0.1 * RES_FACTOR
-          } 0 1,0 ${hitBoxSize * 0.1 * 2 * RES_FACTOR},0 ` +
-          `a ${hitBoxSize * 0.1 * RES_FACTOR},${
-            hitBoxSize * 0.1 * RES_FACTOR
-          } 0 1,0 -${hitBoxSize * 0.1 * 2 * RES_FACTOR},0`
+          `M ${point.coords.x * RES_FACTOR_SVG} ${point.coords.y * RES_FACTOR_SVG} ` +
+          `m -${hitBoxSize * 0.1 * RES_FACTOR_SVG}, 0 ` +
+          `a ${hitBoxSize * 0.1 * RES_FACTOR_SVG},${
+            hitBoxSize * 0.1 * RES_FACTOR_SVG
+          } 0 1,0 ${hitBoxSize * 0.1 * 2 * RES_FACTOR_SVG},0 ` +
+          `a ${hitBoxSize * 0.1 * RES_FACTOR_SVG},${
+            hitBoxSize * 0.1 * RES_FACTOR_SVG
+          } 0 1,0 -${hitBoxSize * 0.1 * 2 * RES_FACTOR_SVG},0`
         }
         stroke={"transparent"}
         strokeWidth={2 * DEFAULT_STROKE_WIDTH}
@@ -76,7 +80,7 @@ const PointPreview: React.FC<PointProps> = ({
       />
       <path
         key={"svg_path_" + point.id}
-        d={getPointPath(point)}
+        d={getPointPath(point, RES_FACTOR_SVG)}
         stroke={stroke}
         strokeWidth={DEFAULT_STROKE_WIDTH}
         fill={fill}
@@ -86,7 +90,7 @@ const PointPreview: React.FC<PointProps> = ({
   );
 };
 
-export const getPointPath = (point: Tpoint) => {
+export const getPointPath = (point: Tpoint, scaleFactor: number) => {
   const { coords, dotstyle, size } = point;
 
   if (dotstyle === 0) {
@@ -95,13 +99,13 @@ export const getPointPath = (point: Tpoint) => {
 
   // Calculate the circle path
   const circlePath =
-    `M ${coords.x * RES_FACTOR} ${coords.y * RES_FACTOR} ` +
-    `m -${size * 0.1 * RES_FACTOR}, 0 ` +
-    `a ${size * 0.1 * RES_FACTOR},${size * 0.1 * RES_FACTOR} 0 1,0 ${
-      size * 0.1 * 2 * RES_FACTOR
+    `M ${coords.x * scaleFactor} ${coords.y * scaleFactor} ` +
+    `m -${size * 0.1 * scaleFactor}, 0 ` +
+    `a ${size * 0.1 * scaleFactor},${size * 0.1 * scaleFactor} 0 1,0 ${
+      size * 0.1 * 2 * scaleFactor
     },0 ` +
-    `a ${size * 0.1 * RES_FACTOR},${size * 0.1 * RES_FACTOR} 0 1,0 -${
-      size * 0.1 * 2 * RES_FACTOR
+    `a ${size * 0.1 * scaleFactor},${size * 0.1 * scaleFactor} 0 1,0 -${
+      size * 0.1 * 2 * scaleFactor
     },0`;
 
   return circlePath;

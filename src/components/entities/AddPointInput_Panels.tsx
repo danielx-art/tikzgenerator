@@ -13,7 +13,7 @@ const AddPointInput_Panels = () => {
 
   if (!store) return;
 
-  const { points, setPoints, selectedGroup, error, setError, generateId } =
+  const { points, setPoints, selectedGroup, generateId } =
     store;
 
   function addPoint() {

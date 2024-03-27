@@ -1,4 +1,5 @@
 import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
 import {
   getEntityById,
   getKindById,
@@ -6,19 +7,19 @@ import {
   getSetterByKind,
 } from "import/utils/storeHelpers/entityGetters";
 import { TentId } from "public/entidades";
-import { DEFAULT_STROKE_WIDTH } from "public/generalConfigs";
+import { initConfigs } from "public/generalConfigs";
 import { useState, useEffect } from "react";
-import { useStore } from "zustand";
 
 type PropsType = {
   entId: TentId | undefined;
 };
 
 const StrokeWidthChanger: React.FC<PropsType> = ({ entId }) => {
-  const [size, setSize] = useState(`${DEFAULT_STROKE_WIDTH}`);
+  const store = useStore(myStore, (state) => state);
+  
+  const [size, setSize] = useState(`${store?.configs.DEFAULT_STROKE_WIDTH || initConfigs.DEFAULT_STROKE_WIDTH}`);
   const [disabled, setDisabled] = useState(true);
 
-  const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
     if (!store || !entId) {

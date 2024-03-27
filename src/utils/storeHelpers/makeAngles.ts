@@ -11,7 +11,7 @@ export const makeAngles = (
 
   const selectedPoints = getSelected("point", store);
 
-  const { generateId, setError, setAngles } = store;
+  const { generateId, setAngles } = store;
 
   if (selectedPoints.length < 3) {
     toast.error(

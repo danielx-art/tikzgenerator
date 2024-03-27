@@ -1,6 +1,5 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { DEFAULT_STROKE_WIDTH, RES_FACTOR } from "public/generalConfigs";
 import { Tangle } from "public/entidades";
 import { vec } from "import/utils/math/vetores";
 import { roundToDecimalPlaces } from "import/utils/math/misc";
@@ -15,7 +14,7 @@ const AnglesPreview: React.FC = () => {
   return (
     <>
       {Array.from(angles.values()).map((angle, index) => {
-        const anglePath = getAnglePath(angle);
+        const anglePath = getAnglePath(angle, store.configs.RES_FACTOR_SVG);
 
         return (
           <g
@@ -27,7 +26,7 @@ const AnglesPreview: React.FC = () => {
                 key={"svg_path_marks_" + angle.id}
                 d={anglePath.dMarksPath}
                 stroke={angle.color}
-                strokeWidth={DEFAULT_STROKE_WIDTH}
+                strokeWidth={store.configs.DEFAULT_STROKE_WIDTH}
                 fill="none"
                 fillOpacity={0.5}
               />
@@ -50,7 +49,7 @@ const AnglesPreview: React.FC = () => {
               key={"svg_path_hitbox_" + angle.id}
               d={anglePath.d}
               stroke={"transparent"}
-              strokeWidth={2 * DEFAULT_STROKE_WIDTH}
+              strokeWidth={2 * store.configs.DEFAULT_STROKE_WIDTH}
               fill="transparent"
               onClick={(event) => {
                 event.stopPropagation();
@@ -62,7 +61,7 @@ const AnglesPreview: React.FC = () => {
               key={"svg_path_" + angle.id}
               d={anglePath.d}
               stroke={angle.color}
-              strokeWidth={DEFAULT_STROKE_WIDTH}
+              strokeWidth={store.configs.DEFAULT_STROKE_WIDTH}
               fill="none"
               fillOpacity={0.5}
               className="pointer-events-none"
@@ -76,15 +75,15 @@ const AnglesPreview: React.FC = () => {
 
 export default AnglesPreview;
 
-export const getAnglePath = (angle: Tangle) => {
-  const angleA = vec().copy(angle.a.coords).mult(RES_FACTOR);
-  const angleB = vec().copy(angle.b.coords).mult(RES_FACTOR);
-  const angleC = vec().copy(angle.c.coords).mult(RES_FACTOR);
+export const getAnglePath = (angle: Tangle, scaleFactor: number) => {
+  const angleA = vec().copy(angle.a.coords).mult(scaleFactor);
+  const angleB = vec().copy(angle.b.coords).mult(scaleFactor);
+  const angleC = vec().copy(angle.c.coords).mult(scaleFactor);
 
   let vectorA = vec().copy(angleA).sub(angleB);
   let vectorB = vec().copy(angleC).sub(angleB);
-  vectorA.setMag(angle.size * RES_FACTOR);
-  vectorB.setMag(angle.size * RES_FACTOR);
+  vectorA.setMag(angle.size * scaleFactor);
+  vectorB.setMag(angle.size * scaleFactor);
 
   let startVector;
   let endVector;
@@ -134,7 +133,7 @@ export const getAnglePath = (angle: Tangle) => {
           .add(vec().copy(endVector))
           .mult(1 / 2),
       );
-    let radius = (angle.size * RES_FACTOR) / 12;
+    let radius = (angle.size * scaleFactor) / 12;
     d += `M ${circleCenter.x + radius} ${circleCenter.y} `;
     d += `A ${radius} ${radius} 0 0 1 ${circleCenter.x - radius} ${
       circleCenter.y
@@ -152,12 +151,12 @@ export const getAnglePath = (angle: Tangle) => {
     `;
   } else {
     d += ` M ${start.x} ${start.y} 
-           A ${angle.size * RES_FACTOR} ${angle.size * RES_FACTOR} 
+           A ${angle.size * scaleFactor} ${angle.size * scaleFactor} 
            0 0 ${sweepFlag} 
            ${end.x} ${end.y}  `;
 
     dFillPath += ` M ${angleB.x} ${angleB.y} L ${start.x} ${start.y}
-              A ${angle.size * RES_FACTOR} ${angle.size * RES_FACTOR}
+              A ${angle.size * scaleFactor} ${angle.size * scaleFactor}
               0 0 ${sweepFlag}
               ${end.x} ${end.y} Z `;
 
@@ -166,8 +165,8 @@ export const getAnglePath = (angle: Tangle) => {
       if (angle.marks.includes("marks")) {
         let dMarks = ``;
         const numMarks = parseInt(angle.marks.split("-")[1] as `${number}`);
-        const markLen = (angle.size * RES_FACTOR) / 2;
-        const r = angle.size * RES_FACTOR;
+        const markLen = (angle.size * scaleFactor) / 2;
+        const r = angle.size * scaleFactor;
         const ang = angle.valor;
         const numDiv = numMarks + 1;
         for (let i = 0; i < numMarks; i++) {
@@ -190,8 +189,8 @@ export const getAnglePath = (angle: Tangle) => {
       } else if (angle.marks.includes("doubles")) {
         let dDoubles = ``;
         const numDoubles = parseInt(angle.marks.split("-")[1] as `${number}`);
-        const doubleDist = (angle.size * RES_FACTOR) / 5;
-        const r = angle.size * RES_FACTOR;
+        const doubleDist = (angle.size * scaleFactor) / 5;
+        const r = angle.size * scaleFactor;
         const ang = angle.valor;
         const rotateWise = sweepFlag === 0 ? -1 : 1;
         const toRotate = rotateWise * ang;

@@ -1,17 +1,19 @@
 import { cn } from "import/utils/cn";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
+import { initConfigs } from "public/generalConfigs";
 import { ButtonHTMLAttributes } from "react";
 
 type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const ZoomInBtn: React.FC<PropsType> = ({ className, ...rest }) => {
   const store = useStore(myStore, (state) => state);
+  const scale = store?.configs.TIKZ_SCALE || initConfigs.TIKZ_SCALE;
 
   const handleZoomIn = () => {
     if (!store) return;
-    const newValue = store.scale+0.1;
-    store.setScale(newValue);
+    const newValue = scale+0.1;
+    store.setConfig("TIKZ_SCALE", newValue);
   };
 
   return (

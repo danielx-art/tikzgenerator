@@ -1,6 +1,6 @@
 import type { TangId } from "public/entidades";
 import ColorChanger from "../ColorChanger";
-import { DEFAULT_ANGLE_STYLE, LATEX_COLOR } from "public/generalConfigs";
+import { LATEX_COLOR, initConfigs } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 import useStore from "import/utils/store/useStore";
 import myStore from "import/utils/store/store";
@@ -12,9 +12,10 @@ type PropsType = {
 };
 
 const AngleColorAndFill: React.FC<PropsType> = ({ angId }) => {
-  const [style, setStyle] = useState(DEFAULT_ANGLE_STYLE);
-
   const store = useStore(myStore, (state) => state);
+  
+  const [style, setStyle] = useState(store?.configs.DEFAULT_ANGLE_STYLE || initConfigs.DEFAULT_ANGLE_STYLE);
+
 
   const thisAngle = useStore(
     myStore,

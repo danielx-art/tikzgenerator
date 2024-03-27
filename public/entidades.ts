@@ -1,22 +1,10 @@
 import {
   ANGLE_MARKS_TYPE,
-  DEFAULT_ANGLE_MARKS,
-  DEFAULT_ANGLE_SIZE,
-  DEFAULT_ANGLE_STYLE,
-  DEFAULT_COLOR,
-  DEFAULT_STROKE_STYLE,
-  DEFAULT_STROKE_WIDTH,
-  DEFAULT_POINT_SIZE,
-  DEFAULT_POINT_STYLE,
-  DEFAULT_SEGMENT_MARKS,
-  DEFAULT_TAG_COLOR,
-  DEFAULT_TAG_SIZE,
   SEGMENT_MARKS_TYPE,
   STROKE_STYLES,
   FILL_STYLES,
-  DEFAULT_FILL_STYLE,
-  DEFAULT_FILL_COLOR,
   LATEX_COLOR,
+  initConfigs,
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
 
@@ -96,7 +84,25 @@ export type Tfill = {
   opacity: number;
 };
 
+const {
+  DEFAULT_ANGLE_MARKS,
+  DEFAULT_ANGLE_SIZE,
+  DEFAULT_ANGLE_STYLE,
+  DEFAULT_COLOR,
+  DEFAULT_STROKE_STYLE,
+  DEFAULT_STROKE_WIDTH,
+  DEFAULT_POINT_SIZE,
+  DEFAULT_POINT_STYLE,
+  DEFAULT_SEGMENT_MARKS,
+  DEFAULT_TAG_COLOR,
+  DEFAULT_TAG_SIZE,
+  DEFAULT_FILL_STYLE,
+  DEFAULT_FILL_COLOR,
+} = initConfigs;
+//doesnt work getting state from the store. something wrong happens.
+
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
+
   return {
     id,
     coords: a,

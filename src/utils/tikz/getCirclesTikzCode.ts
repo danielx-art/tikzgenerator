@@ -23,7 +23,7 @@ export default function getCirclesTikzCode(store: State & Action) {
         // Dotted or hachure pattern, similar logic as with polygons but now within a circle
         if (circle.fill.style === "dotted") {
 
-          const step = store.scale < 0.5 ? 0.2*store.scale : 0.02*store.scale;
+          const step = store.configs.TIKZ_SCALE < 0.5 ? 0.2*store.configs.TIKZ_SCALE : 0.02*store.configs.TIKZ_SCALE;
 
           circleCommands += `\\foreach \\x in {${
             circle.center.x - circle.radius
@@ -46,7 +46,7 @@ export default function getCirclesTikzCode(store: State & Action) {
           const maxX = circle.center.x + circle.radius;
           const minY = circle.center.y - circle.radius;
           const maxY = circle.center.y + circle.radius;
-          const HACHURE_DIST = store.scale < 1 ? 0.1 : 0.02*store.scale;
+          const HACHURE_DIST = store.configs.TIKZ_SCALE < 1 ? 0.1 : 0.02*store.configs.TIKZ_SCALE;
           const pattern = getHachureLines(minX,maxX, minY, maxY, HACHURE_DIST, angle);
           pattern.points.forEach((point)=>{
             circleCommands += `\\draw [thin, ${circle.fill.color}, opacity=${circle.fill.opacity}] (${point.x1},${point.y1}) -- (${point.x2},${point.y2});\n`;

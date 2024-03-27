@@ -1,8 +1,10 @@
-import { DEFAULT_STROKE_WIDTH } from "public/generalConfigs";
 import { vec } from "../math/vetores";
 import type { Action, State } from "../store/store";
 
 export default function getAnglesTikzCode(store: State & Action) {
+
+  const {DEFAULT_STROKE_WIDTH, TIKZ_SCALE} = store.configs;
+
   let tikzCode = "";
   store.angles.forEach((angle) => {
     if (angle.visible) {
@@ -62,16 +64,16 @@ export default function getAnglesTikzCode(store: State & Action) {
           );
         let radius = angle.size / 12;
 
-        tikzCode += `\\filldraw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*store.scale} , opacity=${angle.opacity}] (${circleCenter.x}, ${circleCenter.y}) circle (${radius});\n`;
+        tikzCode += `\\filldraw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE} , opacity=${angle.opacity}] (${circleCenter.x}, ${circleCenter.y}) circle (${radius});\n`;
       } else {
         //not right angle
 
         if (angle.dotstyle === 0) {
           // Stroke only
-          tikzCode += `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*store.scale}, opacity=${angle.opacity}] (${angle.b.id}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size});\n`;
+          tikzCode += `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b.id}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size});\n`;
         } else if (angle.dotstyle === 1) {
           // Stroke and fill (as a 'circle sector')
-          tikzCode += `\\filldraw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*store.scale}, opacity=${angle.opacity}] (${angle.b.id}) -- (${angle.b.id}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size}) -- (${angle.b.id});\n`;
+          tikzCode += `\\filldraw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b.id}) -- (${angle.b.id}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size}) -- (${angle.b.id});\n`;
         }
 
         //------MARKS PATH
@@ -96,7 +98,7 @@ export default function getAnglesTikzCode(store: State & Action) {
                 .setMag(r + markLen / 2)
                 .rotate(toRotate)
                 .add(angleB);
-              tikzCode += `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*store.scale}, opacity=${angle.opacity}] (${initialPoint.x}, ${initialPoint.y}) -- (${finalPoint.x}, ${finalPoint.y});\n`;
+              tikzCode += `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${initialPoint.x}, ${initialPoint.y}) -- (${finalPoint.x}, ${finalPoint.y});\n`;
             }
           } else if (angle.marks.includes("doubles")) {
             const numDoubles = parseInt(
@@ -119,7 +121,7 @@ export default function getAnglesTikzCode(store: State & Action) {
                 .rotate(toRotate)
                 .add(angleB);
 
-              tikzCode += `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*store.scale}, opacity=${angle.opacity}] (${initialPoint.x}, ${initialPoint.y}) arc (${startAngle}:${endAngle}:${thisRad});\n`;
+              tikzCode += `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${initialPoint.x}, ${initialPoint.y}) arc (${startAngle}:${endAngle}:${thisRad});\n`;
             }
           }
         }

@@ -27,6 +27,7 @@ import { vec, type vector } from "import/utils/math/vetores";
 import { create } from "zustand";
 import { StorageValue, persist } from "zustand/middleware";
 import { getEntityById, getKindById } from "../storeHelpers/entityGetters";
+import { initConfigs } from "public/generalConfigs";
 
 export type State = {
   tab: TallKindPlural;
@@ -38,10 +39,9 @@ export type State = {
   tags: Map<TtagId, Ttag>;
   groups: number[];
   selectedGroup: number;
-  error: string;
   idCounters: Record<TallKind, number>;
   selections: Array<TallId>;
-  scale: number;
+  configs: typeof initConfigs;
 };
 
 export type Action = {
@@ -54,7 +54,6 @@ export type Action = {
   setGroups: (groups: State["groups"]) => void;
   setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
   setTags: (tags: State["tags"]) => void;
-  setError: (error: State["error"]) => void;
   generateId: <T extends TallKind>(type: T) => TidFromKind<T>;
   toggleSelection: (id: TallId) => void;
   //addEntity: (entityKind: Tkind, elementBody: Tentity) => void;
@@ -62,7 +61,7 @@ export type Action = {
   movePoint: (id: TpointId, newPosition: vector) => void;
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
-  setScale: (scale: number) => void;
+  setConfig: <Key extends keyof State['configs']>(config: Key, newValue: State['configs'][Key])=>void;
   clear: () => void;
   set: (state: State & Action) => void;
 };
@@ -71,6 +70,13 @@ const myStore = create<State & Action>()(
   persist(
     (set, get) => ({
       set: (state) => set(() => ({ ...state })),
+
+      configs: initConfigs,
+      setConfig: <Key extends keyof typeof initConfigs>(config: Key, newValue: (typeof initConfigs)[Key])=>{
+        let updatedCongifs = get().configs;
+        updatedCongifs = {...updatedCongifs, [config]: newValue};
+        set(()=>({configs: updatedCongifs}));
+      },
 
       tab: "points" as TallKindPlural,
       setTab: (tab) => set(() => ({ tab: tab })),
@@ -93,9 +99,7 @@ const myStore = create<State & Action>()(
       selectedGroup: 1 as number,
       setSelectedGroup: (selectedGroup) =>
         set(() => ({ selectedGroup: selectedGroup })),
-
-      error: "",
-      setError: (error) => set(() => ({ error: error })),
+      
       idCounters: {
         point: 0,
         segment: 0,
@@ -335,12 +339,6 @@ const myStore = create<State & Action>()(
       },
 
       scale: 1,
-
-      setScale: (scale: number) => {
-        set(() => {
-          return { scale: scale };
-        });
-      },
 
       clear: () => {
         set(() => {

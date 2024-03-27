@@ -1,6 +1,8 @@
 import ToolTip from "import/components/micro/ToolTip";
 import { cn } from "import/utils/cn";
-import { RES_FACTOR } from "public/generalConfigs";
+import myStore from "import/utils/store/store";
+import useStore from "import/utils/store/useStore";
+import { initConfigs } from "public/generalConfigs";
 import type { ButtonHTMLAttributes, Ref, RefObject } from "react";
 import { forwardRef } from "react";
 
@@ -10,9 +12,12 @@ const DownloadPNGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   { className },
   ref: Ref<SVGSVGElement>,
 ) {
+
+  const RES_FACTOR_SVG = useStore(myStore, (state)=>state.configs.RES_FACTOR_SVG);
+
   const handleDownload = () => {
     if ((ref as RefObject<SVGSVGElement>).current) {
-      downloadSvgAsPng(ref as RefObject<SVGSVGElement>, "figura_.png").catch(
+      downloadSvgAsPng(ref as RefObject<SVGSVGElement>, "figura_.png", RES_FACTOR_SVG || initConfigs.RES_FACTOR_SVG).catch(
         (error) => {
           console.error("Error downloading the image:", error);
         },
@@ -51,6 +56,7 @@ export default DownloadPNGBtn;
 async function downloadSvgAsPng(
   svgRef: React.RefObject<SVGSVGElement>,
   fileName: string,
+  scaleFactor: number
 ): Promise<void> {
   if (!svgRef.current) {
     console.error("SVG element not found");
@@ -66,8 +72,8 @@ async function downloadSvgAsPng(
   return new Promise((resolve, reject) => {
     image.onload = () => {
       const canvas = document.createElement("canvas");
-      canvas.width = image.width * RES_FACTOR;
-      canvas.height = image.height * RES_FACTOR;
+      canvas.width = image.width * scaleFactor;
+      canvas.height = image.height * scaleFactor;
 
       const ctx = canvas.getContext("2d");
       if (!ctx) {
@@ -80,8 +86,8 @@ async function downloadSvgAsPng(
         image,
         0,
         0,
-        image.width * RES_FACTOR,
-        image.height * RES_FACTOR,
+        image.width * scaleFactor,
+        image.height * scaleFactor,
       );
       URL.revokeObjectURL(url);
 

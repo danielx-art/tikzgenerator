@@ -1,7 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { TcircleId } from "public/entidades";
-import { DEFAULT_CIRCLE_RADIUS } from "public/generalConfigs";
+import { initConfigs } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
@@ -9,10 +9,11 @@ type PropsType = {
 };
 
 const CircleRadiusChanger: React.FC<PropsType> = ({ circleId }) => {
-  const [size, setSize] = useState(`${DEFAULT_CIRCLE_RADIUS}`);
+  const store = useStore(myStore, (state) => state);
+  
+  const [size, setSize] = useState(`${store?.configs.DEFAULT_CIRCLE_RADIUS || initConfigs.DEFAULT_CIRCLE_RADIUS}`);
   const [disabled, setDisabled] = useState(true);
 
-  const store = useStore(myStore, (state) => state);
 
   useEffect(() => {
     if (!store || !circleId) {
@@ -32,8 +33,8 @@ const CircleRadiusChanger: React.FC<PropsType> = ({ circleId }) => {
       size.length > 0
         ? parseFloat(size) > 0
           ? parseFloat(size)
-          : DEFAULT_CIRCLE_RADIUS
-        : DEFAULT_CIRCLE_RADIUS;
+          : store.configs.DEFAULT_CIRCLE_RADIUS
+        : store.configs.DEFAULT_CIRCLE_RADIUS;
     const seg = store.circles.get(circleId);
     if (!seg) return;
     updatedCircles.set(circleId, { ...seg, radius: newSize });

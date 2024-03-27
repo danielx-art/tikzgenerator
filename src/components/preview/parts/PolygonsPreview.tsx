@@ -1,6 +1,5 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { RES_FACTOR } from "public/generalConfigs";
 import { Tpolygon } from "public/entidades";
 import { getFillMask } from "../helpers";
 
@@ -14,7 +13,7 @@ const PolygonsPreview: React.FC = () => {
   return (
     <>
       {Array.from(polygons.values()).map((polygon, index) => {
-        const polygonPath = getPolygonPath(polygon);
+        const polygonPath = getPolygonPath(polygon, store.configs.RES_FACTOR_SVG);
 
         return (
           <g
@@ -52,14 +51,14 @@ const PolygonsPreview: React.FC = () => {
 
 export default PolygonsPreview;
 
-export const getPolygonPath = (polygon: Tpolygon) => {
+export const getPolygonPath = (polygon: Tpolygon, scaleFactor: number) => {
   let d = "M ";
 
   polygon.vertices.forEach((vertex, index) => {
     if (index === 0) {
-      d += `${vertex.coords.x * RES_FACTOR} ${vertex.coords.y * RES_FACTOR} `;
+      d += `${vertex.coords.x * scaleFactor} ${vertex.coords.y * scaleFactor} `;
     } else {
-      d += `L ${vertex.coords.x * RES_FACTOR} ${vertex.coords.y * RES_FACTOR} `;
+      d += `L ${vertex.coords.x * scaleFactor} ${vertex.coords.y * scaleFactor} `;
     }
   });
 

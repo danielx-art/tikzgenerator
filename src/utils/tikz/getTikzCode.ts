@@ -10,7 +10,7 @@ import getTagsTikzCode from "./getTagsTikzCode";
 export default function getTikzCode(store?: State & Action) {
   if (!store) return;
 
-  let tikzCode = `\\begin{tikzpicture}[scale=${store.scale}]\n`;
+  let tikzCode = `\\begin{tikzpicture}[scale=${store.configs.TIKZ_SCALE}]\n`;
 
   tikzCode += getCoordinatesTikzCode(store);
   tikzCode += getPolygonsTikzCode(store);

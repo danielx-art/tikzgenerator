@@ -1,6 +1,5 @@
 import { circle } from "public/entidades";
 import type { Action, State } from "../store/store";
-import { DEFAULT_CIRCLE_RADIUS } from "public/generalConfigs";
 import { vec } from "../math/vetores";
 import { getSelected } from "./entityGetters";
 import { distanceFromPointToLine } from "../math/distancePointToLine";
@@ -25,7 +24,7 @@ export function createCircleFromOnePoint(store: State & Action) {
 
   const newCircleId = store.generateId("circle");
 
-  const newCircle = circle(center.coords, DEFAULT_CIRCLE_RADIUS, newCircleId);
+  const newCircle = circle(center.coords, store.configs.DEFAULT_CIRCLE_RADIUS, newCircleId);
 
   updatedCircles.set(newCircleId, newCircle);
 

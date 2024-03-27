@@ -2,7 +2,6 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { vec } from "import/utils/math/vetores";
 import type { Tsegment } from "public/entidades";
-import { RES_FACTOR } from "public/generalConfigs";
 import { getStrokeDasharray } from "../helpers";
 
 const SegmentsPreview: React.FC = () => {
@@ -22,7 +21,7 @@ const SegmentsPreview: React.FC = () => {
           {segment.marks != 0 && (
             <path
               key={"svg_path_" + segment.id + "marks"}
-              d={getSegmentMarksPath(segment)}
+              d={getSegmentMarksPath(segment, store.configs.RES_FACTOR_SVG)}
               stroke={segment.stroke.color}
               strokeLinecap="round"
               strokeWidth={segment.stroke.width}
@@ -33,7 +32,7 @@ const SegmentsPreview: React.FC = () => {
           <path
             //This is only to increase the hit box
             key={"svg_path_hitbox_" + segment.id}
-            d={getSegmentPath(segment)}
+            d={getSegmentPath(segment, store.configs.RES_FACTOR_SVG)}
             stroke={"transparent"}
             strokeLinecap="round"
             strokeWidth={3 * segment.stroke.width}
@@ -46,7 +45,7 @@ const SegmentsPreview: React.FC = () => {
           />
           <path
             key={"svg_path_" + segment.id}
-            d={getSegmentPath(segment)}
+            d={getSegmentPath(segment, store.configs.RES_FACTOR_SVG)}
             stroke={segment.stroke.color}
             strokeWidth={segment.stroke.width}
             strokeDasharray={getStrokeDasharray(segment.stroke.style)}
@@ -63,15 +62,15 @@ const SegmentsPreview: React.FC = () => {
 
 export default SegmentsPreview;
 
-export const getSegmentPath = (segment: Tsegment) => {
+export const getSegmentPath = (segment: Tsegment, scaleFactor: number) => {
   let d = `
-  M${segment.p1.coords.x * RES_FACTOR},${segment.p1.coords.y * RES_FACTOR} 
-  L${segment.p2.coords.x * RES_FACTOR},${segment.p2.coords.y * RES_FACTOR} 
+  M${segment.p1.coords.x * scaleFactor},${segment.p1.coords.y * scaleFactor} 
+  L${segment.p2.coords.x * scaleFactor},${segment.p2.coords.y * scaleFactor} 
   `;
   return d;
 };
 
-export const getSegmentMarksPath = (segment: Tsegment) => {
+export const getSegmentMarksPath = (segment: Tsegment, scaleFactor: number) => {
   let d = "";
   if (segment.marks > 0) {
     const markLength = 0.12 * segment.stroke.width;
@@ -79,12 +78,12 @@ export const getSegmentMarksPath = (segment: Tsegment) => {
     const midPoint = vec()
       .copy(segment.p1.coords)
       .add(vec().copy(segment.p2.coords))
-      .mult(RES_FACTOR / 2);
+      .mult(scaleFactor / 2);
     const normal = vec()
       .copy(segment.p2.coords)
       .sub(vec().copy(segment.p1.coords))
       .cross(vec(0, 0, 1))
-      .setMag(markLength * RES_FACTOR);
+      .setMag(markLength * scaleFactor);
     const unitTangent = vec()
       .copy(segment.p2.coords)
       .sub(vec().copy(segment.p1.coords))

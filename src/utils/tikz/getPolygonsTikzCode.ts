@@ -28,7 +28,7 @@ export default function getPolygonsTikzCode(store: State & Action) {
       } else if (polygon.fill.style === "dotted") {
         // Manually create dotted fill within clipped area
 
-        const step = store.scale < 0.5 ? 0.2*store.scale : 0.02*store.scale;
+        const step = store.configs.TIKZ_SCALE < 0.5 ? 0.2*store.configs.TIKZ_SCALE : 0.02*store.configs.TIKZ_SCALE;
       
 
         tikzCode += `\\foreach \\x in {${minX},${minX + step},...,${maxX}}{\n`;
@@ -41,7 +41,7 @@ export default function getPolygonsTikzCode(store: State & Action) {
         const angleOption = polygon.fill.style.split("-")[1];
         if (!angleOption) return "";
         const angle = parseInt(angleOption)*45;
-        const HACHURE_DIST = store.scale < 1 ? 0.1 : 0.02*store.scale;
+        const HACHURE_DIST = store.configs.TIKZ_SCALE < 1 ? 0.1 : 0.02*store.configs.TIKZ_SCALE;
 
         const pattern = getHachureLines(minX,maxX, minY, maxY, HACHURE_DIST, angle);
         pattern.points.forEach((point)=>{

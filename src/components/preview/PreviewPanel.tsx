@@ -6,7 +6,6 @@ import PointsPreview from "./parts/PointsPreview";
 import AnglesPreview from "./parts/AnglesPreview";
 import SegmentsPreview from "./parts/SegmentsPreview";
 import TagsPreview from "./parts/TagsPreview";
-import { DEFAULT_POINT_SIZE, RES_FACTOR } from "public/generalConfigs";
 import Panel from "../micro/Panel";
 import Filters from "./parts/Filters";
 import PreviewNav from "./previewNavBar/PreviewNav";
@@ -14,7 +13,6 @@ import { deselectAll } from "import/utils/storeHelpers/deselectAll";
 import PolygonsPreview from "./parts/PolygonsPreview";
 import CirclesPreview from "./parts/CirclesPreview";
 import PreviewSideBar from "./previewSideBar/PreviewSideBar";
-import { vec } from "import/utils/math/vetores";
 
 const PreviewPanel = () => {
   const svgRef = useRef<SVGSVGElement>(null); //this is to save the png image
@@ -29,7 +27,8 @@ const PreviewPanel = () => {
   const points = useStore(myStore, (state) => state.points);
   const circles = useStore(myStore, (state) => state.circles);
   const tags = useStore(myStore, (state) => state.tags);
-  const scale = useStore(myStore, (state) => state.scale);
+  const scale = useStore(myStore, (state) => state.configs.TIKZ_SCALE);
+  const configs = useStore(myStore, (state) => state.configs);
 
   const [containerRef, containerDimensions] = useDimensions();
   const [viewBox, setViewBox] = useState("0 0 100 100");
@@ -39,7 +38,9 @@ const PreviewPanel = () => {
   });
 
   useEffect(() => {
-    if (!points || !scale) return;
+    if (!points || !scale || !configs) return;
+
+    const {RES_FACTOR_SVG, DEFAULT_POINT_SIZE} = configs;
 
     let minX = Infinity;
     let maxX = -Infinity;
@@ -141,12 +142,12 @@ const PreviewPanel = () => {
     const viewAR = properWidth / properHeight;
 
     //rescale
-    minX *= RES_FACTOR * scale;
-    maxX *= RES_FACTOR * scale;
-    minY *= RES_FACTOR * scale;
-    maxY *= RES_FACTOR * scale;
-    properWidth *= RES_FACTOR * scale;
-    properHeight *= RES_FACTOR * scale;
+    minX *= RES_FACTOR_SVG * scale;
+    maxX *= RES_FACTOR_SVG * scale;
+    minY *= RES_FACTOR_SVG * scale;
+    maxY *= RES_FACTOR_SVG * scale;
+    properWidth *= RES_FACTOR_SVG * scale;
+    properHeight *= RES_FACTOR_SVG * scale;
 
     padding =
       viewAR >= 1 ? (padding *= properWidth) : (padding *= properHeight);
@@ -175,7 +176,7 @@ const PreviewPanel = () => {
     }
 
     setViewBox(`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
-  }, [points, circles, tags, scale, RES_FACTOR, containerDimensions]);
+  }, [points, circles, tags, scale, configs, containerDimensions]);
 
   if (!store || !scale) return;
 
