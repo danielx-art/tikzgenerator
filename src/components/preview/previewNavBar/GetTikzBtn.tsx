@@ -44,7 +44,7 @@ const GetTikzBtn: React.FC<PropsType> = ({ className, ...rest }) => {
       <button
         className={cn("", className)}
         onClick={() => {
-          const tikzCode = getTikzCode(store, configs);
+          const tikzCode = getTikzCode(store);
           if (!tikzCode) return;
           copyTextToClipboard(tikzCode);
         }}
