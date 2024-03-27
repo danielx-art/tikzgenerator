@@ -167,7 +167,7 @@ const AddPointInput = () => {
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         className="flex-1 px-2 focus:outline-none"
-        placeholder="(X;Y) ou (R:&#x3B8;) separados por espaço"
+        placeholder="(X;Y) / +(R:&#x3B8;) / (R:&#x3B8;), separados por espaço"
       />
       <button
         className="rounded-sm bg-c_interact p-2 text-c_base outline-1 hover:bg-c_high1"
