@@ -63,7 +63,7 @@ const DialogBox: React.FC<PropsType> = ({
                     </svg>
                   </div>
                 )}
-                <div className="flex w-fit flex-1 flex-col overflow-auto">
+                <div className="flex w-full flex-1 flex-col overflow-auto">
                   {title ? (
                     <div className="w-full text-lg font-bold text-c_scnd">
                       {title}

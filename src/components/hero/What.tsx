@@ -27,12 +27,11 @@ const What = () => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         closeButton
-        className="max-w-[60%]"
+        className="max-w-[60%] leading-10"
       >
         <p>
           <span className="inline text-c_scnd_int">GeoSimples</span> é uma
-          ferramenta para desenhar figuras geométricas simples, <br /> criada
-          por{" "}
+          ferramenta para desenhar figuras geométricas simples, criada por{" "}
           <Link
             href={"https://danielx-art.github.io/astro-folio/"}
             className=" italic underline underline-offset-4 hover:text-c_scnd_int"
