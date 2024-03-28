@@ -8,6 +8,7 @@ import {
 } from "./generalConfigs";
 import { vec, vector } from "../src/utils/math/vetores";
 import myStore from "import/utils/store/store";
+import configStore from "import/utils/store/configStore";
 
 export type Tkind = "point" | "segment" | "angle" | "circle" | "polygon";
 export type TallKind = Tkind | "tag";
@@ -85,31 +86,14 @@ export type Tfill = {
   opacity: number;
 };
 
-const {
-  DEFAULT_ANGLE_MARKS,
-  DEFAULT_ANGLE_SIZE,
-  DEFAULT_ANGLE_STYLE,
-  DEFAULT_COLOR,
-  DEFAULT_STROKE_STYLE,
-  DEFAULT_STROKE_WIDTH,
-  DEFAULT_POINT_SIZE,
-  DEFAULT_POINT_STYLE,
-  DEFAULT_SEGMENT_MARKS,
-  DEFAULT_TAG_COLOR,
-  DEFAULT_TAG_SIZE,
-  DEFAULT_FILL_STYLE,
-  DEFAULT_FILL_COLOR,
-} = initConfigs;
-
 export const ponto = function (a: vector, id: TpointId, group: number = 1) {
-
   return {
     id,
     coords: a,
     visible: true,
-    dotstyle: DEFAULT_POINT_STYLE,
-    size: DEFAULT_POINT_SIZE,
-    color: DEFAULT_COLOR,
+    dotstyle: configStore.getState().DEFAULT_POINT_STYLE,
+    size: configStore.getState().DEFAULT_POINT_SIZE,
+    color: configStore.getState().DEFAULT_COLOR,
     group,
     selected: false,
   };
@@ -133,12 +117,12 @@ export const segmento = function (a: Tpoint, b: Tpoint, id: TsegId) {
     },
     visible: true,
     stroke: {
-      width: DEFAULT_STROKE_WIDTH,
-      style: DEFAULT_STROKE_STYLE,
-      color: DEFAULT_COLOR,
+      width: configStore.getState().DEFAULT_STROKE_WIDTH,
+      style: configStore.getState().DEFAULT_STROKE_STYLE,
+      color: configStore.getState().DEFAULT_COLOR,
       opacity: 1,
     } as Tstroke,
-    marks: DEFAULT_SEGMENT_MARKS as SEGMENT_MARKS_TYPE,
+    marks: configStore.getState().DEFAULT_SEGMENT_MARKS as SEGMENT_MARKS_TYPE,
     selected: false,
   };
 };
@@ -164,10 +148,10 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
       return 2 * Math.PI - this.valor;
     },
     visible: true,
-    size: DEFAULT_ANGLE_SIZE,
-    dotstyle: DEFAULT_ANGLE_STYLE,
-    marks: DEFAULT_ANGLE_MARKS as ANGLE_MARKS_TYPE,
-    color: DEFAULT_COLOR,
+    size: configStore.getState().DEFAULT_ANGLE_SIZE,
+    dotstyle: configStore.getState().DEFAULT_ANGLE_STYLE,
+    marks: configStore.getState().DEFAULT_ANGLE_MARKS as ANGLE_MARKS_TYPE,
+    color: configStore.getState().DEFAULT_COLOR,
     opacity: 1,
     selected: false,
   };
@@ -196,14 +180,14 @@ export const circle = function (
     arcEnd: 360,
     visible: true,
     stroke: {
-      width: DEFAULT_STROKE_WIDTH,
-      style: DEFAULT_STROKE_STYLE,
-      color: DEFAULT_COLOR,
+      width: configStore.getState().DEFAULT_STROKE_WIDTH,
+      style: configStore.getState().DEFAULT_STROKE_STYLE,
+      color: configStore.getState().DEFAULT_COLOR,
       opacity: 1,
     } as Tstroke,
     fill: {
-      style: DEFAULT_FILL_STYLE,
-      color: DEFAULT_FILL_COLOR,
+      style: configStore.getState().DEFAULT_FILL_STYLE,
+      color: configStore.getState().DEFAULT_FILL_COLOR,
       opacity: 0,
     } as Tfill,
     selected: false,
@@ -219,14 +203,14 @@ export const polygon = function (vertices: Array<Tpoint>, id: TpolyId) {
     visible: true,
     selected: false,
     stroke: {
-      width: DEFAULT_STROKE_WIDTH,
-      style: DEFAULT_STROKE_STYLE,
-      color: DEFAULT_COLOR,
+      width: configStore.getState().DEFAULT_STROKE_WIDTH,
+      style: configStore.getState().DEFAULT_STROKE_STYLE,
+      color: configStore.getState().DEFAULT_COLOR,
       opacity: 1,
     } as Tstroke,
     fill: {
-      style: DEFAULT_FILL_STYLE,
-      color: DEFAULT_FILL_COLOR,
+      style: configStore.getState().DEFAULT_FILL_STYLE,
+      color: configStore.getState().DEFAULT_FILL_COLOR,
       opacity: 1,
     } as Tfill,
   };
@@ -239,14 +223,14 @@ export const tag = function (
   entityId: TentId,
   id: TtagId,
   pos: vector = vec(0, 0.35),
-  anchor: vector
+  anchor: vector,
 ) {
   return {
     id,
     entityId,
     value,
-    size: DEFAULT_TAG_SIZE,
-    color: DEFAULT_TAG_COLOR,
+    size: configStore.getState().DEFAULT_TAG_SIZE,
+    color: configStore.getState().DEFAULT_TAG_COLOR,
     pos,
     anchor,
     selected: false,

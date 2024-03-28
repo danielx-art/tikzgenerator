@@ -30,24 +30,23 @@ const What = () => {
         className="max-w-[60%]"
       >
         <p>
-          <p className="inline text-c_scnd_int">GeoSimples</p> é uma ferramenta
-          para desenhar figuras geométricas simples.
-        </p>
-        <p>
-          Feita para educadores (e por um educador), especialmente os criadores
-          de conteúdo educativo, como materiais didáticos e testes.
-        </p>
-        <div className="group text-right italic">
-          Criada por{" "}
+          <span className="inline text-c_scnd_int">GeoSimples</span> é uma
+          ferramenta para desenhar figuras geométricas simples, <br /> criada
+          por{" "}
           <Link
             href={"https://danielx-art.github.io/astro-folio/"}
-            className=" underline underline-offset-4 group-hover:text-c_scnd_int"
+            className=" italic underline underline-offset-4 hover:text-c_scnd_int"
             target="_blanck"
             rel="noopener noreferrer"
           >
             Daniel
           </Link>
-        </div>
+          .
+        </p>
+        <p>
+          Feita para educadores (e por um educador), especialmente os criadores
+          de conteúdo educativo, como materiais didáticos e testes.
+        </p>
       </DialogBox>
     </>
   );

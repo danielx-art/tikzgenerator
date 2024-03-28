@@ -44,7 +44,7 @@ const DialogBox: React.FC<PropsType> = ({
             <div className="absolute left-0 top-0 z-50 h-full w-full animate-comein">
               <div
                 className={cn(
-                  "relative left-1/2 top-1/2 flex h-fit w-fit -translate-x-1/2 -translate-y-1/2 flex-col flex-nowrap gap-2 rounded-md border-c_discrete bg-c_base px-4 pb-2 pt-4 font-jost shadow-md",
+                  "relative left-1/2 top-1/2 flex h-fit w-fit -translate-x-1/2 -translate-y-1/2 flex-col flex-nowrap gap-4 overflow-hidden rounded-md border-c_discrete bg-c_base pb-4 pl-6 pr-4 pt-6 font-jost shadow-md",
                   className,
                 )}
               >
@@ -63,31 +63,33 @@ const DialogBox: React.FC<PropsType> = ({
                     </svg>
                   </div>
                 )}
-                {title ? (
-                  <div className="w-full text-lg font-bold text-c_scnd">
-                    {title}
+                <div className="flex w-fit flex-1 flex-col overflow-auto">
+                  {title ? (
+                    <div className="w-full text-lg font-bold text-c_scnd">
+                      {title}
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                  {children}
+                  <div className="flex w-full flex-row justify-end gap-2 self-end">
+                    {actionMessage && (
+                      <button
+                        onClick={handleAction}
+                        className="h-fit w-fit rounded-md bg-c_base px-2 py-1 text-c_scnd ring-1 ring-c_interact transition-all duration-75 hover:bg-c_interact hover:text-white"
+                      >
+                        {actionMessage}
+                      </button>
+                    )}
+                    {cancelMessage && (
+                      <button
+                        onClick={handleCancel}
+                        className="h-fit w-fit rounded-md bg-c_base px-2 py-1 text-c_scnd ring-1 ring-c_disabled2 transition-all duration-75 hover:bg-c_interact hover:text-white"
+                      >
+                        {cancelMessage}
+                      </button>
+                    )}
                   </div>
-                ) : (
-                  <div />
-                )}
-                {children}
-                <div className="flex w-full flex-row justify-end gap-2 self-end">
-                  {actionMessage && (
-                    <button
-                      onClick={handleAction}
-                      className="h-fit w-fit rounded-md bg-c_base px-2 py-1 text-c_scnd ring-1 ring-c_interact transition-all duration-75 hover:bg-c_interact hover:text-white"
-                    >
-                      {actionMessage}
-                    </button>
-                  )}
-                  {cancelMessage && (
-                    <button
-                      onClick={handleCancel}
-                      className="h-fit w-fit rounded-md bg-c_base px-2 py-1 text-c_scnd ring-1 ring-c_disabled2 transition-all duration-75 hover:bg-c_interact hover:text-white"
-                    >
-                      {cancelMessage}
-                    </button>
-                  )}
                 </div>
               </div>
             </div>

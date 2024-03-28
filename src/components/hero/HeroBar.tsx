@@ -7,7 +7,7 @@ const HeroBar = () => {
       <div className=" flex-1 cursor-default text-lg font-bold text-c_faded transition-all hover:text-c_scnd_int">
         GeoSimples
       </div>
-      {/* <Settings /> */}
+      <Settings />
       <What />
     </div>
   );

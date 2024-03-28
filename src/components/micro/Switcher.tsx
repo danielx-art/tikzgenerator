@@ -1,7 +1,7 @@
 type PropsType = {
   isChecked: boolean;
   setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
-  messageOne: string;
+  messageOne?: string;
   messageTwo?: string;
   onChange?: () => void;
 };
@@ -20,11 +20,15 @@ const Switcher: React.FC<PropsType> = ({
 
   return (
     <label className="group isolate flex cursor-pointer select-none flex-nowrap items-center justify-start">
-      <div
-        className={`${isChecked ? "text-c_scnd_int" : "text-c_faded"} text-sm`}
-      >
-        {messageOne}
-      </div>
+      {messageOne && (
+        <div
+          className={`${
+            isChecked ? "text-c_scnd_int" : "text-c_faded"
+          } text-sm`}
+        >
+          {messageOne}
+        </div>
+      )}
       <div className="mx-4">
         <input
           type="checkbox"

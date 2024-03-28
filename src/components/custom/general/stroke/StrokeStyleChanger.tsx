@@ -16,16 +16,20 @@ type PropsType = {
   entId: TentId | undefined;
 };
 
-const OptionsMap = ["solid", "dashed-0.5-1", "dotted"] as Array<STROKE_STYLES>;
+export const STROKE_STYLE_OPTIONS = [
+  "solid",
+  "dashed-0.5-1",
+  "dotted",
+] as Array<STROKE_STYLES>;
 
 const StrokeStyleChanger: React.FC<PropsType> = ({ entId }) => {
   const store = useStore(myStore, (state) => state);
-  const configs = useStore(configStore, (state)=>state);
+  const configs = useStore(configStore, (state) => state);
 
-  
-  const [style, setStyle] = useState<STROKE_STYLES>(configs?.DEFAULT_STROKE_STYLE || initConfigs.DEFAULT_STROKE_STYLE);
+  const [style, setStyle] = useState<STROKE_STYLES>(
+    configs?.DEFAULT_STROKE_STYLE || initConfigs.DEFAULT_STROKE_STYLE,
+  );
   const [disabled, setDisabled] = useState(true);
-
 
   useEffect(() => {
     if (!store || !entId) {
@@ -57,8 +61,8 @@ const StrokeStyleChanger: React.FC<PropsType> = ({ entId }) => {
 
   const handleDisplayChange = (option: number) => {
     if (!entId || !store || disabled) return;
-    if (!OptionsMap[option]) return;
-    setStyle(OptionsMap[option]!);
+    if (!STROKE_STYLE_OPTIONS[option]) return;
+    setStyle(STROKE_STYLE_OPTIONS[option]!);
   };
 
   return (
@@ -67,7 +71,7 @@ const StrokeStyleChanger: React.FC<PropsType> = ({ entId }) => {
       <div className="flex flex-row">
         <RadioGroup
           onChange={(option) => handleDisplayChange(option)}
-          value={entId && store ? OptionsMap.indexOf(style) : 0}
+          value={entId && store ? STROKE_STYLE_OPTIONS.indexOf(style) : 0}
           disabled={entId ? false : true}
         >
           <div className="h-4 w-8">
