@@ -1,3 +1,4 @@
+import useIsTouchDevice from "import/utils/hooks/useIsTouchDevice";
 import useWindowSize from "import/utils/hooks/useWindowsSize";
 import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
@@ -16,6 +17,8 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
   const [posX, setPosX] = useState(0);
   let timeoutId = useRef<NodeJS.Timeout | null>(null);
 
+  const isTouchDevice = useIsTouchDevice();
+
   useEffect(() => {
     return () => {
       timeoutId.current ? clearTimeout(timeoutId.current) : null;
@@ -23,7 +26,7 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !toolTipRef.current || !windowDimensions) {
+    if (!containerRef.current || !toolTipRef.current || !windowDimensions || isTouchDevice) {
       return;
     }
     timeoutId.current ? clearTimeout(timeoutId.current) : null;
@@ -41,7 +44,7 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
       }
     } else {
       if (
-        toolTipDimensions < windowDimensions &&
+        toolTipDimensions.width < windowDimensions.width &&
         posX - toolTipDimensions.width > 0
       ) {
         toolTipRef.current.style.left = posX - toolTipDimensions.width + "px";
@@ -67,7 +70,7 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
     timeoutId.current ? clearTimeout(timeoutId.current) : null;
   };
 
-  const tooltipContent = isVisible ? (
+  const tooltipContent = (isVisible && !isTouchDevice) ? (
     <span
       ref={toolTipRef}
       className="animate-quickcomein pointer-events-none absolute select-none whitespace-nowrap rounded bg-c_scnd p-1 font-jost text-sm text-c_base"
