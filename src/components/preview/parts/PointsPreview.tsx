@@ -1,12 +1,29 @@
+import useDraggable, { type DragState } from "import/utils/hooks/useDraggableOnSVG";
 import { vector } from "import/utils/math/vetores";
 import configStore, { type ConfigState } from "import/utils/store/configStore";
 import myStore, { State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
+import { getSelected } from "import/utils/storeHelpers/entityGetters";
 import { TallId, Tpoint, TpointId } from "public/entidades";
+import { useCallback } from "react";
 
-const PointsPreview: React.FC = () => {
+type PropsType = {
+  svgRef: React.RefObject<SVGSVGElement>;
+}
+
+const PointsPreview:React.FC<PropsType> = ({svgRef}) => {
   const store = useStore(myStore, (state) => state);
   const configs = useStore(configStore, (state)=>state);
+
+  const onPointMove = useCallback((dragState: DragState)=>{
+    if(!store) return;
+    const selectedPoints = getSelected("point", store);
+    selectedPoints.forEach((point)=>{
+      const {diff} = dragState;
+    })
+  }, [store, store?.selections])
+
+  const currentDrag = useDraggable(svgRef);
 
   if (!store || !configs) return;
 
@@ -18,9 +35,10 @@ const PointsPreview: React.FC = () => {
         <PointPreview
           point={point}
           toggleSelection={toggleSelection}
-          movePoint={movePoint}
+          //movePoint={movePoint}
           key={"svg_path_point_" + point.id}
           configs={configs}
+          //dragState={currentDrag}
         />
       ))}
     </>
@@ -32,15 +50,17 @@ export default PointsPreview;
 type PointProps = {
   point: Tpoint;
   toggleSelection: (id: TallId) => void;
-  movePoint: (id: TpointId, newPosition: vector) => void;
-  configs: ConfigState
+  //movePoint: ((id: `point_${number}`, newPosition: vector) => void),
+  configs: ConfigState;
+  //dragState: DragState
 };
 
 const PointPreview: React.FC<PointProps> = ({
   point,
   toggleSelection,
-  movePoint,
-  configs
+  //movePoint,
+  configs,
+  //dragState
 }) => {
   let stroke = "none";
   let fill = "none";
@@ -56,6 +76,8 @@ const PointPreview: React.FC<PointProps> = ({
   const hitBoxSize = point.size + 0.2;
 
   const {RES_FACTOR_SVG, DEFAULT_STROKE_WIDTH} = configs;
+
+  //DRAW GHOST POINT POSITION, OR CHANGE ITS POSITION, BASED ON DRAGSTATE
 
   return (
     <g filter={point.selected ? "url(#glow)" : "url(#dropshadow"}>
