@@ -1,17 +1,15 @@
-import {
-  type RefObject,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
+import { type RefObject, useState, useEffect, useCallback } from "react";
 
 type Tpos = { x: number; y: number };
 export type DragState = { start: Tpos; diff: Tpos; curr: Tpos };
+type DragCallback = (dragState: Partial<DragState>) => void;
 
-const useDraggableOnSVG = (svgRef?: RefObject<SVGSVGElement>) => {
-  //const [isDragging, setIsDragging] = useState(false);
-  const isDraggingRef = useRef(false);
+const useDraggableOnSVG = (
+  svgRef?: RefObject<SVGSVGElement>,
+  onMove?: DragCallback,
+  onStart?: DragCallback,
+) => {
+  const [isDragging, setIsDragging] = useState(false);
   const [currentDrag, setCurrentDrag] = useState<DragState | null>(null);
 
   const transformCoordinates = useCallback(
@@ -39,43 +37,43 @@ const useDraggableOnSVG = (svgRef?: RefObject<SVGSVGElement>) => {
         event.clientY,
       );
       if (!initialPosition) return;
-      isDraggingRef.current = true;
-      //setIsDragging(true);
+      console.log("HEYO"); //debugg
+      setIsDragging(true);
       const newDrag = {
         start: initialPosition,
         diff: { x: 0, y: 0 },
         curr: initialPosition,
       };
       setCurrentDrag(newDrag);
+      onStart && onStart(newDrag);
     },
-    [transformCoordinates],
+    [svgRef],
   );
 
   const handleMouseMove = useCallback(
     (event: MouseEvent) => {
-      if (!isDraggingRef.current) return;
+      console.log(isDragging); //debugg
+      if (!isDragging) return;
       const newPosition = transformCoordinates(event.clientX, event.clientY);
       if (!newPosition || !currentDrag) return;
       const diff = {
-        x: newPosition.x - currentDrag.curr.x,
-        y: newPosition.y - currentDrag.curr.y,
+        x: newPosition.x - currentDrag.start.x,
+        y: newPosition.y - currentDrag.start.y,
       };
-      //console.log(newPosition); //debugg
       const newDrag = {
         start: currentDrag.start,
         diff: diff,
         curr: newPosition,
       };
       setCurrentDrag(newDrag);
+      onMove && onMove(newDrag);
     },
-    [transformCoordinates, currentDrag],
+    [svgRef, onMove, isDragging],
   );
 
   useEffect(() => {
     const handleMouseUp = () => {
-      isDraggingRef.current = false;
-      setCurrentDrag(null);
-      //setIsDragging(false);
+      setIsDragging(false);
     };
 
     const svgElement = svgRef && svgRef.current;
@@ -92,9 +90,9 @@ const useDraggableOnSVG = (svgRef?: RefObject<SVGSVGElement>) => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [handleMouseDown, handleMouseMove]);
+  }, [svgRef]);
 
-  return { isDragging: isDraggingRef.current, currentDrag };
+  return { isDragging, currentDrag };
 };
 
 export default useDraggableOnSVG;

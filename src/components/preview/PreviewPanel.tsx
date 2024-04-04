@@ -41,7 +41,7 @@ const PreviewPanel = () => {
   useEffect(() => {
     if (!points || !scale || !configs) return;
 
-    const {RES_FACTOR_SVG, DEFAULT_POINT_SIZE} = configs;
+    const { RES_FACTOR_SVG, DEFAULT_POINT_SIZE } = configs;
 
     let minX = Infinity;
     let maxX = -Infinity;
@@ -57,7 +57,6 @@ const PreviewPanel = () => {
 
     if (circles && circles.size > 0) {
       circles.forEach((circle) => {
-        
         const cLeft = circle.center.x - circle.radius;
         if (cLeft < minX) minX = cLeft;
 
@@ -79,13 +78,13 @@ const PreviewPanel = () => {
 
     //     const tLeft = tagPos.x - tag.size;
     //     if(tLeft < minX) minX = tLeft;
-        
+
     //     const tTop = tagPos.y + tag.size;
     //     if(tTop > maxY) maxY = tTop;
-        
+
     //     const tRight = tagPos.x + tag.size;
     //     if(tRight > maxX) maxX = tRight;
-        
+
     //     const tBottom = tagPos.y - tag.size;
     //     if(tBottom < minY) minY = tBottom;
     //   });
@@ -103,9 +102,9 @@ const PreviewPanel = () => {
     let properHeight = maxY - minY;
 
     //avoid equal values when points are colinear or equal making the default 100 too big
-    if (minX === maxX && minY === maxY){
+    if (minX === maxX && minY === maxY) {
       //cold be theres only one point or two identical points (maybe take care of that when creating points.)
-      if(points.size >= 1) {
+      if (points.size >= 1) {
         const onepoint = Array.from(points.values())[0];
         const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
         //center the point
@@ -116,24 +115,24 @@ const PreviewPanel = () => {
         properHeight = properWidth;
         padding = 2;
       }
-    } else if(minX === maxX && minY !== maxY) {
+    } else if (minX === maxX && minY !== maxY) {
       const len = maxY - minY;
-      if(points.size >= 1){
+      if (points.size >= 1) {
         const onepoint = Array.from(points.values())[0];
         const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
         //center the point
-        minX -= (+len)/2;
+        minX -= +len / 2;
       }
       //make it a square
       maxX = minX + len;
       properWidth = len;
-    } else if(minX !== maxX && minY === maxY) {
+    } else if (minX !== maxX && minY === maxY) {
       const len = maxX - minX;
-      if(points.size >= 1){
+      if (points.size >= 1) {
         const onepoint = Array.from(points.values())[0];
         const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
         //center the point
-        minY -= (+len)/2;
+        minY -= +len / 2;
       }
       //make it a square again
       maxY = minY + len;
@@ -208,7 +207,7 @@ const PreviewPanel = () => {
             <CirclesPreview />
             <AnglesPreview />
             <SegmentsPreview />
-            <PointsPreview />
+            <PointsPreview svgRef={svgRef} />
             <TagsPreview />
           </g>
         </svg>
