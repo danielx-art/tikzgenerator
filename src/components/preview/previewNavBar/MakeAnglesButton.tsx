@@ -1,5 +1,5 @@
 import ToolTip from "import/components/micro/ToolTip";
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { makeAngles } from "import/utils/storeHelpers/makeAngles";

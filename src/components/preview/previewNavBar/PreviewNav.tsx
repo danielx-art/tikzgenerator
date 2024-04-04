@@ -1,4 +1,4 @@
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 import { type Ref, forwardRef } from "react";
 import RemoveEntityButton from "./RemoveEntityButton";
 import MakeAnglesButton from "./MakeAnglesButton";

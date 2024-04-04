@@ -1,4 +1,4 @@
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 import { createPortal } from "react-dom";
 
 type PropsType = React.HTMLAttributes<HTMLDivElement> & {

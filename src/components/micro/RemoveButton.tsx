@@ -1,4 +1,4 @@
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 import type { ButtonHTMLAttributes } from "react";
 
 type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
