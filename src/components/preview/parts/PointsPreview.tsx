@@ -1,11 +1,13 @@
-import useDraggableOnSVG from "import/utils/hooks/useDraggableOnSVG";
+import useDraggableOnSVG, {
+  DragState,
+} from "import/utils/hooks/useDraggableOnSVG";
 import { vec, vector } from "import/utils/math/vetores";
 import configStore, { type ConfigState } from "import/utils/store/configStore";
 import myStore, { State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import { getSelected } from "import/utils/storeHelpers/entityGetters";
 import { TallId, Tpoint, TpointId } from "public/entidades";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 type PropsType = {
   svgRef: React.RefObject<SVGSVGElement>;
@@ -15,25 +17,32 @@ const PointsPreview: React.FC<PropsType> = ({ svgRef }) => {
   const store = useStore(myStore, (state) => state);
   const configs = useStore(configStore, (state) => state);
 
-  const { isDragging, currentDrag } = useDraggableOnSVG(svgRef);
+  const onDragCallback = useCallback(
+    (isDragging: boolean, currentDrag: DragState) => {
+      if (!store || !configs) return;
+      const selectedPoints = getSelected("point", store);
 
-  useEffect(() => {
-    if (!store || !configs) return;
-    const selectedPoints = getSelected("point", store);
-    selectedPoints.forEach((point) => {
-      const diff = currentDrag?.diff || { x: 0, y: 0 };
-      const newPos = vec()
-        .copy(point.coords)
-        .add(
-          vec(diff.x, -diff.y).div(configs.RES_FACTOR_SVG * configs.TIKZ_SCALE),
-        );
-      if (isDragging) {
-        store.movePoint(point.id, newPos, true);
-      } else {
-        store.movePoint(point.id, newPos, false);
-      }
-    });
-  }, [isDragging, currentDrag, store, store?.selections]);
+      selectedPoints.forEach((point) => {
+        const diff = currentDrag?.diff || { x: 0, y: 0 };
+        const newPos = vec()
+          .copy(point.coords)
+          .add(
+            vec(diff.x, -diff.y).div(
+              configs.RES_FACTOR_SVG * configs.TIKZ_SCALE,
+            ),
+          );
+
+        if (isDragging) {
+          store.movePoint(point.id, newPos, true);
+        } else {
+          store.movePoint(point.id, newPos, false);
+        }
+      });
+    },
+    [store, configs, store?.selections],
+  );
+
+  useDraggableOnSVG(svgRef, onDragCallback);
 
   if (!store || !configs) return;
 

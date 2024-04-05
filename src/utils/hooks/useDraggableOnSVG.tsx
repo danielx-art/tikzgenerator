@@ -1,100 +1,96 @@
-import {
-  type RefObject,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
+import { useState, useEffect, useRef, RefObject } from "react";
 
 type Tpos = { x: number; y: number };
 export type DragState = { start: Tpos; diff: Tpos; curr: Tpos };
+export type OnDragCallback = (
+  isDragging: boolean,
+  currentDrag: DragState,
+) => void;
 
-const useDraggableOnSVG = (svgRef?: RefObject<SVGSVGElement>) => {
-  //const [isDragging, setIsDragging] = useState(false);
+const useDraggableOnSVG = (
+  svgRef?: RefObject<SVGSVGElement>,
+  onDragCallback?: OnDragCallback,
+) => {
   const isDraggingRef = useRef(false);
-  const [currentDrag, setCurrentDrag] = useState<DragState | null>(null);
+  const currentDragRef = useRef<DragState | null>(null);
+  const [, forceUpdate] = useState({});
 
-  const transformCoordinates = useCallback(
-    (clientX: number, clientY: number) => {
-      if (!svgRef || !svgRef.current) return;
+  const transformCoordinates = (clientX: number, clientY: number) => {
+    if (!svgRef?.current) return null;
 
-      let pt = svgRef.current.createSVGPoint();
-      pt.x = clientX;
-      pt.y = clientY;
+    let pt = svgRef.current.createSVGPoint();
+    pt.x = clientX;
+    pt.y = clientY;
 
-      // Transform the point to the SVG coordinate system
-      const screenCTM = svgRef.current.getScreenCTM();
-      if (!screenCTM) return;
-      pt = pt.matrixTransform(screenCTM.inverse());
+    const screenCTM = svgRef.current.getScreenCTM();
+    if (!screenCTM) return null;
+    pt = pt.matrixTransform(screenCTM.inverse());
 
-      return { x: pt.x, y: pt.y };
-    },
-    [svgRef],
-  );
+    return { x: pt.x, y: pt.y };
+  };
 
-  const handleMouseDown = useCallback(
-    (event: MouseEvent) => {
+  useEffect(() => {
+    const handleMouseDown = (event: MouseEvent) => {
       const initialPosition = transformCoordinates(
         event.clientX,
         event.clientY,
       );
       if (!initialPosition) return;
+
       isDraggingRef.current = true;
-      //setIsDragging(true);
-      const newDrag = {
+      currentDragRef.current = {
         start: initialPosition,
         diff: { x: 0, y: 0 },
         curr: initialPosition,
       };
-      setCurrentDrag(newDrag);
-    },
-    [transformCoordinates],
-  );
 
-  const handleMouseMove = useCallback(
-    (event: MouseEvent) => {
-      if (!isDraggingRef.current) return;
+      forceUpdate({});
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!isDraggingRef.current || !currentDragRef.current) return;
+
       const newPosition = transformCoordinates(event.clientX, event.clientY);
-      if (!newPosition || !currentDrag) return;
+      if (!newPosition) return;
+
       const diff = {
-        x: newPosition.x - currentDrag.curr.x,
-        y: newPosition.y - currentDrag.curr.y,
+        x: newPosition.x - currentDragRef.current.curr.x,
+        y: newPosition.y - currentDragRef.current.curr.y,
       };
-      //console.log(newPosition); //debugg
-      const newDrag = {
-        start: currentDrag.start,
+
+      currentDragRef.current = {
+        ...currentDragRef.current,
         diff: diff,
         curr: newPosition,
       };
-      setCurrentDrag(newDrag);
-    },
-    [transformCoordinates, currentDrag],
-  );
 
-  useEffect(() => {
+      onDragCallback &&
+        onDragCallback(isDraggingRef.current, currentDragRef.current);
+
+      forceUpdate({});
+    };
+
     const handleMouseUp = () => {
       isDraggingRef.current = false;
-      setCurrentDrag(null);
-      //setIsDragging(false);
+      currentDragRef.current = null;
+      forceUpdate({});
     };
 
-    const svgElement = svgRef && svgRef.current;
-    if (svgElement) {
-      svgElement.addEventListener("mousedown", handleMouseDown);
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    }
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    svgRef?.current?.addEventListener("mousedown", handleMouseDown);
 
     return () => {
-      if (svgElement) {
-        svgElement.removeEventListener("mousedown", handleMouseDown);
-      }
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
+      svgRef?.current?.removeEventListener("mousedown", handleMouseDown);
     };
-  }, [handleMouseDown, handleMouseMove]);
+  }, [svgRef, onDragCallback]);
 
-  return { isDragging: isDraggingRef.current, currentDrag };
+  return {
+    isDragging: isDraggingRef.current,
+    currentDrag: currentDragRef.current,
+  };
 };
 
 export default useDraggableOnSVG;
