@@ -45,7 +45,7 @@ export const calculateSVGDimensions = (
     });
   }
 
-  if (configs.AUTO_PREVIEW_RESIZE === true) {
+  if (configs.AUTO_PREVIEW_RESIZE === 1) {
     if (tags && tags.size > 0) {
       tags.forEach((tag) => {
         const tagPos = vec().copy(tag.anchor).add(vec().copy(tag.pos));
