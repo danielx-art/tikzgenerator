@@ -1,34 +1,45 @@
 import { useState } from "react";
 import OpenCloseAccordionButton from "./OpenCloseAccordionButton";
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 
 type PropsType = React.HTMLAttributes<HTMLDivElement> & {
   title: string;
   children: React.ReactNode;
-  conditionalClassNames?: string
+  conditionalClassNames?: string;
 };
 
-const AccordionItem: React.FC<PropsType> = ({ title, className, conditionalClassNames, children }) => {
+const AccordionItem: React.FC<PropsType> = ({
+  title,
+  className,
+  conditionalClassNames,
+  children,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  let conditionalClasses: {[key: string]: boolean} = {"": true};
+  let conditionalClasses: { [key: string]: boolean } = { "": true };
 
-  if(conditionalClassNames && conditionalClassNames.length > 0) {
+  if (conditionalClassNames && conditionalClassNames.length > 0) {
     let separatedConditions = conditionalClassNames.split(" ");
-    separatedConditions.forEach(cond=>conditionalClasses[cond] = isOpen)
+    separatedConditions.forEach((cond) => (conditionalClasses[cond] = isOpen));
   }
 
   return (
-    <div className={cn("w-full border-b-2 border-c_discrete border-opacity-20", className, conditionalClassNames ? conditionalClasses : null)}>
+    <div
+      className={cn(
+        "w-full border-b-2 border-c_discrete border-opacity-20",
+        className,
+        conditionalClassNames ? conditionalClasses : null,
+      )}
+    >
       <div
-        className="group flex w-fit cursor-pointer select-none flex-row text-c_scnd text-opacity-90 hover:text-opacity-100 mb-1"
+        className="group mb-1 flex w-fit cursor-pointer select-none flex-row text-c_scnd text-opacity-90 hover:text-opacity-100"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <OpenCloseAccordionButton isOpen={isOpen} />
         <div className="flex-1 pl-1">{title}</div>
       </div>
       <div
-        className={`w-full p-1 transition-all ease-in-out flex flex-col gap-2 ${
+        className={`flex w-full flex-col gap-2 p-1 transition-all ease-in-out ${
           isOpen
             ? "h-auto pb-4 opacity-100"
             : "disabled pointer-events-none h-0 select-none overflow-hidden opacity-0"
@@ -37,7 +48,17 @@ const AccordionItem: React.FC<PropsType> = ({ title, className, conditionalClass
         aria-orientation="vertical"
         aria-labelledby="options-menu"
       >
-        {Array.isArray(children) ? children.map((child, index)=><div key={`tools_child_${index}`} className="pl-2">{child}</div>) : <div key={`tools_child_0`} className="pl-6">{children}</div> }
+        {Array.isArray(children) ? (
+          children.map((child, index) => (
+            <div key={`tools_child_${index}`} className="pl-2">
+              {child}
+            </div>
+          ))
+        ) : (
+          <div key={`tools_child_0`} className="pl-6">
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );

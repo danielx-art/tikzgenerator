@@ -1,5 +1,5 @@
 import ToolTip from "import/components/micro/ToolTip";
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 import type { ButtonHTMLAttributes, Ref, RefObject } from "react";
 import { forwardRef } from "react";
 
@@ -9,7 +9,6 @@ const DownloadSVGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   { className },
   ref: Ref<SVGSVGElement>,
 ) {
-
   const handleDownload = () => {
     if ((ref as RefObject<SVGSVGElement>).current) {
       downloadSvgAsSvg(ref as RefObject<SVGSVGElement>, "figura_.svg").catch(

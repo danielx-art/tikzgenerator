@@ -1,4 +1,4 @@
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 import { useState } from "react";
 
 type PropsType = React.HTMLAttributes<HTMLDivElement> & {
@@ -13,7 +13,7 @@ const Dropdown: React.FC<PropsType> = ({
   keyword,
   children,
   openClasses = "",
-  closedClasses = ""
+  closedClasses = "",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,7 +34,11 @@ const Dropdown: React.FC<PropsType> = ({
 
   return (
     <div
-      className={cn("flex w-fit flex-col", isOpen ? openClasses:closedClasses,  className)}
+      className={cn(
+        "flex w-fit flex-col",
+        isOpen ? openClasses : closedClasses,
+        className,
+      )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onFocus={handleMouseEnter}

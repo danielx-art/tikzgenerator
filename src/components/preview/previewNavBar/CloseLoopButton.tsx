@@ -1,5 +1,5 @@
 import ToolTip from "import/components/micro/ToolTip";
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 import { vec } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";

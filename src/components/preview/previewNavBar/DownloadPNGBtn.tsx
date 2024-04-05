@@ -1,5 +1,5 @@
 import ToolTip from "import/components/micro/ToolTip";
-import { cn } from "import/utils/cn";
+import { cn } from "import/utils/misc/cn";
 import configStore from "import/utils/store/configStore";
 import useStore from "import/utils/store/useStore";
 import { initConfigs } from "public/generalConfigs";
@@ -12,16 +12,17 @@ const DownloadPNGBtn = forwardRef<SVGSVGElement, PropsType>(function (
   { className },
   ref: Ref<SVGSVGElement>,
 ) {
-
-  const RES_FACTOR_SVG = useStore(configStore, (state)=>state.RES_FACTOR_SVG);
+  const RES_FACTOR_SVG = useStore(configStore, (state) => state.RES_FACTOR_SVG);
 
   const handleDownload = () => {
     if ((ref as RefObject<SVGSVGElement>).current) {
-      downloadSvgAsPng(ref as RefObject<SVGSVGElement>, "figura_.png", RES_FACTOR_SVG || initConfigs.RES_FACTOR_SVG).catch(
-        (error) => {
-          console.error("Error downloading the image:", error);
-        },
-      );
+      downloadSvgAsPng(
+        ref as RefObject<SVGSVGElement>,
+        "figura_.png",
+        RES_FACTOR_SVG || initConfigs.RES_FACTOR_SVG,
+      ).catch((error) => {
+        console.error("Error downloading the image:", error);
+      });
     }
   };
 
@@ -56,7 +57,7 @@ export default DownloadPNGBtn;
 async function downloadSvgAsPng(
   svgRef: React.RefObject<SVGSVGElement>,
   fileName: string,
-  scaleFactor: number
+  scaleFactor: number,
 ): Promise<void> {
   if (!svgRef.current) {
     console.error("SVG element not found");

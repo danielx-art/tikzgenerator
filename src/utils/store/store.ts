@@ -58,7 +58,7 @@ export type Action = {
   toggleSelection: (id: TallId) => void;
   //addEntity: (entityKind: Tkind, elementBody: Tentity) => void;
   deleteEntity: (id: TentId) => void;
-  movePoint: (id: TpointId, newPosition: vector) => void;
+  movePoint: (id: TpointId, newPosition: vector, shallow?: boolean) => void;
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
   //setConfig: <Key extends keyof State['configs']>(config: Key, newValue: State['configs'][Key])=>void;
@@ -99,7 +99,7 @@ const myStore = create<State & Action>()(
       selectedGroup: 1 as number,
       setSelectedGroup: (selectedGroup) =>
         set(() => ({ selectedGroup: selectedGroup })),
-      
+
       idCounters: {
         point: 0,
         segment: 0,
@@ -231,7 +231,7 @@ const myStore = create<State & Action>()(
               angles: updatedAngles,
               polygons: updatedPolygons,
               selections: updatedSelections,
-              tags: updatedTags
+              tags: updatedTags,
             };
           });
         } else {
@@ -263,63 +263,75 @@ const myStore = create<State & Action>()(
         }
       },
 
-      movePoint: (id, newPosition) =>
+      movePoint: (id, newPosition, shallow = false) =>
         set((state) => {
-          const updatedPoints = new Map(state.points);
-          const point = updatedPoints.get(id);
-          if (point) {
-            updatedPoints.set(id, { ...point, coords: newPosition });
+          if (shallow === false) {
+            const updatedPoints = new Map(state.points);
+            const point = updatedPoints.get(id);
+            if (point) {
+              updatedPoints.set(id, { ...point, coords: newPosition });
+            }
+            return { points: updatedPoints };
+          } else {
+            const point = state.points.get(id);
+            if (point) {
+              point.coords = vec(newPosition.x, newPosition.y);
+              return {};
+            }
           }
-          return { points: updatedPoints };
+          return {};
         }),
 
       addTag: (value: string, entityId: TentId) => {
         const tagId = get().generateId("tag") as TtagId;
 
-        let anchor = vec(0,0);
+        let anchor = vec(0, 0);
 
         const thisEntity = getEntityById(entityId, get());
 
-        if(!thisEntity) return;
+        if (!thisEntity) return;
 
         const entityKind = getKindById(entityId);
 
-        switch(entityKind) {
+        switch (entityKind) {
           case "point": {
             const ref = thisEntity as Tpoint;
             anchor.add(ref.coords);
             break;
-          };
-          case "segment":{
+          }
+          case "segment": {
             const ref = thisEntity as Tsegment;
-            const {p1, p2} = ref;
-            const midPoint = vec().copy(p1.coords).add(vec().copy(p2.coords)).div(2);
+            const { p1, p2 } = ref;
+            const midPoint = vec()
+              .copy(p1.coords)
+              .add(vec().copy(p2.coords))
+              .div(2);
             anchor.add(midPoint);
             break;
-          };
-          case "angle":{
+          }
+          case "angle": {
             const ref = thisEntity as Tangle;
             anchor.add(ref.b.coords);
             break;
-          };
-          case "circle":{
+          }
+          case "circle": {
             const ref = thisEntity as Tcircle;
             anchor.add(ref.center);
             break;
-          };
-          case "polygon":{
+          }
+          case "polygon": {
             const ref = thisEntity as Tpolygon;
-            let centroid = vec(0,0);
-            ref.vertices.forEach((vertex)=>{
+            let centroid = vec(0, 0);
+            ref.vertices.forEach((vertex) => {
               centroid.add(vertex.coords);
-            })
+            });
             centroid.div(ref.vertices.length);
             anchor.add(centroid);
             break;
-          };
+          }
         }
 
-        const newTag = tag(value, entityId, tagId, vec(0,0.35), anchor);
+        const newTag = tag(value, entityId, tagId, vec(0, 0.35), anchor);
 
         set((state) => {
           const updatedTags = new Map(state.tags);

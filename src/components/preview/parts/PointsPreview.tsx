@@ -1,16 +1,52 @@
-import { vector } from "import/utils/math/vetores";
+import useDraggableOnSVG, {
+  DragState,
+} from "import/utils/hooks/useDraggableOnSVG";
+import { vec, vector } from "import/utils/math/vetores";
 import configStore, { type ConfigState } from "import/utils/store/configStore";
 import myStore, { State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
+import { getSelected } from "import/utils/storeHelpers/entityGetters";
 import { TallId, Tpoint, TpointId } from "public/entidades";
+import { useCallback, useEffect } from "react";
 
-const PointsPreview: React.FC = () => {
+type PropsType = {
+  svgRef: React.RefObject<SVGSVGElement>;
+};
+
+const PointsPreview: React.FC<PropsType> = ({ svgRef }) => {
   const store = useStore(myStore, (state) => state);
-  const configs = useStore(configStore, (state)=>state);
+  const configs = useStore(configStore, (state) => state);
+
+  const onDragCallback = useCallback(
+    (isDragging: boolean, currentDrag: DragState) => {
+      if (!store || !configs) return;
+      const selectedPoints = getSelected("point", store);
+
+      selectedPoints.forEach((point) => {
+        const diff = currentDrag?.diff || { x: 0, y: 0 };
+        const newPos = vec()
+          .copy(point.coords)
+          .add(
+            vec(diff.x, -diff.y).div(
+              configs.RES_FACTOR_SVG * configs.TIKZ_SCALE,
+            ),
+          );
+
+        if (isDragging) {
+          store.movePoint(point.id, newPos, true);
+        } else {
+          store.movePoint(point.id, newPos, false);
+        }
+      });
+    },
+    [store, configs, store?.selections],
+  );
+
+  useDraggableOnSVG(svgRef, onDragCallback);
 
   if (!store || !configs) return;
 
-  const { points, toggleSelection, movePoint} = store;
+  const { points, toggleSelection } = store;
 
   return (
     <>
@@ -18,9 +54,10 @@ const PointsPreview: React.FC = () => {
         <PointPreview
           point={point}
           toggleSelection={toggleSelection}
-          movePoint={movePoint}
+          //movePoint={movePoint}
           key={"svg_path_point_" + point.id}
           configs={configs}
+          //dragState={currentDrag}
         />
       ))}
     </>
@@ -32,15 +69,17 @@ export default PointsPreview;
 type PointProps = {
   point: Tpoint;
   toggleSelection: (id: TallId) => void;
-  movePoint: (id: TpointId, newPosition: vector) => void;
-  configs: ConfigState
+  //movePoint: ((id: `point_${number}`, newPosition: vector) => void),
+  configs: ConfigState;
+  //dragState: DragState
 };
 
 const PointPreview: React.FC<PointProps> = ({
   point,
   toggleSelection,
-  movePoint,
-  configs
+  //movePoint,
+  configs,
+  //dragState
 }) => {
   let stroke = "none";
   let fill = "none";
@@ -55,14 +94,18 @@ const PointPreview: React.FC<PointProps> = ({
 
   const hitBoxSize = point.size + 0.2;
 
-  const {RES_FACTOR_SVG, DEFAULT_STROKE_WIDTH} = configs;
+  const { RES_FACTOR_SVG, DEFAULT_STROKE_WIDTH } = configs;
+
+  //DRAW GHOST POINT POSITION, OR CHANGE ITS POSITION, BASED ON DRAGSTATE
 
   return (
     <g filter={point.selected ? "url(#glow)" : "url(#dropshadow"}>
       <path
         key={"svg_path_hitbox_" + point.id}
         d={
-          `M ${point.coords.x * RES_FACTOR_SVG} ${point.coords.y * RES_FACTOR_SVG} ` +
+          `M ${point.coords.x * RES_FACTOR_SVG} ${
+            point.coords.y * RES_FACTOR_SVG
+          } ` +
           `m -${hitBoxSize * 0.1 * RES_FACTOR_SVG}, 0 ` +
           `a ${hitBoxSize * 0.1 * RES_FACTOR_SVG},${
             hitBoxSize * 0.1 * RES_FACTOR_SVG
