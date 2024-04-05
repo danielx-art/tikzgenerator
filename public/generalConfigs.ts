@@ -17,8 +17,8 @@ export const initConfigs = {
   DEFAULT_TAG_COLOR: "black" as LATEX_COLOR,
   RES_FACTOR_SVG: 10,
   TIKZ_SCALE: 1,
-  AUTO_PREVIEW_RESIZE: true,
-  SHOW_AXIS: false,
+  AUTO_PREVIEW_RESIZE: 1,
+  SHOW_AXIS: 0,
 };
 
 export const MAXIMUM_NUMBER_OF_POINTS = 3458;
