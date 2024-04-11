@@ -4,7 +4,7 @@ type Tpos = { x: number; y: number };
 export type DragState = { start: Tpos; diff: Tpos; curr: Tpos };
 export type OnDragCallback = (
   isDragging: boolean,
-  currentDrag: DragState,
+  currentDrag: DragState | null,
 ) => void;
 
 const useDraggableOnSVG = (
@@ -73,6 +73,8 @@ const useDraggableOnSVG = (
     const handleMouseUp = () => {
       isDraggingRef.current = false;
       currentDragRef.current = null;
+      onDragCallback &&
+        onDragCallback(isDraggingRef.current, currentDragRef.current);
       forceUpdate({});
     };
 

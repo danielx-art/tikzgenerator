@@ -69,14 +69,14 @@ export const calculateSVGDimensions = (
 
   //avoid infinities
   if (minX === Infinity) minX = 0;
-  if (maxX === -Infinity) maxX = 100;
+  if (maxX === -Infinity) maxX = 2;
   if (minY === Infinity) minY = 0;
-  if (maxY === -Infinity) maxY = 100;
+  if (maxY === -Infinity) maxY = 2;
 
   let properWidth = maxX - minX;
   let properHeight = maxY - minY;
 
-  //avoid equal values when points are colinear or equal making the default 100 too big
+  //avoid equal values when points are colinear
   if (minX === maxX && minY === maxY) {
     //cold be theres only one point or two identical points (maybe take care of that when creating points.)
     if (points.size >= 1) {
@@ -93,23 +93,26 @@ export const calculateSVGDimensions = (
   } else if (minX === maxX && minY !== maxY) {
     const len = maxY - minY;
     if (points.size >= 1) {
-      const onepoint = Array.from(points.values())[0];
-      const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
+      // const onepoint = Array.from(points.values())[0];
+      // const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
       //center the point
       minX -= +len / 2;
     }
+    console.log("setting up proper width, height should be " + (maxY-minY)*TIKZ_SCALE*RES_FACTOR_SVG); //debugg
     //make it a square
     maxX = minX + len;
     properWidth = len;
   } else if (minX !== maxX && minY === maxY) {
     const len = maxX - minX;
     if (points.size >= 1) {
-      const onepoint = Array.from(points.values())[0];
-      const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
+      // const onepoint = Array.from(points.values())[0];
+      // const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
       //center the point
       minY -= +len / 2;
     }
     //make it a square again
+    console.log("setting up proper height, height should be " + (maxY-minY)*TIKZ_SCALE*RES_FACTOR_SVG); //debugg
+
     maxY = minY + len;
     properHeight = len;
   }
