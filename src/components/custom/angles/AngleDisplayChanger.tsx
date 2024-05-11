@@ -67,7 +67,7 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
   return (
     <div className={`flex flex-row flex-nowrap gap-2`}>
       <div className="grid items-center">Destaques: </div>
-      <div className="flex w-full flex-row">
+      <div className="flex w-fit flex-row">
         {!disabled && selectedButton !== null && selectedOption !== null && (
           <MultipleRadioGroup
             onChange={handleDisplayChange}

@@ -110,7 +110,7 @@ export const getAnglePath = (angle: Tangle, scaleFactor: number) => {
   }
 
   if (Math.abs(angleDifference) > 180) {
-    sweepFlag = 0;
+    sweepFlag = angle.isBigAngle ? 1 : 0;
   }
 
   let start = vec().copy(startVector).add(angleB);
@@ -120,7 +120,7 @@ export const getAnglePath = (angle: Tangle, scaleFactor: number) => {
   let dMarksPath = "";
   let dFillPath = "";
 
-  const roundedDegrees = parseFloat(roundToDecimalPlaces((angle.valor * 180) / Math.PI));
+  const roundedDegrees = angle.isBigAngle ?  parseFloat(roundToDecimalPlaces((angle.valorExt * 180) / Math.PI)) : parseFloat(roundToDecimalPlaces((angle.valor * 180) / Math.PI));
 
   if (roundedDegrees === 90) {
     d += `M ${angleB.x + startVector.x} ${angleB.y + startVector.y} `;

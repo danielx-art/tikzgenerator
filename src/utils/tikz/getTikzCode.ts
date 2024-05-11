@@ -23,6 +23,6 @@ export default function getTikzCode(store?: State & Action) {
   tikzCode += getPointsTikzCode(store);
   tikzCode += getTagsTikzCode(store);
 
-  tikzCode += "\\end{tikzpicture} \n https://geosimples.vercel.app/, by https://github.com/danielx-art";
+  tikzCode += " \n % https://geosimples.vercel.app/, by https://github.com/danielx-art \n \\end{tikzpicture} ";
   return tikzCode;
 }
