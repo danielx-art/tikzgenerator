@@ -18,7 +18,7 @@ const PointsPreview: React.FC<PropsType> = ({ svgRef }) => {
   const configs = useStore(configStore, (state) => state);
 
   const onDragCallback = useCallback(
-    (isDragging: boolean, currentDrag: DragState) => {
+    (isDragging: boolean, currentDrag: DragState | null) => {
       if (!store || !configs) return;
       const selectedPoints = getSelected("point", store);
 

@@ -147,6 +147,7 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
     get valorExt() {
       return 2 * Math.PI - this.valor;
     },
+    isBigAngle: false,
     visible: true,
     size: configStore.getState().DEFAULT_ANGLE_SIZE,
     dotstyle: configStore.getState().DEFAULT_ANGLE_STYLE,

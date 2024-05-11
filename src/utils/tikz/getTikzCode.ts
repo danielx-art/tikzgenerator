@@ -18,11 +18,11 @@ export default function getTikzCode(store?: State & Action) {
   tikzCode += getCoordinatesTikzCode(store);
   tikzCode += getPolygonsTikzCode(store);
   tikzCode += getCirclesTikzCode(store);
-  tikzCode += getSegmentsTikzCode(store);
   tikzCode += getAnglesTikzCode(store);
+  tikzCode += getSegmentsTikzCode(store);
   tikzCode += getPointsTikzCode(store);
   tikzCode += getTagsTikzCode(store);
 
-  tikzCode += "\\end{tikzpicture}";
+  tikzCode += " \n % https://geosimples.vercel.app/, by https://github.com/danielx-art \n \\end{tikzpicture} ";
   return tikzCode;
 }
