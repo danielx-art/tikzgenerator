@@ -18,8 +18,8 @@ export default function getTikzCode(store?: State & Action) {
   tikzCode += getCoordinatesTikzCode(store);
   tikzCode += getPolygonsTikzCode(store);
   tikzCode += getCirclesTikzCode(store);
-  tikzCode += getSegmentsTikzCode(store);
   tikzCode += getAnglesTikzCode(store);
+  tikzCode += getSegmentsTikzCode(store);
   tikzCode += getPointsTikzCode(store);
   tikzCode += getTagsTikzCode(store);
 
