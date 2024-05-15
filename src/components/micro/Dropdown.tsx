@@ -1,5 +1,5 @@
 import { cn } from "import/utils/misc/cn";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type PropsType = React.HTMLAttributes<HTMLDivElement> & {
   keyword: string;
@@ -17,7 +17,7 @@ const Dropdown: React.FC<PropsType> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  let hoverTimeout: NodeJS.Timeout | null = null;
+  let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const handleMouseEnter = () => {
     if (hoverTimeout) {
@@ -32,10 +32,18 @@ const Dropdown: React.FC<PropsType> = ({
     }, 500);
   };
 
+  useEffect(() => {
+    return () => {
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+    };
+  }, [hoverTimeout]);
+
   return (
     <div
       className={cn(
-        "flex w-fit flex-col",
+        "flex w-fit flex-col transition-all duration-75",
         isOpen ? openClasses : closedClasses,
         className,
       )}
@@ -47,15 +55,10 @@ const Dropdown: React.FC<PropsType> = ({
       aria-orientation="vertical"
       aria-labelledby="options-menu"
     >
-      {isOpen == false ? (
-        <>{children[0]}</>
-      ) : (
-        <>
-          {children.map((each, index) => (
-            <div key={`dropdown_menu_${keyword}_${index}`}>{each}</div>
-          ))}
-        </>
-      )}
+      {!isOpen && <>{children[0]}</>}
+      {isOpen && children.map((child, index) => (
+        <div key={`dropdown_menu_${keyword}_${index}`}>{child}</div>
+      ))}
     </div>
   );
 };
