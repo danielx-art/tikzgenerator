@@ -15,69 +15,100 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
   const windowDimensions = useWindowSize();
   const [isVisible, setIsVisible] = useState(false);
   const [posX, setPosX] = useState(0);
-  let timeoutId = useRef<NodeJS.Timeout | null>(null);
+  // const showTimeout = useRef<NodeJS.Timeout | null>(null);
+  // const hideTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const isTouchDevice = useIsTouchDevice();
 
-  useEffect(() => {
-    return () => {
-      timeoutId.current ? clearTimeout(timeoutId.current) : null;
-    };
-  }, []);
+  // useEffect(() => { 
+  //   return () => {
+  //     if (showTimeout.current) clearTimeout(showTimeout.current);
+  //     if (hideTimeout.current) clearTimeout(hideTimeout.current);
+  //   };
+  // }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !toolTipRef.current || !windowDimensions || isTouchDevice) {
-      return;
-    }
-    timeoutId.current ? clearTimeout(timeoutId.current) : null;
-    timeoutId.current = setTimeout(() => {
-      setIsVisible(false);
-    }, 2000);
-    const containerDimensions = containerRef.current.getBoundingClientRect();
-    const toolTipDimensions = toolTipRef.current.getBoundingClientRect();
-    if (posX + toolTipDimensions.width < windowDimensions.width) {
-      toolTipRef.current.style.left = posX + "px";
-      if (containerDimensions.bottom - 30 < windowDimensions.height) {
-        toolTipRef.current.style.top = containerDimensions.bottom - 10 + "px";
-      } else {
-        toolTipRef.current.style.top = containerDimensions.top + 10 + "px";
-      }
-    } else {
+    // hideTimeout.current ? clearTimeout(hideTimeout.current) : null;
+    // hideTimeout.current = setTimeout(() => {
+    //   setIsVisible(false);
+    // }, 2000);
+
+    if (!isVisible) return;
+
+    const setPositionOrToast = () => {
       if (
-        toolTipDimensions.width < windowDimensions.width &&
-        posX - toolTipDimensions.width > 0
+        !containerRef.current ||
+        !toolTipRef.current ||
+        !windowDimensions ||
+        isTouchDevice
       ) {
-        toolTipRef.current.style.left = posX - toolTipDimensions.width + "px";
+        return;
+      }
+      const containerDimensions = containerRef.current.getBoundingClientRect();
+      const toolTipDimensions = toolTipRef.current.getBoundingClientRect();
+      if (posX + toolTipDimensions.width < windowDimensions.width) {
+        toolTipRef.current.style.left = posX + "px";
         if (containerDimensions.bottom - 30 < windowDimensions.height) {
           toolTipRef.current.style.top = containerDimensions.bottom - 10 + "px";
         } else {
           toolTipRef.current.style.top = containerDimensions.top + 10 + "px";
         }
       } else {
-        toast.info(message, { closeButton: false, position: "bottom-center" });
+        if (
+          toolTipDimensions.width < windowDimensions.width &&
+          posX - toolTipDimensions.width > 0
+        ) {
+          toolTipRef.current.style.left = posX - toolTipDimensions.width + "px";
+          if (containerDimensions.bottom - 30 < windowDimensions.height) {
+            toolTipRef.current.style.top =
+              containerDimensions.bottom - 10 + "px";
+          } else {
+            toolTipRef.current.style.top = containerDimensions.top + 10 + "px";
+          }
+        } else {
+          toast.info(message, {
+            closeButton: false,
+            position: "bottom-center",
+            duration: 3000
+          });
+        }
       }
-    }
+    };
+
+    setPositionOrToast();
+
+    // return () => {
+    //   if (showTimeout.current) clearTimeout(showTimeout.current);
+    //   if (hideTimeout.current) clearTimeout(hideTimeout.current);
+    // };
   }, [isVisible]);
 
   const mouseEnter = (clientX: number) => {
-    setIsVisible(true);
+    // showTimeout.current = setTimeout(() => {
+    //   setPosX(clientX);
+    //   setIsVisible(true);
+    // }, 1000);
     setPosX(clientX);
+    setIsVisible(true);
   };
 
   const mouseLeave = () => {
     if (!toolTipRef.current) return;
+    // if(showTimeout.current) {
+    //   clearTimeout(showTimeout.current);
+    // }
     setIsVisible(false);
-    timeoutId.current ? clearTimeout(timeoutId.current) : null;
   };
 
-  const tooltipContent = (isVisible && !isTouchDevice) ? (
-    <span
-      ref={toolTipRef}
-      className="animate-quickcomein pointer-events-none absolute select-none whitespace-nowrap rounded bg-c_scnd p-1 font-jost text-sm text-c_base"
-    >
-      {message}
-    </span>
-  ) : null;
+  const tooltipContent =
+    isVisible && !isTouchDevice ? (
+      <span
+        ref={toolTipRef}
+        className="pointer-events-none absolute animate-delayedquickcomein select-none whitespace-nowrap rounded bg-c_scnd p-1 font-jost text-sm text-c_base"
+      >
+        {message}
+      </span>
+    ) : null;
 
   if (children && document.getElementById("myapp") != null) {
     return (

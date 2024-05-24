@@ -52,6 +52,7 @@ export default {
         comein: "comein 75ms ease-out 1",
         quickcomein: "quickcomein 150ms ease-out 1",
         fadein: "fadein 200ms ease-out 1",
+        delayedquickcomein: "quickcomein 150ms ease-out 1 1000ms"
       },
     },
   },

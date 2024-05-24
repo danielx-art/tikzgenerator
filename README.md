@@ -25,9 +25,9 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
   9. [x] (ângulos) consertar visibilidade de customização de 'marcas' para ângulos de 90°.
 - [x] Customização de cor para ponto.
 - [x] Consertar: Não é possível inserir uma tag na customização, apenas alterar se já existe uma.
-- Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana.
-- Selecionado um ângulo: criar bissetriz.
-- Selecionado um segmento: criar mediatriz.
+- [ ] Selecionados um segmento e um ponto: criar altura (liga/desliga prolongar segmento) ou mediana.
+- [ ] elecionado um ângulo: criar bissetriz.
+- [ ] Selecionado um segmento: criar mediatriz.
 - [x] Criar nova entidade: círculo.
 - [x] Selecionados dois pontos: criar círculo centrado no primeiro e cujo raio é a distância entre os dois pontos.
 - [x] Selecionados três pontos: criar círculo.
@@ -38,7 +38,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [x] Criação de uma nova entidade: polígono, para preenchimento.
 - [x] Colocar um setTimeOut para as mensagens de erro automaticamente esmaecerem (toast).
 - [x] Tooptips.
-- Presets:
+- [ ] Presets:
   1. Triângulo retângulo:
      - Inscrito.
      - Cincunscrito.
@@ -54,3 +54,10 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - 3D?
 - [x] Salvar imagem em svg.
 - [x] Modal configurações e sobre.
+- [ ] Ferramenta mover pontos apenas quando selecionada.
+- [ ] Menu para adicionar eixos, e customizá-los, incluindo grid.
+- [ ] Adicionar acessibilidade aos botões.
+- [ ] Caixa de seleção para adicionar preenchimento de um círculo, ao invés de utilizar opacidade 0 como default.
+- [ ] Opção refinar posicionamento de etiquetas em ângulos.
+- [ ] Quando limpar a tela de todas as entidades, resetar os contadores de id.
+- [ ] Salvar templates customizáveis em Presets.

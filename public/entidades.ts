@@ -239,3 +239,16 @@ export const tag = function (
 };
 
 export type Ttag = ReturnType<typeof tag>;
+
+export type TaxisConfig = {
+  shown: boolean,
+  range: [number, number],
+  partition: number | null,
+  stroke: Tstroke,
+  label: {
+    text: string,
+    color: LATEX_COLOR,
+    pos: vector,
+  },
+  cap: "solid-arrow" | "thin-arrow" | "none"
+}
