@@ -61,3 +61,8 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [ ] Opção refinar posicionamento de etiquetas em ângulos.
 - [ ] Quando limpar a tela de todas as entidades, resetar os contadores de id.
 - [ ] Salvar templates customizáveis em Presets.
+
+### Bugs
+
+- [ ] Na ferramenta Inserir Ponto em Segmento, quando selecionada distância 'd' aparece espaço em branco em baixo da página.
+- [ ] nos menus de selecionar cor, overflow não está como contain, e ao scrollar a na página inteira dá scroll.
