@@ -176,7 +176,7 @@ export const circle = function (
       if (typeof radius === "number") return radius;
       return radius();
     },
-    isArc: false,
+    arcOffset: 0,
     arcStart: 0,
     arcEnd: 360,
     visible: true,
@@ -241,14 +241,14 @@ export const tag = function (
 export type Ttag = ReturnType<typeof tag>;
 
 export type TaxisConfig = {
-  shown: boolean,
-  range: [number, number],
-  partition: number | null,
-  stroke: Tstroke,
+  shown: boolean;
+  range: [number, number];
+  partition: number | null;
+  stroke: Tstroke;
   label: {
-    text: string,
-    color: LATEX_COLOR,
-    pos: vector,
-  },
-  cap: "solid-arrow" | "thin-arrow" | "none"
-}
+    text: string;
+    color: LATEX_COLOR;
+    pos: vector;
+  };
+  cap: "solid-arrow" | "thin-arrow" | "none";
+};

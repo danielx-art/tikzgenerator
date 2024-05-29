@@ -6,19 +6,18 @@ import configStore from "import/utils/store/configStore";
 
 const CirclesPreview: React.FC = () => {
   const store = useStore(myStore, (state) => state);
-  const configs = useStore(configStore, (state)=>state);
+  const configs = useStore(configStore, (state) => state);
 
-  
   if (!store || !configs) return;
-  
-  const {RES_FACTOR_SVG} = configs;
+
+  const { RES_FACTOR_SVG } = configs;
   const { circles, toggleSelection } = store;
 
   return (
     <>
       {Array.from(circles.values()).map((circle, index) => {
-        if (circle.isArc) {
-          const arcPath = getArcPath(circle, configs.RES_FACTOR_SVG);
+        if (true) {
+          const arcPath = getArcPath(circle, RES_FACTOR_SVG);
 
           return (
             <g
@@ -28,14 +27,32 @@ const CirclesPreview: React.FC = () => {
               <path
                 key={"svg_path_circle_" + circle.id}
                 d={arcPath}
-                stroke={circle.stroke.color}
-                strokeWidth={circle.stroke.width}
-                fill="transparent"
+                stroke="transparent"
+                strokeWidth={circle.stroke.width * 3}
+                fill="none"
                 onClick={(event) => {
                   event.stopPropagation();
                   toggleSelection(circle.id);
                 }}
                 className="cursor-pointer"
+              />
+              <path
+                key={"svg_path_circle_" + circle.id}
+                d={arcPath}
+                stroke="none"
+                fill={circle.fill.color}
+                mask={getFillMask(circle.fill.style)}
+                className="pointer-events-none"
+              />
+              <path
+                key={"svg_path_circle_" + circle.id}
+                d={arcPath}
+                stroke={circle.stroke.color}
+                strokeWidth={circle.stroke.width}
+                strokeDasharray={getStrokeDasharray(circle.stroke.style)}
+                strokeLinecap="round"
+                fill="none"
+                className="pointer-events-none"
               />
             </g>
           );
@@ -91,8 +108,8 @@ const CirclesPreview: React.FC = () => {
 export default CirclesPreview;
 
 export const getArcPath = (circle: Tcircle, scaleFactor: number) => {
-  let startRadians = circle.arcStart * (Math.PI / 180);
-  let endRadians = circle.arcEnd * (Math.PI / 180);
+  let startRadians = (circle.arcStart + circle.arcOffset) * (Math.PI / 180);
+  let endRadians = (circle.arcEnd + circle.arcOffset) * (Math.PI / 180);
 
   let x1 =
     (circle.center.x + circle.radius * Math.cos(startRadians)) * scaleFactor;
@@ -106,9 +123,11 @@ export const getArcPath = (circle: Tcircle, scaleFactor: number) => {
   let largeArcFlag = circle.arcEnd - circle.arcStart <= 180 ? "0" : "1";
   let sweepFlag = "1"; // Assume clockwise, change to "0" for counterclockwise
 
-  let d = `M ${x1} ${y1} A ${circle.radius * scaleFactor} ${
+  let d = `M ${circle.center.x * scaleFactor} ${
+    circle.center.y * scaleFactor
+  } L ${x1} ${y1} A ${circle.radius * scaleFactor} ${
     circle.radius * scaleFactor
-  } 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2}`;
+  } 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2} Z`;
 
   return d;
 };
