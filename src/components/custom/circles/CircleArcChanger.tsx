@@ -70,7 +70,6 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
     if (!circ) return;
     updatedCircles.set(circleId, { ...circ, showRadius: showRadius });
     store.setCircles(updatedCircles);
-    console.log("hello"); //debugg
   }, [showRadius]);
 
   const handleArcStartChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,7 +101,11 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
   return (
     <div className={`flex flex-col flex-nowrap gap-2`}>
       <div className="grid">Arco:</div>
-      <Switcher isChecked={showRadius} setIsChecked={setShowRadius} messageOne="Contornos radiais" />
+      <Switcher
+        isChecked={showRadius}
+        setIsChecked={setShowRadius}
+        messageOne="Contornos radiais"
+      />
       <div className="flex flex-row gap-2">
         <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
           <input
