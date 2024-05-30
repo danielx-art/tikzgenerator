@@ -16,37 +16,40 @@ const CirclesPreview: React.FC = () => {
   return (
     <>
       {Array.from(circles.values()).map((circle, index) => {
-        if (true) {
-          const arcPath = getArcPath(circle, RES_FACTOR_SVG);
+        const path = getArcPath(circle, RES_FACTOR_SVG);
 
-          return (
-            <g
-              filter={circle.selected ? "url(#glow)" : "url(#dropshadow"}
-              key={"svg_path_circle_group_" + circle.id}
-            >
+        return (
+          <g
+            filter={circle.selected ? "url(#glow)" : "url(#dropshadow"}
+            key={"svg_path_circle_group_" + circle.id}
+          >
+            {/*hitbox*/}
+            <path
+              id={"hitbox_path_circle_" + circle.id}
+              d={path.arcStrokePath}
+              stroke="transparent"
+              strokeWidth={circle.stroke.width * 3}
+              fill="none"
+              onClick={(event) => {
+                event.stopPropagation();
+                toggleSelection(circle.id);
+              }}
+              className="cursor-pointer"
+            />
+            {/*sector fill*/}
+            <path
+              id={"sector_path_circle_" + circle.id}
+              d={path.sectorPath}
+              stroke="transparent"
+              fill={circle.fill.color}
+              mask={getFillMask(circle.fill.style)}
+              className="pointer-events-none"
+            />
+            {/*radial strokes*/}
+            {circle.showRadius ? (
               <path
-                key={"svg_path_circle_" + circle.id}
-                d={arcPath}
-                stroke="transparent"
-                strokeWidth={circle.stroke.width * 3}
-                fill="none"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleSelection(circle.id);
-                }}
-                className="cursor-pointer"
-              />
-              <path
-                key={"svg_path_circle_" + circle.id}
-                d={arcPath}
-                stroke="none"
-                fill={circle.fill.color}
-                mask={getFillMask(circle.fill.style)}
-                className="pointer-events-none"
-              />
-              <path
-                key={"svg_path_circle_" + circle.id}
-                d={arcPath}
+                id={"radial_paths_circle_" + circle.id}
+                d={path.radialStrokesPath}
                 stroke={circle.stroke.color}
                 strokeWidth={circle.stroke.width}
                 strokeDasharray={getStrokeDasharray(circle.stroke.style)}
@@ -54,52 +57,20 @@ const CirclesPreview: React.FC = () => {
                 fill="none"
                 className="pointer-events-none"
               />
-            </g>
-          );
-        } else {
-          return (
-            <g
-              filter={circle.selected ? "url(#glow)" : "url(#dropshadow"}
-              key={"svg_path_circle_group_" + circle.id}
-            >
-              {/*this first is hitbox*/}
-              <circle
-                cx={circle.center.x * RES_FACTOR_SVG}
-                cy={circle.center.y * RES_FACTOR_SVG}
-                r={circle.radius * RES_FACTOR_SVG}
-                stroke={"transparent"}
-                strokeWidth={circle.stroke.width * 3}
-                fill="none"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleSelection(circle.id);
-                }}
-                className="cursor-pointer"
-              />
-
-              <circle
-                cx={circle.center.x * RES_FACTOR_SVG}
-                cy={circle.center.y * RES_FACTOR_SVG}
-                r={circle.radius * RES_FACTOR_SVG}
-                fill={circle.fill.color}
-                fillOpacity={circle.fill.opacity}
-                mask={getFillMask(circle.fill.style)}
-                className="pointer-events-none"
-              />
-              <circle
-                cx={circle.center.x * RES_FACTOR_SVG}
-                cy={circle.center.y * RES_FACTOR_SVG}
-                r={circle.radius * RES_FACTOR_SVG}
-                stroke={circle.stroke.color}
-                strokeWidth={circle.stroke.width}
-                strokeDasharray={getStrokeDasharray(circle.stroke.style)}
-                strokeLinecap="round"
-                fill="none"
-                className="pointer-events-none"
-              />
-            </g>
-          );
-        }
+            ) : null}
+            {/*arc strokes*/}
+            <path
+              id={"arc_path_circle_" + circle.id}
+              d={path.arcStrokePath}
+              stroke={circle.stroke.color}
+              strokeWidth={circle.stroke.width}
+              strokeDasharray={getStrokeDasharray(circle.stroke.style)}
+              strokeLinecap="round"
+              fill="none"
+              className="pointer-events-none"
+            />
+          </g>
+        );
       })}
     </>
   );
@@ -109,8 +80,10 @@ export default CirclesPreview;
 
 export const getArcPath = (circle: Tcircle, scaleFactor: number) => {
   let startRadians = (circle.arcStart + circle.arcOffset) * (Math.PI / 180);
-  let endRadians = (circle.arcEnd + circle.arcOffset) * (Math.PI / 180);
+  let endRadians = circle.arcEnd == 360 ? (circle.arcEnd - 0.001 + circle.arcOffset) * (Math.PI / 180) : (circle.arcEnd + circle.arcOffset) * (Math.PI / 180);
 
+  let x0 = circle.center.x * scaleFactor;
+  let y0 = circle.center.y * scaleFactor;
   let x1 =
     (circle.center.x + circle.radius * Math.cos(startRadians)) * scaleFactor;
   let y1 =
@@ -123,11 +96,19 @@ export const getArcPath = (circle: Tcircle, scaleFactor: number) => {
   let largeArcFlag = circle.arcEnd - circle.arcStart <= 180 ? "0" : "1";
   let sweepFlag = "1"; // Assume clockwise, change to "0" for counterclockwise
 
-  let d = `M ${circle.center.x * scaleFactor} ${
-    circle.center.y * scaleFactor
-  } L ${x1} ${y1} A ${circle.radius * scaleFactor} ${
+  let radialStrokesPath = `M ${x1} ${y1} L ${x0} ${y0} L ${x2} ${y2}`;
+
+  let arcStrokePath = `M ${x1} ${y1} A ${circle.radius * scaleFactor} ${
+    circle.radius * scaleFactor
+  } 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2}`;
+
+  let sectorPath = `M ${x0} ${y0} L ${x1} ${y1} A ${
+    circle.radius * scaleFactor
+  } ${
     circle.radius * scaleFactor
   } 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2} Z`;
+
+  const d = { radialStrokesPath, arcStrokePath, sectorPath };
 
   return d;
 };

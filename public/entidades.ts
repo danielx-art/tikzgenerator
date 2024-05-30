@@ -179,6 +179,7 @@ export const circle = function (
     arcOffset: 0,
     arcStart: 0,
     arcEnd: 360,
+    showRadius: false,
     visible: true,
     stroke: {
       width: configStore.getState().DEFAULT_STROKE_WIDTH,

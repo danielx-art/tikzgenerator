@@ -1,3 +1,5 @@
+import Switcher from "import/components/micro/Switcher";
+import { roundToDecimalPlaces } from "import/utils/math/misc";
 import configStore from "import/utils/store/configStore";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
@@ -16,6 +18,7 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
   const [arcStart, setArcStart] = useState(0);
   const [arcEnd, setArcEnd] = useState(360);
   const [arcOffset, setArcOffset] = useState(0);
+  const [showRadius, setShowRadius] = useState(false);
 
   const [disabled, setDisabled] = useState(true);
 
@@ -29,6 +32,7 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
     setArcStart(circ.arcStart);
     setArcEnd(circ.arcEnd);
     setArcOffset(circ.arcOffset);
+    setShowRadius(circ.showRadius);
     setDisabled(false);
   }, [circleId, store]);
 
@@ -59,9 +63,19 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
     store.setCircles(updatedCircles);
   }, [arcOffset]);
 
+  useEffect(() => {
+    if (!circleId || !store || !configs || disabled) return;
+    const updatedCircles = new Map(store.circles);
+    const circ = store.circles.get(circleId);
+    if (!circ) return;
+    updatedCircles.set(circleId, { ...circ, showRadius: showRadius });
+    store.setCircles(updatedCircles);
+    console.log("hello"); //debugg
+  }, [showRadius]);
+
   const handleArcStartChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!circleId || !store || disabled) return;
-    let newValue = parseFloat(event.target.value);
+    let newValue = parseFloat(event.target.value) | 0;
     if (newValue < 0) newValue = 0;
     if (newValue > 360) newValue = 360;
     setArcStart(newValue);
@@ -69,7 +83,7 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
 
   const handleArcEndChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!circleId || !store || disabled) return;
-    let newValue = parseFloat(event.target.value);
+    let newValue = parseFloat(event.target.value) | 360;
     if (newValue < 0) newValue = 0;
     if (newValue > 360) newValue = 360;
     setArcEnd(newValue);
@@ -79,68 +93,71 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     if (!circleId || !store || disabled) return;
-    let newValue = parseFloat(event.target.value);
+    let newValue = parseFloat(event.target.value) | 0;
     if (newValue < 0) newValue = 0;
     if (newValue > 360) newValue = 360;
     setArcOffset(newValue);
   };
 
   return (
-    <div className={`flex flex-row flex-wrap gap-2`}>
+    <div className={`flex flex-col flex-nowrap gap-2`}>
       <div className="grid">Arco:</div>
-      <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
-        <input
-          type="number"
-          name="arc-start-input"
-          id="arc-start-input"
-          step={0.1}
-          onChange={handleArcStartChange}
-          disabled={disabled}
-          className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
-          value={arcStart}
-        />
-        <label
-          htmlFor="arc-start-input"
-          className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
-        >
-          Início
-        </label>
-      </div>
-      <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
-        <input
-          type="number"
-          name="arc-end-input"
-          id="arc-end-input"
-          step={0.1}
-          onChange={handleArcEndChange}
-          disabled={disabled}
-          className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
-          value={arcEnd}
-        />
-        <label
-          htmlFor="arc-end-input"
-          className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
-        >
-          Fim
-        </label>
-      </div>
-      <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
-        <input
-          type="number"
-          name="arc-offset-input"
-          id="arc-offset-input"
-          step={0.1}
-          onChange={handleArcOffsetChange}
-          disabled={disabled}
-          className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
-          value={arcOffset}
-        />
-        <label
-          htmlFor="arc-start-input"
-          className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
-        >
-          Base
-        </label>
+      <Switcher isChecked={showRadius} setIsChecked={setShowRadius} messageOne="Contornos radiais" />
+      <div className="flex flex-row gap-2">
+        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
+          <input
+            type="number"
+            name="arc-start-input"
+            id="arc-start-input"
+            step={1}
+            onChange={handleArcStartChange}
+            disabled={disabled}
+            className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
+            value={arcStart}
+          />
+          <label
+            htmlFor="arc-start-input"
+            className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
+          >
+            Início
+          </label>
+        </div>
+        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
+          <input
+            type="number"
+            name="arc-end-input"
+            id="arc-end-input"
+            step={1}
+            onChange={handleArcEndChange}
+            disabled={disabled}
+            className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
+            value={arcEnd}
+          />
+          <label
+            htmlFor="arc-end-input"
+            className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
+          >
+            Fim
+          </label>
+        </div>
+        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
+          <input
+            type="number"
+            name="arc-offset-input"
+            id="arc-offset-input"
+            step={1}
+            onChange={handleArcOffsetChange}
+            disabled={disabled}
+            className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
+            value={arcOffset}
+          />
+          <label
+            htmlFor="arc-start-input"
+            className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
+          >
+            Base
+          </label>
+        </div>
       </div>
     </div>
   );

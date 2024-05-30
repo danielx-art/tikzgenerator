@@ -61,7 +61,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [ ] Opção refinar posicionamento de etiquetas em ângulos.
 - [ ] Quando limpar a tela de todas as entidades, resetar os contadores de id.
 - [ ] Salvar templates customizáveis em Presets.
-- [ ] Arcos de circunferência
+- [x] Arcos de circunferência
 
 ### Bugs
 

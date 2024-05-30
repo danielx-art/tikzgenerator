@@ -61,7 +61,24 @@ export default function getCirclesTikzCode(store: State & Action) {
       }
 
       // Draw the circle outline (stroke)
-      circleCommands += `\\draw [${strokeSettings}] (${circle.center.x}, ${circle.center.y}) circle (${circle.radius});\n`;
+
+      const circleCenter = `(${circle.center.x}, ${circle.center.y})`;
+      const arcAngleSize = circle.arcEnd - circle.arcStart;
+      const startAngle = circle.arcStart+circle.arcOffset;
+      const endAngle = circle.arcEnd+circle.arcOffset;
+
+      if(arcAngleSize == 0) {
+        circleCommands += `\\draw [${strokeSettings}] ${circleCenter} circle (${circle.radius});\n`;
+      } else {
+
+        if(circle.showRadius) {
+          circleCommands += `\\draw [${strokeSettings}] ${circleCenter} -- ${circleCenter} ++(${startAngle}:${circle.radius}) arc (${startAngle}:${endAngle}:${circle.radius}) -- ${circleCenter};\n`
+        } else {
+          circleCommands += `\\draw [${strokeSettings}] ${circleCenter} -- ${circleCenter} ++(${startAngle}:${circle.radius}) arc (${startAngle}:${endAngle}:${circle.radius}) -- ${circleCenter};\n`
+          circleCommands += `\\draw [${strokeSettings}] ${circleCenter} -- ${circleCenter} ++(${startAngle}:${circle.radius}) arc (${startAngle}:${endAngle}:${circle.radius}) -- ${circleCenter};\n`
+        }
+      }
+
 
       // Append the generated commands for this circle to the main TikZ code
       tikzCode += circleCommands;
