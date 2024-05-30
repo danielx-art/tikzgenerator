@@ -55,6 +55,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [x] Salvar imagem em svg.
 - [x] Modal configurações e sobre.
 - [ ] Ferramenta mover pontos apenas quando selecionada.
+- [ ] Selecionar somente múltiplas entidades quando pressionada a tecla shift ou selecionada ferramenta de selecção múiltipla. Customizações em cor e contorno com caixa de seleção "aplicar a todos" e uma divisória mais visível na UI.
 - [ ] Menu para adicionar eixos, e customizá-los, incluindo grid.
 - [ ] Adicionar acessibilidade aos botões.
 - [ ] Caixa de seleção para adicionar preenchimento de um círculo, ao invés de utilizar opacidade 0 como default.
