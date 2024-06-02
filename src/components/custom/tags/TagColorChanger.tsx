@@ -41,14 +41,15 @@ const TagColorChanger: React.FC<PropsType> = ({ thisTagId }) => {
     <div className="flex flex-row flex-wrap gap-2">
       <div className="grid items-center">Cor:</div>
       <div>
-        {
+        {thisTagId ? (
           <ColorSelect
+            id={thisTagId}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
             disabled={disabled}
             key={`ColorSelect_${thisTagId ? thisTagId : "empty"}`}
           />
-        }
+        ) : null}
       </div>
     </div>
   );
