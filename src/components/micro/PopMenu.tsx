@@ -67,10 +67,10 @@ const PopMenu: React.FC<PropsType> = ({
         <button
           onClick={toggleDropdown}
           type="button"
-          className={`w-fit rounded-sm px-2 py-1 focus:outline-none focus:ring-2 focus:ring-c_high1 focus:ring-offset-2 focus:ring-offset-c_high1 ${
+          className={`w-fit rounded-sm px-2 py-1 focus:outline-none focus:ring-2 focus:ring-foregroung focus:ring-offset-2 focus:ring-offset-foregroung ${
             isOpen
-              ? "bg-c_high1 text-c_base"
-              : "bg-c_interact  text-c_base"
+              ? "bg-foregroung text-background"
+              : "bg-primary  text-background"
           }`}
           id="options-menu"
           aria-haspopup="listbox"
@@ -81,7 +81,7 @@ const PopMenu: React.FC<PropsType> = ({
       </div>
 
       <div
-        className={`bg-c_base absolute bottom-0 left-full z-10 ml-1 rounded-md shadow-sm shadow-c_high1 transition-all ease-in-out focus:outline-none ${
+        className={`bg-background absolute bottom-0 left-full z-10 ml-1 rounded-md shadow-sm shadow-foregroung transition-all ease-in-out focus:outline-none ${
           isOpen
             ? "scale-y-100 cursor-pointer opacity-100"
             : "disabled pointer-events-none -translate-y-[50%] scale-y-0 select-none opacity-0 sm:-translate-x-[50%]"
@@ -103,7 +103,7 @@ const PopMenu: React.FC<PropsType> = ({
         {Options.map((option, index) => (
           <div
             key={index}
-            className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap py-2 pl-4 pr-2 text-sm text-c_scnd hover:bg-c_interact hover:text-c_base"
+            className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap py-2 pl-4 pr-2 text-sm text-foreground hover:bg-primary hover:text-background"
             role="menuitem"
             onClick={
               isChecked

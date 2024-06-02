@@ -14,7 +14,7 @@ const What = () => {
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke="currentColor"
-          className="h-6 w-6 transition-all duration-75 hover:-translate-y-0.5 hover:text-c_interact"
+          className="h-6 w-6 transition-all duration-75 hover:-translate-y-0.5 hover:text-primary"
         >
           <path
             strokeLinecap="round"
@@ -30,11 +30,11 @@ const What = () => {
         className="max-w-[60%] leading-10"
       >
         <p>
-          <span className="inline text-c_scnd_int">GeoSimples</span> é uma
+          <span className="inline text-foreground_int">GeoSimples</span> é uma
           ferramenta para desenhar figuras geométricas simples, criada por{" "}
           <Link
             href={"https://danielx-art.github.io/astro-folio/"}
-            className=" italic underline underline-offset-4 hover:text-c_scnd_int"
+            className=" italic underline underline-offset-4 hover:text-foreground_int"
             target="_blanck"
             rel="noopener noreferrer"
           >

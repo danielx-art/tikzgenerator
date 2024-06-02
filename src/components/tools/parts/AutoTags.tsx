@@ -196,7 +196,7 @@ const AutoTagEntityMenuBody: React.FC<AutoTagEntityMenuBodyProps> = ({
       {Options.map((option, index) => (
         <div
           key={index}
-          className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap py-2 pl-0 pr-2 text-sm text-c_scnd hover:bg-c_interact hover:text-c_base"
+          className="flex w-auto select-none flex-row justify-between gap-2 whitespace-nowrap py-2 pl-0 pr-2 text-sm text-foreground hover:bg-primary hover:text-background"
           role="menuitem"
           onClick={
             isChecked

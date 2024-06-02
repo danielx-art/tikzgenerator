@@ -107,7 +107,7 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
         messageOne="Contornos radiais"
       />
       <div className="flex flex-row gap-2">
-        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
+        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-border">
           <input
             type="number"
             name="arc-start-input"
@@ -115,17 +115,17 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
             step={1}
             onChange={handleArcStartChange}
             disabled={disabled}
-            className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
+            className="inline w-14 bg-background p-1 text-end focus:underline focus:outline-none"
             value={arcStart}
           />
           <label
             htmlFor="arc-start-input"
-            className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
+            className="w-full bg-card text-center text-sm text-foreground"
           >
             Início
           </label>
         </div>
-        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
+        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-border">
           <input
             type="number"
             name="arc-end-input"
@@ -133,17 +133,17 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
             step={1}
             onChange={handleArcEndChange}
             disabled={disabled}
-            className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
+            className="inline w-14 bg-background p-1 text-end focus:underline focus:outline-none"
             value={arcEnd}
           />
           <label
             htmlFor="arc-end-input"
-            className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
+            className="w-full bg-card text-center text-sm text-foreground"
           >
             Fim
           </label>
         </div>
-        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-c_discrete">
+        <div className="flex flex-col-reverse flex-nowrap items-center divide-y-2 rounded-sm border-2 border-border">
           <input
             type="number"
             name="arc-offset-input"
@@ -151,12 +151,12 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
             step={1}
             onChange={handleArcOffsetChange}
             disabled={disabled}
-            className="inline w-14 bg-c_base p-1 text-end focus:underline focus:outline-none"
+            className="inline w-14 bg-background p-1 text-end focus:underline focus:outline-none"
             value={arcOffset}
           />
           <label
             htmlFor="arc-start-input"
-            className="w-full bg-c_discrete/50 text-center text-sm text-c_scnd"
+            className="w-full bg-card text-center text-sm text-foreground"
           >
             Base
           </label>

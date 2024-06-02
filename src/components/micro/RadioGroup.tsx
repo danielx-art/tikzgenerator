@@ -28,7 +28,7 @@ const RadioGroup: React.FC<PropsType> = ({
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">
-      {labelText && <div className="self-start text-c_scnd">{labelText}</div>}
+      {labelText && <div className="self-start text-foreground">{labelText}</div>}
       <div className="flex flex-row items-center gap-2">
         {children.map((el, index) => (
           <Option
@@ -66,12 +66,12 @@ const Option: React.FC<TOptionProps> = ({
   const isSelected = index === selectedIndex;
   return (
     <div
-      className={`flex h-fit flex-1 cursor-pointer select-none items-center rounded-full bg-c_base px-2 py-1 text-sm shadow transition duration-300 ${
+      className={`flex h-fit flex-1 cursor-pointer select-none items-center rounded-full bg-background px-2 py-1 text-sm shadow transition duration-300 ${
         disabled
-          ? "text-c_scnd2 text-opacity-50"
+          ? "text-foreground2 text-opacity-50"
           : isSelected
-          ? " text-c_scnd_int ring-1 ring-c_scnd_int"
-          : " text-c_scnd2"
+          ? " text-foreground_int ring-1 ring-foreground_int"
+          : " text-foreground2"
       }`}
       onClick={disabled ? () => {} : () => onSelect(index)}
     >

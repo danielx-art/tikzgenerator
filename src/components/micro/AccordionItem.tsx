@@ -26,13 +26,13 @@ const AccordionItem: React.FC<PropsType> = ({
   return (
     <div
       className={cn(
-        "w-full border-b-2 border-c_discrete border-opacity-20",
+        "w-full border-b-2 border-muted",
         className,
         conditionalClassNames ? conditionalClasses : null,
       )}
     >
       <div
-        className="group mb-1 flex w-fit cursor-pointer select-none flex-row text-c_scnd text-opacity-90 hover:text-opacity-100"
+        className="group mb-1 flex w-fit cursor-pointer select-none flex-row text-foreground text-opacity-90 hover:text-opacity-100"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <OpenCloseAccordionButton isOpen={isOpen} />

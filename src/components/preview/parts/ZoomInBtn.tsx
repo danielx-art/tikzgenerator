@@ -28,7 +28,7 @@ const ZoomInBtn: React.FC<PropsType> = ({ className, ...rest }) => {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="mx-auto my-auto h-6 w-6 hover:-translate-y-0.5 hover:text-c_interact"
+        className="mx-auto my-auto h-6 w-6 hover:-translate-y-0.5 hover:text-primary"
       >
         <path
           strokeLinecap="round"

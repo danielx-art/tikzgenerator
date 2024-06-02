@@ -2,7 +2,7 @@ const OpenCloseAccordionButton: React.FC<{ isOpen: boolean }> = ({
   isOpen,
 }) => {
   return (
-    <button className="flex h-6 w-6 items-center justify-center rounded-full group-hover:text-c_high1 pb-1">
+    <button className="flex h-6 w-6 items-center justify-center rounded-full group-hover:text-foregroung pb-1">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

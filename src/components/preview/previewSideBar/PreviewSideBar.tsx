@@ -14,7 +14,7 @@ const PreviewSideBar: React.FC<PreviewSideBarProps> = ({
   return (
     <div
       className={cn(
-        "absolute right-1 top-[50%] flex w-10 -translate-y-[50%] flex-col gap-2 rounded-md border-2 border-c_discrete bg-c_base px-1 py-1",
+        "absolute right-1 top-[50%] flex w-10 -translate-y-[50%] flex-col gap-2 rounded-md border-2 border-border bg-background px-1 py-1",
       )}
     >
       <ZoomOutBtn />
@@ -25,7 +25,7 @@ const PreviewSideBar: React.FC<PreviewSideBarProps> = ({
             <div
               key={`previewsidebar_${index}`}
               className={cn("h-8 w-8", childrenClassName, {
-                "border-r-2 border-c_discrete": index > 0,
+                "border-r-2 border-border": index > 0,
               })}
             >
               {child}

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
 
 type PropsType = {
   initOption?: number;
@@ -29,11 +28,14 @@ const CyclicBtn: React.FC<PropsType> = ({
   return (
     <>
       {
-        <Button
+        <div
+          className={`flex h-fit flex-1 cursor-pointer select-none flex-row items-center justify-center rounded-full bg-background px-2 py-1 text-sm shadow transition duration-300 ${
+            disabled ? "text-foreground2 text-opacity-50" : " text-foreground2"
+          } hover:text-foreground_int`}
           onClick={disabled ? () => {} : handleClick}
         >
           {children[optionSelected]}
-        </Button>
+        </div>
       }
     </>
   );

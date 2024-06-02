@@ -20,7 +20,7 @@ const CircleMenu: React.FC<PropsType> = ({ className, ...rest }) => {
     <Dropdown
       keyword="generate-circle"
       className="my-auto box-border"
-      openClasses="translate-y-1 bg-c_base ring-2 rounded-sm ring-c_discrete"
+      openClasses="translate-y-1 bg-background ring-2 rounded-sm ring-muted"
     >
       <CircleFromOnePoint className={className} {...rest} />
       <CircleFromTwoPoints className={className} {...rest} />

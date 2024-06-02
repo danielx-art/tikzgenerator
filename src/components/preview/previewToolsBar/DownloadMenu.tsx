@@ -15,7 +15,7 @@ const DownloadMenu = forwardRef<SVGSVGElement, PropsType>(function (
     <Dropdown
       keyword="download-menu"
       className="my-auto box-border"
-      openClasses="translate-y-1 bg-c_base ring-2 rounded-sm ring-c_discrete"
+      openClasses="translate-y-1 bg-background ring-2 rounded-sm ring-muted"
     >
       <GetTikzBtn className={className} {...rest} />
       <DownloadSVGBtn ref={ref} className={className} {...rest} />

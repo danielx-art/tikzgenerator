@@ -63,8 +63,8 @@ const Customization = () => {
   }, [curr, selectedEntities]);
 
   return (
-    <div className="w-full border-b-2 border-c_discrete border-opacity-20">
-      <div className="mb-1 flex w-full select-none flex-row items-center gap-2 text-c_scnd text-opacity-90 hover:text-opacity-100">
+    <div className="w-full border-b-2 border-border border-opacity-20">
+      <div className="mb-1 flex w-full select-none flex-row items-center gap-2 text-foreground text-opacity-90 hover:text-opacity-100">
         <div
           className="group flex flex-1 cursor-pointer select-none flex-row items-center"
           onClick={() => setIsOpen((prev) => !prev)}
@@ -81,7 +81,7 @@ const Customization = () => {
             />
           </div>
         ) : (
-          <div className="overflow-hidden whitespace-nowrap pr-2 text-sm italic text-c_scnd2 text-opacity-50">
+          <div className="overflow-hidden whitespace-nowrap pr-2 text-sm italic text-foreground2 text-opacity-50">
             {tabMessage}
           </div>
         )}
@@ -122,7 +122,7 @@ const Customization = () => {
           />
         ) : null}
         {!thisEntityId && (
-          <div className="py-1 text-sm text-c_scnd">
+          <div className="py-1 text-sm text-foreground">
             Selecione um objeto para customizá-lo
           </div>
         )}

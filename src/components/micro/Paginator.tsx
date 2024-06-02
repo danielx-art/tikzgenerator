@@ -8,8 +8,8 @@ const Paginator: React.FC<PropsType> = ({ curr, setCurr, total }) => {
   return (
     <>
       {total > 1 && (
-        <div className="grid h-6 w-fit grid-cols-[1fr_2fr_1fr] place-items-center rounded-full border-2 border-c_discrete px-2">
-          <div className="grid h-3 w-3 hover:text-c_high1">
+        <div className="grid h-6 w-fit grid-cols-[1fr_2fr_1fr] place-items-center rounded-full border-2 border-border px-2">
+          <div className="grid h-3 w-3 hover:text-foregroung">
             {curr > 0 && (
               <button onClick={() => setCurr((prev) => prev - 1)}>
                 <svg
@@ -32,7 +32,7 @@ const Paginator: React.FC<PropsType> = ({ curr, setCurr, total }) => {
           <div className="h-full text-sm">
             {curr + 1}/{total}
           </div>
-          <div className="grid h-3 w-3 hover:text-c_high1">
+          <div className="grid h-3 w-3 hover:text-foregroung">
             {curr < total - 1 && (
               <button onClick={() => setCurr((prev) => prev + 1)}>
                 <svg

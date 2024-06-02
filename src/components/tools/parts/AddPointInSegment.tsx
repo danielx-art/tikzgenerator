@@ -45,7 +45,7 @@ const AddPointInSegment: React.FC = () => {
 
   if (!segPoints[0] || !segPoints[1]) {
     return (
-      <div className=" italic text-c_scnd2 opacity-75">
+      <div className=" italic text-foreground2 opacity-75">
         Selecione ao menos dois pontos.
       </div>
     );
@@ -225,7 +225,7 @@ const AddPointInSegment: React.FC = () => {
             {roundToDecimalPlaces(value * dist)}
           </div>
           <div
-            className={`h-2 border-l-2 border-r-2 border-t-2 border-c_scnd`}
+            className={`h-2 border-l-2 border-r-2 border-t-2 border-foreground`}
             style={{
               width: styles.distBarWidth + "%",
               marginLeft: styles.distBarMin + "%",
@@ -245,33 +245,33 @@ const AddPointInSegment: React.FC = () => {
             tabIndex={0}
           >
             <div
-              className={`absolute z-10 h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full shadow-sm shadow-c_scnd ${
+              className={`absolute z-10 h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full shadow-sm shadow-foreground ${
                 isOutOfBoundary
-                  ? "bg-c_faded hover:ring-1 hover:ring-c_interact"
-                  : "bg-c_interact hover:z-0"
+                  ? "bg-muted hover:ring-1 hover:ring-primary"
+                  : "bg-primary hover:z-0"
               }`}
               style={{
                 left: `${sliderPos * 100}%`,
               }}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 w-full -translate-y-1/2 select-none border-b-2 border-dashed border-c_scnd`}
+              className={`pointer-events-none absolute top-1/2 w-full -translate-y-1/2 select-none border-b-2 border-dashed border-foreground`}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 -translate-y-1/2 select-none border-b-2 border-solid border-c_scnd`}
+              className={`pointer-events-none absolute top-1/2 -translate-y-1/2 select-none border-b-2 border-solid border-foreground`}
               style={{
                 left: styles.leftApos + "%",
                 width: styles.middleBarWidth + "%",
               }}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-c_scnd2`}
+              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-foreground2`}
               style={{
                 left: styles.leftApos + "%",
               }}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-c_scnd2
+              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-foreground2
                 `}
               style={{
                 left: styles.leftBpos + "%",
@@ -306,7 +306,7 @@ const AddPointInSegment: React.FC = () => {
         <div className="flex flex-col items-center justify-center gap-2">
           <input
             type="text"
-            className="focus:outline-c_high z-10 w-1/2 cursor-text rounded-sm bg-c_base px-2 py-1 text-c_scnd text-center"
+            className="focus:outline-foregroung z-10 w-1/2 cursor-text rounded-sm bg-background px-2 py-1 text-foreground text-center"
             value={roundToDecimalPlaces(parseFloat(inputVal),2)}
             onChange={handleInput}
           />
@@ -319,7 +319,7 @@ const AddPointInSegment: React.FC = () => {
           />
           <button
             onClick={handleAddPoint}
-            className="rounded-sm bg-c_interact p-2 text-c_base shadow-md hover:bg-c_high1"
+            className="rounded-sm bg-primary p-2 text-background shadow-md hover:bg-foregroung"
           >
             Criar ponto
           </button>

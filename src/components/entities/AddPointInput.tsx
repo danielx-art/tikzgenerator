@@ -160,7 +160,7 @@ const AddPointInput = () => {
   };
 
   return (
-    <div className="group my-2 flex w-full flex-row flex-nowrap gap-2 rounded-sm outline outline-2 outline-c_discrete focus-within:outline-c_interact">
+    <div className="group my-2 flex w-full flex-row flex-nowrap gap-2 rounded-sm outline outline-2 outline-muted focus-within:outline-primary">
       <input
         type="text"
         value={input}
@@ -170,7 +170,7 @@ const AddPointInput = () => {
         placeholder="(X;Y) / +(R:&#x3B8;) / (R:&#x3B8;), separados por espaço"
       />
       <button
-        className="rounded-sm bg-c_interact p-2 text-c_base outline-1 hover:bg-c_high1"
+        className="rounded-sm bg-primary p-2 text-background outline-1 hover:bg-foregroung"
         onClick={addPoint}
       >
         +

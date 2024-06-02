@@ -8,7 +8,7 @@ import SegmentsPreview from "./parts/SegmentsPreview";
 import TagsPreview from "./parts/TagsPreview";
 import Panel from "../micro/Panel";
 import Filters from "./parts/Filters";
-import PreviewNav from "./previewNavBar/PreviewNav";
+import PreviewToolBar from "./previewToolsBar/PreviewToolBar";
 import { deselectAll } from "import/utils/storeHelpers/deselectAll";
 import PolygonsPreview from "./parts/PolygonsPreview";
 import CirclesPreview from "./parts/CirclesPreview";
@@ -63,8 +63,8 @@ const PreviewPanel = () => {
 
   return (
     <Panel className="relative h-full items-center overflow-hidden p-2">
-      <div className="border-b-2 border-b-c_discrete">Prévia</div>
-      <PreviewNav ref={svgRef} />
+      <div className="border-b-2 border-b-muted">Prévia</div>
+      <PreviewToolBar ref={svgRef} />
       <PreviewSideBar />
       <div
         ref={containerRef}
@@ -75,7 +75,7 @@ const PreviewPanel = () => {
           height={svgDim.height > 0 ? svgDim.height : "100%"}
           viewBox={viewBox}
           preserveAspectRatio="xMidYMid"
-          className="border-2 border-c_disabled2 border-opacity-30"
+          className="border-2 border-border border-opacity-30"
           ref={svgRef}
           xmlns="http://www.w3.org/2000/svg"
           onClick={() => deselectAll(store)}

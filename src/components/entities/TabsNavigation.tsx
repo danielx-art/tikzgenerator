@@ -63,8 +63,8 @@ const TabItem: React.FC<TabItemProps> = ({
     <div
       className={`${
         storeTab == thisTab
-          ? "border-2 border-b-0 border-c_discrete bg-c_base font-bold text-c_scnd_int"
-          : "border-2 border-c_discrete bg-c_base text-c_disabled2"
+          ? "border-2 border-b-0 border-border bg-background font-bold text-foreground_int"
+          : "border-2 border-border bg-background text-muted"
       } cursor-pointer overflow-hidden rounded-t-lg px-2 py-1`}
       onClick={action}
     >

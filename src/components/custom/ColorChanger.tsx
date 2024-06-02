@@ -53,6 +53,7 @@ const ColorChanger: React.FC<PropsType> = ({ entId, atrName }) => {
   }, [entId, store]);
 
   useEffect(() => {
+    console.log("hello"); //debugg
     if (!entId || !store || disabled) return;
     const kind = getKindById(entId as TentId);
     const entMap = getMapByKind(kind, store);
@@ -90,6 +91,7 @@ const ColorChanger: React.FC<PropsType> = ({ entId, atrName }) => {
       <div>
         {
           <ColorSelect
+            id= {`${entId}_${atrName}_color_changer`}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
             disabled={disabled}

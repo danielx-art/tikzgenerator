@@ -104,7 +104,7 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
     isVisible && !isTouchDevice ? (
       <span
         ref={toolTipRef}
-        className="pointer-events-none absolute animate-delayedquickcomein select-none whitespace-nowrap rounded bg-c_scnd p-1 font-jost text-sm text-c_base"
+        className="pointer-events-none absolute animate-delayedquickcomein select-none whitespace-nowrap rounded bg-foreground p-1 font-jost text-sm text-background"
       >
         {message}
       </span>
@@ -142,7 +142,7 @@ const ToolTip: React.FC<PropsType> = ({ message, children }) => {
         />
       </svg>
       <div className="fixed left-[50%] top-2 z-10 mx-auto hidden w-auto -translate-x-[50%] flex-row items-center group-hover:flex">
-        <div className="rounded-md bg-c_scnd_int bg-opacity-70 p-4 text-sm leading-none text-white shadow-lg">
+        <div className="rounded-md bg-foreground_int bg-opacity-70 p-4 text-sm leading-none text-white shadow-lg">
           {message}
         </div>
       </div>

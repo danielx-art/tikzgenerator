@@ -44,14 +44,14 @@ const DialogBox: React.FC<PropsType> = ({
             <div className="absolute left-0 top-0 z-50 h-full w-full animate-comein">
               <div
                 className={cn(
-                  "relative left-1/2 top-1/2 flex h-fit w-fit -translate-x-1/2 -translate-y-1/2 flex-col flex-nowrap gap-4 overflow-hidden rounded-md border-c_discrete bg-c_base pb-4 pl-6 pr-4 pt-6 font-jost shadow-md",
+                  "relative left-1/2 top-1/2 flex h-fit w-fit -translate-x-1/2 -translate-y-1/2 flex-col flex-nowrap gap-4 overflow-hidden rounded-md border-border bg-background pb-4 pl-6 pr-4 pt-6 font-jost shadow-md",
                   className,
                 )}
               >
                 {closeButton && (
                   <div
                     onClick={() => setIsOpen(false)}
-                    className="absolute right-1 top-1 cursor-pointer rounded-full text-c_scnd2 transition-colors duration-75 hover:text-c_high1"
+                    className="absolute right-1 top-1 cursor-pointer rounded-full text-foreground2 transition-colors duration-75 hover:text-foregroung"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +65,7 @@ const DialogBox: React.FC<PropsType> = ({
                 )}
                 <div className="flex w-full flex-1 flex-col overflow-auto">
                   {title ? (
-                    <div className="w-full text-lg font-bold text-c_scnd">
+                    <div className="w-full text-lg font-bold text-foreground">
                       {title}
                     </div>
                   ) : (
@@ -76,7 +76,7 @@ const DialogBox: React.FC<PropsType> = ({
                     {actionMessage && (
                       <button
                         onClick={handleAction}
-                        className="h-fit w-fit rounded-md bg-c_base px-2 py-1 text-c_scnd ring-1 ring-c_interact transition-all duration-75 hover:bg-c_interact hover:text-white"
+                        className="h-fit w-fit rounded-md bg-background px-2 py-1 text-foreground ring-1 ring-primary transition-all duration-75 hover:bg-primary hover:text-white"
                       >
                         {actionMessage}
                       </button>
@@ -84,7 +84,7 @@ const DialogBox: React.FC<PropsType> = ({
                     {cancelMessage && (
                       <button
                         onClick={handleCancel}
-                        className="h-fit w-fit rounded-md bg-c_base px-2 py-1 text-c_scnd ring-1 ring-c_disabled2 transition-all duration-75 hover:bg-c_interact hover:text-white"
+                        className="h-fit w-fit rounded-md bg-background px-2 py-1 text-foreground ring-1 ring-muted transition-all duration-75 hover:bg-primary hover:text-white"
                       >
                         {cancelMessage}
                       </button>

@@ -8,7 +8,7 @@ import Tools from "import/components/tools/Tools";
 const LayoutV2 = () => {
   return (
     <>
-      <div className="md:no-scrollbar flex flex-col gap-4 bg-c_base p-4 font-jost md:grid md:h-full md:max-h-full md:grid-cols-[1fr_2fr]">
+      <div className="md:no-scrollbar flex flex-col gap-4 bg-background p-4 font-jost md:grid md:h-full md:max-h-full md:grid-cols-[1fr_2fr]">
         <Panel className="flex flex-col justify-start gap-4 overflow-auto pl-2">
           <HeroBar />
           <Customization />

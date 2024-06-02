@@ -57,8 +57,8 @@ const GroupItem: React.FC<PropsType> = ({ groupId, selected, children }) => {
     <div>
       <div
         className={`${
-          selected ? "bg-c_high bg-opacity-5 font-bold" : null
-        } flex flex-row flex-nowrap justify-between px-2 py-1 text-xs text-c_scnd_int`}
+          selected ? "bg-foregroung bg-opacity-5 font-bold" : null
+        } flex flex-row flex-nowrap justify-between px-2 py-1 text-xs text-foreground_int`}
       >
         <div
           onClick={() => handleGroupClick(groupId)}

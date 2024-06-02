@@ -53,7 +53,7 @@ const AngleSizeChanger: React.FC<PropsType> = ({ angId }) => {
         step={0.1}
         onChange={handleSizeChange}
         disabled={disabled}
-        className="inline w-20 bg-c_base p-1 text-center focus:underline focus:outline-none"
+        className="inline w-20 bg-background p-1 text-center focus:underline focus:outline-none"
         value={size}
       />
     </div>

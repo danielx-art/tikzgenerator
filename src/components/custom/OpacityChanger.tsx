@@ -99,8 +99,8 @@ const OpacityChanger: React.FC<PropsType> = ({ entId, atrName }) => {
         step={0.1}
         onChange={handleOpacityChange}
         disabled={disabled}
-        className={`inline w-20 bg-c_base p-1 text-center focus:underline focus:outline-none ${
-          opacity === 0 ? "text-c_high1" : "text-black"
+        className={`inline w-20 bg-background p-1 text-center focus:underline focus:outline-none ${
+          opacity === 0 ? "text-foregroung" : "text-black"
         }`}
         value={opacity}
       />

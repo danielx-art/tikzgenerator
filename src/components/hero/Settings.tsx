@@ -219,7 +219,7 @@ const Settings = () => {
           </div>
         ) : (
           <div className="flex w-full flex-1 flex-col gap-2">
-            <div className="text-md p-6 italic text-c_scnd2 text-opacity-60">
+            <div className="text-md p-6 italic text-foreground2 text-opacity-60">
               Em construção, tente alternar para as configurações <br />
               avançadas abaixo:
             </div>
@@ -246,7 +246,7 @@ const icon = (
     viewBox="0 0 24 24"
     strokeWidth="1.5"
     stroke="currentColor"
-    className="h-6 w-6 transition-all duration-75 hover:-translate-y-0.5 hover:text-c_interact"
+    className="h-6 w-6 transition-all duration-75 hover:-translate-y-0.5 hover:text-primary"
   >
     <path
       strokeLinecap="round"

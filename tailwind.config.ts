@@ -1,60 +1,80 @@
-import { type Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
+import type { Config } from "tailwindcss"
 
-export default {
-  content: ["./src/**/*.tsx"],
+const config = {
+  darkMode: ["class"],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+	],
+  prefix: "",
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
-        jost: ["var(--font-jost)"],
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
       },
+    },
+    extend: {
       colors: {
-        a_highlight: "#f6f6f3",
-        a_light: "#c9c0b9",
-        a_neutral: "#675f63",
-        a_dark: "#675355",
-        a_dark_highlight: "#806065",
-        a_aux: "#a58772",
-
-        c_base: "#f5f5f5",
-        c_interact: "#3273dc",
-        c_high1: "#ff817a",
-        c_high2: "#e0ffff",
-        c_scnd_int: "#114497",
-        c_scnd: "#333333",
-        c_scnd2: "#4a4a4a",
-        c_discrete: "#dddddd",
-        c_disabled: "#cccccc",
-        c_disabled2: "#5e8edb",
-        c_faded: "#9aafd0",
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        slideup: {
-          "0%": { transform: "translateY(1rem)" },
-          "100%": { transform: "translateY(0)" },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
-        fadein: {
-          "0%": { opacity: "0%" },
-          "100%": { opacity: "100%" },
-        },
-        comein: {
-          "0%": { transform: "translateY(1rem)", opacity: "0%" },
-          "100%": { transform: "translateY(0)", opacity: "100%" },
-        },
-        quickcomein: {
-          "0%": { transform: "translateY(-10%)", opacity: "0%" },
-          "50%": { transform: "translateY(0)" },
-          "100%": { opacity: "100%" },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
-        comein: "comein 75ms ease-out 1",
-        quickcomein: "quickcomein 150ms ease-out 1",
-        fadein: "fadein 200ms ease-out 1",
-        delayedquickcomein: "quickcomein 150ms ease-out 1 1000ms"
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [],
-} satisfies Config;
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config

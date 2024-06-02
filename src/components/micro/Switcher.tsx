@@ -23,7 +23,7 @@ const Switcher: React.FC<PropsType> = ({
       {messageOne && (
         <div
           className={`${
-            isChecked ? "text-c_scnd_int" : "text-c_faded"
+            isChecked ? "text-foreground_int" : "text-muted"
           } text-sm`}
         >
           {messageOne}
@@ -36,9 +36,9 @@ const Switcher: React.FC<PropsType> = ({
           onChange={handleCheckboxChange}
           className="sr-only"
         />
-        <div className="relative h-3 w-6 rounded-full bg-c_base ring-1 ring-c_interact group-hover:ring-c_high1">
+        <div className="relative h-3 w-6 rounded-full bg-background ring-1 ring-primary group-hover:ring-foregroung">
           <div
-            className={`absolute left-0 top-0 flex h-full w-1/2 items-center justify-center rounded-full bg-c_interact transition group-hover:bg-c_high1 ${
+            className={`absolute left-0 top-0 flex h-full w-1/2 items-center justify-center rounded-full bg-primary transition group-hover:bg-foregroung ${
               isChecked ? "translate-x-0" : "translate-x-full"
             }`}
           ></div>
@@ -47,7 +47,7 @@ const Switcher: React.FC<PropsType> = ({
       {messageTwo && (
         <div
           className={`${
-            !isChecked ? "text-c_scnd_int" : "text-c_faded"
+            !isChecked ? "text-foreground_int" : "text-muted"
           } whitespace-nowrap text-sm`}
         >
           {messageTwo}

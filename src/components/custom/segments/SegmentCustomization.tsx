@@ -11,7 +11,7 @@ const SegmentCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
   return (
     <div
       className={`mb-2 flex w-full flex-col gap-4 ${
-        thisEntityId ? "text-c_scnd" : "text-c_scnd2 text-opacity-80"
+        thisEntityId ? "text-foreground" : "text-foreground2 text-opacity-80"
       }`}
     >
       <SegmentDisplayChanger segId={thisEntityId} />
