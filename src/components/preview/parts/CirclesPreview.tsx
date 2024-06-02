@@ -36,15 +36,16 @@ const CirclesPreview: React.FC = () => {
               }}
               className="cursor-pointer"
             />
-            {/*sector fill*/}
-            <path
+            {/*sector fill*/
+            circle.fill.opacity !== 0 ? <path
               id={"sector_path_circle_" + circle.id}
               d={path.sectorPath}
               stroke="transparent"
               fill={circle.fill.color}
+              fillOpacity={circle.fill.opacity}
               mask={getFillMask(circle.fill.style)}
               className="pointer-events-none"
-            />
+            /> : null}
             {/*radial strokes*/}
             {circle.showRadius ? (
               <path
