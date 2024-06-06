@@ -23,7 +23,7 @@ const Switcher: React.FC<PropsType> = ({
       {messageOne && (
         <div
           className={`${
-            isChecked ? "text-foreground_int" : "text-muted"
+            isChecked ? "text-primary" : "text-foreground"
           } text-sm`}
         >
           {messageOne}
@@ -47,7 +47,7 @@ const Switcher: React.FC<PropsType> = ({
       {messageTwo && (
         <div
           className={`${
-            !isChecked ? "text-foreground_int" : "text-muted"
+            !isChecked ? "text-primary" : "text-foreground"
           } whitespace-nowrap text-sm`}
         >
           {messageTwo}
