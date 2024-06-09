@@ -3,6 +3,7 @@ import FillCustomization from "../general/fill/FillCustomization";
 import StrokeCustomization from "../general/stroke/StrokeCustomization";
 import CircleRadiusChanger from "./CircleRadiusChanger";
 import CircleArcChanger from "./CircleArcChanger";
+import CustomizationSectionWrapper from "import/components/micro/CustomizationSectionWrapper";
 
 type PropsType = {
   thisEntityId: TcircleId | undefined;
@@ -10,16 +11,12 @@ type PropsType = {
 
 const CircleCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
   return (
-    <div
-      className={`mb-2 flex w-full flex-col gap-4 ${
-        thisEntityId ? "text-foreground" : "text-foreground2 text-opacity-80"
-      }`}
-    >
+    <CustomizationSectionWrapper>
       <CircleRadiusChanger circleId={thisEntityId} />
       <CircleArcChanger circleId={thisEntityId} />
       <FillCustomization entId={thisEntityId} />
       <StrokeCustomization entId={thisEntityId} />
-    </div>
+    </CustomizationSectionWrapper>
   );
 };
 

@@ -10,7 +10,7 @@ type PropsType = {
 
 const StrokeCustomization: React.FC<PropsType> = ({ entId }) => {
   return (
-    <div className={`flex flex-col flex-nowrap gap-2`}>
+    <div className="flex flex-col gap-4">
       <StrokeWidthChanger entId={entId} />
       <StrokeStyleChanger entId={entId} />
       <ColorChanger entId={entId} atrName="stroke" />

@@ -1,5 +1,6 @@
 import { TpolyId } from "public/entidades";
 import FillCustomization from "../general/fill/FillCustomization";
+import CustomizationSectionWrapper from "import/components/micro/CustomizationSectionWrapper";
 
 type PropsType = {
   thisEntityId: TpolyId | undefined;
@@ -7,13 +8,9 @@ type PropsType = {
 
 const PolygonCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
   return (
-    <div
-      className={`mb-2 flex w-full flex-col gap-4 ${
-        thisEntityId ? "text-foreground" : "text-foreground2 text-opacity-80"
-      }`}
-    >
+    <CustomizationSectionWrapper>
       <FillCustomization entId={thisEntityId} />
-    </div>
+    </CustomizationSectionWrapper>
   );
 };
 

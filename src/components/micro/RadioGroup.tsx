@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
 
 type PropsType = {
   children: React.ReactElement[];
@@ -65,17 +66,17 @@ const Option: React.FC<TOptionProps> = ({
 }) => {
   const isSelected = index === selectedIndex;
   return (
-    <div
-      className={`flex h-fit flex-1 cursor-pointer select-none items-center rounded-full bg-background px-2 py-1 text-sm shadow transition duration-300 ${
+    <Button
+      className={`${
         disabled
-          ? "text-foreground2 text-opacity-50"
+          ? "text-foreground/50"
           : isSelected
-          ? " text-foreground_int ring-1 ring-foreground_int"
-          : " text-foreground2"
+          ? " text-foreground ring-1 ring-primary/50"
+          : " text-foreground"
       }`}
       onClick={disabled ? () => {} : () => onSelect(index)}
     >
       {children}
-    </div>
+    </Button>
   );
 };

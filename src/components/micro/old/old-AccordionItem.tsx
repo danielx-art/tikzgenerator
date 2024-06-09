@@ -1,5 +1,5 @@
 import { useState } from "react";
-import OpenCloseAccordionButton from "./OpenCloseAccordionButton";
+import OpenCloseAccordionButton from "./old-OpenCloseAccordionButton";
 import { cn } from "import/utils/misc/cn";
 
 type PropsType = React.HTMLAttributes<HTMLDivElement> & {

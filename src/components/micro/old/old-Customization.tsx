@@ -10,17 +10,17 @@ import type {
   TcircleId,
   TpolyId,
 } from "public/entidades";
-import PointCustomization from "./points/PointCustomization";
-import SegmentCustomization from "./segments/SegmentCustomization";
-import AngleCustomization from "./angles/AngleCustomization";
+import Paginator from "import/components/micro/old/Paginator";
+import PointCustomization from "../../custom/points/PointCustomization";
+import OpenCloseAccordionButton from "import/components/micro/old/old-OpenCloseAccordionButton";
+import SegmentCustomization from "../../custom/segments/SegmentCustomization";
+import AngleCustomization from "../../custom/angles/AngleCustomization";
 import {
   getEntityById,
   getKindById,
 } from "import/utils/storeHelpers/entityGetters";
-import PolygonCustomization from "./polygons/PolygonCustomization";
-import CircleCustomization from "./circles/CircleCustomization";
-import { AccordionTrigger, AccordionContent, AccordionItem } from "../micro/ui/accordion";
-import ItemPaginator from "../micro/ItemPaginator";
+import PolygonCustomization from "../../custom/polygons/PolygonCustomization";
+import CircleCustomization from "../../custom/circles/CircleCustomization";
 
 const Customization = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -63,12 +63,18 @@ const Customization = () => {
   }, [curr, selectedEntities]);
 
   return (
-    <AccordionItem value="customization">
-      <AccordionTrigger>
-          <div className="flex flex-1">Customização</div>
+    <div className="w-full border-b-2 border-border border-opacity-20">
+      <div className="mb-1 flex w-full select-none flex-row items-center gap-2 text-foreground text-opacity-90 hover:text-opacity-100">
+        <div
+          className="group flex flex-1 cursor-pointer select-none flex-row items-center"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <OpenCloseAccordionButton isOpen={isOpen} />
+          <div className="pl-1">Customização</div>
+        </div>
         {isOpen ? (
-          <div className="px-2">
-            <ItemPaginator
+          <div className=" place-self-end self-end">
+            <Paginator
               curr={curr}
               setCurr={setCurr}
               total={selectedEntities?.length || 0}
@@ -79,9 +85,9 @@ const Customization = () => {
             {tabMessage}
           </div>
         )}
-      </AccordionTrigger>
-      <AccordionContent
-        className={`w-full p-1 pl-2 transition-all ease-in-out ${
+      </div>
+      <div
+        className={`w-full p-1 pl-7 transition-all ease-in-out ${
           isOpen
             ? "h-auto pb-2 opacity-100"
             : "disabled pointer-events-none h-0 select-none overflow-hidden opacity-0"
@@ -120,8 +126,8 @@ const Customization = () => {
             Selecione um objeto para customizá-lo
           </div>
         )}
-      </AccordionContent>
-    </AccordionItem>
+      </div>
+    </div>
   );
 };
 

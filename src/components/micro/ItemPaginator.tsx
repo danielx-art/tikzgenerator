@@ -4,7 +4,7 @@ type PropsType = {
   total: number;
 };
 
-const Paginator: React.FC<PropsType> = ({ curr, setCurr, total }) => {
+const ItemPaginator: React.FC<PropsType> = ({ curr, setCurr, total }) => {
   return (
     <>
       {total > 1 && (
@@ -58,4 +58,4 @@ const Paginator: React.FC<PropsType> = ({ curr, setCurr, total }) => {
   );
 };
 
-export default Paginator;
+export default ItemPaginator;

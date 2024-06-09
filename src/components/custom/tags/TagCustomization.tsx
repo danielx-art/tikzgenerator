@@ -39,9 +39,9 @@ const TagCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
   }, [store, thisEntityId]);
 
   return (
-    <div className="mb-2 flex w-full flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <div className="grid items-center">Etiqueta</div>
-      <div className="flex flex-1 flex-row flex-wrap justify-evenly gap-6">
+      <div className="flex flex-1 flex-row flex-wrap justify-evenly gap-4">
         <TagEditable
           thisTagId={thisTagId}
           thisEntityId={thisEntityId}

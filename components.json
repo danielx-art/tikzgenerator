@@ -5,13 +5,13 @@
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "src/styles/globals copy.css",
+    "css": "@/styles/globals.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
-    "components": "src/components/micro",
-    "utils": "../../../utils/misc"
+    "components": "@/components/micro",
+    "utils": "@/utils/misc"
   }
 }

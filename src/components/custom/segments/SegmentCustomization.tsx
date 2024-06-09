@@ -2,6 +2,7 @@ import type { TsegId } from "public/entidades";
 import TagCustomization from "../tags/TagCustomization";
 import SegmentDisplayChanger from "./SegmentDisplayChanger";
 import StrokeCustomization from "../general/stroke/StrokeCustomization";
+import CustomizationSectionWrapper from "import/components/micro/CustomizationSectionWrapper";
 
 type PropsType = {
   thisEntityId: TsegId | undefined;
@@ -9,15 +10,11 @@ type PropsType = {
 
 const SegmentCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
   return (
-    <div
-      className={`mb-2 flex w-full flex-col gap-4 ${
-        thisEntityId ? "text-foreground" : "text-foreground2 text-opacity-80"
-      }`}
-    >
+    <CustomizationSectionWrapper>
       <SegmentDisplayChanger segId={thisEntityId} />
       <StrokeCustomization entId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
-    </div>
+    </CustomizationSectionWrapper>
   );
 };
 

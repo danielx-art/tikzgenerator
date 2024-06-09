@@ -9,7 +9,7 @@ type PropsType = {
 
 const FillCustomization: React.FC<PropsType> = ({ entId }) => {
   return (
-    <div className={`flex flex-col gap-2`}>
+    <div className="flex flex-col gap-4">
       <FillStyleChanger entId={entId} />
       <ColorChanger entId={entId} atrName="fill" />
       <OpacityChanger entId={entId} atrName="fill" />

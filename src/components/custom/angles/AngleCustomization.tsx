@@ -4,6 +4,7 @@ import AngleDisplayChanger from "./AngleDisplayChanger";
 import AngleSizeChanger from "./AngleSizeChanger";
 import AngleColorAndFill from "./AngleColorAndFill";
 import AngleIsBigChanger from "./AngleIsBigChanger";
+import CustomizationSectionWrapper from "import/components/micro/CustomizationSectionWrapper";
 
 type PropsType = {
   thisEntityId: TangId | undefined;
@@ -11,17 +12,13 @@ type PropsType = {
 
 const AngleCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
   return (
-    <div
-      className={`mb-2 flex w-full flex-col gap-2 ${
-        thisEntityId ? "text-foreground" : "text-foreground2 text-opacity-80"
-      }`}
-    >
+    <CustomizationSectionWrapper>
       <AngleDisplayChanger angId={thisEntityId} />
       <AngleIsBigChanger angId={thisEntityId} />
       <AngleSizeChanger angId={thisEntityId} />
       <AngleColorAndFill angId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
-    </div>
+    </CustomizationSectionWrapper>
   );
 };
 

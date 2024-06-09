@@ -1,4 +1,4 @@
-import AccordionItem from "import/components/micro/AccordionItem";
+import AccordionItem from "import/components/micro/old/AccordionItem";
 import { useState } from "react";
 import Switcher from "import/components/micro/Switcher";
 import useStore from "import/utils/store/useStore";

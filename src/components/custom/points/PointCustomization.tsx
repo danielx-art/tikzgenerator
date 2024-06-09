@@ -3,6 +3,7 @@ import PointDisplayChanger from "./PointDisplayChanger";
 import TagCustomization from "../tags/TagCustomization";
 import PointSizeChanger from "./PointSizeChanger";
 import ColorChanger from "../ColorChanger";
+import CustomizationSectionWrapper from "import/components/micro/CustomizationSectionWrapper";
 
 type PropsType = {
   thisEntityId: TpointId | undefined;
@@ -10,16 +11,12 @@ type PropsType = {
 
 const PointCustomization: React.FC<PropsType> = ({ thisEntityId }) => {
   return (
-    <div
-      className={`mb-2 flex w-full flex-col gap-2 ${
-        thisEntityId ? "text-foreground" : "text-foreground2 text-opacity-80"
-      }`}
-    >
+    <CustomizationSectionWrapper>
       <PointDisplayChanger pointId={thisEntityId} />
       <PointSizeChanger pointId={thisEntityId} />
       <ColorChanger entId={thisEntityId} />
       <TagCustomization thisEntityId={thisEntityId} />
-    </div>
+    </CustomizationSectionWrapper>
   );
 };
 

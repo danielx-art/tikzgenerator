@@ -18,7 +18,8 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "import/*": ["./src/*"]
+      "import/*": ["./src/*"],
+      "@/*": ["src/*", "@/*"]
     },
     "plugins": [{ "name": "next" }]
   },

@@ -69,3 +69,5 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [ ] Na ferramenta Inserir Ponto em Segmento, quando selecionada distância 'd' aparece espaço em branco em baixo da página.
 - [ ] nos menus de selecionar cor, overflow não está como contain, e ao scrollar a na página inteira dá scroll.
 - [ ] Quando movido ponto, mover também círculos, segmentos e polígonos que utilizam esse ponto.
+- [ ] Marcadores em segmentos não funcionando em código tikz. Posicionamento errado e palavra chave "solid" entre aspas.
+- [x] transferir layout shadcn para mais acessibilidade.
