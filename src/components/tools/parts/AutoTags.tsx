@@ -1,4 +1,3 @@
-import AccordionItem from "import/components/micro/old/AccordionItem";
 import { useState } from "react";
 import Switcher from "import/components/micro/Switcher";
 import useStore from "import/utils/store/useStore";
@@ -13,6 +12,7 @@ import {
   lengthTags,
   numericalTags,
 } from "import/utils/storeHelpers/autoTags";
+import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "import/components/micro/ui/accordion";
 
 const AutoTags: React.FC = () => {
   const store = useStore(myStore, (state) => state);
@@ -22,8 +22,12 @@ const AutoTags: React.FC = () => {
   const applyTags = useApplyTags(store);
 
   return (
-    <div className="flex w-full flex-col items-center gap-2">
-      <AccordionItem title="Autoetiquetar pontos">
+    <Accordion type="multiple" className="w-full">
+      <AccordionItem value="Autoetiquetar pontos">
+        <AccordionTrigger>Pontos</AccordionTrigger>
+        <AccordionContent>
+
+        
         <AutoTagEntityMenuBody
           Options={[
             {
@@ -73,8 +77,13 @@ const AutoTags: React.FC = () => {
             },
           ]}
         />
+        </AccordionContent>
       </AccordionItem>
-      <AccordionItem title="Autoetiquetar segmentos">
+      <AccordionItem value="segmentos">
+        <AccordionTrigger>Segmentos</AccordionTrigger>
+        <AccordionContent>
+
+        
         <AutoTagEntityMenuBody
           Options={[
             {
@@ -109,8 +118,11 @@ const AutoTags: React.FC = () => {
             },
           ]}
         />
+        </AccordionContent>
       </AccordionItem>
-      <AccordionItem title="Autoetiquetar ângulos">
+      <AccordionItem value="Ângulos">
+        <AccordionTrigger>Ângulos</AccordionTrigger>
+        <AccordionContent>
         <AutoTagEntityMenuBody
           Options={[
             {
@@ -146,8 +158,9 @@ const AutoTags: React.FC = () => {
             { title: "\u{00C2} ... \u{1E90}" },
           ]}
         />
+        </AccordionContent>
       </AccordionItem>
-    </div>
+    </Accordion>
   );
 };
 

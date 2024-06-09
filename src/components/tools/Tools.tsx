@@ -1,7 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../micro/ui/accordion";
 import AddPointInSegment from "./parts/AddPointInSegment";
 import AutoTags from "./parts/AutoTags";
-//import AccordionItem from "import/components/micro/old/AccordionItem";
 import PointOrthoProjection from "./parts/PointOrthoProjection";
 
 const Tools = () => {
@@ -28,15 +27,16 @@ const Tools = () => {
                 <PointOrthoProjection />
               </AccordionContent>
             </AccordionItem>
+            <AccordionItem value="auto-tags">
+              <AccordionTrigger>
+                <div>Auto etiquetar</div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <AutoTags />
+              </AccordionContent>
+            </AccordionItem>
           </Accordion>
         </AccordionContent>
-        {/* <AutoTags /> */}
-        {/* <AccordionItem title="Inserir ponto em segmento">
-          <AddPointInSegment />
-        </AccordionItem>
-        <AccordionItem title="Projeção ortogonal de um ponto">
-          <PointOrthoProjection />
-        </AccordionItem> */}
       </AccordionItem>
   );
 };
