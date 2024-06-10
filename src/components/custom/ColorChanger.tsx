@@ -53,7 +53,6 @@ const ColorChanger: React.FC<PropsType> = ({ entId, atrName }) => {
   }, [entId, store]);
 
   useEffect(() => {
-    console.log("hello"); //debugg
     if (!entId || !store || disabled) return;
     const kind = getKindById(entId as TentId);
     const entMap = getMapByKind(kind, store);
