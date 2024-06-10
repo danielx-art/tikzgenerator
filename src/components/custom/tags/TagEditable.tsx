@@ -84,7 +84,7 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId, thisEntityId }) => {
         disabled={disabled || !editMode}
         className={`${
           editMode ? "" : "bg-muted"
-        } w-10 p-2 focus:outline-foregroung`}
+        } w-10 p-2 focus:outline-foreground`}
       />
       <button onClick={handleBtnPress} disabled={disabled}>
         {editMode ? (

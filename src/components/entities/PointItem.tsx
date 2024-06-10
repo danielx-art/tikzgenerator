@@ -44,7 +44,7 @@ const PointItem: React.FC<PropsType> = ({ point, index }) => {
       </div>
       <div>{findTagByEntityId(point.id, tags)?.value || ""}</div>
       {point.selected ? (
-        <div className="flex h-4 w-4 items-center justify-center rounded-full bg-background bg-opacity-60 text-xs font-bold text-foregroung ring-1 ring-foregroung">
+        <div className="flex h-4 w-4 items-center justify-center rounded-full bg-background bg-opacity-60 text-xs font-bold text-foreground ring-1 ring-foreground">
           {getSelectionOrder()}
         </div>
       ) : (

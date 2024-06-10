@@ -42,7 +42,7 @@ const AngleIsBigChanger: React.FC<PropsType> = ({ angId }) => {
   return (
     <div className="w-fit flex flex-row flex-nowrap">
       <Switcher isChecked={isBigAngle} setIsChecked={setIsBigAngle} />
-      <div className={isBigAngle ? " text-foreground_int" : " text-foreground opacity-70"}> Ângulo Maior </div>
+      <div className={isBigAngle ? " text-foreground" : " text-foreground opacity-70"}> Ângulo Maior </div>
     </div>
   );
 };

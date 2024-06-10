@@ -306,7 +306,7 @@ const AddPointInSegment: React.FC = () => {
         <div className="flex flex-col items-center justify-center gap-2">
           <input
             type="text"
-            className="focus:outline-foregroung z-10 w-1/2 cursor-text rounded-sm bg-background px-2 py-1 text-foreground text-center"
+            className="focus:outline-foreground z-10 w-1/2 cursor-text rounded-sm bg-background px-2 py-1 text-foreground text-center"
             value={roundToDecimalPlaces(parseFloat(inputVal),2)}
             onChange={handleInput}
           />
@@ -319,7 +319,7 @@ const AddPointInSegment: React.FC = () => {
           />
           <button
             onClick={handleAddPoint}
-            className="rounded-sm bg-primary p-2 text-background shadow-md hover:bg-foregroung"
+            className="rounded-sm bg-primary p-2 text-background shadow-md hover:bg-foreground"
           >
             Criar ponto
           </button>

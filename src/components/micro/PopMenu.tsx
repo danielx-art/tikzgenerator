@@ -67,9 +67,9 @@ const PopMenu: React.FC<PropsType> = ({
         <button
           onClick={toggleDropdown}
           type="button"
-          className={`w-fit rounded-sm px-2 py-1 focus:outline-none focus:ring-2 focus:ring-foregroung focus:ring-offset-2 focus:ring-offset-foregroung ${
+          className={`w-fit rounded-sm px-2 py-1 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-foreground ${
             isOpen
-              ? "bg-foregroung text-background"
+              ? "bg-foreground text-background"
               : "bg-primary  text-background"
           }`}
           id="options-menu"
@@ -81,7 +81,7 @@ const PopMenu: React.FC<PropsType> = ({
       </div>
 
       <div
-        className={`bg-background absolute bottom-0 left-full z-10 ml-1 rounded-md shadow-sm shadow-foregroung transition-all ease-in-out focus:outline-none ${
+        className={`bg-background absolute bottom-0 left-full z-10 ml-1 rounded-md shadow-sm shadow-foreground transition-all ease-in-out focus:outline-none ${
           isOpen
             ? "scale-y-100 cursor-pointer opacity-100"
             : "disabled pointer-events-none -translate-y-[50%] scale-y-0 select-none opacity-0 sm:-translate-x-[50%]"

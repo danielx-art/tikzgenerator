@@ -140,7 +140,7 @@ const AddPointInput_Panels = () => {
         placeholder="(X;Y) ou (R:&#x3B8;) separados por espaço"
       />
       <button
-        className="rounded-sm bg-primary p-2 text-background outline-1 hover:bg-foregroung"
+        className="rounded-sm bg-primary p-2 text-background outline-1 hover:bg-foreground"
         onClick={addPoint}
       >
         +

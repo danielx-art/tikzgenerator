@@ -30,11 +30,11 @@ const What = () => {
         className="max-w-[60%] leading-10"
       >
         <p>
-          <span className="inline text-foreground_int">GeoSimples</span> é uma
+          <span className="inline text-foreground">GeoSimples</span> é uma
           ferramenta para desenhar figuras geométricas simples, criada por{" "}
           <Link
             href={"https://danielx-art.github.io/astro-folio/"}
-            className=" italic underline underline-offset-4 hover:text-foreground_int"
+            className=" italic underline underline-offset-4 hover:text-foreground"
             target="_blanck"
             rel="noopener noreferrer"
           >

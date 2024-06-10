@@ -36,9 +36,9 @@ const Switcher: React.FC<PropsType> = ({
           onChange={handleCheckboxChange}
           className="sr-only"
         />
-        <div className="relative h-3 w-6 rounded-full bg-background ring-1 ring-primary group-hover:ring-foregroung">
+        <div className="relative h-3 w-6 rounded-full bg-background ring-1 ring-primary group-hover:ring-foreground">
           <div
-            className={`absolute left-0 top-0 flex h-full w-1/2 items-center justify-center rounded-full bg-primary transition group-hover:bg-foregroung ${
+            className={`absolute left-0 top-0 flex h-full w-1/2 items-center justify-center rounded-full bg-primary transition group-hover:bg-foreground ${
               isChecked ? "translate-x-0" : "translate-x-full"
             }`}
           ></div>

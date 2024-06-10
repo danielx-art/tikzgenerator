@@ -71,3 +71,4 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [ ] Quando movido ponto, mover também círculos, segmentos e polígonos que utilizam esse ponto.
 - [ ] Marcadores em segmentos não funcionando em código tikz. Posicionamento errado e palavra chave "solid" entre aspas.
 - [x] transferir layout shadcn para mais acessibilidade.
+- [x] Paginator está dentro de AccordionTrigger, o que causa button as a descendant of button.

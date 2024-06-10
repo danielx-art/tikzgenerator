@@ -19,7 +19,11 @@ import {
 } from "import/utils/storeHelpers/entityGetters";
 import PolygonCustomization from "./polygons/PolygonCustomization";
 import CircleCustomization from "./circles/CircleCustomization";
-import { AccordionTrigger, AccordionContent, AccordionItem } from "../micro/ui/accordion";
+import {
+  AccordionTrigger,
+  AccordionContent,
+  AccordionItem,
+} from "../micro/ui/accordion";
 import ItemPaginator from "../micro/ItemPaginator";
 
 const Customization = () => {
@@ -28,7 +32,7 @@ const Customization = () => {
   const [selectedEntities, setSelectedEntities] = useState<
     Array<Tentity> | undefined
   >();
-  const [tabMessage, setTabMessage] = useState("");
+
   const [thisEntityId, setThisEntityId] = useState<TallId | undefined>(
     undefined,
   );
@@ -65,20 +69,7 @@ const Customization = () => {
   return (
     <AccordionItem value="customization">
       <AccordionTrigger>
-          <div className="flex flex-1">Customização</div>
-        {isOpen ? (
-          <div className="px-2">
-            <ItemPaginator
-              curr={curr}
-              setCurr={setCurr}
-              total={selectedEntities?.length || 0}
-            />
-          </div>
-        ) : (
-          <div className="overflow-hidden whitespace-nowrap pr-2 text-sm italic text-foreground2 text-opacity-50">
-            {tabMessage}
-          </div>
-        )}
+        <div className="flex flex-1">Customização</div>
       </AccordionTrigger>
       <AccordionContent
         className={`w-full p-1 pl-2 transition-all ease-in-out ${
@@ -90,6 +81,13 @@ const Customization = () => {
         aria-orientation="vertical"
         aria-labelledby="options-menu"
       >
+        <div className="flex flex-row justify-end">
+          <ItemPaginator
+            curr={curr}
+            setCurr={setCurr}
+            total={selectedEntities?.length || 0}
+          />
+        </div>
         {thisEntityId && getKindById(thisEntityId) === "point" ? (
           <PointCustomization
             thisEntityId={thisEntityId as TpointId | undefined}

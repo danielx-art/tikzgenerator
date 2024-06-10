@@ -51,7 +51,7 @@ const DialogBox: React.FC<PropsType> = ({
                 {closeButton && (
                   <div
                     onClick={() => setIsOpen(false)}
-                    className="absolute right-1 top-1 cursor-pointer rounded-full text-foreground2 transition-colors duration-75 hover:text-foregroung"
+                    className="absolute right-1 top-1 cursor-pointer rounded-full text-foreground2 transition-colors duration-75 hover:text-foreground"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

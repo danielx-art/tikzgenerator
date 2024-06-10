@@ -16,8 +16,8 @@ const Item: React.FC<PropsType> = ({
   return (
     <div
       className={`${
-        highlight ? "bg-foreground_int bg-opacity-10" : null
-      } flex w-full flex-row flex-nowrap justify-stretch text-sm text-foreground_int`}
+        highlight ? "bg-foreground bg-opacity-10" : null
+      } flex w-full flex-row flex-nowrap justify-stretch text-sm text-foreground`}
     >
       <div className="flex flex-1 select-none flex-row flex-nowrap py-1 pl-4 pr-2">
         <div
