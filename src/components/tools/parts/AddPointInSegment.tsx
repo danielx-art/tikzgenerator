@@ -36,7 +36,7 @@ const AddPointInSegment: React.FC = () => {
 
   if (!store) return;
 
-  const { generateId, selectedGroup, points, setPoints, selections } = store;
+  const { generateId, points, update } = store;
 
   //const selectedPoints = Array.from(points.values()).filter((point) => point.selected);
   const selectedPoints = getSelected("point", store);
@@ -45,7 +45,7 @@ const AddPointInSegment: React.FC = () => {
 
   if (!segPoints[0] || !segPoints[1]) {
     return (
-      <div className=" italic text-foreground2 opacity-75">
+      <div className=" text-foreground2 italic opacity-75">
         Selecione ao menos dois pontos.
       </div>
     );
@@ -197,10 +197,8 @@ const AddPointInSegment: React.FC = () => {
     ab.mult(value);
     const newCoords = vec().copy(segPoints[0].coords).add(ab);
     const newId = generateId("point");
-    const newPoint = ponto(newCoords, newId, selectedGroup);
-    const updatedPoints = new Map(points);
-    updatedPoints.set(newId, newPoint);
-    setPoints(updatedPoints);
+    const newPoint = ponto(newCoords, newId);
+    update(newPoint);
   };
 
   const styles = {
@@ -265,20 +263,20 @@ const AddPointInSegment: React.FC = () => {
               }}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-foreground2`}
+              className={`bg-foreground2 pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full`}
               style={{
                 left: styles.leftApos + "%",
               }}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full bg-foreground2
+              className={`bg-foreground2 pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 select-none rounded-full
                 `}
               style={{
                 left: styles.leftBpos + "%",
               }}
             />
           </div>
-          <div className="flex flex-row w-fit max-w-full">
+          <div className="flex w-fit max-w-full flex-row">
             <div
               className="pointer-events-none inline-block w-fit -translate-x-1/2 select-none"
               style={{
@@ -288,7 +286,9 @@ const AddPointInSegment: React.FC = () => {
               {findTagByEntityId(segPoints[0].id, store.tags)?.value &&
               findTagByEntityId(segPoints[0].id, store.tags)?.value !== ""
                 ? findTagByEntityId(segPoints[0].id, store.tags)?.value
-                : `(${roundAndDisplayNicely(segPoints[0]!.coords.x)};${roundAndDisplayNicely(segPoints[0]!.coords.y)})`}
+                : `(${roundAndDisplayNicely(
+                    segPoints[0]!.coords.x,
+                  )};${roundAndDisplayNicely(segPoints[0]!.coords.y)})`}
             </div>
             <div
               className="pointer-events-none inline-block w-fit -translate-x-1/2 select-none"
@@ -299,15 +299,17 @@ const AddPointInSegment: React.FC = () => {
               {findTagByEntityId(segPoints[1].id, store.tags)?.value &&
               findTagByEntityId(segPoints[1].id, store.tags)?.value !== ""
                 ? findTagByEntityId(segPoints[1].id, store.tags)?.value
-                : `(${roundAndDisplayNicely(segPoints[1]!.coords.x)};${roundAndDisplayNicely(segPoints[1]!.coords.y)})`}
+                : `(${roundAndDisplayNicely(
+                    segPoints[1]!.coords.x,
+                  )};${roundAndDisplayNicely(segPoints[1]!.coords.y)})`}
             </div>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
           <input
             type="text"
-            className="focus:outline-foreground z-10 w-1/2 cursor-text rounded-sm bg-background px-2 py-1 text-foreground text-center"
-            value={roundToDecimalPlaces(parseFloat(inputVal),2)}
+            className="z-10 w-1/2 cursor-text rounded-sm bg-background px-2 py-1 text-center text-foreground focus:outline-foreground"
+            value={roundToDecimalPlaces(parseFloat(inputVal), 2)}
             onChange={handleInput}
           />
           <Switcher

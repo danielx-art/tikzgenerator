@@ -12,11 +12,10 @@ const AddPointInput = () => {
 
   const [input, setInput] = useState("");
 
-  const addPoint = useCallback(()=>{
+  const addPoint = useCallback(() => {
+    if (!store) return;
 
-    if(!store) return;
-
-    const {points, setPoints, selections, generateId} = store;
+    const { points, update, selections, generateId } = store;
 
     if (points.size > MAXIMUM_NUMBER_OF_POINTS) {
       toast(
@@ -57,9 +56,7 @@ const AddPointInput = () => {
           `As coordenadas do ponto "${substring}" devem ser números. `,
         );
         return;
-
       } else if (substring.includes(":")) {
-
         const [str1, str2] = substring.split(":");
         if (!(str1 && str2)) {
           toast.error(
@@ -73,17 +70,19 @@ const AddPointInput = () => {
 
         let referencePoint: Tpoint | undefined;
 
-        if(substring.startsWith("+")){
+        if (substring.startsWith("+")) {
           //reference point should be last point in the list
 
-          num1 = parseFloat(str1.substring(1).replace(/\s+/g, '')); //remove the + sign TEST REGEX
+          num1 = parseFloat(str1.substring(1).replace(/\s+/g, "")); //remove the + sign TEST REGEX
 
-          const lastPoint = pointsToAdd[pointsToAdd.length-1];
-          
-          if(!lastPoint) {
-            toast.error('Para utilizar a sintaxe +R:θ você deve adicionar outro ponto antes. ');
+          const lastPoint = pointsToAdd[pointsToAdd.length - 1];
+
+          if (!lastPoint) {
+            toast.error(
+              "Para utilizar a sintaxe +R:θ você deve adicionar outro ponto antes. ",
+            );
             return;
-          } 
+          }
 
           referencePoint = lastPoint;
         } else {
@@ -91,22 +90,22 @@ const AddPointInput = () => {
 
           num1 = parseFloat(str1);
 
-          if(!selections) {
+          if (!selections) {
             toast.error(
               "Para adicionar um ponto da forma R:θ, você deve ter pelo menos outro ponto selecionado. ",
             );
             continue;
           }
           const selectedPointIds = fromSelectionsGet("point", selections);
-          const lastSelectedId = selectedPointIds[selectedPointIds.length-1];
-          if(!lastSelectedId) {
+          const lastSelectedId = selectedPointIds[selectedPointIds.length - 1];
+          if (!lastSelectedId) {
             toast.error(
               "Há algum erro com o ponto selecionado. Para adicionar um ponto da forma R:θ, você deve ter pelo menos outro ponto selecionado. ",
             );
             continue;
           }
           const lastSelectedPoint = points.get(lastSelectedId);
-          if(!lastSelectedPoint) {
+          if (!lastSelectedPoint) {
             toast.error(
               "Há algum erro com o ponto selecionado. Para adicionar um ponto da forma R:θ, você deve ter pelo menos outro ponto selecionado. ",
             );
@@ -149,9 +148,9 @@ const AddPointInput = () => {
 
     pointsToAdd.forEach((newPoint) => updatedPoints.set(newPoint.id, newPoint));
 
-    setPoints(updatedPoints);
+    store.set({ ...store, points: updatedPoints });
     setInput("");
-  },[store, input]);
+  }, [store, input]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {

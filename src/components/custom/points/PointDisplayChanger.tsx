@@ -10,13 +10,11 @@ type PropsType = {
 
 const PointDisplayChanger: React.FC<PropsType> = ({ pointId }) => {
   const store = useStore(myStore, (state) => state);
+  const thisPoint = useStore(myStore, (state)=>pointId && state.points.get(pointId));
 
   const handleDisplayChange = (option: number) => {
-    if (!pointId || getKindById(pointId) != "point" || !store) return;
-    const updatedPoints = new Map(store.points);
-    const point = store.points.get(pointId) as Tpoint;
-    updatedPoints.set(pointId, { ...point, dotstyle: option });
-    store.setPoints(updatedPoints);
+    if (!thisPoint || !store) return;
+    store.update({ ...thisPoint, dotstyle: option });
   };
 
   return (

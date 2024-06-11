@@ -18,38 +18,36 @@ type PropsType = {
 const StrokeWidthChanger: React.FC<PropsType> = ({ entId }) => {
   const store = useStore(myStore, (state) => state);
   const configs = useStore(configStore, (state)=>state);
+  const thisEnt = useStore(
+    myStore,
+    (state) => entId && getEntityById(entId, state),
+  );
   
   const [size, setSize] = useState(`${configs?.DEFAULT_STROKE_WIDTH || initConfigs.DEFAULT_STROKE_WIDTH}`);
   const [disabled, setDisabled] = useState(true);
 
 
   useEffect(() => {
-    if (!store || !entId) {
+    if (!thisEnt || !("stroke" in thisEnt)) {
       setDisabled(true);
       return;
     }
-    const ent = getEntityById(entId, store);
-    if (!ent || !("stroke" in ent)) return;
-    setSize(`${ent.stroke.width}`);
+    setSize(`${thisEnt.stroke.width}`);
     setDisabled(false);
-  }, [entId, store]);
+  }, [thisEnt]);
 
   useEffect(() => {
-    if (!entId || !store || disabled) return;
-    const kind = getKindById(entId as TentId);
-    const entMap = getMapByKind(kind, store);
-    const entSetter = getSetterByKind(kind, store);
-    if (!entMap || !entSetter) return;
-    const updatedEntities = new Map(entMap);
+    if (!thisEnt || !("stroke" in thisEnt) || !store || disabled) return;
+    
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
-    const ent = getEntityById(entId, store);
-    if (!ent || !("stroke" in ent)) return;
-    updatedEntities.set(entId, {
-      ...ent,
-      stroke: { ...ent.stroke, width: newSize },
-    } as any);
-    entSetter(updatedEntities as any);
+
+    const newEnt = {
+      ...thisEnt,
+      stroke: { ...thisEnt.stroke, width: newSize },
+    };
+
+    store.update(newEnt)
   }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {

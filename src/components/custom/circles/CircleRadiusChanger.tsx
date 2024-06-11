@@ -12,35 +12,30 @@ type PropsType = {
 const CircleRadiusChanger: React.FC<PropsType> = ({ circleId }) => {
   const store = useStore(myStore, (state) => state);
   const configs = useStore(configStore, (state)=>state);
+  const thisCircle = useStore(myStore, (state)=>circleId && state.circles.get(circleId));
   
   const [size, setSize] = useState(`${configs?.DEFAULT_CIRCLE_RADIUS || initConfigs.DEFAULT_CIRCLE_RADIUS}`);
   const [disabled, setDisabled] = useState(true);
 
 
   useEffect(() => {
-    if (!store || !circleId) {
+    if (!thisCircle) {
       setDisabled(true);
       return;
     }
-    const circ = store.circles.get(circleId);
-    if (!circ) return;
-    setSize(`${circ.radius}`);
+    setSize(`${thisCircle.radius}`);
     setDisabled(false);
-  }, [circleId, store]);
+  }, [thisCircle]);
 
   useEffect(() => {
-    if (!circleId || !store || !configs || disabled) return;
-    const updatedCircles = new Map(store.circles);
+    if (!thisCircle || !store || !configs || disabled) return;
     const newSize =
       size.length > 0
         ? parseFloat(size) > 0
           ? parseFloat(size)
           : configs.DEFAULT_CIRCLE_RADIUS
         : configs.DEFAULT_CIRCLE_RADIUS;
-    const seg = store.circles.get(circleId);
-    if (!seg) return;
-    updatedCircles.set(circleId, { ...seg, radius: newSize });
-    store.setCircles(updatedCircles);
+    store.update({ ...thisCircle, radius: newSize });
   }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {

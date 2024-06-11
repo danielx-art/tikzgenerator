@@ -12,29 +12,23 @@ type PropsType = {
 const TagColorChanger: React.FC<PropsType> = ({ thisTagId }) => {
   const [selectedColor, setSelectedColor] = useState<LATEX_COLOR>("black");
   const [disabled, setDisabled] = useState(true);
-
   const store = useStore(myStore, (state) => state);
+  const thisTag = useStore(myStore, (state)=>thisTagId&&state.tags.get(thisTagId));
 
   useEffect(() => {
-    if (!store || !thisTagId) {
-      setDisabled(true);
-      return;
-    }
-    const thisTag = store.tags.get(thisTagId);
-    if (!thisTag || !store.selections.includes(thisTag.entityId)) {
+    if (!thisTag || !store || !store.selections.includes(thisTag.entityId)) {
       setDisabled(true);
       return;
     }
     setDisabled(false);
     setSelectedColor(thisTag.color as LATEX_COLOR);
-  }, [thisTagId, store]);
+  }, [thisTag, store]);
 
   useEffect(() => {
-    if (!thisTagId || !store || disabled) return;
-    const updatedTags = new Map(store.tags);
-    const thisTag = store.tags.get(thisTagId)!;
-    updatedTags.set(thisTagId, { ...thisTag, color: selectedColor });
-    store.setTags(updatedTags);
+    if (!thisTag || !store || disabled) return;
+
+    const newTag = { ...thisTag, color: selectedColor };
+    store.update(newTag);
   }, [selectedColor]);
 
   return (

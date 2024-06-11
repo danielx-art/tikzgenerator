@@ -4,12 +4,7 @@ import ColorSelect from "import/components/micro/ColorSelect";
 import type { TentId } from "public/entidades";
 import { LATEX_COLOR } from "public/generalConfigs";
 import { useEffect, useState } from "react";
-import {
-  getEntityById,
-  getKindById,
-  getMapByKind,
-  getSetterByKind,
-} from "import/utils/storeHelpers/entityGetters";
+import { getEntityById } from "import/utils/storeHelpers/entityGetters";
 
 type PropsType = {
   entId: TentId | undefined;
@@ -21,66 +16,59 @@ const ColorChanger: React.FC<PropsType> = ({ entId, atrName }) => {
   const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);
+  const thisEnt = useStore(
+    myStore,
+    (state) => entId && getEntityById(entId, state),
+  );
 
   useEffect(() => {
-    if (!store || !entId) {
+    if (!thisEnt) {
       setDisabled(true);
       return;
     }
-    const thisEntity = getEntityById(entId, store);
-    if (!thisEntity) {
-      setDisabled(true);
+
+    if (!atrName && "color" in thisEnt) {
+      setDisabled(false);
+      setSelectedColor(thisEnt.color);
       return;
     }
 
-    if (!atrName && "color" in thisEntity) {
+    if (atrName === "stroke" && "stroke" in thisEnt) {
       setDisabled(false);
-      setSelectedColor(thisEntity.color);
+      setSelectedColor(thisEnt["stroke"].color);
       return;
     }
 
-    if (atrName === "stroke" && "stroke" in thisEntity) {
+    if (atrName === "fill" && "fill" in thisEnt) {
       setDisabled(false);
-      setSelectedColor(thisEntity["stroke"].color);
+      setSelectedColor(thisEnt["fill"].color);
       return;
     }
-
-    if (atrName === "fill" && "fill" in thisEntity) {
-      setDisabled(false);
-      setSelectedColor(thisEntity["fill"].color);
-      return;
-    }
-  }, [entId, store]);
+  }, [thisEnt]);
 
   useEffect(() => {
-    if (!entId || !store || disabled) return;
-    const kind = getKindById(entId as TentId);
-    const entMap = getMapByKind(kind, store);
-    const entSetter = getSetterByKind(kind, store);
-    if (!entMap || !entSetter) return;
-    const updatedEntities = new Map(entMap);
-    const ent = getEntityById(entId, store);
-    if (!ent) return;
-    if (atrName && atrName === "stroke" && "stroke" in ent) {
-      updatedEntities.set(entId, {
-        ...ent,
-        stroke: { ...ent.stroke, color: selectedColor },
-      } as any);
-      entSetter(updatedEntities as any);
+    if (!thisEnt || !store || disabled) return;
+
+    if (atrName && atrName === "stroke" && "stroke" in thisEnt) {
+      const newEnt = {
+        ...thisEnt,
+        stroke: { ...thisEnt.stroke, color: selectedColor },
+      };
+      store.update(newEnt);
     }
-    if (atrName && atrName === "fill" && "fill" in ent) {
-      updatedEntities.set(entId, {
-        ...ent,
-        fill: { ...ent.fill, color: selectedColor },
-      } as any);
-      entSetter(updatedEntities as any);
+    if (atrName && atrName === "fill" && "fill" in thisEnt) {
+      const newEnt = {
+        ...thisEnt,
+        fill: { ...thisEnt.fill, color: selectedColor },
+      };
+      store.update(newEnt);
     }
-    if (!atrName && "color" in ent) {
-      updatedEntities.set(entId, {
-        ...ent,
+    if (!atrName && "color" in thisEnt) {
+      const newEnt = {
+        ...thisEnt,
         color: selectedColor,
-      } as any);
-      entSetter(updatedEntities as any);
+      };
+      store.update(newEnt);
     }
   }, [selectedColor]);
 
@@ -90,7 +78,7 @@ const ColorChanger: React.FC<PropsType> = ({ entId, atrName }) => {
       <div>
         {
           <ColorSelect
-            id= {`${entId}_${atrName}_color_changer`}
+            id={`${entId}_${atrName}_color_changer`}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
             disabled={disabled}

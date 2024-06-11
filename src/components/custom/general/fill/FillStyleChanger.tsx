@@ -79,18 +79,13 @@ const FillStyleChanger: React.FC<PropsType> = ({ entId }) => {
 
   const handleDisplayChange = (btnIndex: number, optionSel: number) => {
     if (!entId || !store || !thisEnt || !("fill" in thisEnt)) return;
-    const kind = getKindById(entId as TentId);
-    const entMap = getMapByKind(kind, store);
-    const entSetter = getSetterByKind(kind, store);
-    if (!entMap || !entSetter) return;
-    const updatedEntities = new Map(entMap);
+
     const newStyle = getFillStyle(
       btnIndex as TstyleIndexes,
       optionSel as ThachureOrientations,
     );
     const newEnt = { ...thisEnt, fill: { ...thisEnt.fill, style: newStyle } };
-    updatedEntities.set(entId, newEnt as any);
-    entSetter(updatedEntities as any);
+    store.update(newEnt);
   };
 
   return (

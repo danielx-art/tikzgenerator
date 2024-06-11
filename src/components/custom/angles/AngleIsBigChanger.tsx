@@ -21,28 +21,28 @@ const AngleIsBigChanger: React.FC<PropsType> = ({ angId }) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (angId && store && thisAngle) {
+    if (thisAngle) {
       setIsBigAngle(thisAngle.isBigAngle);
     } else {
       setDisabled(true);
     }
-  }, [store, thisAngle]);
+  }, [thisAngle]);
 
   useEffect(() => {
-    if (!angId || !store || !thisAngle) return;
+    if (!store || !thisAngle) return;
     if (isBigAngle === thisAngle.isBigAngle) return;
-    const updatedAngles = new Map(store.angles);
-    updatedAngles.set(angId, {
+
+    store.update({
       ...thisAngle,
       isBigAngle: isBigAngle,
     });
-    store.setAngles(updatedAngles);
+
   }, [isBigAngle]);
 
   return (
-    <div className="w-fit flex flex-row flex-nowrap">
-      <Switcher isChecked={isBigAngle} setIsChecked={setIsBigAngle} />
-      <div className={isBigAngle ? " text-foreground" : " text-foreground opacity-70"}> Ângulo Maior </div>
+    <div className={`w-fit flex flex-row flex-nowrap ${disabled ? "opacity-50": "opacity-100"}`}>
+      <Switcher isChecked={isBigAngle} setIsChecked={setIsBigAngle}/>
+      <div className={isBigAngle ? " text-foreground" : " text-foreground/70"}> Ângulo Maior </div>
     </div>
   );
 };

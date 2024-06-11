@@ -30,38 +30,24 @@ import { getEntityById, getKindById } from "../storeHelpers/entityGetters";
 //import { initConfigs } from "public/generalConfigs";
 
 export type State = {
-  tab: TallKindPlural;
   points: Map<TpointId, Tpoint>;
   segments: Map<TsegId, Tsegment>;
   angles: Map<TangId, Tangle>;
   circles: Map<TcircleId, Tcircle>;
   polygons: Map<TpolyId, Tpolygon>;
   tags: Map<TtagId, Ttag>;
-  groups: number[];
-  selectedGroup: number;
   idCounters: Record<TallKind, number>;
   selections: Array<TallId>;
-  //configs: typeof initConfigs;
 };
 
 export type Action = {
-  setTab: (tab: State["tab"]) => void;
-  setPoints: (points: State["points"]) => void;
-  setSegments: (segments: State["segments"]) => void;
-  setAngles: (angles: State["angles"]) => void;
-  setCircles: (circles: State["circles"]) => void;
-  setPolygons: (polygons: State["polygons"]) => void;
-  setGroups: (groups: State["groups"]) => void;
-  setSelectedGroup: (selectedGroups: State["selectedGroup"]) => void;
-  setTags: (tags: State["tags"]) => void;
   generateId: <T extends TallKind>(type: T) => TidFromKind<T>;
   toggleSelection: (id: TallId) => void;
-  //addEntity: (entityKind: Tkind, elementBody: Tentity) => void;
+  update: <T extends Tentity | Ttag>(newValue: T) => void;
   deleteEntity: (id: TentId) => void;
   movePoint: (id: TpointId, newPosition: vector, shallow?: boolean) => void;
   addTag: (value: string, entityId: TentId) => void;
   deleteTag: (id: TtagId) => void;
-  //setConfig: <Key extends keyof State['configs']>(config: Key, newValue: State['configs'][Key])=>void;
   clear: () => void;
   set: (state: State & Action) => void;
 };
@@ -70,35 +56,12 @@ const myStore = create<State & Action>()(
   persist(
     (set, get) => ({
       set: (state) => set(() => ({ ...state })),
-
-      // configs: initConfigs,
-      // setConfig: <Key extends keyof typeof initConfigs>(config: Key, newValue: (typeof initConfigs)[Key])=>{
-      //   let updatedCongifs = get().configs;
-      //   updatedCongifs = {...updatedCongifs, [config]: newValue};
-      //   set(()=>({configs: updatedCongifs}));
-      // },
-
-      tab: "points" as TallKindPlural,
-      setTab: (tab) => set(() => ({ tab: tab })),
       points: new Map<TpointId, Tpoint>(),
       segments: new Map<TsegId, Tsegment>(),
       angles: new Map<TangId, Tangle>(),
       circles: new Map<TcircleId, Tcircle>(),
       polygons: new Map<TpolyId, Tpolygon>(),
       tags: new Map<TtagId, Ttag>(),
-      setPoints: (points) => set(() => ({ points: points })),
-      setSegments: (segments) => set(() => ({ segments: segments })),
-      setAngles: (angles) => set(() => ({ angles: angles })),
-      setCircles: (circles) => set(() => ({ circles: circles })),
-      setPolygons: (polygons) => set(() => ({ polygons: polygons })),
-
-      setTags: (tags) => set(() => ({ tags: tags })),
-
-      groups: [1] as number[],
-      setGroups: (groups) => set(() => ({ groups: groups })),
-      selectedGroup: 1 as number,
-      setSelectedGroup: (selectedGroup) =>
-        set(() => ({ selectedGroup: selectedGroup })),
 
       idCounters: {
         point: 0,
@@ -171,6 +134,22 @@ const myStore = create<State & Action>()(
       //     return { [stateMapKey]: updatedMap };
       //   });
       // },
+
+      update: <T extends Tentity | Ttag>(newValue: T) => {
+
+        const kind = getKindById(newValue.id);
+        
+        const stateMapKey = (kind+"s") as TallKindPlural;
+
+        set((state)=>{
+          const updatedMap = new Map(
+            state[stateMapKey] as Map<TidFromKind<typeof kind>, T>,
+          )
+
+          updatedMap.set(newValue.id, newValue);
+
+          return {[stateMapKey]: updatedMap}})
+      },
 
       deleteEntity: (id: TentId) => {
         const entityKind = getKindById(id) as Tkind;

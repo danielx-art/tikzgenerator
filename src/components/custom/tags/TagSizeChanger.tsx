@@ -1,7 +1,7 @@
 import configStore from "import/utils/store/configStore";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import type { TtagId } from "public/entidades";
+import type { Ttag, TtagId } from "public/entidades";
 import { initConfigs } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
@@ -11,34 +11,34 @@ type PropsType = {
 
 const TagSizeChanger: React.FC<PropsType> = ({ thisTagId }) => {
   const store = useStore(myStore, (state) => state);
-  const configs = useStore(configStore, (state)=>state);
-  
-  const [size, setSize] = useState(`${configs?.DEFAULT_TAG_SIZE || initConfigs.DEFAULT_TAG_SIZE}`);
+  const configs = useStore(configStore, (state) => state);
+  const thisTag = useStore(
+    myStore,
+    (state) => thisTagId && state.tags.get(thisTagId),
+  );
+
+  const [size, setSize] = useState(
+    `${configs?.DEFAULT_TAG_SIZE || initConfigs.DEFAULT_TAG_SIZE}`,
+  );
   const [disabled, setDisabled] = useState(true);
 
-
   useEffect(() => {
-    if (!store || !thisTagId) {
-      setDisabled(true);
-      return;
-    }
-    const thisTag = store.tags.get(thisTagId);
-    if (!thisTag || !store.selections.includes(thisTag.entityId)) {
+    if (!store || !thisTag || !store.selections.includes(thisTag.entityId)) {
       setDisabled(true);
       return;
     }
     setDisabled(false);
     setSize(`${thisTag.size}`);
-  }, [thisTagId, store]);
+  }, [thisTag, store]);
 
   useEffect(() => {
     if (!thisTagId || !store || disabled) return;
-    const updatedTags = new Map(store.tags);
+
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
-    const thisTag = store.tags.get(thisTagId)!;
-    updatedTags.set(thisTagId, { ...thisTag, size: newSize });
-    store.setTags(updatedTags);
+
+    const newTag = { ...thisTag, size: newSize };
+    store.update(newTag as Ttag);
   }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {

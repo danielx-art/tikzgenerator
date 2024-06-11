@@ -76,42 +76,6 @@ export function getMapByKind<T extends TallKind>(
   }
 }
 
-export function getSetterByKind<T extends TallKind>(
-  kind: T,
-  store: (State & Action) | undefined,
-):
-  | (T extends "point"
-      ? Action["setPoints"]
-      : T extends "segment"
-      ? Action["setSegments"]
-      : T extends "angle"
-      ? Action["setAngles"]
-      : T extends "circle"
-      ? Action["setCircles"]
-      : T extends "polygon"
-      ? Action["setPolygons"]
-      : T extends "tag"
-      ? Action["setTags"]
-      : never)
-  | undefined {
-  if (!store) return;
-
-  switch (kind) {
-    case "point":
-      return store.setPoints as any;
-    case "segment":
-      return store.setSegments as any;
-    case "angle":
-      return store.setAngles as any;
-    case "circle":
-      return store.setCircles as any;
-    case "polygon":
-      return store.setPolygons as any;
-    case "tag":
-      return store.setTags as any;
-  }
-}
-
 export function getKindById(id: TallId) {
   return id.split("_")[0] as TallKind;
 }

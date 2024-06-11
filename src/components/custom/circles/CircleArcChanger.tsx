@@ -1,10 +1,7 @@
 import Switcher from "import/components/micro/Switcher";
-import { roundToDecimalPlaces } from "import/utils/math/misc";
-import configStore from "import/utils/store/configStore";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { TcircleId } from "public/entidades";
-import { initConfigs } from "public/generalConfigs";
 import { useEffect, useState } from "react";
 
 type PropsType = {
@@ -13,7 +10,7 @@ type PropsType = {
 
 const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
   const store = useStore(myStore, (state) => state);
-  const configs = useStore(configStore, (state) => state);
+  const thisCircle = useStore(myStore, (state)=>circleId && state.circles.get(circleId));
 
   const [arcStart, setArcStart] = useState(0);
   const [arcEnd, setArcEnd] = useState(360);
@@ -23,57 +20,39 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (!store || !circleId) {
+    if (!thisCircle) {
       setDisabled(true);
       return;
     }
-    const circ = store.circles.get(circleId);
-    if (!circ) return;
-    setArcStart(circ.arcStart);
-    setArcEnd(circ.arcEnd);
-    setArcOffset(circ.arcOffset);
-    setShowRadius(circ.showRadius);
+    setArcStart(thisCircle.arcStart);
+    setArcEnd(thisCircle.arcEnd);
+    setArcOffset(thisCircle.arcOffset);
+    setShowRadius(thisCircle.showRadius);
     setDisabled(false);
-  }, [circleId, store]);
+  }, [thisCircle]);
 
   useEffect(() => {
-    if (!circleId || !store || !configs || disabled) return;
-    const updatedCircles = new Map(store.circles);
-    const circ = store.circles.get(circleId);
-    if (!circ) return;
-    updatedCircles.set(circleId, { ...circ, arcStart: arcStart });
-    store.setCircles(updatedCircles);
+    if (!thisCircle || !store || disabled) return;
+    store.update({ ...thisCircle, arcStart: arcStart });
   }, [arcStart]);
 
   useEffect(() => {
-    if (!circleId || !store || !configs || disabled) return;
-    const updatedCircles = new Map(store.circles);
-    const circ = store.circles.get(circleId);
-    if (!circ) return;
-    updatedCircles.set(circleId, { ...circ, arcEnd: arcEnd });
-    store.setCircles(updatedCircles);
+    if (!thisCircle || !store || disabled) return;
+    store.update({ ...thisCircle, arcEnd: arcEnd });
   }, [arcEnd]);
 
   useEffect(() => {
-    if (!circleId || !store || !configs || disabled) return;
-    const updatedCircles = new Map(store.circles);
-    const circ = store.circles.get(circleId);
-    if (!circ) return;
-    updatedCircles.set(circleId, { ...circ, arcOffset: arcOffset });
-    store.setCircles(updatedCircles);
+    if (!thisCircle || !store || disabled) return;
+    store.update({ ...thisCircle, arcOffset: arcOffset });
   }, [arcOffset]);
 
   useEffect(() => {
-    if (!circleId || !store || !configs || disabled) return;
-    const updatedCircles = new Map(store.circles);
-    const circ = store.circles.get(circleId);
-    if (!circ) return;
-    updatedCircles.set(circleId, { ...circ, showRadius: showRadius });
-    store.setCircles(updatedCircles);
+    if (!thisCircle || !store || disabled) return;
+    store.update({ ...thisCircle, showRadius: showRadius });
   }, [showRadius]);
 
   const handleArcStartChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!circleId || !store || disabled) return;
+    if (disabled) return;
     let newValue = parseFloat(event.target.value) | 0;
     if (newValue < 0) newValue = 0;
     if (newValue > 360) newValue = 360;
@@ -81,7 +60,7 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
   };
 
   const handleArcEndChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!circleId || !store || disabled) return;
+    if (disabled) return;
     let newValue = parseFloat(event.target.value) | 360;
     if (newValue < 0) newValue = 0;
     if (newValue > 360) newValue = 360;
@@ -91,7 +70,7 @@ const CircleArcChanger: React.FC<PropsType> = ({ circleId }) => {
   const handleArcOffsetChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    if (!circleId || !store || disabled) return;
+    if (disabled) return;
     let newValue = parseFloat(event.target.value) | 0;
     if (newValue < 0) newValue = 0;
     if (newValue > 360) newValue = 360;

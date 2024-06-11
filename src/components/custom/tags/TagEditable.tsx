@@ -1,6 +1,6 @@
 import useStore from "import/utils/store/useStore";
 import myStore from "import/utils/store/store";
-import type { TallId, TtagId, TentId } from "public/entidades";
+import type { TallId, TtagId, TentId, Ttag } from "public/entidades";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import EnterIconSvg from "import/components/micro/EnterIconSVG";
 
@@ -15,27 +15,19 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId, thisEntityId }) => {
   const [disabled, setDisabled] = useState(false);
 
   const store = useStore(myStore, (state) => state);
+  const thisTag = useStore(
+    myStore,
+    (state) => thisTagId && state.tags.get(thisTagId),
+  );
 
   useEffect(() => {
-    if (!store || !thisEntityId) {
-      setInputValue("");
-      return;
-    }
-
-    if (!thisTagId) {
-      setInputValue("");
-      return;
-    }
-
-    const thisTag = store.tags.get(thisTagId);
-
-    if (!thisTag) {
+    if (!thisTag || !thisEntityId) {
       setInputValue("");
       return;
     }
     const firstValue = thisTag.value;
     setInputValue(firstValue);
-  }, [thisTagId, thisEntityId, store]);
+  }, [thisTag, thisEntityId]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -54,12 +46,10 @@ const TagEditable: React.FC<PropsType> = ({ thisTagId, thisEntityId }) => {
         setEditMode(false);
         return;
       } else {
-        const updatedTags = new Map(store.tags);
-        const thisTagExists = thisTagId ? store.tags.has(thisTagId) : false;
-        if (thisTagId && thisTagExists) {
-          const thisTag = store.tags.get(thisTagId)!;
-          updatedTags.set(thisTagId, { ...thisTag, value: inputValue });
-          store.setTags(updatedTags);
+        const thisTagExists = thisTagId && thisTag ? true : false;
+        if (thisTagExists) {
+          const newTag = { ...thisTag, value: inputValue };
+          store.update(newTag as Ttag);
         } else if (thisEntityId) {
           store.addTag(inputValue, thisEntityId as TentId);
         }

@@ -98,7 +98,6 @@ export const calculateSVGDimensions = (
       //center the point
       minX -= +len / 2;
     }
-    console.log("setting up proper width, height should be " + (maxY-minY)*TIKZ_SCALE*RES_FACTOR_SVG); //debugg
     //make it a square
     maxX = minX + len;
     properWidth = len;
@@ -111,7 +110,6 @@ export const calculateSVGDimensions = (
       minY -= +len / 2;
     }
     //make it a square again
-    console.log("setting up proper height, height should be " + (maxY-minY)*TIKZ_SCALE*RES_FACTOR_SVG); //debugg
 
     maxY = minY + len;
     properHeight = len;

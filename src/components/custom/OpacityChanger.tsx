@@ -2,12 +2,7 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { TentId } from "public/entidades";
 import { useEffect, useState } from "react";
-import {
-  getEntityById,
-  getKindById,
-  getMapByKind,
-  getSetterByKind,
-} from "import/utils/storeHelpers/entityGetters";
+import { getEntityById } from "import/utils/storeHelpers/entityGetters";
 
 type PropsType = {
   entId: TentId | undefined;
@@ -19,66 +14,59 @@ const OpacityChanger: React.FC<PropsType> = ({ entId, atrName }) => {
   const [disabled, setDisabled] = useState(true);
 
   const store = useStore(myStore, (state) => state);
+  const thisEnt = useStore(
+    myStore,
+    (state) => entId && getEntityById(entId, state),
+  );
 
   useEffect(() => {
-    if (!store || !entId) {
+    if (!store || !thisEnt) {
       setDisabled(true);
       return;
     }
-    const thisEntity = getEntityById(entId, store);
-    if (!thisEntity) {
-      setDisabled(true);
+
+    if (!atrName && "opacity" in thisEnt) {
+      setDisabled(false);
+      setOpacity(thisEnt.opacity);
       return;
     }
 
-    if (!atrName && "opacity" in thisEntity) {
+    if (atrName === "stroke" && "stroke" in thisEnt) {
       setDisabled(false);
-      setOpacity(thisEntity.opacity);
+      setOpacity(thisEnt["stroke"].opacity);
       return;
     }
 
-    if (atrName === "stroke" && "stroke" in thisEntity) {
+    if (atrName === "fill" && "fill" in thisEnt) {
       setDisabled(false);
-      setOpacity(thisEntity["stroke"].opacity);
+      setOpacity(thisEnt["fill"].opacity);
       return;
     }
-
-    if (atrName === "fill" && "fill" in thisEntity) {
-      setDisabled(false);
-      setOpacity(thisEntity["fill"].opacity);
-      return;
-    }
-  }, [entId, store]);
+  }, [thisEnt, store]);
 
   useEffect(() => {
-    if (!entId || !store || disabled) return;
-    const kind = getKindById(entId as TentId);
-    const entMap = getMapByKind(kind, store);
-    const entSetter = getSetterByKind(kind, store);
-    if (!entMap || !entSetter) return;
-    const updatedEntities = new Map(entMap);
-    const ent = getEntityById(entId, store);
-    if (!ent) return;
-    if (atrName && atrName === "stroke" && "stroke" in ent) {
-      updatedEntities.set(entId, {
-        ...ent,
-        stroke: { ...ent.stroke, opacity: opacity },
-      } as any);
-      entSetter(updatedEntities as any);
+    if (!thisEnt || !store || disabled) return;
+
+    if (atrName && atrName === "stroke" && "stroke" in thisEnt) {
+      const newEnt = {
+        ...thisEnt,
+        stroke: { ...thisEnt.stroke, opacity: opacity },
+      };
+      store.update(newEnt);
     }
-    if (atrName && atrName === "fill" && "fill" in ent) {
-      updatedEntities.set(entId, {
-        ...ent,
-        fill: { ...ent.fill, opacity: opacity },
-      } as any);
-      entSetter(updatedEntities as any);
+    if (atrName && atrName === "fill" && "fill" in thisEnt) {
+      const newEnt = {
+        ...thisEnt,
+        fill: { ...thisEnt.fill, opacity: opacity },
+      };
+      store.update(newEnt);
     }
-    if (!atrName && "opacity" in ent) {
-      updatedEntities.set(entId, {
-        ...ent,
+    if (!atrName && "opacity" in thisEnt) {
+      const newEnt = {
+        ...thisEnt,
         opacity: opacity,
-      } as any);
-      entSetter(updatedEntities as any);
+      };
+      store.update(newEnt);
     }
   }, [opacity]);
 

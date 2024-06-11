@@ -3,7 +3,10 @@ import { roundAndDisplayNicely } from "import/utils/math/misc";
 import { vec } from "import/utils/math/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { findTagByEntityId, getSelected } from "import/utils/storeHelpers/entityGetters";
+import {
+  findTagByEntityId,
+  getSelected,
+} from "import/utils/storeHelpers/entityGetters";
 import { Tpoint, angulo, ponto, segmento } from "public/entidades";
 import { useEffect, useState } from "react";
 
@@ -39,41 +42,59 @@ const PointOrthoProjection: React.FC = () => {
     const baproj = vec().copy(bc).setMag(baprojmag);
     const newPointCoords = vec().copy(baproj).add(vec().copy(b.coords));
     const newId = store.generateId("point");
-    const newPoint = ponto(newPointCoords, newId, store.selectedGroup);
-    const updatedPoints = new Map(store.points);
-    updatedPoints.set(newId, newPoint);
-    store.setPoints(updatedPoints);
+    const newPoint = ponto(newPointCoords, newId);
+
+    store.update(newPoint);
+
     if (!makeHeight) return;
     const newSegId = store.generateId("segment");
     const newAngId = store.generateId("angle");
     const newSeg = segmento(a, newPoint, newSegId);
     const newAng = angulo(a, newPoint, c, newAngId);
-    const updatedSegments = new Map(store.segments);
-    updatedSegments.set(newSegId, newSeg);
-    const updatedAngles = new Map(store.angles);
-    updatedAngles.set(newAngId, newAng);
-    store.setSegments(updatedSegments);
-    store.setAngles(updatedAngles);
+    store.update(newSeg);
+    store.update(newAng);
   };
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
-      {!thisPoints && <div>Selecione so menos três pontos (os três primeiros seráo usados)</div>}
+      {!thisPoints && (
+        <div>
+          Selecione so menos três pontos (os três primeiros seráo usados)
+        </div>
+      )}
       <button
         onClick={handleClick}
-        className="rounded-sm bg-primary p-2 mr-4 my-2 text-background shadow-md hover:bg-foreground"
+        className="my-2 mr-4 rounded-sm bg-primary p-2 text-background shadow-md hover:bg-foreground"
         disabled={thisPoints ? false : true}
       >
-        Projetar ponto 
-        {store && thisPoints && 
-        <>{findTagByEntityId(thisPoints[0].id, store.tags) ? ` ${findTagByEntityId(thisPoints[0].id, store.tags)?.value} ` : ` (${roundAndDisplayNicely(thisPoints[0].coords.x)};${roundAndDisplayNicely(thisPoints[0].coords.y)}) `} 
-         na direção 
-        {findTagByEntityId(thisPoints[1].id, store.tags) ? ` ${findTagByEntityId(thisPoints[1].id, store.tags)?.value} ` : ` (${roundAndDisplayNicely(thisPoints[1].coords.x)};${roundAndDisplayNicely(thisPoints[1].coords.y)}) `}
-        --
-        {findTagByEntityId(thisPoints[2].id, store.tags) ? ` ${findTagByEntityId(thisPoints[2].id, store.tags)?.value} `  : ` (${roundAndDisplayNicely(thisPoints[2].coords.x)};${roundAndDisplayNicely(thisPoints[2].coords.y)}) `}
-        </>}
+        Projetar ponto
+        {store && thisPoints && (
+          <>
+            {findTagByEntityId(thisPoints[0].id, store.tags)
+              ? ` ${findTagByEntityId(thisPoints[0].id, store.tags)?.value} `
+              : ` (${roundAndDisplayNicely(
+                  thisPoints[0].coords.x,
+                )};${roundAndDisplayNicely(thisPoints[0].coords.y)}) `}
+            na direção
+            {findTagByEntityId(thisPoints[1].id, store.tags)
+              ? ` ${findTagByEntityId(thisPoints[1].id, store.tags)?.value} `
+              : ` (${roundAndDisplayNicely(
+                  thisPoints[1].coords.x,
+                )};${roundAndDisplayNicely(thisPoints[1].coords.y)}) `}
+            --
+            {findTagByEntityId(thisPoints[2].id, store.tags)
+              ? ` ${findTagByEntityId(thisPoints[2].id, store.tags)?.value} `
+              : ` (${roundAndDisplayNicely(
+                  thisPoints[2].coords.x,
+                )};${roundAndDisplayNicely(thisPoints[2].coords.y)}) `}
+          </>
+        )}
       </button>
-      <Switcher isChecked={makeHeight} setIsChecked={setMakeHeight} messageOne="Criar altura" />
+      <Switcher
+        isChecked={makeHeight}
+        setIsChecked={setMakeHeight}
+        messageOne="Criar altura"
+      />
     </div>
   );
 };

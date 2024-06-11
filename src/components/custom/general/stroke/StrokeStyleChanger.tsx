@@ -1,12 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import RadioGroup from "import/components/micro/RadioGroup";
-import {
-  getEntityById,
-  getKindById,
-  getMapByKind,
-  getSetterByKind,
-} from "import/utils/storeHelpers/entityGetters";
+import { getEntityById } from "import/utils/storeHelpers/entityGetters";
 import type { TentId } from "public/entidades";
 import { STROKE_STYLES, initConfigs } from "public/generalConfigs";
 import { useState, useEffect } from "react";
@@ -25,6 +20,10 @@ export const STROKE_STYLE_OPTIONS = [
 const StrokeStyleChanger: React.FC<PropsType> = ({ entId }) => {
   const store = useStore(myStore, (state) => state);
   const configs = useStore(configStore, (state) => state);
+  const thisEnt = useStore(
+    myStore,
+    (state) => entId && getEntityById(entId, state),
+  );
 
   const [style, setStyle] = useState<STROKE_STYLES>(
     configs?.DEFAULT_STROKE_STYLE || initConfigs.DEFAULT_STROKE_STYLE,
@@ -32,31 +31,20 @@ const StrokeStyleChanger: React.FC<PropsType> = ({ entId }) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (!store || !entId) {
+    if (!thisEnt || !("stroke" in thisEnt)) {
       setDisabled(true);
       return;
     }
-    const ent = getEntityById(entId, store);
-    if (!ent || !("stroke" in ent)) return;
-    setStyle(ent.stroke.style);
+    setStyle(thisEnt.stroke.style);
     setDisabled(false);
-  }, [entId, store]);
+  }, [thisEnt]);
 
   useEffect(() => {
-    if (!entId || !store || disabled) return;
-    const kind = getKindById(entId as TentId);
-    const entMap = getMapByKind(kind, store);
-    const entSetter = getSetterByKind(kind, store);
-    if (!entMap || !entSetter) return;
-    const updatedEntities = new Map(entMap);
-    const newStyle = style; //future add customizing dashes
-    const ent = getEntityById(entId, store);
-    if (!ent || !("stroke" in ent)) return;
-    updatedEntities.set(entId, {
-      ...ent,
-      stroke: { ...ent.stroke, style: newStyle },
-    } as any);
-    entSetter(updatedEntities as any);
+    if (!thisEnt || !("stroke" in thisEnt) || !store || disabled) return;
+
+    const newEnt = { ...thisEnt, stroke: { ...thisEnt.stroke, style: style } };
+
+    store.update(newEnt);
   }, [style]);
 
   const handleDisplayChange = (option: number) => {

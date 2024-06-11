@@ -12,38 +12,37 @@ type PropsType = {
 const PointSizeChanger: React.FC<PropsType> = ({ pointId }) => {
   const store = useStore(myStore, (state) => state);
   const configs = useStore(configStore, (state)=>state);
+  const thisPoint = useStore(myStore, (state)=>pointId && state.points.get(pointId));
   
   const [size, setSize] = useState(`${configs?.DEFAULT_POINT_SIZE || initConfigs.DEFAULT_POINT_SIZE}`);
   const [disabled, setDisabled] = useState(true);
 
 
   useEffect(() => {
-    if (!store || !pointId) {
+    if (!thisPoint) {
       setDisabled(true);
       return;
     }
-    const point = store.points.get(pointId);
-    if (!point) return;
-    if (point.dotstyle !== 0) {
+    if (thisPoint.dotstyle !== 0) { //means that point is invisible, so its size doesnt have meaning.
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-    setSize(`${point.size}`);
+    setSize(`${thisPoint.size}`);
   }, [pointId, store]);
 
   useEffect(() => {
-    if (!pointId || !store || disabled) return;
-    const updatedPoints = new Map(store.points);
+    if (!thisPoint || !store || disabled) return;
+
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
-    const point = store.points.get(pointId)!;
-    updatedPoints.set(pointId, { ...point, size: newSize });
-    store.setPoints(updatedPoints);
+
+    const newPoint = { ...thisPoint, size: newSize };
+    store.update(newPoint);
   }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!pointId || !store || disabled) return;
+    if (!thisPoint || !store || disabled) return;
     setSize(event.target.value);
   };
 

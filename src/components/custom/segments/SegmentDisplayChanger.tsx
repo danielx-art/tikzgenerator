@@ -17,15 +17,14 @@ const SegmentDisplayChanger: React.FC<PropsType> = ({ segId }) => {
   );
 
   const handleDisplayChange = (optionSel: number) => {
-    if (!segId || getKindById(segId) != "segment" || !store) return;
-    const updatedSegments = new Map(store.segments);
-    thisSegment;
-    if (!thisSegment) return;
-    updatedSegments.set(segId, {
+    if (!thisSegment || !store) return;
+
+
+    const newSegment = {
       ...thisSegment,
       marks: optionSel as SEGMENT_MARKS_TYPE,
-    });
-    store.setSegments(updatedSegments);
+    };
+    store.update(newSegment);
   };
 
   return (

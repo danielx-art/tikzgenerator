@@ -22,13 +22,13 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (angId && store && thisAngle) {
+    if (thisAngle) {
       const angleMarks = thisAngle.marks;
       const [btnIndex, optionIndex] = parseMarks(angleMarks);
       setSelectedButton(btnIndex);
       setSelectedOption(optionIndex);
     }
-  }, [store, thisAngle]);
+  }, [thisAngle]);
 
   useEffect(() => {
     if (selectedButton !== null && selectedOption !== null) {
@@ -48,16 +48,16 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
 
   const handleDisplayChange = (btnIndex: number, optionSel: number) => {
     if (!angId || !store || !thisAngle) return;
-    const updatedAngles = new Map(store.angles);
+
     const possibleMarks = ["marks", "doubles"];
     const newMark = possibleMarks[btnIndex]
       ? `${possibleMarks[btnIndex]}-${optionSel}`
       : "marks-0";
-    updatedAngles.set(angId, {
+    
+    store.update({
       ...thisAngle,
       marks: newMark as ANGLE_MARKS_TYPE,
     });
-    store.setAngles(updatedAngles);
   };
 
   if (thisAngle && (thisAngle.valor * 180) / Math.PI === 90) {

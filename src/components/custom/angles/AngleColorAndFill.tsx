@@ -15,29 +15,25 @@ type PropsType = {
 const AngleColorAndFill: React.FC<PropsType> = ({ angId }) => {
   const store = useStore(myStore, (state) => state);
   const configs = useStore(configStore, (state)=>state);
-
-  
-  const [style, setStyle] = useState(configs?.DEFAULT_ANGLE_STYLE || initConfigs.DEFAULT_ANGLE_STYLE);
-
-
   const thisAngle = useStore(
     myStore,
     (state) => angId && state.angles.get(angId),
   );
+  
+  const [style, setStyle] = useState(configs?.DEFAULT_ANGLE_STYLE || initConfigs.DEFAULT_ANGLE_STYLE);
 
   useEffect(() => {
-    if (!thisAngle || !angId) {
+    if (!thisAngle) {
       return;
     }
-    if (!thisAngle) return;
     setStyle(thisAngle.dotstyle);
-  }, [thisAngle, store]);
+  }, [thisAngle]);
 
   useEffect(() => {
-    if (!angId || !store || !thisAngle) return;
-    const updatedAngles = new Map(store.angles);
-    updatedAngles.set(angId, { ...thisAngle, dotstyle: style });
-    store.setAngles(updatedAngles);
+    if (!store || !thisAngle) return;
+    
+    store.update({ ...thisAngle, dotstyle: style });
+    
   }, [style]);
 
   const handleStyleChange = (newStyle: number) => {

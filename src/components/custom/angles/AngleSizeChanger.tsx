@@ -12,31 +12,28 @@ type PropsType = {
 const AngleSizeChanger: React.FC<PropsType> = ({ angId }) => {
   const store = useStore(myStore, (state) => state);
   const configs = useStore(configStore, (state)=>state);
+  const thisAngle = useStore(
+    myStore,
+    (state) => angId && state.angles.get(angId),
+  );
 
   const [size, setSize] = useState(`${configs?.DEFAULT_STROKE_WIDTH || initConfigs.DEFAULT_STROKE_WIDTH}`);
   const [disabled, setDisabled] = useState(true);
 
-
   useEffect(() => {
-    if (!store || !angId) {
+    if (!thisAngle) {
       setDisabled(true);
       return;
     }
-    const ang = store.angles.get(angId);
-    if (!ang) return;
-    setSize(`${ang.size}`);
+    setSize(`${thisAngle.size}`);
     setDisabled(false);
-  }, [angId, store]);
+  }, [thisAngle]);
 
   useEffect(() => {
-    if (!angId || !store || disabled) return;
-    const updatedAngles = new Map(store.angles);
+    if (!thisAngle || !store) return;
     const newSize =
       size.length > 0 ? (parseFloat(size) > 0 ? parseFloat(size) : 0) : 0;
-    const ang = store.angles.get(angId);
-    if (!ang) return;
-    updatedAngles.set(angId, { ...ang, size: newSize });
-    store.setAngles(updatedAngles);
+    store.update({ ...thisAngle, size: newSize });
   }, [size]);
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
