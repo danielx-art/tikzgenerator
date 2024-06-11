@@ -43,7 +43,7 @@ export type State = {
 export type Action = {
   generateId: <T extends TallKind>(type: T) => TidFromKind<T>;
   toggleSelection: (id: TallId) => void;
-  update: <T extends Tentity | Ttag>(newValue: T) => void;
+  update: <T extends Tentity | Ttag>(newValue: T | Array<T>) => void;
   deleteEntity: (id: TentId) => void;
   movePoint: (id: TpointId, newPosition: vector, shallow?: boolean) => void;
   addTag: (value: string, entityId: TentId) => void;
@@ -116,37 +116,24 @@ const myStore = create<State & Action>()(
         });
       },
 
-      // addEntity: <T extends Tkind>(
-      //   entityKind: T,
-      //   elementBody: TinitKind<T>,
-      // ) => {
-      //   const id = get().generateId(entityKind) as TidFromKind<T>;
-      //   const stateMapKey = (entityKind + "s") as TkindPluralFrom<T>;
+      update: <T extends Tentity | Ttag>(newValue: T | Array<T>) => {
 
-      //   set((state) => {
-      //     const existingMap = state[stateMapKey] as Map<
-      //       TentId,
-      //       typeof elementBody
-      //     >;
-      //     const updatedMap = new Map(existingMap);
-      //     updatedMap.set(id, { ...elementBody, id });
+        if(Array.isArray(newValue) && newValue.length === 0) return;
 
-      //     return { [stateMapKey]: updatedMap };
-      //   });
-      // },
-
-      update: <T extends Tentity | Ttag>(newValue: T) => {
-
-        const kind = getKindById(newValue.id);
+        const kind = Array.isArray(newValue) ? getKindById(newValue[0]!.id) : getKindById(newValue.id);
         
         const stateMapKey = (kind+"s") as TallKindPlural;
+
+        const valuesToAdd = Array.isArray(newValue) ? newValue : [newValue];
 
         set((state)=>{
           const updatedMap = new Map(
             state[stateMapKey] as Map<TidFromKind<typeof kind>, T>,
           )
 
-          updatedMap.set(newValue.id, newValue);
+          for(let value of valuesToAdd) {
+            updatedMap.set(value.id, value);
+          }
 
           return {[stateMapKey]: updatedMap}})
       },
