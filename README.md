@@ -61,7 +61,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [x] Adicionar acessibilidade aos botões.
 - [ ] Caixa de seleção para adicionar preenchimento de um círculo, ao invés de utilizar opacidade 0 como default.
 - [ ] Opção refinar posicionamento de etiquetas em ângulos.
-- [ ] Quando limpar a tela de todas as entidades, resetar os contadores de id.
+- [x] Quando limpar a tela de todas as entidades, resetar os contadores de id.
 - [ ] Salvar templates customizáveis em Presets.
 - [x] Arcos de circunferência.
 - [x] Formatar auto etiquetas.
