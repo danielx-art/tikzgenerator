@@ -28,7 +28,7 @@ const PointsPreview: React.FC<PropsType> = ({ svgRef }) => {
           .copy(point.coords)
           .add(
             vec(diff.x, -diff.y).div(
-              configs.RES_FACTOR_SVG * configs.TIKZ_SCALE,
+              configs.RES_FACTOR_SVG * configs.PREVIEW_SCALE,
             ),
           );
 

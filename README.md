@@ -51,7 +51,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
      - Diagonais.
 - Ferramenta rotacionar um grupo.
 - [x] Ferramenta zoom.
-- [ ] Separar zoom preview da escala em tikzpicture.
+- [x] Separar zoom preview da escala em tikzpicture.
 - 3D?
 - [x] Salvar imagem em svg.
 - [x] Modal configurações e sobre.
