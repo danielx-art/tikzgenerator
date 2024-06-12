@@ -20,6 +20,9 @@ export const initConfigs = {
   TIKZ_SCALE: 1,
   AUTO_PREVIEW_RESIZE: 1,
   SHOW_AXIS: 0,
+  SHOW_GRID: 0,
+  ENABLE_MULTIPLE_SELECTION: 0,
+  ENABLE_MOVE: 0
 };
 
 export const MAXIMUM_NUMBER_OF_POINTS = 3458;
