@@ -144,11 +144,8 @@ const AddPointInput = () => {
       }
     }
 
-    const updatedPoints = new Map(points);
+    store.update(pointsToAdd);
 
-    pointsToAdd.forEach((newPoint) => updatedPoints.set(newPoint.id, newPoint));
-
-    store.set({ ...store, points: updatedPoints });
     setInput("");
   }, [store, input]);
 

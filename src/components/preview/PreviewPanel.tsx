@@ -29,7 +29,7 @@ const PreviewPanel = () => {
   const points = useStore(myStore, (state) => state.points);
   const circles = useStore(myStore, (state) => state.circles);
   const tags = useStore(myStore, (state) => state.tags);
-  const scale = useStore(configStore, (state) => state.TIKZ_SCALE);
+  const scale = useStore(configStore, (state) => state.PREVIEW_SCALE);
   const configs = useStore(configStore, (state) => state);
 
   const [containerRef, containerDimensions] = useDimensions();

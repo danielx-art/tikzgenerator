@@ -51,18 +51,21 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
      - Diagonais.
 - Ferramenta rotacionar um grupo.
 - [x] Ferramenta zoom.
+- [x] Separar zoom preview da escala em tikzpicture.
 - 3D?
 - [x] Salvar imagem em svg.
 - [x] Modal configurações e sobre.
 - [ ] Ferramenta mover pontos apenas quando selecionada.
 - [ ] Selecionar somente múltiplas entidades quando pressionada a tecla shift ou selecionada ferramenta de selecção múiltipla. Customizações em cor e contorno com caixa de seleção "aplicar a todos" e uma divisória mais visível na UI.
 - [ ] Menu para adicionar eixos, e customizá-los, incluindo grid.
-- [ ] Adicionar acessibilidade aos botões.
+- [x] Adicionar acessibilidade aos botões.
 - [ ] Caixa de seleção para adicionar preenchimento de um círculo, ao invés de utilizar opacidade 0 como default.
 - [ ] Opção refinar posicionamento de etiquetas em ângulos.
-- [ ] Quando limpar a tela de todas as entidades, resetar os contadores de id.
+- [x] Quando limpar a tela de todas as entidades, resetar os contadores de id.
 - [ ] Salvar templates customizáveis em Presets.
 - [x] Arcos de circunferência.
+- [x] Formatar auto etiquetas.
+- [ ] usar zod para descrever tipos das diferentes configs e gerar um componente melhor para alterar as configs ("settings").
 
 ### Bugs
 
@@ -72,3 +75,4 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [ ] Marcadores em segmentos não funcionando em código tikz. Posicionamento errado e palavra chave "solid" entre aspas.
 - [x] transferir layout shadcn para mais acessibilidade.
 - [x] Paginator está dentro de AccordionTrigger, o que causa button as a descendant of button.
+- [x] Adicionar ponto remove um ponto antigo.

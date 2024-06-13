@@ -16,9 +16,13 @@ export const initConfigs = {
   DEFAULT_TAG_SIZE: 0.3,
   DEFAULT_TAG_COLOR: "black" as LATEX_COLOR,
   RES_FACTOR_SVG: 10,
+  PREVIEW_SCALE: 1,
   TIKZ_SCALE: 1,
   AUTO_PREVIEW_RESIZE: 1,
   SHOW_AXIS: 0,
+  SHOW_GRID: 0,
+  ENABLE_MULTIPLE_SELECTION: 0,
+  ENABLE_MOVE: 0
 };
 
 export const MAXIMUM_NUMBER_OF_POINTS = 3458;
@@ -27,7 +31,7 @@ export type ThachureOrientations = 0 | 1 | 2 | 3;
 export type FILL_STYLES =
   | "solid"
   | `hachure-${ThachureOrientations}`
-  | `dotted`;
+  | "dotted";
 export type SEGMENT_MARKS_TYPE = 0 | 1 | 2 | 3 | 4;
 export const LATEX_COLORS = [
   "red",

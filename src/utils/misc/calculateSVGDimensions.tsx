@@ -9,7 +9,7 @@ export const calculateSVGDimensions = (
   configs: ConfigState & ConfigActions,
   containerDimensions: { width: number; height: number },
 ) => {
-  const { RES_FACTOR_SVG, DEFAULT_POINT_SIZE, TIKZ_SCALE } = configs;
+  const { RES_FACTOR_SVG, DEFAULT_POINT_SIZE, PREVIEW_SCALE } = configs;
 
   let SVGDimensions = {
     width: 0,
@@ -65,7 +65,7 @@ export const calculateSVGDimensions = (
     }
   }
 
-  let padding = 0.5 / TIKZ_SCALE; //of the maximum dimension
+  let padding = 0.5 / PREVIEW_SCALE; //of the maximum dimension
 
   //avoid infinities
   if (minX === Infinity) minX = 0;
@@ -118,12 +118,12 @@ export const calculateSVGDimensions = (
   const viewAR = properWidth / properHeight;
 
   //rescale
-  minX *= RES_FACTOR_SVG * TIKZ_SCALE;
-  maxX *= RES_FACTOR_SVG * TIKZ_SCALE;
-  minY *= RES_FACTOR_SVG * TIKZ_SCALE;
-  maxY *= RES_FACTOR_SVG * TIKZ_SCALE;
-  properWidth *= RES_FACTOR_SVG * TIKZ_SCALE;
-  properHeight *= RES_FACTOR_SVG * TIKZ_SCALE;
+  minX *= RES_FACTOR_SVG * PREVIEW_SCALE;
+  maxX *= RES_FACTOR_SVG * PREVIEW_SCALE;
+  minY *= RES_FACTOR_SVG * PREVIEW_SCALE;
+  maxY *= RES_FACTOR_SVG * PREVIEW_SCALE;
+  properWidth *= RES_FACTOR_SVG * PREVIEW_SCALE;
+  properHeight *= RES_FACTOR_SVG * PREVIEW_SCALE;
 
   padding = viewAR >= 1 ? (padding *= properWidth) : (padding *= properHeight);
 

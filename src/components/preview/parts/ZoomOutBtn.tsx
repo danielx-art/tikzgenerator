@@ -12,12 +12,12 @@ const ZoomOutBtn: React.FC<PropsType> = ({ className, ...rest }) => {
 
   if (!configs) return;
 
-  const scale = configs.TIKZ_SCALE;
+  const scale = configs.PREVIEW_SCALE;
 
   const handleZoomOut = () => {
     if (!store) return;
     const newValue = scale - 0.1;
-    configs.setConfig("TIKZ_SCALE", newValue);
+    configs.setConfig("PREVIEW_SCALE", newValue);
   };
 
   return (
