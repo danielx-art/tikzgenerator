@@ -65,6 +65,7 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [ ] Salvar templates customizáveis em Presets.
 - [x] Arcos de circunferência.
 - [x] Formatar auto etiquetas.
+- [ ] usar zod para descrever tipos das diferentes configs e gerar um componente melhor para alterar as configs ("settings").
 
 ### Bugs
 

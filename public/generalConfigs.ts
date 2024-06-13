@@ -31,7 +31,7 @@ export type ThachureOrientations = 0 | 1 | 2 | 3;
 export type FILL_STYLES =
   | "solid"
   | `hachure-${ThachureOrientations}`
-  | `dotted`;
+  | "dotted";
 export type SEGMENT_MARKS_TYPE = 0 | 1 | 2 | 3 | 4;
 export const LATEX_COLORS = [
   "red",
