@@ -6,6 +6,7 @@ import CloseFigureButton from "./CloseFigureButton";
 import CircleMenu from "./CircleMenu";
 import DownloadMenu from "./DownloadMenu";
 import ConnectMenu from "./ConnectMenu";
+import MovePoints from "./MovePoints";
 
 type PreviewToolBarProps = React.HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode | React.ReactNode[];
@@ -17,12 +18,12 @@ const PreviewToolBar = forwardRef<SVGSVGElement, PreviewToolBarProps>(function (
   ref: Ref<SVGSVGElement>,
 ) {
   const commonClasses =
-    "w-8 hover:-translate-y-0.5 hover:text-primary transition-all duration-75";
+    "w-8 h-8 hover:-translate-y-0.5 hover:text-primary transition-all duration-75";
 
   return (
     <div
       className={cn(
-        "absolute top-10 mx-auto flex h-10 flex-row gap-2 rounded-md border-2 border-border bg-background px-1",
+        "absolute top-10 mx-auto flex h-10 flex-row items-center gap-2 rounded-md border-2 border-border bg-background px-1",
         className,
       )}
     >
@@ -36,6 +37,7 @@ const PreviewToolBar = forwardRef<SVGSVGElement, PreviewToolBarProps>(function (
       <MakeAnglesButton className={commonClasses} />
       <CloseFigureButton className={commonClasses} />
       <CircleMenu className={commonClasses} />
+      <MovePoints className={commonClasses} />
       {children &&
         (Array.isArray(children) ? (
           children.map((child, index) => (
