@@ -8,11 +8,9 @@ export const connectPoints = (
 ) => {
   if (!store) return;
 
-  const { points, segments, generateId, setSegments } = store;
+  const { points, segments, generateId } = store;
 
   const selectedPoints = getSelected("point", store);
-
-  const updatedSegments = new Map(segments);
 
   for (let i = 0; i < selectedPoints.length - 1; i++) {
     const pA = selectedPoints[i];
@@ -21,7 +19,7 @@ export const connectPoints = (
     if (!pA || !pB) continue;
 
     const segAlreadyExistys = doesSegAlreadyExists(
-      Array.from(updatedSegments.values()),
+      Array.from(segments.values()),
       pA,
       pB,
     );
@@ -32,7 +30,7 @@ export const connectPoints = (
 
     const newSegId = generateId("segment");
     const newSeg = segmento(pA, pB, newSegId);
-    updatedSegments.set(newSegId, newSeg);
+    store.update(newSeg);
   }
 
   if (cyclic) {
@@ -42,19 +40,18 @@ export const connectPoints = (
 
     if (lastPoint && firstPoint) {
       const segAlreadyExistys = doesSegAlreadyExists(
-        Array.from(updatedSegments.values()),
+        Array.from(segments.values()),
         lastPoint,
         firstPoint,
       );
 
       if (!segAlreadyExistys) {
         const closingSeg = segmento(lastPoint, firstPoint, closingSegId);
-        updatedSegments.set(closingSegId, closingSeg);
+        store.update(closingSeg);
       }
     }
   }
 
-  setSegments(updatedSegments);
 };
 
 function doesSegAlreadyExists(segments: Tsegment[], pA: Tpoint, pB: Tpoint) {

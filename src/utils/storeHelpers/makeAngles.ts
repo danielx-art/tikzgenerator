@@ -11,7 +11,7 @@ export const makeAngles = (
 
   const selectedPoints = getSelected("point", store);
 
-  const { generateId, setAngles } = store;
+  const { generateId } = store;
 
   if (selectedPoints.length < 3) {
     toast.error(
@@ -20,15 +20,13 @@ export const makeAngles = (
     return;
   }
 
-  const updatedAngles = new Map(store.angles);
-
   for (let i = 0; i < selectedPoints.length - 2; i++) {
     const pA = selectedPoints[i] as Tpoint;
     const pB = selectedPoints[i + 1] as Tpoint;
     const pC = selectedPoints[i + 2] as Tpoint;
     const newAngleId = generateId("angle");
     const newAngle = angulo(pA, pB, pC, newAngleId);
-    updatedAngles.set(newAngleId, newAngle);
+    store.update(newAngle)
   }
 
   if (cyclic) {
@@ -42,8 +40,6 @@ export const makeAngles = (
       firstPoint,
       closingAngId,
     );
-    updatedAngles.set(closingAngId, closingAng);
+    store.update(closingAng)
   }
-
-  setAngles(updatedAngles);
 };

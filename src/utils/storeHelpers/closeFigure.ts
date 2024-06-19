@@ -192,10 +192,6 @@ export const closeFigure = (store: (State & Action) | undefined) => {
     const newPolygonId = store.generateId("polygon");
     const newPolygon = polygon(vertices, newPolygonId);
 
-    const updatedPolygons = new Map(store.polygons);
-
-    updatedPolygons.set(newPolygonId, newPolygon);
-
-    store.setPolygons(updatedPolygons);
+    store.update(newPolygon);
   }
 };

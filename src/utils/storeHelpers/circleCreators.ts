@@ -21,15 +21,11 @@ export function createCircleFromOnePoint(store: State & Action) {
 
   if (!center) return;
 
-  const updatedCircles = new Map(store.circles);
-
   const newCircleId = store.generateId("circle");
 
   const newCircle = circle(center.coords, configStore.getState().DEFAULT_CIRCLE_RADIUS, newCircleId);
 
-  updatedCircles.set(newCircleId, newCircle);
-
-  store.setCircles(updatedCircles);
+  store.update(newCircle)
 
   return;
 }
@@ -49,17 +45,13 @@ export function createCircleFromTwoPoints(store: State & Action) {
 
   if (!center || !limit) return;
 
-  const updatedCircles = new Map(store.circles);
-
   const newCircleId = store.generateId("circle");
 
   const newRadius = vec().copy(center.coords).dist(vec().copy(limit.coords));
 
   const newCircle = circle(center.coords, newRadius, newCircleId);
 
-  updatedCircles.set(newCircleId, newCircle);
-
-  store.setCircles(updatedCircles);
+  store.update(newCircle)
 
   return;
 }
@@ -84,8 +76,6 @@ export function createCircleFromTangent(store: State & Action) {
 
   if (!center || !line) return;
 
-  const updatedCircles = new Map(store.circles);
-
   const newCircleId = store.generateId("circle");
 
   const newRadius = distanceFromPointToLine(center, line);
@@ -99,9 +89,7 @@ export function createCircleFromTangent(store: State & Action) {
 
   const newCircle = circle(center.coords, newRadius, newCircleId);
 
-  updatedCircles.set(newCircleId, newCircle);
-
-  store.setCircles(updatedCircles);
+  store.update(newCircle)
 
   return;
 }
@@ -122,8 +110,6 @@ export function createCircleFromThreePoints(store: State & Action) {
 
   if (!(p1 && p2 && p3)) return;
 
-  const updatedCircles = new Map(store.circles);
-
   const newCircleId = store.generateId("circle");
 
   const circleParams = findCircleFromThreePoints(
@@ -143,9 +129,7 @@ export function createCircleFromThreePoints(store: State & Action) {
 
   const newCircle = circle(center, radius, newCircleId);
 
-  updatedCircles.set(newCircleId, newCircle);
-
-  store.setCircles(updatedCircles);
+  store.update(newCircle)
 
   return;
 }
