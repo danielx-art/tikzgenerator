@@ -77,7 +77,10 @@ export const calculateSVGDimensions = (
   let properHeight = maxY - minY;
 
   //avoid equal values when points are colinear
-  if (minX === maxX && minY === maxY) {
+
+  const approximate = (a: number, b: number, tolerance = 0.05) => Math.abs(a-b) < tolerance ? true : false;
+
+  if (approximate(minX, maxX) && approximate(minY, maxY)) {
     //cold be theres only one point or two identical points (maybe take care of that when creating points.)
     if (points.size >= 1) {
       const onepoint = Array.from(points.values())[0];
@@ -90,27 +93,21 @@ export const calculateSVGDimensions = (
       properHeight = properWidth;
       padding = 2;
     }
-  } else if (minX === maxX && minY !== maxY) {
+  } else if (approximate(minX, maxX) && !approximate(minY, maxY)) {
     const len = maxY - minY;
     if (points.size >= 1) {
-      // const onepoint = Array.from(points.values())[0];
-      // const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
       //center the point
-      minX -= +len / 2;
+      minX -= len / 2;
     }
     //make it a square
     maxX = minX + len;
     properWidth = len;
-  } else if (minX !== maxX && minY === maxY) {
+  } else if (!approximate(minX, maxX) && approximate(minY, maxY)) {
     const len = maxX - minX;
     if (points.size >= 1) {
-      // const onepoint = Array.from(points.values())[0];
-      // const onesize = onepoint ? onepoint.size : DEFAULT_POINT_SIZE;
-      //center the point
-      minY -= +len / 2;
+      minY -= len / 2;
     }
     //make it a square again
-
     maxY = minY + len;
     properHeight = len;
   }

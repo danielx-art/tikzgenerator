@@ -87,7 +87,7 @@ const useDraggableOnSVG = (
       document.removeEventListener("mouseup", handleMouseUp);
       svgRef?.current?.removeEventListener("mousedown", handleMouseDown);
     };
-  }, [svgRef, onDragCallback]);
+  }, [svgRef?.current, onDragCallback]);
 
   return {
     isDragging: isDraggingRef.current,

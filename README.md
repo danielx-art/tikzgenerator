@@ -70,9 +70,9 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 ### Bugs
 
 - [ ] Na ferramenta Inserir Ponto em Segmento, quando selecionada distância 'd' aparece espaço em branco em baixo da página.
-- [ ] nos menus de selecionar cor, overflow não está como contain, e ao scrollar a na página inteira dá scroll.
 - [ ] Quando movido ponto, mover também círculos, segmentos e polígonos que utilizam esse ponto.
 - [ ] Marcadores em segmentos não funcionando em código tikz. Posicionamento errado e palavra chave "solid" entre aspas.
 - [x] transferir layout shadcn para mais acessibilidade.
 - [x] Paginator está dentro de AccordionTrigger, o que causa button as a descendant of button.
 - [x] Adicionar ponto remove um ponto antigo.
+- [ ] Quando ponto é movido de forma aproximadamente colinear a outro, as dimensões do svg explodem naquela direção.
