@@ -30,6 +30,7 @@ const RemoveEntityButton: React.FC<PropsType> = ({
         },
         cancel: {
           label: "Não",
+          onClick: ()=>toast.dismiss(),
         },
       });
     }
