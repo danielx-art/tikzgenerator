@@ -2,9 +2,6 @@ import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import {
   getEntityById,
-  getKindById,
-  getMapByKind,
-  getSetterByKind,
 } from "import/utils/storeHelpers/entityGetters";
 import type { TentId } from "public/entidades";
 import {

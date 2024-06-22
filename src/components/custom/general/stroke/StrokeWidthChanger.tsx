@@ -2,10 +2,7 @@ import configStore from "import/utils/store/configStore";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import {
-  getEntityById,
-  getKindById,
-  getMapByKind,
-  getSetterByKind,
+  getEntityById
 } from "import/utils/storeHelpers/entityGetters";
 import { TentId } from "public/entidades";
 import { initConfigs } from "public/generalConfigs";
