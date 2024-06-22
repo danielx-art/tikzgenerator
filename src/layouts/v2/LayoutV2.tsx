@@ -11,7 +11,7 @@ const LayoutV2 = () => {
   return (
     <>
       <div className="md:no-scrollbar font-jost flex flex-col gap-4 bg-background p-4 md:grid md:h-full md:max-h-full md:grid-cols-[2fr_1fr]">
-        <div className="flex h-[96vh] flex-col-reverse justify-between gap-4 md:h-full md:flex-col">
+        <div className="flex flex-col-reverse justify-between gap-4 md:h-full md:flex-col">
           <div className="flex-1">
             <PreviewPanel />
           </div>
