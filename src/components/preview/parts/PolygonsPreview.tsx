@@ -1,6 +1,6 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { Tpolygon } from "public/entidades";
+import { Tpoint, TpointId, Tpolygon } from "public/entidades";
 import { getFillMask } from "../helpers";
 import configStore from "import/utils/store/configStore";
 
@@ -11,12 +11,12 @@ const PolygonsPreview: React.FC = () => {
   if (!store || !configs) return;
 
   const {RES_FACTOR_SVG} = configs
-  const { polygons, toggleSelection } = store;
+  const { polygons, points, toggleSelection } = store;
 
   return (
     <>
       {Array.from(polygons.values()).map((polygon, index) => {
-        const polygonPath = getPolygonPath(polygon, RES_FACTOR_SVG);
+        const polygonPath = getPolygonPath(polygon, points, RES_FACTOR_SVG);
 
         return (
           <g
@@ -54,14 +54,16 @@ const PolygonsPreview: React.FC = () => {
 
 export default PolygonsPreview;
 
-export const getPolygonPath = (polygon: Tpolygon, scaleFactor: number) => {
+export const getPolygonPath = (polygon: Tpolygon, points: Map<TpointId,Tpoint>, scaleFactor: number) => {
   let d = "M ";
 
   polygon.vertices.forEach((vertex, index) => {
+    const curr = points.get(vertex);
+    if(!curr) return;
     if (index === 0) {
-      d += `${vertex.coords.x * scaleFactor} ${vertex.coords.y * scaleFactor} `;
+      d += `${curr.coords.x * scaleFactor} ${curr.coords.y * scaleFactor} `;
     } else {
-      d += `L ${vertex.coords.x * scaleFactor} ${vertex.coords.y * scaleFactor} `;
+      d += `L ${curr.coords.x * scaleFactor} ${curr.coords.y * scaleFactor} `;
     }
   });
 

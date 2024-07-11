@@ -1,5 +1,6 @@
 import { Tentity, Tsegment, type Tpoint, Tangle } from "public/entidades";
 import { roundAndDisplayNicely } from "../math/misc";
+import { State } from "../store/store";
 
 const LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const GREEK_ALPHABET = "αβγδεζηθικλμνξοπρστυφχψω";
@@ -24,7 +25,7 @@ export const numericalTags = (i: number, entity: Tentity) => {
 };
 export const coordTags = (i: number, entity: Tpoint) =>
   `(${entity.coords.x};${entity.coords.y})`;
-export const lengthTags = (i: number, entity: Tsegment) =>
-  `${roundAndDisplayNicely(entity.length)}`;
-export const arcTags = (i: number, entity: Tangle) =>
-  `${roundAndDisplayNicely(entity.valor)}`;
+export const lengthTags = (i: number, entity: Tsegment, points: State["points"]) =>
+  `${roundAndDisplayNicely(entity.length(points))}`;
+export const arcTags = (i: number, entity: Tangle, points: State["points"]) =>
+  `${roundAndDisplayNicely(entity.valor(points))}`;

@@ -1,4 +1,4 @@
-import { vec } from "import/utils/math/vetores";
+import { vec } from "import/utils/math/linear-algebra/vetores";
 import { LATEX_COLOR } from "public/generalConfigs";
 
 export type AngDisplayProps = {

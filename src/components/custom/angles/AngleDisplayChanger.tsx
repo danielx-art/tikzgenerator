@@ -38,6 +38,8 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
     }
   }, [selectedButton, selectedOption]);
 
+  if(!store || !thisAngle) return;
+
   const parseMarks = (marks?: ANGLE_MARKS_TYPE): [number, number] => {
     if (!marks) return [0, 0];
     const parts = marks.split("-");
@@ -60,7 +62,7 @@ const AngleDisplayChanger: React.FC<PropsType> = ({ angId }) => {
     });
   };
 
-  if (thisAngle && (thisAngle.valor * 180) / Math.PI === 90) {
+  if (thisAngle && (thisAngle.valor(store.points) * 180) / Math.PI === 90) {
     return;
   }
 

@@ -1,4 +1,4 @@
-import { vec } from "../math/vetores";
+import { vec } from "../math/linear-algebra/vetores";
 import configStore from "../store/configStore";
 import type { Action, State } from "../store/store";
 
@@ -9,9 +9,9 @@ export default function getAnglesTikzCode(store: State & Action) {
   let tikzCode = "";
   store.angles.forEach((angle) => {
     if (angle.visible) {
-      const angleA = vec().copy(angle.a.coords);
-      const angleB = vec().copy(angle.b.coords);
-      const angleC = vec().copy(angle.c.coords);
+      const angleA = vec().copy(angle.p1(store.points).coords);
+      const angleB = vec().copy(angle.p2(store.points).coords);
+      const angleC = vec().copy(angle.p3(store.points).coords);
 
       let vectorA = vec().copy(angleA).sub(angleB);
       let vectorB = vec().copy(angleC).sub(angleB);
@@ -45,7 +45,7 @@ export default function getAnglesTikzCode(store: State & Action) {
         if(startAngle < endAngle) startAngle += 360;
       }
 
-      if ((angle.valor * 180) / Math.PI === 90) {
+      if ((angle.valor(store.points) * 180) / Math.PI === 90) {
         //right
         tikzCode += `\\draw [${angle.color}, opacity=${angle.opacity}] (${
           angleB.x + startVector.x
@@ -72,16 +72,16 @@ export default function getAnglesTikzCode(store: State & Action) {
         if (angle.dotstyle === 0) {
           // Stroke only
           tikzCode += angle.isBigAngle ? 
-            `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b.id}) ++(${endAngle}:${angle.size}) arc (${endAngle}:${360-startAngle}:${angle.size});\n`
+            `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b}) ++(${endAngle}:${angle.size}) arc (${endAngle}:${360-startAngle}:${angle.size});\n`
             :
-            `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b.id}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size});\n`
+            `\\draw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size});\n`
             ;
           } else if (angle.dotstyle === 1) {
           // Stroke and fill (as a 'circle sector')
           tikzCode += angle.isBigAngle ? 
-          `\\filldraw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b.id}) -- (${angle.b.id}) ++(${endAngle}:${angle.size}) arc (${endAngle}:${360-startAngle}:${angle.size}) -- (${angle.b.id});\n`
+          `\\filldraw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b}) -- (${angle.b}) ++(${endAngle}:${angle.size}) arc (${endAngle}:${360-startAngle}:${angle.size}) -- (${angle.b});\n`
           :
-          `\\filldraw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b.id}) -- (${angle.b.id}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size}) -- (${angle.b.id});\n`
+          `\\filldraw [${angle.color}, line width=${DEFAULT_STROKE_WIDTH*TIKZ_SCALE}, opacity=${angle.opacity}] (${angle.b}) -- (${angle.b}) ++(${startAngle}:${angle.size}) arc (${startAngle}:${endAngle}:${angle.size}) -- (${angle.b});\n`
         }
 
         //------MARKS PATH
@@ -90,7 +90,7 @@ export default function getAnglesTikzCode(store: State & Action) {
             const numMarks = parseInt(angle.marks.split("-")[1] as `${number}`);
             const markLen = angle.size / 2;
             const r = angle.size;
-            const ang = angle.isBigAngle ? angle.valorExt : angle.valor;
+            const ang = angle.isBigAngle ? angle.valorExt(store.points) : angle.valor(store.points);
             const numDiv = numMarks + 1;
             for (let i = 0; i < numMarks; i++) {
               const rotateWise = sweepFlag === 0 ? -1 : 1;
@@ -114,7 +114,7 @@ export default function getAnglesTikzCode(store: State & Action) {
             );
             const doubleDist = angle.size / 5;
             const r = angle.size;
-            const ang = angle.isBigAngle ? angle.valorExt : angle.valor;
+            const ang = angle.isBigAngle ? angle.valorExt(store.points) : angle.valor(store.points);
             const rotateWise = sweepFlag === 0 ? -1 : 1;
             const toRotate = rotateWise * ang;
             for (let i = 0; i < numDoubles; i++) {

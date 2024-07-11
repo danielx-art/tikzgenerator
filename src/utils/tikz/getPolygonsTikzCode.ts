@@ -8,7 +8,7 @@ export default function getPolygonsTikzCode(store: State & Action) {
   store.polygons.forEach((polygon) => {
     if (polygon.visible) {
       let vertexPath = polygon.vertices
-        .map((vertex) => `(${vertex.id})`)
+        .map((vertex) => `(${vertex})`)
         .join(" -- ");
 
       let minX = Infinity;
@@ -16,10 +16,15 @@ export default function getPolygonsTikzCode(store: State & Action) {
       let minY = Infinity;
       let maxY = -Infinity;
       polygon.vertices.forEach((vertex) => {
-        if (vertex.coords.x < minX) minX = vertex.coords.x;
-        if (vertex.coords.x > maxX) maxX = vertex.coords.x;
-        if (vertex.coords.y < minY) minY = vertex.coords.y;
-        if (vertex.coords.y > maxY) maxY = vertex.coords.y;
+
+        const vertexPoint = store.points.get(vertex);
+
+        if(!vertexPoint) return;
+
+        if (vertexPoint.coords.x < minX) minX = vertexPoint.coords.x;
+        if (vertexPoint.coords.x > maxX) maxX = vertexPoint.coords.x;
+        if (vertexPoint.coords.y < minY) minY = vertexPoint.coords.y;
+        if (vertexPoint.coords.y > maxY) maxY = vertexPoint.coords.y;
       });
 
       tikzCode += `\\begin{scope}\n`;

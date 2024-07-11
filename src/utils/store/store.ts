@@ -3,31 +3,31 @@ import {
   type Tsegment,
   type Tangle,
   type Ttag,
-  type Tentity,
-  type TkindPlural,
+  type Tcircle,
+  type Tpolygon,
   type TpointId,
-  type TangId,
   type TsegId,
+  type TangId,
+  type TcircleId,
+  type TpolyId,
   type TtagId,
   type TentId,
+  type Tentity,
+  type TkindPlural,
   type Tkind,
   type TallId,
   type TallKind,
-  type TallKindPlural,
-  type TcircleId,
-  type TinitKind,
+  type TallKindPlural,  
   type TidFromKind,
-  type TkindPluralFrom,
-  type Tcircle,
-  type TpolyId,
-  type Tpolygon,
   tag,
 } from "public/entidades";
-import { vec, type vector } from "import/utils/math/vetores";
+import { vec, type vector } from "import/utils/math/linear-algebra/vetores";
 import { create } from "zustand";
 import { StorageValue, persist } from "zustand/middleware";
+import {merge} from "lodash";
 import { getEntityById, getKindById } from "../storeHelpers/entityGetters";
-//import { initConfigs } from "public/generalConfigs";
+import configStore from "./configStore";
+import { ANGLE_MARKS_TYPE, SEGMENT_MARKS_TYPE } from "public/generalConfigs";
 
 export type State = {
   points: Map<TpointId, Tpoint>;
@@ -62,7 +62,6 @@ const myStore = create<State & Action>()(
       circles: new Map<TcircleId, Tcircle>(),
       polygons: new Map<TpolyId, Tpolygon>(),
       tags: new Map<TtagId, Ttag>(),
-
       idCounters: {
         point: 0,
         segment: 0,
@@ -71,7 +70,6 @@ const myStore = create<State & Action>()(
         polygon: 0,
         tag: 0,
       },
-
       generateId: <T extends TallKind>(type: T): TidFromKind<T> => {
         const id = `${type}_${get().idCounters[type]}`;
         set((state) => ({
@@ -82,10 +80,10 @@ const myStore = create<State & Action>()(
         }));
         return id as any;
       },
-
       selections: [] as Array<TallId>,
       toggleSelection: <T extends Tentity | Ttag>(id: TallId) => {
-        const entityKind = getKindById(id) as TallKind;
+
+        const entityKind = getKindById(id);
 
         const storeMapKey = (entityKind + "s") as TallKindPlural;
 
@@ -115,7 +113,6 @@ const myStore = create<State & Action>()(
           };
         });
       },
-
       update: <T extends Tentity | Ttag>(newValue: T | Array<T>) => {
 
         if(Array.isArray(newValue) && newValue.length === 0) return;
@@ -137,7 +134,6 @@ const myStore = create<State & Action>()(
 
           return {[stateMapKey]: updatedMap}})
       },
-
       deleteEntity: (id: TentId) => {
         const entityKind = getKindById(id) as Tkind;
 
@@ -161,7 +157,7 @@ const myStore = create<State & Action>()(
 
             // Check and delete any segments that reference the point
             updatedSegments.forEach((segment, segmentId) => {
-              if (segment.p1.id === id || segment.p2.id === id) {
+              if (segment.a === id || segment.b === id) {
                 removedIds.push(segment.id);
                 updatedSegments.delete(segmentId);
               }
@@ -169,7 +165,7 @@ const myStore = create<State & Action>()(
 
             // Check and delete any angles that reference the point
             updatedAngles.forEach((angle, angleId) => {
-              if (angle.a.id === id || angle.b.id === id || angle.c.id === id) {
+              if (angle.a === id || angle.b === id || angle.c === id) {
                 removedIds.push(angle.id);
                 updatedAngles.delete(angleId);
               }
@@ -177,7 +173,7 @@ const myStore = create<State & Action>()(
 
             //now for polygons
             updatedPolygons.forEach((polygon, polyId) => {
-              const verticesIds = polygon.vertices.map((each) => each.id);
+              const verticesIds = polygon.vertices;
 
               if (verticesIds.includes(id as TpointId)) {
                 removedIds.push(polyId);
@@ -228,8 +224,7 @@ const myStore = create<State & Action>()(
           });
         }
       },
-
-      movePoint: (id, newPosition, shallow = false) =>
+      movePoint: (id, newPosition, shallow = false) => {
         set((state) => {
           if (shallow === false) {
             const updatedPoints = new Map(state.points);
@@ -246,8 +241,8 @@ const myStore = create<State & Action>()(
             }
           }
           return {};
-        }),
-
+        })
+      },
       addTag: (value: string, entityId: TentId) => {
         const tagId = get().generateId("tag") as TtagId;
 
@@ -259,6 +254,8 @@ const myStore = create<State & Action>()(
 
         const entityKind = getKindById(entityId);
 
+        let someError = null;
+
         switch (entityKind) {
           case "point": {
             const ref = thisEntity as Tpoint;
@@ -267,7 +264,13 @@ const myStore = create<State & Action>()(
           }
           case "segment": {
             const ref = thisEntity as Tsegment;
-            const { p1, p2 } = ref;
+            const { a, b } = ref;
+            const p1 = get().points.get(a);
+            const p2 = get().points.get(b);
+            if(!(p1 && p2)) {
+              someError = "can't find the edge points of the segment on the store. ";
+              break;
+            }
             const midPoint = vec()
               .copy(p1.coords)
               .add(vec().copy(p2.coords))
@@ -277,19 +280,27 @@ const myStore = create<State & Action>()(
           }
           case "angle": {
             const ref = thisEntity as Tangle;
-            anchor.add(ref.b.coords);
+            const p2 = get().points.get(ref.b);
+            if(!p2) {
+              someError = "can't find the angle center point on the store. ";
+              break;
+            }
+            anchor.add(p2.coords);
             break;
           }
           case "circle": {
             const ref = thisEntity as Tcircle;
-            anchor.add(ref.center);
+            const center = ref.center;
+            if(!center) {someError = "cant add tag to undefined"; break;}
+            anchor.add(center);
             break;
           }
           case "polygon": {
             const ref = thisEntity as Tpolygon;
             let centroid = vec(0, 0);
             ref.vertices.forEach((vertex) => {
-              centroid.add(vertex.coords);
+              const coords = get().points.get(vertex)!.coords;
+              centroid.add(coords);
             });
             centroid.div(ref.vertices.length);
             anchor.add(centroid);
@@ -299,6 +310,8 @@ const myStore = create<State & Action>()(
 
         const newTag = tag(value, entityId, tagId, vec(0, 0.35), anchor);
 
+        if(someError !== null) return;
+
         set((state) => {
           const updatedTags = new Map(state.tags);
           updatedTags.set(tagId, newTag);
@@ -306,7 +319,6 @@ const myStore = create<State & Action>()(
           return { tags: updatedTags };
         });
       },
-
       deleteTag: (id: TtagId) => {
         set((state) => {
           const updatedTags = new Map(state.tags);
@@ -315,9 +327,7 @@ const myStore = create<State & Action>()(
           return { tags: updatedTags };
         });
       },
-
       scale: 1,
-
       clear: () => {
         set(() => {
           return {

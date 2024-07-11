@@ -1,18 +1,19 @@
-import myStore from "import/utils/store/store";
+import myStore, { State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { vec } from "import/utils/math/vetores";
+import { vec } from "import/utils/math/linear-algebra/vetores";
 import type { Tsegment } from "public/entidades";
 import { getStrokeDasharray } from "../helpers";
 import configStore from "import/utils/store/configStore";
 
 const SegmentsPreview: React.FC = () => {
-  const store = useStore(myStore, (state) => state);
+  const segments = useStore(myStore, (state) => state.segments);
+  const points = useStore(myStore, (state) => state.points);
   const configs = useStore(configStore, (state)=>state);
+  const store = useStore(myStore, (state) => state);
 
-  if (!store || !configs) return;
+  if (!segments || !points || !store || !configs) return;
 
   const {RES_FACTOR_SVG} = configs;
-  const { segments, toggleSelection } = store;
 
   return (
     <>
@@ -24,7 +25,7 @@ const SegmentsPreview: React.FC = () => {
           {segment.marks != 0 && (
             <path
               key={"svg_path_" + segment.id + "marks"}
-              d={getSegmentMarksPath(segment, RES_FACTOR_SVG)}
+              d={getSegmentMarksPath(segment, RES_FACTOR_SVG, points)}
               stroke={segment.stroke.color}
               strokeLinecap="round"
               strokeWidth={segment.stroke.width}
@@ -35,20 +36,20 @@ const SegmentsPreview: React.FC = () => {
           <path
             //This is only to increase the hit box
             key={"svg_path_hitbox_" + segment.id}
-            d={getSegmentPath(segment, RES_FACTOR_SVG)}
+            d={getSegmentPath(segment, RES_FACTOR_SVG, points)}
             stroke={"transparent"}
             strokeLinecap="round"
             strokeWidth={3 * segment.stroke.width}
             fill="none"
             onClick={(event) => {
               event.stopPropagation();
-              toggleSelection(segment.id);
+              store.toggleSelection(segment.id);
             }}
             className="cursor-pointer"
           />
           <path
             key={"svg_path_" + segment.id}
-            d={getSegmentPath(segment, RES_FACTOR_SVG)}
+            d={getSegmentPath(segment, RES_FACTOR_SVG, points)}
             stroke={segment.stroke.color}
             strokeWidth={segment.stroke.width}
             strokeDasharray={getStrokeDasharray(segment.stroke.style)}
@@ -65,31 +66,31 @@ const SegmentsPreview: React.FC = () => {
 
 export default SegmentsPreview;
 
-export const getSegmentPath = (segment: Tsegment, scaleFactor: number) => {
+export const getSegmentPath = (segment: Tsegment, scaleFactor: number, points: State["points"]) => {
   let d = `
-  M${segment.p1.coords.x * scaleFactor},${segment.p1.coords.y * scaleFactor} 
-  L${segment.p2.coords.x * scaleFactor},${segment.p2.coords.y * scaleFactor} 
+  M${segment.p1(points).coords.x * scaleFactor},${segment.p1(points).coords.y * scaleFactor} 
+  L${segment.p2(points).coords.x * scaleFactor},${segment.p2(points).coords.y * scaleFactor} 
   `;
   return d;
 };
 
-export const getSegmentMarksPath = (segment: Tsegment, scaleFactor: number) => {
+export const getSegmentMarksPath = (segment: Tsegment, scaleFactor: number, points: State["points"]) => {
   let d = "";
   if (segment.marks > 0) {
     const markLength = 0.12 * segment.stroke.width;
     const markSep = 1.2 * segment.stroke.width;
     const midPoint = vec()
-      .copy(segment.p1.coords)
-      .add(vec().copy(segment.p2.coords))
+      .copy(segment.p1(points).coords)
+      .add(vec().copy(segment.p2(points).coords))
       .mult(scaleFactor / 2);
     const normal = vec()
-      .copy(segment.p2.coords)
-      .sub(vec().copy(segment.p1.coords))
+      .copy(segment.p2(points).coords)
+      .sub(vec().copy(segment.p1(points).coords))
       .cross(vec(0, 0, 1))
       .setMag(markLength * scaleFactor);
     const unitTangent = vec()
-      .copy(segment.p2.coords)
-      .sub(vec().copy(segment.p1.coords))
+      .copy(segment.p2(points).coords)
+      .sub(vec().copy(segment.p1(points).coords))
       .setMag(1);
     const start = vec()
       .copy(midPoint)

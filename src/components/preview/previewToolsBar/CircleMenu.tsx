@@ -1,31 +1,38 @@
 import Dropdown from "import/components/micro/Dropdown";
 import ToolTip from "import/components/micro/ToolTip";
 import { cn } from "import/utils/misc/cn";
-import { vec } from "import/utils/math/vetores";
-import myStore from "import/utils/store/store";
+import { vec } from "import/utils/math/linear-algebra/vetores";
+import myStore, { type Action, type State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import {
-  createCircleFromOnePoint,
-  createCircleFromTangent,
-  createCircleFromThreePoints,
-  createCircleFromTwoPoints,
+  getCircleFromOnePoint,
+  getCircleFromTwoPoints,
+  getCircleFromPointAndTangent,
+  getCircleFromThreePoints,
 } from "import/utils/storeHelpers/circleCreators";
-
-import { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from "react";
+import { createCircle } from "public/entidades";
+import { getSelected } from "import/utils/storeHelpers/entityGetters";
+import { toast } from "sonner";
+import { areCollinear } from "import/utils/math/linear-algebra/distancesAndAreas";
 
 type PropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const CircleMenu: React.FC<PropsType> = ({ className, ...rest }) => {
+  const store = useStore(myStore, (state) => state);
+
+  if (!store) return;
+
   return (
     <Dropdown
       keyword="generate-circle"
       className="my-auto box-border"
       openClasses="translate-y-1 bg-background ring-2 rounded-sm ring-muted"
     >
-      <CircleFromOnePoint className={className} {...rest} />
-      <CircleFromTwoPoints className={className} {...rest} />
-      <CircleFromTangent className={className} {...rest} />
-      <CircleFromThreePoints className={className} {...rest} />
+      <CircleFromOnePoint store={store} className={className} {...rest} />
+      <CircleFromTwoPoints store={store} className={className} {...rest} />
+      <CircleFromTangent store={store} className={className} {...rest} />
+      <CircleFromThreePoints store={store} className={className} {...rest} />
     </Dropdown>
   );
 };
@@ -36,15 +43,27 @@ export default CircleMenu;
 //-------------------------OPTION 1 - CRICLE FROM ONE POINT
 //---------------------------------------------------------
 
-export const CircleFromOnePoint: React.FC<PropsType> = ({
-  className,
-  ...rest
-}) => {
-  const store = useStore(myStore, (state) => state);
-
-  const circleFromOnePoint = () => {
-    if (!store) return;
-    createCircleFromOnePoint(store);
+export const CircleFromOnePoint: React.FC<
+  PropsType & { store: State & Action }
+> = ({ className, store, ...rest }) => {
+  const addCircle = () => {
+    const selectedPoints = getSelected("point", store);
+    if (selectedPoints.length !== 1 || !selectedPoints[0]) {
+      toast.error(
+        "Por favor selecione apenas um ponto para criar um círculo dessa maneira. ",
+      );
+      return;
+    }
+    const { center, radius } = getCircleFromOnePoint(selectedPoints[0].coords);
+    const newCircleId = store.generateId("circle");
+    const newCircle = createCircle(
+      "circleFromOnePoint",
+      { p1: selectedPoints[0].id },
+      center,
+      radius,
+      newCircleId,
+    );
+    store.update(newCircle);
   };
 
   const realSize = 24;
@@ -52,11 +71,7 @@ export const CircleFromOnePoint: React.FC<PropsType> = ({
 
   return (
     <ToolTip message="Cria círculo de raio 1 em torno do ponto selecionado. ">
-      <button
-        className={cn("", className)}
-        onClick={circleFromOnePoint}
-        {...rest}
-      >
+      <button className={cn("", className)} onClick={addCircle} {...rest}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="gray"
@@ -92,15 +107,32 @@ export const CircleFromOnePoint: React.FC<PropsType> = ({
 //-------------------------OPTION 2 - CRICLE FROM TWO POINTS
 //---------------------------------------------------------
 
-export const CircleFromTwoPoints: React.FC<PropsType> = ({
-  className,
-  ...rest
-}) => {
-  const store = useStore(myStore, (state) => state);
-
-  const circleFromTwoPoints = () => {
-    if (!store) return;
-    createCircleFromTwoPoints(store);
+export const CircleFromTwoPoints: React.FC<
+  PropsType & { store: State & Action }
+> = ({ className, store, ...rest }) => {
+  const addCircle = () => {
+    const selectedPoints = getSelected("point", store);
+    const centerPoint = selectedPoints[0];
+    const limitPoint = selectedPoints[1];
+    if (!(selectedPoints.length == 2 && centerPoint && limitPoint)) {
+      toast.error(
+        "Por favor selecione dois pontos para criar um círculo dessa maneira. ",
+      );
+      return;
+    }
+    const { center, radius } = getCircleFromTwoPoints(
+      centerPoint.coords,
+      limitPoint.coords,
+    );
+    const newCircleId = store.generateId("circle");
+    const newCircle = createCircle(
+      "circleFromTwoPoints",
+      { p1: centerPoint.id, p2: limitPoint.id },
+      center,
+      radius,
+      newCircleId,
+    );
+    store.update(newCircle);
   };
 
   const realSize = 24;
@@ -112,11 +144,7 @@ export const CircleFromTwoPoints: React.FC<PropsType> = ({
 
   return (
     <ToolTip message="Cria círculo com centro no primeiro ponto e com borda no segundo ponto selecionado. ">
-      <button
-        className={cn("", className)}
-        onClick={circleFromTwoPoints}
-        {...rest}
-      >
+      <button className={cn("", className)} onClick={addCircle} {...rest}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="gray"
@@ -170,15 +198,51 @@ export const CircleFromTwoPoints: React.FC<PropsType> = ({
 //-------------------------OPTION 3 - CRICLE FROM ONE POINT AND TANGENT
 //---------------------------------------------------------
 
-export const CircleFromTangent: React.FC<PropsType> = ({
-  className,
-  ...rest
-}) => {
-  const store = useStore(myStore, (state) => state);
-
-  const circleFromTangent = () => {
-    if (!store) return;
-    createCircleFromTangent(store);
+export const CircleFromTangent: React.FC<
+  PropsType & { store: State & Action }
+> = ({ className, store, ...rest }) => {
+  const addCircle = () => {
+    const selectedPoints = getSelected("point", store);
+    const selectedSegments = getSelected("segment", store);
+    const centerPoint = selectedPoints[0];
+    const line = selectedSegments[0];
+    const a = line ? store.points.get(line.a) : undefined;
+    const b = line ? store.points.get(line.b) : undefined;
+    if (
+      !(
+        selectedPoints.length == 1 &&
+        selectedSegments.length == 1 &&
+        centerPoint &&
+        line &&
+        a &&
+        b
+      )
+    ) {
+      toast.error(
+        "Por favor selecione um ponto e um segmento para criar um círculo dessa maneira. ",
+      );
+      return;
+    }
+    const { center, radius } = getCircleFromPointAndTangent(
+      centerPoint.coords,
+      a.coords,
+      b.coords,
+    );
+    if (radius == undefined) {
+      toast.error(
+        "Para criar um círculo dessa forma, selecione um ponto que não é colinear com o segmento selecionado. ",
+      );
+      return;
+    }
+    const newCircleId = store.generateId("circle");
+    const newCircle = createCircle(
+      "circleFromPointAndTangent",
+      { p: centerPoint.id, a: a.id, b: b.id, seg: line.id },
+      center,
+      radius,
+      newCircleId,
+    );
+    store.update(newCircle);
   };
 
   const realSize = 24;
@@ -189,11 +253,7 @@ export const CircleFromTangent: React.FC<PropsType> = ({
   const l2 = vec().copy(p1).add(radii).add(vec(0, -0.5).mult(realSize));
   return (
     <ToolTip message="Cria círculo com centro no ponto e tangente à direção do segmento selecionados. ">
-      <button
-        className={cn("", className)}
-        onClick={circleFromTangent}
-        {...rest}
-      >
+      <button className={cn("", className)} onClick={addCircle} {...rest}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="gray"
@@ -262,15 +322,54 @@ export const CircleFromTangent: React.FC<PropsType> = ({
 //-------------------------OPTION 4 - CRICLE FROM THREE POINTS
 //---------------------------------------------------------
 
-export const CircleFromThreePoints: React.FC<PropsType> = ({
-  className,
-  ...rest
-}) => {
-  const store = useStore(myStore, (state) => state);
+export const CircleFromThreePoints: React.FC<
+  PropsType & { store: State & Action }
+> = ({ className, store, ...rest }) => {
+  const addCircle = () => {
+    const selectedPoints = getSelected("point", store);
+    const p1 = selectedPoints[0];
+    const p2 = selectedPoints[1];
+    const p3 = selectedPoints[2];
+    if (!(selectedPoints && selectedPoints.length === 3 && p1 && p2 && p3)) {
+      toast.error(
+        "Por favor selecione três pontos não colineares para criar um círculo dessa maneira. ",
+      );
+      return;
+    }
 
-  const circleFromThreePoints = () => {
-    if (!store) return;
-    createCircleFromThreePoints(store);
+    if (areCollinear(p1.coords, p2.coords, p3.coords)) {
+      toast.error(
+        "Por favor selecione três pontos não colineares, isto é, que não estão alinhados. ",
+      );
+      return;
+    }
+
+    const { center, radius } = getCircleFromThreePoints(
+      p1.coords,
+      p2.coords,
+      p3.coords,
+    );
+
+    if (radius === 0) {
+      toast.error(
+        "Parece que você selecionou pontos iguais entre si. Por favor selecione pontos diferentes, e não colineares. ",
+      );
+      return;
+    }
+
+    const newCircleId = store.generateId("circle");
+
+    const newCircle = createCircle(
+      "circleFromThreePoints",
+      { p1: p1.id, p2: p2.id, p3: p3.id },
+      center,
+      radius,
+      newCircleId,
+    );
+
+    store.update(newCircle);
+
+    return;
   };
 
   const realSize = 24;
@@ -294,11 +393,7 @@ export const CircleFromThreePoints: React.FC<PropsType> = ({
 
   return (
     <ToolTip message="Cria círculo que passa pelos três pontos selecionados. ">
-      <button
-        className={cn("", className)}
-        onClick={circleFromThreePoints}
-        {...rest}
-      >
+      <button className={cn("", className)} onClick={addCircle} {...rest}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="gray"

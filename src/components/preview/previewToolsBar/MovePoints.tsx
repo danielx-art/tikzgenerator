@@ -1,6 +1,6 @@
 import ToolTip from "import/components/micro/ToolTip";
 import { cn } from "import/utils/misc/cn";
-import { vec } from "import/utils/math/vetores";
+import { vec } from "import/utils/math/linear-algebra/vetores";
 import useStore from "import/utils/store/useStore";
 import { Move } from "lucide-react";
 import { ButtonHTMLAttributes } from "react";

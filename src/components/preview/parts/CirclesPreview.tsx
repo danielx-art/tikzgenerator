@@ -1,4 +1,4 @@
-import myStore from "import/utils/store/store";
+import myStore, { Action, State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { Tcircle } from "public/entidades";
 import { getFillMask, getStrokeDasharray } from "../helpers";
@@ -16,7 +16,9 @@ const CirclesPreview: React.FC = () => {
   return (
     <>
       {Array.from(circles.values()).map((circle, index) => {
-        const path = getArcPath(circle, RES_FACTOR_SVG);
+        const path = getArcPath(circle, RES_FACTOR_SVG, store);
+
+        if(!path) return;
 
         return (
           <g
@@ -79,34 +81,39 @@ const CirclesPreview: React.FC = () => {
 
 export default CirclesPreview;
 
-export const getArcPath = (circle: Tcircle, scaleFactor: number) => {
+export const getArcPath = (circle: Tcircle, scaleFactor: number, store: State & Action) => {
   let startRadians = (circle.arcStart + circle.arcOffset) * (Math.PI / 180);
   let endRadians = circle.arcEnd == 360 ? (circle.arcEnd - 0.001 + circle.arcOffset) * (Math.PI / 180) : (circle.arcEnd + circle.arcOffset) * (Math.PI / 180);
 
-  let x0 = circle.center.x * scaleFactor;
-  let y0 = circle.center.y * scaleFactor;
+  const center = ("x" in circle.center ) ? circle.center : circle.center(store);
+  const radius = (typeof circle.radius === "number" ) ? circle.radius : circle.radius(store);
+
+  if(!center || !radius) return;
+
+  let x0 = center.x * scaleFactor;
+  let y0 = center.y * scaleFactor;
   let x1 =
-    (circle.center.x + circle.radius * Math.cos(startRadians)) * scaleFactor;
+    (center.x + radius * Math.cos(startRadians)) * scaleFactor;
   let y1 =
-    (circle.center.y + circle.radius * Math.sin(startRadians)) * scaleFactor;
+    (center.y + radius * Math.sin(startRadians)) * scaleFactor;
   let x2 =
-    (circle.center.x + circle.radius * Math.cos(endRadians)) * scaleFactor;
+    (center.x + radius * Math.cos(endRadians)) * scaleFactor;
   let y2 =
-    (circle.center.y + circle.radius * Math.sin(endRadians)) * scaleFactor;
+    (center.y + radius * Math.sin(endRadians)) * scaleFactor;
 
   let largeArcFlag = circle.arcEnd - circle.arcStart <= 180 ? "0" : "1";
   let sweepFlag = "1"; // Assume clockwise, change to "0" for counterclockwise
 
   let radialStrokesPath = `M ${x1} ${y1} L ${x0} ${y0} L ${x2} ${y2}`;
 
-  let arcStrokePath = `M ${x1} ${y1} A ${circle.radius * scaleFactor} ${
-    circle.radius * scaleFactor
+  let arcStrokePath = `M ${x1} ${y1} A ${radius * scaleFactor} ${
+    radius * scaleFactor
   } 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2}`;
 
   let sectorPath = `M ${x0} ${y0} L ${x1} ${y1} A ${
-    circle.radius * scaleFactor
+    radius * scaleFactor
   } ${
-    circle.radius * scaleFactor
+    radius * scaleFactor
   } 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2} Z`;
 
   const d = { radialStrokesPath, arcStrokePath, sectorPath };

@@ -1,6 +1,6 @@
-import { vec } from "../math/vetores";
-import { ConfigActions, ConfigState } from "../store/configStore";
-import { State } from "../store/store";
+import { vec } from "../math/linear-algebra/vetores";
+import type { ConfigActions, ConfigState } from "../store/configStore";
+import type { Action, State } from "../store/store";
 
 export const calculateSVGDimensions = (
   points: State["points"],
@@ -8,6 +8,7 @@ export const calculateSVGDimensions = (
   tags: State["tags"] | undefined,
   configs: ConfigState & ConfigActions,
   containerDimensions: { width: number; height: number },
+  store: State & Action,
 ) => {
   const { RES_FACTOR_SVG, DEFAULT_POINT_SIZE, PREVIEW_SCALE } = configs;
 
@@ -31,16 +32,22 @@ export const calculateSVGDimensions = (
 
   if (circles && circles.size > 0) {
     circles.forEach((circle) => {
-      const cLeft = circle.center.x - circle.radius;
+
+      const center = ("x" in circle.center) ? circle.center : circle.center(store);
+      const radius = (typeof circle.radius === "number") ? circle.radius : circle.radius(store);
+
+      if(!center || !radius) return;
+
+      const cLeft = center.x - radius;
       if (cLeft < minX) minX = cLeft;
 
-      const cTop = circle.center.y + circle.radius;
+      const cTop = center.y + radius;
       if (cTop > maxY) maxY = cTop;
 
-      const cRight = circle.center.x + circle.radius;
+      const cRight = center.x + radius;
       if (cRight > maxX) maxX = cRight;
 
-      const cBottom = circle.center.y - circle.radius;
+      const cBottom = center.y - radius;
       if (cBottom < minY) minY = cBottom;
     });
   }

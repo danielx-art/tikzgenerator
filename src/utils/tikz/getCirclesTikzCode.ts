@@ -9,15 +9,21 @@ export default function getCirclesTikzCode(store: State & Action) {
 
   store.circles.forEach((circle) => {
     if (circle.visible) {
-      const circleCenter = `(${circle.center.x}, ${circle.center.y})`;
+
+      const center = "x" in circle.center ? circle.center : circle.center(store);
+      const radius = (typeof circle.radius === "number") ? circle.radius : circle.radius(store);
+
+      if(!center || !radius) return;
+
+      const circleCenter = `(${center.x}, ${center.y})`;
       const arcAngleSize = circle.arcEnd - circle.arcStart;
       const startAngle = circle.arcStart + circle.arcOffset;
       const endAngle = circle.arcEnd + circle.arcOffset;
       const circleSector =
         arcAngleSize == 360
-          ? `(${circle.center.x}, ${circle.center.y}) circle (${circle.radius})`
-          : `${circleCenter} -- ${circleCenter} ++(${startAngle}:${circle.radius}) arc (${startAngle}:${endAngle}:${circle.radius}) -- ${circleCenter}`;
-      const circleArc = `${circleCenter} ++(${startAngle}:${circle.radius}) arc (${startAngle}:${endAngle}:${circle.radius})`;
+          ? `(${center.x}, ${center.y}) circle (${radius})`
+          : `${circleCenter} -- ${circleCenter} ++(${startAngle}:${radius}) arc (${startAngle}:${endAngle}:${radius}) -- ${circleCenter}`;
+      const circleArc = `${circleCenter} ++(${startAngle}:${radius}) arc (${startAngle}:${endAngle}:${radius})`;
       const circleRadialsOne = `${circleCenter} ++(${endAngle}:${circle.radius}) -- ${circleCenter}`;
       const circleRadialsTwo = `${circleCenter} ++(${startAngle}:${circle.radius}) -- ${circleCenter}`;
 
@@ -45,14 +51,14 @@ export default function getCirclesTikzCode(store: State & Action) {
               TIKZ_SCALE < 0.5 ? 0.2 * TIKZ_SCALE : 0.02 * TIKZ_SCALE;
 
             circleCommands += `\\foreach \\x in {${
-              circle.center.x - circle.radius
-            },${circle.center.x - circle.radius + step},...,${
-              circle.center.x + circle.radius
+              center.x - radius
+            },${center.x - radius + step},...,${
+              center.x + radius
             }}{\n`;
             circleCommands += `\\foreach \\y in {${
-              circle.center.y - circle.radius
-            },${circle.center.y - circle.radius + step},...,${
-              circle.center.y + circle.radius
+              center.y - radius
+            },${center.y - radius + step},...,${
+              center.y + radius
             }}{\n`;
             circleCommands += `\\fill [fill=${
               circle.fill.color
@@ -65,10 +71,10 @@ export default function getCirclesTikzCode(store: State & Action) {
             const angleOption = circle.fill.style.split("-")[1];
             if (!angleOption) return "";
             const angle = parseInt(angleOption) * 45;
-            const minX = circle.center.x - circle.radius;
-            const maxX = circle.center.x + circle.radius;
-            const minY = circle.center.y - circle.radius;
-            const maxY = circle.center.y + circle.radius;
+            const minX = center.x - radius;
+            const maxX = center.x + radius;
+            const minY = center.y - radius;
+            const maxY = center.y + radius;
             const HACHURE_DIST = TIKZ_SCALE < 1 ? 0.1 : 0.02 * TIKZ_SCALE;
             const pattern = getHachureLines(
               minX,

@@ -1,4 +1,4 @@
-import { type Tpoint, angulo } from "public/entidades";
+import { type Tpoint, createAngle } from "public/entidades";
 import type { Action, State } from "../store/store";
 import { getSelected } from "./entityGetters";
 import { toast } from "sonner";
@@ -25,7 +25,7 @@ export const makeAngles = (
     const pB = selectedPoints[i + 1] as Tpoint;
     const pC = selectedPoints[i + 2] as Tpoint;
     const newAngleId = generateId("angle");
-    const newAngle = angulo(pA, pB, pC, newAngleId);
+    const newAngle = createAngle(pA.id, pB.id, pC.id, newAngleId);
     store.update(newAngle)
   }
 
@@ -34,10 +34,10 @@ export const makeAngles = (
     const scndlastPoint = selectedPoints[selectedPoints.length - 2] as Tpoint;
     const lastPoint = selectedPoints[selectedPoints.length - 1] as Tpoint;
     const firstPoint = selectedPoints[0] as Tpoint;
-    const closingAng = angulo(
-      scndlastPoint,
-      lastPoint,
-      firstPoint,
+    const closingAng = createAngle(
+      scndlastPoint.id,
+      lastPoint.id,
+      firstPoint.id,
       closingAngId,
     );
     store.update(closingAng)

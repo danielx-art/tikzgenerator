@@ -1,7 +1,7 @@
 import useDraggableOnSVG, {
   DragState,
 } from "import/utils/hooks/useDraggableOnSVG";
-import { vec, vector } from "import/utils/math/vetores";
+import { vec, vector } from "import/utils/math/linear-algebra/vetores";
 import configStore, { type ConfigState } from "import/utils/store/configStore";
 import myStore, { State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";

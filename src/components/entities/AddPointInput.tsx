@@ -1,7 +1,7 @@
 import { useState, type KeyboardEvent, useCallback } from "react";
 import myStore from "import/utils/store/store";
-import { ponto, type Tpoint } from "public/entidades";
-import { vec } from "import/utils/math/vetores";
+import { createPoint, type Tpoint } from "public/entidades";
+import { vec } from "import/utils/math/linear-algebra/vetores";
 import useStore from "import/utils/store/useStore";
 import { MAXIMUM_NUMBER_OF_POINTS } from "public/generalConfigs";
 import { toast } from "sonner";
@@ -46,7 +46,7 @@ const AddPointInput = () => {
 
         if (!isNaN(num1) && !isNaN(num2)) {
           const newId = generateId("point");
-          const newPoint = ponto(vec(num1, num2), newId);
+          const newPoint = createPoint(vec(num1, num2), newId);
 
           pointsToAdd.push(newPoint);
           continue;
@@ -128,7 +128,7 @@ const AddPointInput = () => {
           // );
 
           const newId = generateId("point");
-          const newPoint = ponto(preciseCoords, newId);
+          const newPoint = createPoint(preciseCoords, newId);
           pointsToAdd.push(newPoint);
           continue;
         }

@@ -4,11 +4,10 @@ import {
   STROKE_STYLES,
   FILL_STYLES,
   LATEX_COLOR,
-  initConfigs,
 } from "./generalConfigs";
-import { vec, vector } from "../src/utils/math/vetores";
-import myStore from "import/utils/store/store";
+import { vec, vector } from "../src/utils/math/linear-algebra/vetores";
 import configStore from "import/utils/store/configStore";
+import { Action, State } from "import/utils/store/store";
 
 export type Tkind = "point" | "segment" | "angle" | "circle" | "polygon";
 export type TallKind = Tkind | "tag";
@@ -25,49 +24,35 @@ export type TangId = `angle_${number}`;
 export type TcircleId = `circle_${number}`;
 export type TpolyId = `polygon_${number}`;
 export type TtagId = `tag_${number}`;
-//export type TentId = `${Tkind}_${number}`;
 export type TentId = TpointId | TsegId | TangId | TcircleId | TpolyId;
 export type TallId = TentId | TtagId;
 
-export type TinitKind<TypeKind> = TypeKind extends "point"
-  ? Partial<Tpoint>
-  : TypeKind extends "segment"
-  ? Partial<Tsegment>
-  : TypeKind extends "angle"
-  ? Partial<Tangle>
-  : TypeKind extends "tag"
-  ? Partial<Ttag>
-  : TypeKind extends "circle"
-  ? Partial<Tcircle>
-  : TypeKind extends "polygon"
-  ? Partial<Tpolygon>
-  : never;
 export type TidFromKind<TypeKind> = TypeKind extends "point"
   ? TpointId
   : TypeKind extends "segment"
-  ? TsegId
-  : TypeKind extends "angle"
-  ? TangId
-  : TypeKind extends "tag"
-  ? TtagId
-  : TypeKind extends "circle"
-  ? TcircleId
-  : TypeKind extends "polygon"
-  ? TpolyId
-  : never;
+    ? TsegId
+    : TypeKind extends "angle"
+      ? TangId
+      : TypeKind extends "tag"
+        ? TtagId
+        : TypeKind extends "circle"
+          ? TcircleId
+          : TypeKind extends "polygon"
+            ? TpolyId
+            : never;
 export type TkindPluralFrom<TypeKind> = TypeKind extends "point"
   ? "points"
   : TypeKind extends "segment"
-  ? "segments"
-  : TypeKind extends "angle"
-  ? "angles"
-  : TypeKind extends "tag"
-  ? "tags"
-  : TypeKind extends "circle"
-  ? "circles"
-  : TypeKind extends "polygon"
-  ? "polygons"
-  : never;
+    ? "segments"
+    : TypeKind extends "angle"
+      ? "angles"
+      : TypeKind extends "tag"
+        ? "tags"
+        : TypeKind extends "circle"
+          ? "circles"
+          : TypeKind extends "polygon"
+            ? "polygons"
+            : never;
 
 export type Tentity = Tpoint | Tsegment | Tangle | Tcircle | Tpolygon;
 
@@ -86,35 +71,26 @@ export type Tfill = {
   opacity: number;
 };
 
-export const ponto = function (a: vector, id: TpointId, group: number = 1) {
+export const createPoint = function (a: vector, id: TpointId, updateMethod?: string) {
   return {
     id,
+    updateMethod: updateMethod,
     coords: a,
-    visible: true,
     dotstyle: configStore.getState().DEFAULT_POINT_STYLE,
     size: configStore.getState().DEFAULT_POINT_SIZE,
     color: configStore.getState().DEFAULT_COLOR,
-    group,
+    visible: true,
     selected: false,
   };
 };
 
-export type Tpoint = ReturnType<typeof ponto>;
+export type Tpoint = ReturnType<typeof createPoint>;
 
-export const segmento = function (a: Tpoint, b: Tpoint, id: TsegId) {
+export const createSegment = function (a: TpointId, b: TpointId, id: TsegId) {
   return {
     id,
-    p1: a,
-    p2: b,
-    get length() {
-      return vec().copy(this.p1.coords).dist(this.p2.coords);
-    },
-    get normal() {
-      return vec()
-        .copy(this.p1.coords)
-        .cross(vec(0, 0, 1))
-        .setMag(1);
-    },
+    a,
+    b,
     visible: true,
     stroke: {
       width: configStore.getState().DEFAULT_STROKE_WIDTH,
@@ -127,26 +103,26 @@ export const segmento = function (a: Tpoint, b: Tpoint, id: TsegId) {
   };
 };
 
-export type Tsegment = ReturnType<typeof segmento>;
+export type Tsegment = ReturnType<typeof createSegment>;
 
-export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
+export const getSegLength = (seg: Tsegment, points: State["points"]) => {
+  const p1 = points.get(seg.a);
+  const p2 = points.get(seg.b);
+  if (!(p1 && p2)) return 0;
+  return vec().copy(p1.coords).sub(vec().copy(p2.coords)).mag();
+};
+
+export const createAngle = function (
+  a: TpointId,
+  b: TpointId,
+  c: TpointId,
+  id: TangId,
+) {
   return {
     id,
     a,
     b,
     c,
-    get valor() {
-      const ba = vec().copy(this.a.coords).sub(this.b.coords);
-      const bc = vec().copy(this.c.coords).sub(this.b.coords);
-      const valor = Math.min(
-        Math.abs(ba.angleBetween(bc)),
-        Math.abs(bc.angleBetween(ba)),
-      );
-      return valor;
-    },
-    get valorExt() {
-      return 2 * Math.PI - this.valor;
-    },
     isBigAngle: false,
     visible: true,
     size: configStore.getState().DEFAULT_ANGLE_SIZE,
@@ -158,24 +134,58 @@ export const angulo = function (a: Tpoint, b: Tpoint, c: Tpoint, id: TangId) {
   };
 };
 
-export type Tangle = ReturnType<typeof angulo>;
+export type Tangle = ReturnType<typeof createAngle>;
 
-export const circle = function (
-  center: (() => vector) | vector,
-  radius: (() => number) | number,
+export const getAngValue = (ang: Tangle, points: State["points"]) => {
+  const p1 = points.get(ang.a);
+  const p2 = points.get(ang.b);
+  const p3 = points.get(ang.c);
+
+  if (!(p1 && p2 && p3)) return;
+
+  const ba = vec().copy(p1.coords).sub(p2.coords);
+  const bc = vec().copy(p3.coords).sub(p2.coords);
+  const valor = Math.min(
+    Math.abs(ba.angleBetween(bc)),
+    Math.abs(bc.angleBetween(ba)),
+  );
+  return valor;
+};
+
+export const circleMethods = [
+  "circleFromOnePoint",
+  "circleFromTwoPoints",
+  "circleFromThreePoints",
+  "circleFromPointAndTangent",
+  //"circleFromThreeTangents"
+] as const;
+
+export type TcircleMethods = (typeof circleMethods)[number];
+
+export type TcircFactoryArgs = {
+  "circleFromOnePoint": {anchors: {p1: TpointId}},
+  "circleFromTwoPoints": {anchors: { p1: TpointId; p2: TpointId }},
+  "circleFromThreePoints": {
+    anchors: { p1: TpointId; p2: TpointId; p3: TpointId }
+  },
+  "circleFromPointAndTangent": {
+    anchors: { p: TpointId; a: TpointId; b: TpointId; seg: TsegId }
+  }
+}
+
+export const createCircle = function <T extends TcircleMethods>(
+  method: T,
+  anchors: TcircFactoryArgs[T]["anchors"],
+  center: vector,
+  radius: number,
   id: TcircleId,
 ) {
   return {
     id,
-    get center() {
-      if ("x" in center && "y" in center && "z" in center)
-        return vec(center.x as number, center.y as number);
-      return center();
-    },
-    get radius() {
-      if (typeof radius === "number") return radius;
-      return radius();
-    },
+    method,
+    anchors,
+    center,
+    radius,
     arcOffset: 0,
     arcStart: 0,
     arcEnd: 360,
@@ -196,20 +206,14 @@ export const circle = function (
   };
 };
 
-export type Tcircle = ReturnType<typeof circle>;
+export type Tcircle = ReturnType<typeof createCircle>;
 
-export const polygon = function (vertices: Array<Tpoint>, id: TpolyId) {
+export const createPolygon = function (vertices: Array<TpointId>, id: TpolyId) {
   return {
     id,
     vertices,
     visible: true,
     selected: false,
-    stroke: {
-      width: configStore.getState().DEFAULT_STROKE_WIDTH,
-      style: configStore.getState().DEFAULT_STROKE_STYLE,
-      color: configStore.getState().DEFAULT_COLOR,
-      opacity: 1,
-    } as Tstroke,
     fill: {
       style: configStore.getState().DEFAULT_FILL_STYLE,
       color: configStore.getState().DEFAULT_FILL_COLOR,
@@ -218,7 +222,7 @@ export const polygon = function (vertices: Array<Tpoint>, id: TpolyId) {
   };
 };
 
-export type Tpolygon = ReturnType<typeof polygon>;
+export type Tpolygon = ReturnType<typeof createPolygon>;
 
 export const tag = function (
   value: string = "",

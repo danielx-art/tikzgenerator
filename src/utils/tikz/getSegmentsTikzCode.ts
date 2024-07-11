@@ -1,4 +1,4 @@
-import { vec } from "../math/vetores";
+import { vec } from "../math/linear-algebra/vetores";
 import configStore from "../store/configStore";
 import type { Action, State } from "../store/store";
 
@@ -8,22 +8,22 @@ export default function getSegmentsTikzCode(store: State & Action) {
   store.segments.forEach((segment) => {
     if (segment.visible) {
       let strokeStyle = segment.stroke.style.split("-")[0];
-      tikzCode += `\\draw [${segment.stroke.color}, ${strokeStyle}, line width=${segment.stroke.width*TIKZ_SCALE}pt, opacity=${segment.stroke.opacity}] (${segment.p1.id}) -- (${segment.p2.id});\n`;
+      tikzCode += `\\draw [${segment.stroke.color}, ${strokeStyle}, line width=${segment.stroke.width*TIKZ_SCALE}pt, opacity=${segment.stroke.opacity}] (${segment.a}) -- (${segment.b});\n`;
       //DO THE MARKS
       if (segment.marks > 0) {
         const markLength = 0.12 * segment.stroke.width*TIKZ_SCALE;
         const markSep = 1.2 * segment.stroke.width*TIKZ_SCALE;
         const midPoint = vec()
-          .copy(segment.p1.coords)
-          .add(vec().copy(segment.p2.coords));
+          .copy(segment.p1(store.points).coords)
+          .add(vec().copy(segment.p2(store.points).coords));
         const normal = vec()
-          .copy(segment.p2.coords)
-          .sub(vec().copy(segment.p1.coords))
+          .copy(segment.p2(store.points).coords)
+          .sub(vec().copy(segment.p1(store.points).coords))
           .cross(vec(0, 0, 1))
           .setMag(markLength);
         const unitTangent = vec()
-          .copy(segment.p2.coords)
-          .sub(vec().copy(segment.p1.coords))
+          .copy(segment.p2(store.points).coords)
+          .sub(vec().copy(segment.p1(store.points).coords))
           .setMag(1);
         const start = vec()
           .copy(midPoint)

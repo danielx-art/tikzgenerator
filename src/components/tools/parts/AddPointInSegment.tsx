@@ -13,8 +13,8 @@ import {
 } from "import/utils/storeHelpers/entityGetters";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { ponto } from "public/entidades";
-import { vec } from "import/utils/math/vetores";
+import { createPoint } from "public/entidades";
+import { vec } from "import/utils/math/linear-algebra/vetores";
 import { useRef, useState } from "react";
 
 const AddPointInSegment: React.FC = () => {
@@ -197,7 +197,7 @@ const AddPointInSegment: React.FC = () => {
     ab.mult(value);
     const newCoords = vec().copy(segPoints[0].coords).add(ab);
     const newId = generateId("point");
-    const newPoint = ponto(newCoords, newId);
+    const newPoint = createPoint(newCoords, newId);
     update(newPoint);
   };
 

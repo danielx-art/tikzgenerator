@@ -40,7 +40,7 @@ const PreviewPanel = () => {
   });
 
   useEffect(() => {
-    if (!points || !scale || !configs) return;
+    if (!points || !scale || !configs || !store) return;
 
     const updatedSVGDimensions = calculateSVGDimensions(
       points,
@@ -48,6 +48,7 @@ const PreviewPanel = () => {
       tags,
       configs,
       containerDimensions,
+      store
     );
 
     const { width, height, viewBox } = updatedSVGDimensions;

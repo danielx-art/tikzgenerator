@@ -1,7 +1,7 @@
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import type { Ttag, TtagId } from "public/entidades";
-import { vec, vector } from "import/utils/math/vetores";
+import { vec, vector } from "import/utils/math/linear-algebra/vetores";
 import { useEffect, useState } from "react";
 
 type PropsType = {

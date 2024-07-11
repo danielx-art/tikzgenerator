@@ -1,4 +1,4 @@
-import { type Tpoint, segmento, Tsegment } from "public/entidades";
+import { type Tpoint, createSegment, Tsegment } from "public/entidades";
 import type { Action, State } from "../store/store";
 import { getSelected } from "./entityGetters";
 
@@ -22,6 +22,7 @@ export const connectPoints = (
       Array.from(segments.values()),
       pA,
       pB,
+      points
     );
 
     if (segAlreadyExistys) {
@@ -29,7 +30,7 @@ export const connectPoints = (
     }
 
     const newSegId = generateId("segment");
-    const newSeg = segmento(pA, pB, newSegId);
+    const newSeg = createSegment(pA.id, pB.id, newSegId);
     store.update(newSeg);
   }
 
@@ -43,10 +44,11 @@ export const connectPoints = (
         Array.from(segments.values()),
         lastPoint,
         firstPoint,
+        points
       );
 
       if (!segAlreadyExistys) {
-        const closingSeg = segmento(lastPoint, firstPoint, closingSegId);
+        const closingSeg = createSegment(lastPoint.id, firstPoint.id, closingSegId);
         store.update(closingSeg);
       }
     }
@@ -54,17 +56,17 @@ export const connectPoints = (
 
 };
 
-function doesSegAlreadyExists(segments: Tsegment[], pA: Tpoint, pB: Tpoint) {
+function doesSegAlreadyExists(segments: Tsegment[], pA: Tpoint, pB: Tpoint, points: State["points"]) {
   const foundSegment = segments.find(
     (seg) =>
-      (seg.p1.coords.x === pA.coords.x &&
-        seg.p1.coords.y === pA.coords.y &&
-        seg.p2.coords.x === pB.coords.x &&
-        seg.p2.coords.y === pB.coords.y) ||
-      (seg.p2.coords.x === pA.coords.x &&
-        seg.p2.coords.y === pA.coords.y &&
-        seg.p1.coords.x === pB.coords.x &&
-        seg.p1.coords.y === pB.coords.y),
+      (seg.p1(points).coords.x === pA.coords.x &&
+        seg.p1(points).coords.y === pA.coords.y &&
+        seg.p2(points).coords.x === pB.coords.x &&
+        seg.p2(points).coords.y === pB.coords.y) ||
+      (seg.p2(points).coords.x === pA.coords.x &&
+        seg.p2(points).coords.y === pA.coords.y &&
+        seg.p1(points).coords.x === pB.coords.x &&
+        seg.p1(points).coords.y === pB.coords.y),
   );
 
   if (foundSegment) return true;

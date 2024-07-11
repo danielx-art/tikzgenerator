@@ -3,11 +3,11 @@ import {
   type Tsegment,
   type TpointId,
   type TsegId,
-  polygon,
+  createPolygon,
 } from "public/entidades";
 import type { Action, State } from "../store/store";
 import { getSelected } from "./entityGetters";
-import { segmentsIntersect } from "../math/segmentsIntersect";
+import { segmentsIntersect } from "../math/linear-algebra/segmentsIntersect";
 import { toast } from "sonner";
 
 type TAdjacencyList = { [key: TpointId]: TsegId[] };
@@ -16,17 +16,17 @@ export function createAdjacencyList(edges: Tsegment[]) {
   const adjacencyList = {} as TAdjacencyList;
 
   edges.forEach((edge) => {
-    const { id, p1, p2 } = edge;
+    const { id, a, b } = edge;
 
-    if (!adjacencyList[p1.id]) {
-      adjacencyList[p1.id] = [];
+    if (!adjacencyList[a]) {
+      adjacencyList[a] = [];
     }
-    if (!adjacencyList[p2.id]) {
-      adjacencyList[p2.id] = [];
+    if (!adjacencyList[b]) {
+      adjacencyList[b] = [];
     }
 
-    adjacencyList[p1.id]!.push(id);
-    adjacencyList[p2.id]!.push(id);
+    adjacencyList[a]!.push(id);
+    adjacencyList[b]!.push(id);
   });
 
   return adjacencyList;
@@ -41,15 +41,15 @@ function allVerticesDegreeTwo(adjacencyList: TAdjacencyList): boolean {
   return true;
 }
 
-function areThereIntersections(edges: Tsegment[]): boolean {
+function areThereIntersections(edges: Tsegment[], points: State["points"]): boolean {
   for (let i = 0; i < edges.length; i++) {
     for (let j = i + 1; j < edges.length; j++) {
       if (
         segmentsIntersect(
-          edges[i]!.p1,
-          edges[i]!.p2,
-          edges[j]!.p1,
-          edges[j]!.p2,
+          edges[i]!.p1(points),
+          edges[i]!.p2(points),
+          edges[j]!.p1(points),
+          edges[j]!.p2(points),
         )
       ) {
         return true;
@@ -73,7 +73,7 @@ export function isConnectedGraph(
         // Find the connected vertex through this edge
         const edge = edges.find((edge) => edge.id === edgeId);
         if (!edge) return; // Edge not found (should not happen ince at least the starting vertex have this edge)
-        const connectedVertex = edge.p1.id === vertex ? edge.p2.id : edge.p1.id;
+        const connectedVertex = edge.a === vertex ? edge.b : edge.a;
         if (!visited[connectedVertex]) {
           dfs(connectedVertex);
         }
@@ -118,7 +118,7 @@ export function findEulerCycle(
         if (!edge) continue; // If for some reason the edge isn't found, continue to the next iteration
         // Determine the next vertex to move to
         let nextVertexId =
-          edge.p1.id === currentVertexId ? edge.p2.id : edge.p1.id;
+          edge.a === currentVertexId ? edge.b : edge.a;
         stack.push(nextVertexId); // Move to the next vertex
       } else {
         // All edges from the current vertex have been used, backtrack
@@ -161,7 +161,7 @@ export const closeFigure = (store: (State & Action) | undefined) => {
     );
     return undefined;
   }
-  if (areThereIntersections(selectedSegments)) {
+  if (areThereIntersections(selectedSegments, store.points)) {
     toast.error(
       "Por favor selecione somente segmentos que não se interceptam. ",
     );
@@ -182,15 +182,14 @@ export const closeFigure = (store: (State & Action) | undefined) => {
     );
   } else {
     //Insert this euler cycle in figures sections of store.
-    const vertices = [] as Tpoint[];
+    const vertices = [] as TpointId[];
 
     eulerCycle.forEach((pointId) => {
-      const thisPoint = store.points.get(pointId);
-      vertices.push(thisPoint!);
+      vertices.push(pointId);
     });
 
     const newPolygonId = store.generateId("polygon");
-    const newPolygon = polygon(vertices, newPolygonId);
+    const newPolygon = createPolygon(vertices, newPolygonId);
 
     store.update(newPolygon);
   }

@@ -1,4 +1,4 @@
-import { vec } from "../math/vetores";
+import { vec } from "../math/linear-algebra/vetores";
 import type { Action, State } from "../store/store";
 
 export default function getTagsTikzCode(store: State & Action) {

@@ -1,13 +1,13 @@
 import Switcher from "import/components/micro/Switcher";
 import { roundAndDisplayNicely } from "import/utils/math/misc";
-import { vec } from "import/utils/math/vetores";
+import { vec } from "import/utils/math/linear-algebra/vetores";
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
 import {
   findTagByEntityId,
   getSelected,
 } from "import/utils/storeHelpers/entityGetters";
-import { Tpoint, angulo, ponto, segmento } from "public/entidades";
+import { Tpoint, createAngle, createPoint, createSegment } from "public/entidades";
 import { useEffect, useState } from "react";
 
 const PointOrthoProjection: React.FC = () => {
@@ -42,15 +42,15 @@ const PointOrthoProjection: React.FC = () => {
     const baproj = vec().copy(bc).setMag(baprojmag);
     const newPointCoords = vec().copy(baproj).add(vec().copy(b.coords));
     const newId = store.generateId("point");
-    const newPoint = ponto(newPointCoords, newId);
+    const newPoint = createPoint(newPointCoords, newId);
 
     store.update(newPoint);
 
     if (!makeHeight) return;
     const newSegId = store.generateId("segment");
     const newAngId = store.generateId("angle");
-    const newSeg = segmento(a, newPoint, newSegId);
-    const newAng = angulo(a, newPoint, c, newAngId);
+    const newSeg = createSegment(a.id, newPoint.id, newSegId);
+    const newAng = createAngle(a.id, newPoint.id, c.id, newAngId);
     store.update(newSeg);
     store.update(newAng);
   };

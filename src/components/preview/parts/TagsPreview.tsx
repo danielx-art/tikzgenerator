@@ -1,7 +1,7 @@
 
 import myStore from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { vec } from "import/utils/math/vetores";
+import { vec } from "import/utils/math/linear-algebra/vetores";
 import configStore from "import/utils/store/configStore";
 
 const TagsPreview: React.FC = () => {
