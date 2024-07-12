@@ -58,6 +58,12 @@ export type Tentity = Tpoint | Tsegment | Tangle | Tcircle | Tpolygon;
 
 export type TallMap<T extends TallKind> = Map<TidFromKind<T>, T>;
 
+export type MakeOptional<T, K extends keyof T> = Partial<Pick<T, K>> &
+  Omit<T, K>;
+
+export type MakeRequired<T, K extends keyof T> = Pick<T, K> &
+  Partial<Omit<T, K>>;
+
 export type Tstroke = {
   width: number;
   style: STROKE_STYLES;
@@ -71,7 +77,11 @@ export type Tfill = {
   opacity: number;
 };
 
-export const createPoint = function (a: vector, id: TpointId, updateMethod?: string) {
+export const createPoint = function (
+  a: vector,
+  id: TpointId,
+  updateMethod?: string,
+) {
   return {
     id,
     updateMethod: updateMethod,
@@ -130,21 +140,21 @@ export const createAngle = function (
     marks: configStore.getState().DEFAULT_ANGLE_MARKS as ANGLE_MARKS_TYPE,
     color: configStore.getState().DEFAULT_COLOR,
     opacity: 1,
+    stroke: {
+      width: configStore.getState().DEFAULT_STROKE_WIDTH,
+      style: configStore.getState().DEFAULT_STROKE_STYLE,
+      color: configStore.getState().DEFAULT_COLOR,
+      opacity: 1,
+    } as Tstroke,
     selected: false,
   };
 };
 
 export type Tangle = ReturnType<typeof createAngle>;
 
-export const getAngValue = (ang: Tangle, points: State["points"]) => {
-  const p1 = points.get(ang.a);
-  const p2 = points.get(ang.b);
-  const p3 = points.get(ang.c);
-
-  if (!(p1 && p2 && p3)) return;
-
-  const ba = vec().copy(p1.coords).sub(p2.coords);
-  const bc = vec().copy(p3.coords).sub(p2.coords);
+export const getAngValue = (a: Tpoint, b: Tpoint, c: Tpoint) => {
+  const ba = vec().copy(a.coords).sub(b.coords);
+  const bc = vec().copy(c.coords).sub(b.coords);
   const valor = Math.min(
     Math.abs(ba.angleBetween(bc)),
     Math.abs(bc.angleBetween(ba)),
@@ -163,15 +173,15 @@ export const circleMethods = [
 export type TcircleMethods = (typeof circleMethods)[number];
 
 export type TcircFactoryArgs = {
-  "circleFromOnePoint": {anchors: {p1: TpointId}},
-  "circleFromTwoPoints": {anchors: { p1: TpointId; p2: TpointId }},
-  "circleFromThreePoints": {
-    anchors: { p1: TpointId; p2: TpointId; p3: TpointId }
-  },
-  "circleFromPointAndTangent": {
-    anchors: { p: TpointId; a: TpointId; b: TpointId; seg: TsegId }
-  }
-}
+  circleFromOnePoint: { anchors: { p1: TpointId } };
+  circleFromTwoPoints: { anchors: { p1: TpointId; p2: TpointId } };
+  circleFromThreePoints: {
+    anchors: { p1: TpointId; p2: TpointId; p3: TpointId };
+  };
+  circleFromPointAndTangent: {
+    anchors: { p: TpointId; a: TpointId; b: TpointId; seg: TsegId };
+  };
+};
 
 export const createCircle = function <T extends TcircleMethods>(
   method: T,

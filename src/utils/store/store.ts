@@ -17,17 +17,14 @@ import {
   type Tkind,
   type TallId,
   type TallKind,
-  type TallKindPlural,  
+  type TallKindPlural,
   type TidFromKind,
   tag,
 } from "public/entidades";
 import { vec, type vector } from "import/utils/math/linear-algebra/vetores";
 import { create } from "zustand";
-import { StorageValue, persist } from "zustand/middleware";
-import {merge} from "lodash";
+import { type StorageValue, persist } from "zustand/middleware";
 import { getEntityById, getKindById } from "../storeHelpers/entityGetters";
-import configStore from "./configStore";
-import { ANGLE_MARKS_TYPE, SEGMENT_MARKS_TYPE } from "public/generalConfigs";
 
 export type State = {
   points: Map<TpointId, Tpoint>;
@@ -82,7 +79,6 @@ const myStore = create<State & Action>()(
       },
       selections: [] as Array<TallId>,
       toggleSelection: <T extends Tentity | Ttag>(id: TallId) => {
-
         const entityKind = getKindById(id);
 
         const storeMapKey = (entityKind + "s") as TallKindPlural;
@@ -114,25 +110,27 @@ const myStore = create<State & Action>()(
         });
       },
       update: <T extends Tentity | Ttag>(newValue: T | Array<T>) => {
+        if (Array.isArray(newValue) && newValue.length === 0) return;
 
-        if(Array.isArray(newValue) && newValue.length === 0) return;
+        const kind = Array.isArray(newValue)
+          ? getKindById(newValue[0]!.id)
+          : getKindById(newValue.id);
 
-        const kind = Array.isArray(newValue) ? getKindById(newValue[0]!.id) : getKindById(newValue.id);
-        
-        const stateMapKey = (kind+"s") as TallKindPlural;
+        const stateMapKey = (kind + "s") as TallKindPlural;
 
         const valuesToAdd = Array.isArray(newValue) ? newValue : [newValue];
 
-        set((state)=>{
+        set((state) => {
           const updatedMap = new Map(
             state[stateMapKey] as Map<TidFromKind<typeof kind>, T>,
-          )
+          );
 
-          for(let value of valuesToAdd) {
+          for (let value of valuesToAdd) {
             updatedMap.set(value.id, value);
           }
 
-          return {[stateMapKey]: updatedMap}})
+          return { [stateMapKey]: updatedMap };
+        });
       },
       deleteEntity: (id: TentId) => {
         const entityKind = getKindById(id) as Tkind;
@@ -225,6 +223,10 @@ const myStore = create<State & Action>()(
         }
       },
       movePoint: (id, newPosition, shallow = false) => {
+        /*
+        NEED TO RECALCULATE CIRCLES AND OTHER DYNAMIC POINTS AFTER POINT IS MOVED.
+        MAYBE SHALLOW MOVING IS NONSENSE
+        */
         set((state) => {
           if (shallow === false) {
             const updatedPoints = new Map(state.points);
@@ -241,7 +243,7 @@ const myStore = create<State & Action>()(
             }
           }
           return {};
-        })
+        });
       },
       addTag: (value: string, entityId: TentId) => {
         const tagId = get().generateId("tag") as TtagId;
@@ -267,8 +269,9 @@ const myStore = create<State & Action>()(
             const { a, b } = ref;
             const p1 = get().points.get(a);
             const p2 = get().points.get(b);
-            if(!(p1 && p2)) {
-              someError = "can't find the edge points of the segment on the store. ";
+            if (!(p1 && p2)) {
+              someError =
+                "can't find the edge points of the segment on the store. ";
               break;
             }
             const midPoint = vec()
@@ -281,7 +284,7 @@ const myStore = create<State & Action>()(
           case "angle": {
             const ref = thisEntity as Tangle;
             const p2 = get().points.get(ref.b);
-            if(!p2) {
+            if (!p2) {
               someError = "can't find the angle center point on the store. ";
               break;
             }
@@ -291,7 +294,10 @@ const myStore = create<State & Action>()(
           case "circle": {
             const ref = thisEntity as Tcircle;
             const center = ref.center;
-            if(!center) {someError = "cant add tag to undefined"; break;}
+            if (!center) {
+              someError = "cant add tag to undefined";
+              break;
+            }
             anchor.add(center);
             break;
           }
@@ -310,7 +316,7 @@ const myStore = create<State & Action>()(
 
         const newTag = tag(value, entityId, tagId, vec(0, 0.35), anchor);
 
-        if(someError !== null) return;
+        if (someError !== null) return;
 
         set((state) => {
           const updatedTags = new Map(state.tags);

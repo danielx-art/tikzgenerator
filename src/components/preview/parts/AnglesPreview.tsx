@@ -1,77 +1,28 @@
 import myStore, { Action, State } from "import/utils/store/store";
 import useStore from "import/utils/store/useStore";
-import { Tangle } from "public/entidades";
+import { getAngValue, Tangle, Tpoint } from "public/entidades";
 import { vec } from "import/utils/math/linear-algebra/vetores";
 import { roundToDecimalPlaces } from "import/utils/math/misc";
 import configStore from "import/utils/store/configStore";
 
 const AnglesPreview: React.FC = () => {
   const angles = useStore(myStore, (state) => state.angles);
-  const points = useStore(myStore, (state) => state.points);
-  const configs = useStore(configStore, (state)=>state);
+  const configs = useStore(configStore, (state) => state);
   const store = useStore(myStore, (state) => state);
-  
-  if (!angles || !points || !store || !configs) return;
-  
+
+  if (!angles || !store || !configs) return;
+
   const { toggleSelection } = store;
-  
+
   return (
     <>
       {Array.from(angles.values()).map((angle, index) => {
-        const anglePath = getAnglePath(angle, configs.RES_FACTOR_SVG, points);
-
-        return (
-          <g
-            filter={angle.selected ? "url(#glow)" : "url(#dropshadow"}
-            key={"svg_path_angle_" + angle.id}
-          >
-            {
-              <path
-                key={"svg_path_marks_" + angle.id}
-                d={anglePath.dMarksPath}
-                stroke={angle.color}
-                strokeWidth={configs.DEFAULT_STROKE_WIDTH}
-                fill="none"
-                fillOpacity={0.5}
-              />
-            }
-            {
-              <path
-                key={"svg_path_fill_" + angle.id}
-                d={anglePath.dFillPath}
-                stroke="none"
-                fill={angle.dotstyle === 1 ? angle.color : "transparent"}
-                fillOpacity={0.5}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleSelection(angle.id);
-                }}
-                className="cursor-pointer"
-              />
-            }
-            <path
-              key={"svg_path_hitbox_" + angle.id}
-              d={anglePath.d}
-              stroke={"transparent"}
-              strokeWidth={2 * configs.DEFAULT_STROKE_WIDTH}
-              fill="transparent"
-              onClick={(event) => {
-                event.stopPropagation();
-                toggleSelection(angle.id);
-              }}
-              className="cursor-pointer"
-            />
-            <path
-              key={"svg_path_" + angle.id}
-              d={anglePath.d}
-              stroke={angle.color}
-              strokeWidth={configs.DEFAULT_STROKE_WIDTH}
-              fill="none"
-              fillOpacity={0.5}
-              className="pointer-events-none"
-            />
-          </g>
-        );
+        <SingleAnglePreview
+          angle={angle}
+          RES={configs.RES_FACTOR_SVG}
+          toggleSelection={toggleSelection}
+          key={"svg_path_angle_" + angle.id}
+        />;
       })}
     </>
   );
@@ -79,15 +30,88 @@ const AnglesPreview: React.FC = () => {
 
 export default AnglesPreview;
 
-export const getAnglePath = (angle: Tangle, scaleFactor: number, points: State["points"]) => {
-  const angleA = vec().copy(angle.p1(points).coords).mult(scaleFactor);
-  const angleB = vec().copy(angle.p2(points).coords).mult(scaleFactor);
-  const angleC = vec().copy(angle.p3(points).coords).mult(scaleFactor);
+const SingleAnglePreview: React.FC<{
+  angle: Tangle;
+  RES: number;
+  toggleSelection: Action["toggleSelection"];
+}> = ({ angle, RES, toggleSelection }) => {
+  const a = useStore(myStore, (state) => state.points.get(angle.a));
+  const b = useStore(myStore, (state) => state.points.get(angle.b));
+  const c = useStore(myStore, (state) => state.points.get(angle.c));
+
+  if (!(a && b && c)) return;
+
+  const anglePath = getAnglePath(angle, a, b, c, RES);
+
+  return (
+    <g filter={angle.selected ? "url(#glow)" : "url(#dropshadow"}>
+      {
+        <path
+          key={"svg_path_marks_" + angle.id}
+          d={anglePath.dMarksPath}
+          stroke={angle.color}
+          strokeWidth={angle.stroke.width}
+          fill="none"
+          fillOpacity={0.5}
+        />
+      }
+      {
+        <path
+          key={"svg_path_fill_" + angle.id}
+          d={anglePath.dFillPath}
+          stroke="none"
+          fill={angle.dotstyle === 1 ? angle.color : "transparent"}
+          fillOpacity={0.5}
+          onClick={(event) => {
+            event.stopPropagation();
+            toggleSelection(angle.id);
+          }}
+          className="cursor-pointer"
+        />
+      }
+      <path
+        key={"svg_path_hitbox_" + angle.id}
+        d={anglePath.d}
+        stroke={"transparent"}
+        strokeWidth={2 * angle.stroke.width}
+        fill="transparent"
+        onClick={(event) => {
+          event.stopPropagation();
+          toggleSelection(angle.id);
+        }}
+        className="cursor-pointer"
+      />
+      <path
+        key={"svg_path_" + angle.id}
+        d={anglePath.d}
+        stroke={angle.color}
+        strokeWidth={angle.stroke.width}
+        fill="none"
+        fillOpacity={0.5}
+        className="pointer-events-none"
+      />
+    </g>
+  );
+};
+
+const getAnglePath = (
+  angle: Tangle,
+  a: Tpoint,
+  b: Tpoint,
+  c: Tpoint,
+  scaleFactor: number,
+) => {
+  const angleA = vec().copy(a.coords).mult(scaleFactor);
+  const angleB = vec().copy(b.coords).mult(scaleFactor);
+  const angleC = vec().copy(c.coords).mult(scaleFactor);
 
   let vectorA = vec().copy(angleA).sub(angleB);
   let vectorB = vec().copy(angleC).sub(angleB);
   vectorA.setMag(angle.size * scaleFactor);
   vectorB.setMag(angle.size * scaleFactor);
+
+  const ang = getAngValue(a, b, c);
+  const angExt = 2 * Math.PI - ang;
 
   let startVector;
   let endVector;
@@ -122,7 +146,9 @@ export const getAnglePath = (angle: Tangle, scaleFactor: number, points: State["
   let dMarksPath = "";
   let dFillPath = "";
 
-  const roundedDegrees = angle.isBigAngle ?  parseFloat(roundToDecimalPlaces((angle.valorExt(points) * 180) / Math.PI)) : parseFloat(roundToDecimalPlaces((angle.valor(points) * 180) / Math.PI));
+  const roundedDegrees = angle.isBigAngle
+    ? parseFloat(roundToDecimalPlaces((angExt * 180) / Math.PI))
+    : parseFloat(roundToDecimalPlaces((ang * 180) / Math.PI));
 
   if (roundedDegrees === 90) {
     d += `M ${angleB.x + startVector.x} ${angleB.y + startVector.y} `;
@@ -171,7 +197,6 @@ export const getAnglePath = (angle: Tangle, scaleFactor: number, points: State["
         const numMarks = parseInt(angle.marks.split("-")[1] as `${number}`);
         const markLen = (angle.size * scaleFactor) / 2;
         const r = angle.size * scaleFactor;
-        const ang = angle.valor(points);
         const numDiv = numMarks + 1;
         for (let i = 0; i < numMarks; i++) {
           const rotateWise = sweepFlag === 0 ? -1 : 1;
@@ -195,7 +220,6 @@ export const getAnglePath = (angle: Tangle, scaleFactor: number, points: State["
         const numDoubles = parseInt(angle.marks.split("-")[1] as `${number}`);
         const doubleDist = (angle.size * scaleFactor) / 5;
         const r = angle.size * scaleFactor;
-        const ang = angle.valor(points);
         const rotateWise = sweepFlag === 0 ? -1 : 1;
         const toRotate = rotateWise * ang;
         for (let i = 0; i < numDoubles; i++) {
