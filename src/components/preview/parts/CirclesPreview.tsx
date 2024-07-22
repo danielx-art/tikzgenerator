@@ -81,12 +81,12 @@ const CirclesPreview: React.FC = () => {
 
 export default CirclesPreview;
 
-export const getArcPath = (circle: Tcircle, scaleFactor: number, store: State & Action) => {
+export const getArcPath = (circle: Tcircle,  scaleFactor: number ) => {
   let startRadians = (circle.arcStart + circle.arcOffset) * (Math.PI / 180);
   let endRadians = circle.arcEnd == 360 ? (circle.arcEnd - 0.001 + circle.arcOffset) * (Math.PI / 180) : (circle.arcEnd + circle.arcOffset) * (Math.PI / 180);
 
-  const center = ("x" in circle.center ) ? circle.center : circle.center(store);
-  const radius = (typeof circle.radius === "number" ) ? circle.radius : circle.radius(store);
+  const center = circle.center;
+  const radius = circle.radius;
 
   if(!center || !radius) return;
 

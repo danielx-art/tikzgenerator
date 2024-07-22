@@ -110,6 +110,17 @@ const myStore = create<State & Action>()(
         });
       },
       update: <T extends Tentity | Ttag>(newValue: T | Array<T>) => {
+
+        /*
+        to-do: 
+        1.check if a ent with same id exists, if not then it is being created for the first time,
+        which means we need to iterate over its anchors and update the inverse adjacency list.
+        2.if it does exist then its being updated, meaning we need to check in the inv adjacency list if
+        any other ent depends on it. Then, call recalculate on this new ent with the new state, before setting it,
+        it will then return the updated ent, which will get pushed to the new state and then we set.
+        */
+
+
         if (Array.isArray(newValue) && newValue.length === 0) return;
 
         const kind = Array.isArray(newValue)
@@ -133,6 +144,9 @@ const myStore = create<State & Action>()(
         });
       },
       deleteEntity: (id: TentId) => {
+
+       //to-do: check if this ent was the anchor for some other ent, then delete that ent as well. 
+
         const entityKind = getKindById(id) as Tkind;
 
         const stateMapKey = (entityKind + "s") as TkindPlural;

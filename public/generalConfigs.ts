@@ -2,13 +2,13 @@ export const initConfigs = {
   DECIMAL_POINTS: 1,
   SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE: 2,
   DEFAULT_COLOR: "black" as LATEX_COLOR,
-  DEFAULT_POINT_STYLE: 2,
+  DEFAULT_POINT_STYLE: "closed" as POINT_STYLES,
   DEFAULT_POINT_SIZE: 1,
   DEFAULT_STROKE_STYLE: "solid" as STROKE_STYLES,
   DEFAULT_FILL_STYLE: "solid" as FILL_STYLES,
   DEFAULT_STROKE_WIDTH: 0.5,
   DEFAULT_SEGMENT_MARKS: 0,
-  DEFAULT_ANGLE_STYLE: 0,
+  //DEFAULT_ANGLE_STYLE: 0,
   DEFAULT_ANGLE_MARKS: "mark-0",
   DEFAULT_ANGLE_SIZE: 0.5,
   DEFAULT_FILL_COLOR: "gray" as LATEX_COLOR,
@@ -26,6 +26,7 @@ export const initConfigs = {
 };
 
 export const MAXIMUM_NUMBER_OF_POINTS = 3458;
+export type POINT_STYLES = "opened" | "closed";
 export type STROKE_STYLES = "solid" | `dashed-${number}-${number}` | "dotted";
 export type ThachureOrientations = 0 | 1 | 2 | 3;
 export type FILL_STYLES =

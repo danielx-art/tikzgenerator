@@ -76,3 +76,33 @@ Simplicidade na criação de figuras geométricas. Desenhada para educadores (e 
 - [x] Paginator está dentro de AccordionTrigger, o que causa button as a descendant of button.
 - [x] Adicionar ponto remove um ponto antigo.
 - [ ] (?) Quando ponto é movido de forma aproximadamente colinear a outro, as dimensões do svg explodem naquela direção.
+
+### Blog
+
+#### 1. O problema de atributos dinâmicos
+
+Certas entidades tem atributos que são dinâmicos calculados a partir de outras entidades (por exemplo o tamanho de um segmento é calculado como a distância entre os pontos de suas extremidades, ou o centro de um círculo calculado como o círculo formado entre três pontos), mas não se pode salvar atributos de entidades como funções em Zustand. Logo, é preciso recalcular esses atributos todas as vezes que as entidades os quais dependem sofrem alguma alteração.
+
+#### 2. A solução
+
+A solução é simples: salvar algum métodos comuns que fazem os cálculos e atualizam esses atributos dinâmicos por fora de Zustand, e salvar no estado de Zustand, ou seja, em cada entidade que contenha esses atributos, um identificador do método utilizado e os argumentos a serem utilizados, e então chamar esses métodos toda vez que as dependências desses atributos forem modificadas. 
+
+Como chamar esse **re**cálculo? Toda vez que uma entidade for modificada:
+
+1. um loop entre as entidades, buscando as que possuem essa entidade como dependências. (Ler observações abaixo.) 
+2. identificar e executar os métodos, e salvar as novas entidades geradas a partir dos cálculos.
+3. fazer um update na store de um pacote com todas as entidades atualizadas.
+
+#### Observações
+
+Poderíamos salvar em cada entidade uma lista de entidades que devem ser recalculadas a partir dela, ou seja, salvar uma dependência inversa. Porém, isso envolveria atualizar essa lista toda vez que uma nova entidade que a referenciasse fosse criada. Um método específico para isso deveria ser criado na store. 
+
+Salvaríamos no estado da store uma lista de dependências (adjacência, em grafos), de forma a otimizar essa busca. 
+
+Assim, teríamos na store um método chamado 'recalculate'. Esse método seria chamado toda vez que o método 'update' fosse chamado, receberia como argumento a entidade que foi modificada (utilizando a lista de adjacência para identificar se e quais outras entidades têm essa como dependência) e retornaria todas as entidades que foram utilizadas.
+
+Por fim, o método update setaria todas essas novas entidades.
+
+O método 'update' também pode ser chamado com um array de entidades novas, que só é utilizada ao criar múltiplos pontos em AddPointInput; ao criar novas entidades, o método 'recalculate' não deveria ser executado, portanto há de haver uma distinção entre essas duas coisas.
+
+ 
