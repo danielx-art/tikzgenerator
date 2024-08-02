@@ -2,7 +2,6 @@ import {
   type Tpoint,
   type Tsegment,
   type Tangle,
-  type Ttag,
   type Tcircle,
   type Tpolygon,
   type TpointId,
@@ -19,8 +18,8 @@ import {
   type TallKind,
   type TallKindPlural,
   type TidFromKind,
-  tag,
-} from "public/entidades";
+} from "./entities/types";
+import { tag, type Ttag } from "./entities/tags";
 import { vec, type vector } from "import/utils/math/linear-algebra/vetores";
 import { create } from "zustand";
 import { type StorageValue, persist } from "zustand/middleware";
@@ -34,6 +33,7 @@ export type State = {
   polygons: Map<TpolyId, Tpolygon>;
   tags: Map<TtagId, Ttag>;
   idCounters: Record<TallKind, number>;
+  invertedAdjacencyList: Map<TentId, TallId[]>;
   selections: Array<TallId>;
 };
 
@@ -59,6 +59,7 @@ const myStore = create<State & Action>()(
       circles: new Map<TcircleId, Tcircle>(),
       polygons: new Map<TpolyId, Tpolygon>(),
       tags: new Map<TtagId, Ttag>(),
+      invertedAdjacencyList: new Map<TentId, TallId[]>(),
       idCounters: {
         point: 0,
         segment: 0,
@@ -114,12 +115,11 @@ const myStore = create<State & Action>()(
         /*
         to-do: 
         1.check if a ent with same id exists, if not then it is being created for the first time,
-        which means we need to iterate over its anchors and update the inverse adjacency list.
+        which means we need to iterate over its anchors and update the inverse adjacency list. ~ DONE
         2.if it does exist then its being updated, meaning we need to check in the inv adjacency list if
         any other ent depends on it. Then, call recalculate on this new ent with the new state, before setting it,
         it will then return the updated ent, which will get pushed to the new state and then we set.
         */
-
 
         if (Array.isArray(newValue) && newValue.length === 0) return;
 
@@ -136,7 +136,52 @@ const myStore = create<State & Action>()(
             state[stateMapKey] as Map<TidFromKind<typeof kind>, T>,
           );
 
+          const updatedInvList = state["invertedAdjacencyList"];
+          
           for (let value of valuesToAdd) {
+            if(!updatedMap.has(value.id)){ //meaning its being created for the first time, then update inverted adj list
+              if("updateMethod" in value){
+                value.updateMethod?.anchors.forEach((anchor)=>{
+                  if(updatedInvList.has(anchor)){
+                    const currList = updatedInvList.get(anchor)!;
+                    currList.push(value.id);
+                    updatedInvList.set(anchor, currList);
+                  } else {
+                    updatedInvList.set(anchor, [value.id]);
+                  }
+                })
+              } else if ("entityId" in value){
+                if(updatedInvList.has(value.entityId)){
+                  const currList = updatedInvList.get(value.entityId)!;
+                  currList.push(value.id);
+                  updatedInvList.set(value.entityId, currList);
+                } else {
+                  updatedInvList.set(value.entityId, [value.id]);
+                }
+              }
+            } else { //then I'm updating a value, meaning I have to check if any entitites have this one as an anchor, and recalculate it.
+              if("updateMethod" in value && updatedInvList.has(value.id)){
+                const dependants = updatedInvList.get(value.id);
+                /*
+                here I have to run recalculate, and choose how to do so. Maybe iterate dependants and:
+                
+                initialize all updated maps from the store
+                
+                recalculate(dependant[i], state);
+
+                and define outside the store:
+                recalculate(ent: TentId, state: Store & Action): Tent {
+                  thisEnt = get the ent itself
+                  from a dictionary of updateMethods, get the method = thisEnt.updateMethod.method
+                  then updatedEnt = method(thisEnt, state);
+                  return updatedEnt;
+                }
+
+                update the appropriate updatedMap
+                */
+              };
+            }
+
             updatedMap.set(value.id, value);
           }
 

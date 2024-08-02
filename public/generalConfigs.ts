@@ -1,3 +1,6 @@
+import { vector } from "import/utils/math/linear-algebra/vetores";
+import { Tstroke } from "import/utils/store/entities/types";
+
 export const initConfigs = {
   DECIMAL_POINTS: 1,
   SHOW_WHEN_ROUNDED_DECIMAL_TOLERANCE: 2,
@@ -8,7 +11,6 @@ export const initConfigs = {
   DEFAULT_FILL_STYLE: "solid" as FILL_STYLES,
   DEFAULT_STROKE_WIDTH: 0.5,
   DEFAULT_SEGMENT_MARKS: 0,
-  //DEFAULT_ANGLE_STYLE: 0,
   DEFAULT_ANGLE_MARKS: "mark-0",
   DEFAULT_ANGLE_SIZE: 0.5,
   DEFAULT_FILL_COLOR: "gray" as LATEX_COLOR,
@@ -58,3 +60,18 @@ export type ANGLE_MARKS_TYPE =
 export const ANGLE_MARKS = ["marks", "doubles"].flatMap((word) =>
   Array.from({ length: 4 }, (_, i) => `${word}-${i}`),
 ) as ANGLE_MARKS_TYPE[];
+
+
+//to-do: implement this:
+export type TaxisConfig = {
+  shown: boolean;
+  range: [number, number];
+  interval: number | null;
+  stroke: Tstroke;
+  label: {
+    text: string;
+    color: LATEX_COLOR;
+    pos: vector;
+  };
+  cap: "solid-arrow" | "thin-arrow" | "none";
+};

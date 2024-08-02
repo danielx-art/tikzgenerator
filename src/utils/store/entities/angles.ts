@@ -1,7 +1,7 @@
 import { vec } from "import/utils/math/linear-algebra/vetores";
-import { ANGLE_MARKS_TYPE } from "public/generalConfigs";
+import type { ANGLE_MARKS_TYPE } from "public/generalConfigs";
 import configStore from "../configStore";
-import {
+import type {
   TangId,
   Tangle,
   TangleCalculatedProperties,
@@ -9,11 +9,9 @@ import {
   Tfill,
   TInteractions,
   Tpoint,
-  TpointId,
   Tstroke,
 } from "./types";
-import { M_PLUS_1 } from "next/font/google";
-import { Action, State } from "../store";
+import type { Action, State } from "../store";
 
 export const createAngle = function (
   angle_args: { p1: Tpoint; p2: Tpoint; p3: Tpoint; id: TangId } & Partial<

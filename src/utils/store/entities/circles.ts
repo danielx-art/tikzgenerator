@@ -16,9 +16,23 @@ import type {
   TInteractions,
   Tpoint,
   TpointId,
+  TsegId,
   Tsegment,
   Tstroke,
 } from "./types";
+
+function getCircleFromOnePoint(p1: Tpoint, r?: number) {
+  return calcCircleFromOnePoint(p1.coords, r);
+}
+function getCircleFromTwoPoints(p1: Tpoint, p2: Tpoint) {
+  return calcCircleFromTwoPoints(p1.coords, p2.coords);
+}
+function getCircleFromPointAndTangent(p: Tpoint, t: Tsegment) {
+  return calcCircleFromPointAndTangent(p.coords, t.p1.coords, t.p2.coords);
+}
+function getCircleFromThreePoints(p1: Tpoint, p2: Tpoint, p3: Tpoint) {
+  return calcCircleFromThreePoints(p1.coords, p2.coords, p3.coords);
+}
 
 const _circleMethodInitializersDict = {
   circleFromOnePoint: getCircleFromOnePoint,
@@ -109,53 +123,42 @@ export const createCircle = function <T extends keyof TcircArgs>(
   };
 };
 
-export const circleMethodsDict = {
-  circleFromOnePoint: (store: State & Action, thisCircle: Tcircle): Tcircle => {
-    const P1 = store.points.get(thisCircle.updateMethod.anchors[0]);
-    return { ...thisCircle, center: P1.coords };
-  },
 
-  circleFromTwoPoints: (
+  export const circleFromOnePoint = (store: State & Action, thisCircle: Tcircle): Tcircle => {
+    const P1 = store.points.get(thisCircle.updateMethod.anchors[0] as TpointId)!;
+    return { ...thisCircle, center: P1.coords };
+  };
+
+  export const circleFromTwoPoints = (
     store: State & Action,
     thisCircle: Tcircle,
   ): Tcircle => {
-    const P1 = store.points.get(thisCircle.updateMethod.anchors[0]);
-    const P2 = store.points.get(thisCircle.updateMethod.anchors[1]);
+    const P1 = store.points.get(thisCircle.updateMethod.anchors[0] as TpointId)!;
+    const P2 = store.points.get(thisCircle.updateMethod.anchors[1] as TpointId)!;
     const { center, radius } = getCircleFromTwoPoints(P1, P2);
     return { ...thisCircle, center, radius };
-  },
+  };
 
-  circleFromPointAndTangent: (
+  export const circleFromPointAndTangent = (
     store: State & Action,
     thisCircle: Tcircle,
   ): Tcircle => {
-    const P = store.points.get(thisCircle.updateMethod.anchors[0]);
-    const T = store.segments.get(thisCircle.updateMethod.anchors[1]);
+    const P = store.points.get(thisCircle.updateMethod.anchors[0] as TpointId)!;
+    const T = store.segments.get(thisCircle.updateMethod.anchors[1] as TsegId)!;
     const { center, radius } = getCircleFromPointAndTangent(P, T);
     return { ...thisCircle, center, radius: radius };
-  },
+  };
 
-  circleFromThreePoints: (
+  export const circleFromThreePoints = (
     store: State & Action,
     thisCircle: Tcircle,
   ): Tcircle => {
-    const P1 = store.points.get(thisCircle.updateMethod.anchors[0]);
-    const P2 = store.points.get(thisCircle.updateMethod.anchors[1]);
-    const P3 = store.points.get(thisCircle.updateMethod.anchors[2]);
+    const P1 = store.points.get(thisCircle.updateMethod.anchors[0] as TpointId)!;
+    const P2 = store.points.get(thisCircle.updateMethod.anchors[1] as TpointId)!;
+    const P3 = store.points.get(thisCircle.updateMethod.anchors[2] as TpointId)!;
     const { center, radius } = getCircleFromThreePoints(P1, P2, P3);
     return { ...thisCircle, center, radius: radius };
-  },
-};
+  };
 
-export function getCircleFromOnePoint(p1: Tpoint, r?: number) {
-  return calcCircleFromOnePoint(p1.coords, r);
-}
-export function getCircleFromTwoPoints(p1: Tpoint, p2: Tpoint) {
-  return calcCircleFromTwoPoints(p1.coords, p2.coords);
-}
-export function getCircleFromPointAndTangent(p: Tpoint, t: Tsegment) {
-  return calcCircleFromPointAndTangent(p.coords, t.p1.coords, t.p2.coords);
-}
-export function getCircleFromThreePoints(p1: Tpoint, p2: Tpoint, p3: Tpoint) {
-  return calcCircleFromThreePoints(p1.coords, p2.coords, p3.coords);
-}
+
+
